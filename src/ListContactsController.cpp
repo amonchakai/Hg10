@@ -65,8 +65,15 @@ void ListContactsController::updateView() {
 
     QList<QObject*> datas;
     for(int i = contacts->length()-1 ; i >= 0 ; --i) {
-        datas.push_back(contacts->at(i));
+        Contact *nc = new Contact;
+        nc->setAvatar(contacts->at(i)->getAvatar());
+        nc->setName(contacts->at(i)->getName());
+        nc->setTimestamp(contacts->at(i)->getTimestamp());
+        nc->setID(contacts->at(i)->getID());
+
+        datas.push_back(nc);
     }
+    qDebug() << datas.length();
 
     dataModel->clear();
     dataModel->insertList(datas);

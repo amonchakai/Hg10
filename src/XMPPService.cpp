@@ -102,6 +102,23 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     QImage qImage;
     qImage.loadFromData(vCard.photo());
 
+    uchar *bits = qImage.bits();
+    int radius = std::min(qImage.size().width(), qImage.size().height())/2; radius = radius*radius;
+    int center_x = qImage.size().width() / 2;
+    int center_y = qImage.size().height() / 2;
+    int depth = qImage.depth() / 8;
+    qDebug() << radius << center_x << center_y;
+    for(int i = 0 ; i < qImage.size().width() ; ++i) {
+        for(int j = 0 ; j < qImage.size().height() ; ++j) {
+            int dstCenter = (center_x - i)*(center_x - i) + (center_y - j)*(center_y - j);
+            if(dstCenter > radius) {
+                for(int c = 0 ; c < depth ; ++c) {
+                    bits[(j*qImage.size().width()+i)*depth+c] = 255;
+                }
+            }
+        }
+    }
+
     Contact *contact = new Contact;
     if(!photo.isEmpty()) {
         if(qImage.save(name)) {

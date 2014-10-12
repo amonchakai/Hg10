@@ -40,91 +40,114 @@ Page {
                     type: "item"
                     
                     Container {
-                        function colorIndexToHex(index) {
-                            switch (index) {
-                                case 0:
-                                    return Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "#000000" : "#ffffff" ;
-                                
-                                case 1:
-                                    return "#a8cc0a";
-                                
-                                case 2:
-                                    return "#27bbc6";
-                                
-                                case 3:
-                                    return "#fe5e05";
-                                
-                                case 4:
-                                    return "#ef0061";
-                                
-                                case 5:
-                                    return "#795ae0";
-                                
-                                default:
-                                    return "#ffffff";
-                            }
-                        }
-                        
-                        id: titleContainer
                         layout: StackLayout {
-                            orientation: LayoutOrientation.LeftToRight
+                            orientation: LayoutOrientation.TopToBottom
                         }
                         horizontalAlignment: HorizontalAlignment.Fill
                         verticalAlignment: VerticalAlignment.Fill
                         
-                        // TODO Avatar
-                        ImageView {
-                            id: avatarImg
-                            scalingMethod: ScalingMethod.AspectFit
-                            minHeight: 80
-                            maxHeight: 80
-                            image: tracker.image
-                            
-                            attachedObjects: [
-                                NetImageTracker {
-                                    id: tracker
-                                    
-                                    source: ListItemData.avatar                                    
-                                } 
-                            ]
-                        
+                        Container {
+                            minHeight: 5
+                            maxHeight: 5
                         }
                         
                         Container {
-                            id: contactContainer
+                            preferredHeight: 100
                             
+                            id: titleContainer
                             layout: StackLayout {
-                                orientation: LayoutOrientation.TopToBottom
+                                orientation: LayoutOrientation.LeftToRight
                             }
-                            verticalAlignment: VerticalAlignment.Top
-                            Label {
-                                text: ListItemData.name
+                            horizontalAlignment: HorizontalAlignment.Fill
+                            verticalAlignment: VerticalAlignment.Center
+                            
+                            Container {
+                                minWidth: 5
+                                maxWidth: 5
+                            }
+                            
+                            // TODO Avatar
+                            ImageView {
+                                verticalAlignment: VerticalAlignment.Center
+                                //horizontalAlignment: HorizontalAlignment.Left
+                                id: avatarImg
+                                scalingMethod: ScalingMethod.AspectFit
+                                minHeight: 90
+                                maxHeight: 90
+                                minWidth: 90
+                                maxWidth: 90
+                                image: tracker.image
+                                
+                                attachedObjects: [
+                                    NetImageTracker {
+                                        id: tracker
+                                        
+                                        source: ListItemData.avatar                                    
+                                    } 
+                                ]
+                            
                             }
                             
                             Container {
-                                layout: DockLayout {
+                                minWidth: 30
+                                maxWidth: 30
+                                //horizontalAlignment: HorizontalAlignment.Left
+                                
+                            }
+                            
+                            Container {
+                                id: contactContainer
+                                preferredWidth: 1000
+                                layout: StackLayout {
+                                    orientation: LayoutOrientation.TopToBottom
                                 }
                                 horizontalAlignment: HorizontalAlignment.Fill
+                                verticalAlignment: VerticalAlignment.Center
                                 
-                                Label {
-                                    text: ListItemData.timestamp
-                                    horizontalAlignment: HorizontalAlignment.Right
-                                    textStyle {
-                                        base: SystemDefaults.TextStyles.SmallText
-                                        color: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#00a8df") : Color.Blue
+                                Container {
+                                    layout: DockLayout {
+                                    }
+                                    horizontalAlignment: HorizontalAlignment.Fill
+                                    verticalAlignment: VerticalAlignment.Center
+                                    
+                                    Label {
+                                        text: ListItemData.name
+                                    }
+                                    
+                                    Label {
+                                        text: ListItemData.timestamp
+                                        horizontalAlignment: HorizontalAlignment.Right
+                                        verticalAlignment: VerticalAlignment.Center
+                                        textStyle {
+                                            base: SystemDefaults.TextStyles.SmallText
+                                            color: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#00a8df") : Color.Blue
+                                        }
                                     }
                                 }
                                 
-                                Label {
-                                    text: ListItemData.preview
-                                    horizontalAlignment: HorizontalAlignment.Left
-                                    textStyle {
-                                        base: SystemDefaults.TextStyles.SmallText
-                                        color: Color.Gray
+                                
+                                Container {
+                                    layout: DockLayout {
+                                    }
+                                    horizontalAlignment: HorizontalAlignment.Fill
+                                    verticalAlignment: VerticalAlignment.Bottom
+                                    
+                                    
+                                    Label {
+                                        text: "hello this is some previous message"
+                                        horizontalAlignment: HorizontalAlignment.Left
+                                        textStyle {
+                                            base: SystemDefaults.TextStyles.SmallText
+                                            color: Color.Gray
+                                        }
                                     }
                                 }
+                                
                             }
-                            Divider {}
+                        }
+                        
+                        Divider {
+                            
                         }
                         
                     }
