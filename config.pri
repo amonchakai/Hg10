@@ -39,6 +39,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Favorite.qml) \
         $$quote($$BASEDIR/assets/Home.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
+        $$quote($$BASEDIR/assets/images/avatar.png) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
@@ -49,6 +50,11 @@ config_pri_assets {
 
 config_pri_source_group1 {
     SOURCES += \
+        $$quote($$BASEDIR/src/Image/CookieJar.cpp) \
+        $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.cpp) \
+        $$quote($$BASEDIR/src/Image/NetImageTracker.cpp) \
+        $$quote($$BASEDIR/src/Image/WebResourceManager.cpp) \
+        $$quote($$BASEDIR/src/ListContactsController.cpp) \
         $$quote($$BASEDIR/src/LoginController.cpp) \
         $$quote($$BASEDIR/src/XMPPService.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
@@ -112,6 +118,12 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/main.cpp)
 
     HEADERS += \
+        $$quote($$BASEDIR/src/DataObjects.h) \
+        $$quote($$BASEDIR/src/Image/CookieJar.hpp) \
+        $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.hpp) \
+        $$quote($$BASEDIR/src/Image/NetImageTracker.h) \
+        $$quote($$BASEDIR/src/Image/WebResourceManager.h) \
+        $$quote($$BASEDIR/src/ListContactsController.hpp) \
         $$quote($$BASEDIR/src/LoginController.hpp) \
         $$quote($$BASEDIR/src/XMPPService.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp) \
@@ -186,6 +198,11 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../src/*.cc) \
         $$quote($$BASEDIR/../src/*.cpp) \
         $$quote($$BASEDIR/../src/*.cxx) \
+        $$quote($$BASEDIR/../src/Image/*.c) \
+        $$quote($$BASEDIR/../src/Image/*.c++) \
+        $$quote($$BASEDIR/../src/Image/*.cc) \
+        $$quote($$BASEDIR/../src/Image/*.cpp) \
+        $$quote($$BASEDIR/../src/Image/*.cxx) \
         $$quote($$BASEDIR/../src/base/*.c) \
         $$quote($$BASEDIR/../src/base/*.c++) \
         $$quote($$BASEDIR/../src/base/*.cc) \

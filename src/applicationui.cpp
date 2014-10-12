@@ -23,6 +23,8 @@
 
 #include "XMPPService.hpp"
 #include "LoginController.hpp"
+#include "ListContactsController.hpp"
+#include "Image/NetImageTracker.h"
 
 using namespace bb::cascades;
 
@@ -35,9 +37,7 @@ ApplicationUI::ApplicationUI() :
 
 
     XMPP *client = XMPP::get();
-    client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
-    //client->connectToServer("login@gmail.com", "password");
-
+    //client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 
     bool res = QObject::connect(m_pLocaleHandler, SIGNAL(systemLanguageChanged()), this, SLOT(onSystemLanguageChanged()));
     // This is only available in Debug builds
@@ -51,7 +51,8 @@ ApplicationUI::ApplicationUI() :
 
 
     qmlRegisterType<LoginController>("Network.LoginController", 1, 0, "LoginController");
-
+    qmlRegisterType<ListContactsController>("Network.ListContactsController", 1, 0, "ListContactsController");
+    qmlRegisterType<NetImageTracker>("com.netimage", 1, 0, "NetImageTracker");
 
 
     // Create scene document from main.qml asset, the parent is set

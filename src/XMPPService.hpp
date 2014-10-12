@@ -12,17 +12,24 @@
 #include "client/QXmppClient.h"
 #include "base/QXmppLogger.h"
 
+
+class QXmppVCardIq;
+class Contact;
+
 class XMPP : public QXmppClient {
     Q_OBJECT;
 
 public:
     virtual ~XMPP() {};
 
-    static XMPP* get();
+    static XMPP*                   get();
+    inline const QList<Contact*>*  getContacts() const            {return m_Datas; }
+
 
 
 private:
-    static XMPP     *m_This;
+    static XMPP              *m_This;
+    QList<Contact*>          *m_Datas;
 
     XMPP(QObject *parent = 0);
 
@@ -31,6 +38,12 @@ public Q_SLOTS:
     void messageReceived(const QXmppMessage&);
     void presenceReceived(const QXmppPresence&);
 
+    void rosterReceived();
+    void vCardReceived(const QXmppVCardIq&);
+
+
+Q_SIGNALS:
+    void contactReceived();
 
 };
 
