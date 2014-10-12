@@ -36,15 +36,21 @@ simulator {
 
 config_pri_assets {
     OTHER_FILES += \
-        $$quote($$BASEDIR/assets/html/hangout.js) \
-        $$quote($$BASEDIR/assets/html/index.html) \
-        $$quote($$BASEDIR/assets/html/style.css) \
+        $$quote($$BASEDIR/assets/Favorite.qml) \
+        $$quote($$BASEDIR/assets/Home.qml) \
+        $$quote($$BASEDIR/assets/Welcome.qml) \
+        $$quote($$BASEDIR/assets/images/icon_about.png) \
+        $$quote($$BASEDIR/assets/images/icon_favorites.png) \
+        $$quote($$BASEDIR/assets/images/icon_home.png) \
+        $$quote($$BASEDIR/assets/images/icon_settings.png) \
+        $$quote($$BASEDIR/assets/images/wallpaper/wallpaper.jpg) \
         $$quote($$BASEDIR/assets/main.qml)
 }
 
 config_pri_source_group1 {
     SOURCES += \
-        $$quote($$BASEDIR/src/XMPPController.cpp) \
+        $$quote($$BASEDIR/src/LoginController.cpp) \
+        $$quote($$BASEDIR/src/XMPPService.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
         $$quote($$BASEDIR/src/base/QXmppArchiveIq.cpp) \
         $$quote($$BASEDIR/src/base/QXmppBindIq.cpp) \
@@ -106,7 +112,8 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/main.cpp)
 
     HEADERS += \
-        $$quote($$BASEDIR/src/XMPPController.hpp) \
+        $$quote($$BASEDIR/src/LoginController.hpp) \
+        $$quote($$BASEDIR/src/XMPPService.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp) \
         $$quote($$BASEDIR/src/base/QXmppArchiveIq.h) \
         $$quote($$BASEDIR/src/base/QXmppBindIq.h) \
@@ -192,9 +199,12 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/*.qml) \
         $$quote($$BASEDIR/../assets/*.js) \
         $$quote($$BASEDIR/../assets/*.qs) \
-        $$quote($$BASEDIR/../assets/html/*.qml) \
-        $$quote($$BASEDIR/../assets/html/*.js) \
-        $$quote($$BASEDIR/../assets/html/*.qs)
+        $$quote($$BASEDIR/../assets/images/*.qml) \
+        $$quote($$BASEDIR/../assets/images/*.js) \
+        $$quote($$BASEDIR/../assets/images/*.qs) \
+        $$quote($$BASEDIR/../assets/images/wallpaper/*.qml) \
+        $$quote($$BASEDIR/../assets/images/wallpaper/*.js) \
+        $$quote($$BASEDIR/../assets/images/wallpaper/*.qs)
 
     HEADERS += \
         $$quote($$BASEDIR/../src/*.h) \

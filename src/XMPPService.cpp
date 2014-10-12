@@ -6,7 +6,7 @@
  */
 
 
-#include "XMPPController.hpp"
+#include "XMPPService.hpp"
 #include "QXmppMessage.h"
 #include <qDebug>
 

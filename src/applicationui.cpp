@@ -21,7 +21,8 @@
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/LocaleHandler>
 
-#include "XMPPController.hpp"
+#include "XMPPService.hpp"
+#include "LoginController.hpp"
 
 using namespace bb::cascades;
 
@@ -35,7 +36,7 @@ ApplicationUI::ApplicationUI() :
 
     XMPP *client = XMPP::get();
     client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
-    client->connectToServer("login@gmail.com", "password");
+    //client->connectToServer("login@gmail.com", "password");
 
 
     bool res = QObject::connect(m_pLocaleHandler, SIGNAL(systemLanguageChanged()), this, SLOT(onSystemLanguageChanged()));
@@ -47,6 +48,11 @@ ApplicationUI::ApplicationUI() :
 
     // initial load
     onSystemLanguageChanged();
+
+
+    qmlRegisterType<LoginController>("Network.LoginController", 1, 0, "LoginController");
+
+
 
     // Create scene document from main.qml asset, the parent is set
     // to ensure the document gets destroyed properly at shut down.

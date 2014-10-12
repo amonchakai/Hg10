@@ -5,8 +5,8 @@
  *      Author: pierre
  */
 
-#ifndef XMPPCONTROLLER_HPP_
-#define XMPPCONTROLLER_HPP_
+#ifndef XMPPSERVICE_HPP_
+#define XMPPSERVICE_HPP_
 
 
 #include "client/QXmppClient.h"
@@ -35,4 +35,4 @@ public Q_SLOTS:
 };
 
 
-#endif /* XMPPCONTROLLER_HPP_ */
+#endif /* XMPPSERVICE_HPP_ */
