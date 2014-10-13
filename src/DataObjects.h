@@ -60,4 +60,62 @@ public:
 };
 
 
+// ----------------------------------------------------------------------------------------------
+// Objects to handle message history
+
+struct Event {
+    QString     m_Who;
+    QString     m_What;
+    QString     m_When;
+    int         m_Read;
+};
+
+inline QDataStream &operator<<(QDataStream& stream, const Event& event) {
+    stream << event.m_Who;
+    stream << event.m_What;
+    stream << event.m_When;
+    stream << event.m_Read;
+
+    return stream;
+}
+
+inline QDataStream &operator>>(QDataStream& stream, Event& event) {
+    stream >> event.m_Who;
+    stream >> event.m_What;
+    stream >> event.m_When;
+    stream >> event.m_Read;
+
+    return stream;
+}
+
+
+
+struct History {
+    QList<Event>    m_History;
+};
+
+inline QDataStream &operator<<(QDataStream& stream, const History& history) {
+    for(int i = 0 ; i < history.m_History.size() ; ++i) {
+        stream << history.m_History.at(i);
+    }
+
+    return stream;
+}
+
+
+inline QDataStream &operator>>(QDataStream& stream, History& history) {
+
+    Event e;
+    do {
+        stream >> e;
+        if(!e.m_Who.isEmpty())
+            history.m_History.push_back(e);
+    } while(!e.m_Who.isEmpty());
+
+    return stream;
+}
+
+
+
+
 #endif /* DATAOBJECTS_H_ */

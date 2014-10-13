@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <style>
+
+            html {
+                height: 100%;
+            }
+            p {
+                font-size: 25px;
+                text-align: justify;
+            }
+
+			/* ============================================================================================================================
+			== BLOCKQUOTE WITH RIGHT-ANGLED TRIANGLE
+			** ============================================================================================================================ */
+
+			.example-right {
+				position:relative;
+				padding:15px 30px;
+				margin:0;
+				color:#fff;
+				background:#5a8f00; /* default background for browsers without gradient support */
+				/* css3 */
+				background:-webkit-gradient(linear, 0 0, 0 100%, from(#b8db29), to(#5a8f00));
+				background:-moz-linear-gradient(#b8db29, #5a8f00);
+				background:-o-linear-gradient(#b8db29, #5a8f00);
+				background:linear-gradient(#b8db29, #5a8f00);
+				-webkit-border-radius:10px;
+				-moz-border-radius:10px;
+				border-radius:10px;
+			}
+
+			/* display of quote author (alternatively use a class on the element following the blockquote) */
+			.example-right + p {margin:15px 0 2em 85px; font-style:italic;}
+
+			/* creates the triangle */
+			.example-right:after {
+				content:"";
+				position:absolute;
+				bottom:-50px;
+				left:50px;
+				border-width:0 20px 50px 0px;
+				border-style:solid;
+				border-color:transparent #5a8f00;
+				/* reduce the damage in FF3.0 */
+				display:block;
+				width:0;
+			}
+
+
+			/* ============================================================================================================================
+			== BLOCKQUOTE WITH OBTUSE TRIANGLE
+			** ============================================================================================================================ */
+
+			.example-obtuse {
+				position:relative;
+				padding:15px 30px;
+				margin:0;
+				color:#fff;
+				background:#5a8f00; /* default background for browsers without gradient support */
+				/* css3 */
+				background:-webkit-gradient(linear, 0 0, 0 100%, from(#b8db29), to(#5a8f00));
+				background:-moz-linear-gradient(#b8db29, #5a8f00);
+				background:-o-linear-gradient(#b8db29, #5a8f00);
+				background:linear-gradient(#b8db29, #5a8f00);
+				-webkit-border-radius:10px;
+				-moz-border-radius:10px;
+				border-radius:10px;
+			}
+
+			/* display of quote author (alternatively use a class on the element following the blockquote) */
+			.example-obtuse + p {margin:10px 150px 2em 0; text-align:right; font-style:italic;}
+
+			/* creates the larger triangle */
+			.example-obtuse:before {
+			  content:"";
+			  position:absolute;
+			  bottom:-30px;
+			  right:80px;
+			  border-width:0 0 30px 50px;
+			  border-style:solid;
+			  border-color:transparent #5a8f00;
+			  /* reduce the damage in FF3.0 */
+			  display:block;
+			  width:0;
+			}
+
+			/* creates the smaller triangle */
+			.example-obtuse:after {
+			  content:"";
+			  position:absolute;
+			  bottom:-30px;
+			  right:110px;
+			  border-width:0 0 30px 20px;
+			  border-style:solid;
+			  border-color:transparent #fff;
+			  /* reduce the damage in FF3.0 */
+			  display:block;
+			  width:0;
+			}
+
+
+        </style>
+    </head>
+
+    <body>
+
+        <div id="container" class="container">
+
+        	<blockquote class="example-right">
+        <p>Design is directed toward human beings. To design is to solve human problems by identifying them and executing the best solution.</p>
+      </blockquote>
+
+      <br/><br/>
+      <br/><br/>
+
+<blockquote class="example-obtuse">
+        <p>It&#8217;s not what you look at that matters, it&#8217;s what you see.</p>
+      </blockquote>
+          
+
+
+

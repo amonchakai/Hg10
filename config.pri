@@ -36,6 +36,7 @@ simulator {
 
 config_pri_assets {
     OTHER_FILES += \
+        $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/Favorite.qml) \
         $$quote($$BASEDIR/assets/Home.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
@@ -46,11 +47,16 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_home.png) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/wallpaper/wallpaper.jpg) \
-        $$quote($$BASEDIR/assets/main.qml)
+        $$quote($$BASEDIR/assets/main.qml) \
+        $$quote($$BASEDIR/assets/template.html) \
+        $$quote($$BASEDIR/assets/template_black.html) \
+        $$quote($$BASEDIR/assets/template_end.html)
 }
 
 config_pri_source_group1 {
     SOURCES += \
+        $$quote($$BASEDIR/src/ConversationController.cpp) \
+        $$quote($$BASEDIR/src/ConversationManager.cpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.cpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.cpp) \
         $$quote($$BASEDIR/src/Image/NetImageTracker.cpp) \
@@ -119,6 +125,8 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/main.cpp)
 
     HEADERS += \
+        $$quote($$BASEDIR/src/ConversationController.hpp) \
+        $$quote($$BASEDIR/src/ConversationManager.hpp) \
         $$quote($$BASEDIR/src/DataObjects.h) \
         $$quote($$BASEDIR/src/Image/CookieJar.hpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.hpp) \

@@ -21,13 +21,15 @@
 
 #include "DataObjects.h"
 #include <QReadWriteLock>
+#include "ConversationManager.hpp"
 
 QReadWriteLock  mutex;
 
 XMPP* XMPP::m_This = NULL;
 
 XMPP::XMPP(QObject *parent) : QXmppClient(parent),
-        m_Datas(new QList<Contact*>()) {
+        m_Datas(new QList<Contact*>()),
+        m_WaitNbContacts(0) {
 
     bool check = connect(this, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(messageReceived(QXmppMessage)));
 
@@ -55,6 +57,7 @@ XMPP *XMPP::get() {
 
 void XMPP::messageReceived(const QXmppMessage& message) {
     qDebug() << message.from();
+    ConversationManager::get()->receiveMessage(message.from(), message.body());
 }
 
 void XMPP::presenceReceived(const QXmppPresence& presence) {
@@ -122,7 +125,7 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
 
     Contact *contact = new Contact;
     if(!photo.isEmpty()) {
-        if(qImage.save(name)) {
+        if(qImage.save(name, "PNG")) {
             contact->setAvatar(vCardsDir + "/" + bareJid + ".png");
         } else contact->setAvatar("asset:///images/avatar.png");
     } else contact->setAvatar("asset:///images/avatar.png");

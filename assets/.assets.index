@@ -1,5 +1,6 @@
 1
-11
+15
+Conversation.qml
 Favorite.qml
 Home.qml
 images/avatar.png
@@ -10,4 +11,7 @@ images/icon_home.png
 images/icon_settings.png
 images/wallpaper/wallpaper.jpg
 main.qml
+template.html
+template_black.html
+template_end.html
 Welcome.qml
