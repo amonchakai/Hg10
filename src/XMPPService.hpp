@@ -30,6 +30,7 @@ public:
 private:
     static XMPP              *m_This;
     QList<Contact*>          *m_Datas;
+    int                       m_WaitNbContacts;
 
     XMPP(QObject *parent = 0);
 

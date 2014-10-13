@@ -20,7 +20,9 @@
 #include <bb/cascades/ImageTracker>
 
 #include "DataObjects.h"
+#include <QReadWriteLock>
 
+QReadWriteLock  mutex;
 
 XMPP* XMPP::m_This = NULL;
 
@@ -68,6 +70,11 @@ void XMPP::rosterReceived() {
     Q_UNUSED(check);
 
     QStringList list = rosterManager().getRosterBareJids();
+
+    mutex.lockForWrite();
+    m_WaitNbContacts = list.size();
+    mutex.unlock();
+
     for(int i = 0; i < list.size(); ++i) {
         // request vCard of all the bareJids in roster
         vCardManager().requestVCard(list.at(i));
@@ -76,12 +83,6 @@ void XMPP::rosterReceived() {
 
 void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     QString bareJid = vCard.from();
-
-    QString out("FullName: %1");
-    qDebug() << qPrintable(out.arg(vCard.fullName()));
-
-    if(vCard.fullName().isEmpty())
-        return;
 
     QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
 
@@ -107,7 +108,7 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     int center_x = qImage.size().width() / 2;
     int center_y = qImage.size().height() / 2;
     int depth = qImage.depth() / 8;
-    qDebug() << radius << center_x << center_y;
+
     for(int i = 0 ; i < qImage.size().width() ; ++i) {
         for(int j = 0 ; j < qImage.size().height() ; ++j) {
             int dstCenter = (center_x - i)*(center_x - i) + (center_y - j)*(center_y - j);
@@ -131,7 +132,16 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     contact->setID(bareJid);
     contact->setTimestamp("time");
 
-    m_Datas->push_back(contact);
+    if(vCard.fullName().isEmpty())
+        contact->deleteLater();
+    else
+        m_Datas->push_back(contact);
+
+    mutex.lockForWrite();
+    --m_WaitNbContacts;
+    if(m_WaitNbContacts == 0)
+        emit contactReceived();
+    mutex.unlock();
 
 }
 

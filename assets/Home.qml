@@ -3,13 +3,47 @@ import Network.ListContactsController 1.0
 import com.netimage 1.0
 
 Page {
-    Container {
-        Button {
-            text: "update"
-            onClicked: {
-                listContactsController.updateView();
+    titleBar: TitleBar {
+        kind: TitleBarKind.FreeForm
+        kindProperties: FreeFormTitleBarKindProperties {
+            Container {
+                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                leftPadding: 10
+                rightPadding: 10
+                
+                ImageView {
+                    verticalAlignment: VerticalAlignment.Center
+                    //horizontalAlignment: HorizontalAlignment.Left
+                    id: avatarOwnImg
+                    scalingMethod: ScalingMethod.AspectFit
+                    minHeight: 90
+                    maxHeight: 90
+                    minWidth: 90
+                    maxWidth: 90
+                    image: trackerOwn.image
+                    
+                    attachedObjects: [
+                        NetImageTracker {
+                            id: trackerOwn
+                            
+                            source: listContactsController.avatar                                    
+                        } 
+                    ]
+                }
+                
+                Label {
+                    text: listContactsController.userName
+                    textStyle {
+                        color: Color.Black
+                    }
+                    verticalAlignment: VerticalAlignment.Center
+                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                }
             }
         }
+    }
+    
+    Container {
         ListView {
             id: listContactView
             dataModel: GroupDataModel {
@@ -66,7 +100,7 @@ Page {
                                 maxWidth: 5
                             }
                             
-                            // TODO Avatar
+                            //  Avatar
                             ImageView {
                                 verticalAlignment: VerticalAlignment.Center
                                 //horizontalAlignment: HorizontalAlignment.Left
