@@ -83,6 +83,19 @@ void LoginController::logOut() {
 
 }
 
+void LoginController::deleteHistory() {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
+    if (QFile::exists(directory)) {
+        QDir dir(directory);
+        dir.setNameFilters(QStringList() << "*.*");
+        dir.setFilter(QDir::Files);
+        foreach(QString dirFile, dir.entryList()) {
+            dir.remove(dirFile);
+        }
+    }
+}
+
+
 bool LoginController::isLogged() {
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData");
     return QFile::exists(directory + "/UserID.txt");

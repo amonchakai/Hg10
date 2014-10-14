@@ -11,13 +11,13 @@ Page {
         kind: TitleBarKind.FreeForm
         kindProperties: FreeFormTitleBarKindProperties {
             Container {
-                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                layout: DockLayout { }
                 leftPadding: 10
                 rightPadding: 10
                 
                 ImageView {
                     verticalAlignment: VerticalAlignment.Center
-                    //horizontalAlignment: HorizontalAlignment.Left
+                    horizontalAlignment: HorizontalAlignment.Right
                     id: avatarOwnImg
                     scalingMethod: ScalingMethod.AspectFit
                     minHeight: 90
@@ -41,28 +41,62 @@ Page {
                         color: Color.Black
                     }
                     verticalAlignment: VerticalAlignment.Center
-                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                    horizontalAlignment: HorizontalAlignment.Center
+                }
+                
+                ImageView {
+                    verticalAlignment: VerticalAlignment.Center
+                    horizontalAlignment: HorizontalAlignment.Left
+                    imageSource: "asset:///images/icon_left.png"
                 }
             }
         }
     }
     
     Container {
-        layout: StackLayout {
-            orientation: LayoutOrientation.TopToBottom
+        layout: DockLayout {
         }
         
-        WebView {
-            id: messageView
-            layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+        ScrollView {
+            verticalAlignment: VerticalAlignment.Fill
+            horizontalAlignment: HorizontalAlignment.Fill
             
-            settings.textAutosizingEnabled: false
+            WebView {
+                
+                
+                id: messageView
+//                layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                
+                settings.textAutosizingEnabled: false
+            }
         }
         
-        
-        TextField {
-            id: message
+        Container {
+            verticalAlignment: VerticalAlignment.Bottom
+            horizontalAlignment: HorizontalAlignment.Fill
+            
+            layout: StackLayout {
+                orientation: LayoutOrientation.LeftToRight
+            }
+            
+            TextField {
+                layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                id: message
+            }
+            ImageButton {
+                defaultImageSource: "asset:///images/send.png"
+                verticalAlignment: VerticalAlignment.Center
+                onClicked: {
+                    conversationController.send(message.text);
+                }
+            }
+            Container {
+                minWidth: 4
+                maxWidth: 4
+            }
+            
         }
+
     }
     
     

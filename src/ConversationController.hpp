@@ -29,7 +29,8 @@ public Q_SLOTS:
     void updateView();
     void load(const QString &id);
 
-
+    void send(const QString &message);
+    void pushMessage(const QString &from, const QString &message);
 
 Q_SIGNALS:
     void complete();

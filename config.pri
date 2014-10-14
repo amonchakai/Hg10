@@ -39,13 +39,19 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/Favorite.qml) \
         $$quote($$BASEDIR/assets/Home.qml) \
+        $$quote($$BASEDIR/assets/LoginForm.qml) \
+        $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/images/avatar.png) \
         $$quote($$BASEDIR/assets/images/avatar.svg) \
+        $$quote($$BASEDIR/assets/images/icon.jpg) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
+        $$quote($$BASEDIR/assets/images/icon_left.png) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
+        $$quote($$BASEDIR/assets/images/send.png) \
+        $$quote($$BASEDIR/assets/images/send.svg) \
         $$quote($$BASEDIR/assets/images/wallpaper/wallpaper.jpg) \
         $$quote($$BASEDIR/assets/main.qml) \
         $$quote($$BASEDIR/assets/template.html) \

@@ -148,3 +148,8 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
 
 }
 
+void XMPP::sendMessageTo(const QString &to, const QString &message) {
+
+    sendPacket(QXmppMessage("", to, message));
+}
+

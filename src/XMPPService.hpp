@@ -37,6 +37,7 @@ private:
 
 public Q_SLOTS:
     void messageReceived(const QXmppMessage&);
+    void sendMessageTo(const QString &to, const QString &message);
     void presenceReceived(const QXmppPresence&);
 
     void rosterReceived();

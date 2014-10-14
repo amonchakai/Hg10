@@ -13,6 +13,9 @@
 #include <QDate>
 #include <QFile>
 #include <QDir>
+#include <QDebug>
+
+#include "XMPPService.hpp"
 
 QReadWriteLock  mutexConversation;
 ConversationManager* ConversationManager::m_This = NULL;
@@ -52,8 +55,15 @@ ConversationManager *ConversationManager::get() {
 
 void ConversationManager::load(const QString &from) {
     m_CurrentDst = from;
+    m_BareID = from;
+
+    int id = m_CurrentDst.indexOf("/");
+    if(id != -1)
+        m_CurrentDst = m_CurrentDst.mid(0,id);
 
     m_History.m_History.clear();
+
+    qDebug() << "Read history from: " << m_CurrentDst;
 
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
     if (!QFile::exists(directory)) {
@@ -62,14 +72,19 @@ void ConversationManager::load(const QString &from) {
     }
 
     mutexConversation.lockForRead();
-    QFile file(directory + "/" + from);
+    QFile file(directory + "/" + m_CurrentDst);
 
     if (file.open(QIODevice::ReadOnly)) {
         QDataStream stream(&file);
         stream >> m_History;
 
         file.close();
+    } else {
+        qDebug() << "No history";
     }
+
+    qDebug() << "history length: " << m_History.m_History.size();
+
     mutexConversation.unlock();
 
     emit historyLoaded();
@@ -78,10 +93,24 @@ void ConversationManager::load(const QString &from) {
 
 
 void ConversationManager::receiveMessage(const QString &from, const QString &message) {
+
+    if(message.isEmpty())
+        return;
+
     mutexConversation.lockForWrite();
 
+    QString fromC = from;
+    int id = fromC.indexOf("/");
+    if(id != -1)
+        fromC = fromC.mid(0,id);
+
+    if(fromC.toLower() == m_CurrentDst.toLower())
+        emit messageReceived(fromC, message);
+
+    qDebug() << fromC << message;
+
     Event e;
-    e.m_Who = from;
+    e.m_Who = fromC;
     e.m_What = message;
     e.m_Read = 0;
     e.m_When = QDateTime::currentDateTime().toString();
@@ -92,21 +121,33 @@ void ConversationManager::receiveMessage(const QString &from, const QString &mes
         dir.mkpath(directory);
     }
 
-    QFile file(directory + "/" + from);
+    QFile file(directory + "/" + fromC);
 
     if (file.open(QIODevice::Append)) {
         QDataStream stream(&file);
         stream << e;
 
         file.close();
+    } else {
+        qDebug() << "Cannot write history";
     }
 
     mutexConversation.unlock();
 }
 
 
+void ConversationManager::sendMessage(const QString &message) {
+    sendMessage(m_BareID, message);
+}
+
 
 void ConversationManager::sendMessage(const QString &to, const QString &message) {
+
+    if(to.isEmpty())
+        return;
+
+    XMPP::get()->sendMessageTo(to, message);
+
     mutexConversation.lockForWrite();
 
     if(m_User.isEmpty())

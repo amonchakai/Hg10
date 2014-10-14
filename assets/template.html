@@ -10,97 +10,86 @@
             p {
                 font-size: 25px;
                 text-align: justify;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                margin-left:0.5em;
+                margin-right:0.5em;
             }
 
 			/* ============================================================================================================================
-			== BLOCKQUOTE WITH RIGHT-ANGLED TRIANGLE
+			== Bubble left
 			** ============================================================================================================================ */
 
-			.example-right {
-				position:relative;
-				padding:15px 30px;
-				margin:0;
-				color:#fff;
-				background:#5a8f00; /* default background for browsers without gradient support */
-				/* css3 */
-				background:-webkit-gradient(linear, 0 0, 0 100%, from(#b8db29), to(#5a8f00));
-				background:-moz-linear-gradient(#b8db29, #5a8f00);
-				background:-o-linear-gradient(#b8db29, #5a8f00);
-				background:linear-gradient(#b8db29, #5a8f00);
-				-webkit-border-radius:10px;
-				-moz-border-radius:10px;
-				border-radius:10px;
-			}
+			  .bubble-left {
+			  	position: relative;
+			  	width: 70%;
+			  	margin-left: 64px;
+			  	min-height: 100px;
+			  	padding: 0px;
+			  	background: #f0f0f0;
+			  	-webkit-border-radius: 5px;
+			  	-moz-border-radius: 5px;
+			  	border-radius: 5px;
+			  }
 
-			/* display of quote author (alternatively use a class on the element following the blockquote) */
-			.example-right + p {margin:15px 0 2em 85px; font-style:italic;}
+			  .bubble-left:after {
+			  	content: "";
+			  	position: absolute;
+			  	top: 0px;
+			  	left: -20px;
+			  	border-style: solid;
+			  	border-width: 0px 20px 20px 0;
+			  	border-color: transparent #f0f0f0;
+			  	display: block;
+			  	width: 0;
+			  	z-index: 1;
+			  }
 
-			/* creates the triangle */
-			.example-right:after {
-				content:"";
-				position:absolute;
-				bottom:-50px;
-				left:50px;
-				border-width:0 20px 50px 0px;
-				border-style:solid;
-				border-color:transparent #5a8f00;
-				/* reduce the damage in FF3.0 */
-				display:block;
-				width:0;
-			}
-
+			  .bubble-left img {
+			  	 position: absolute;
+			  	 left: -64px;
+			  	 top: 0px;
+			  	 width: 64px;
+			  	 height: auto;
+			  }
 
 			/* ============================================================================================================================
-			== BLOCKQUOTE WITH OBTUSE TRIANGLE
+			== Bubble right
 			** ============================================================================================================================ */
 
-			.example-obtuse {
-				position:relative;
-				padding:15px 30px;
-				margin:0;
-				color:#fff;
-				background:#5a8f00; /* default background for browsers without gradient support */
-				/* css3 */
-				background:-webkit-gradient(linear, 0 0, 0 100%, from(#b8db29), to(#5a8f00));
-				background:-moz-linear-gradient(#b8db29, #5a8f00);
-				background:-o-linear-gradient(#b8db29, #5a8f00);
-				background:linear-gradient(#b8db29, #5a8f00);
-				-webkit-border-radius:10px;
-				-moz-border-radius:10px;
-				border-radius:10px;
-			}
+			  .bubble-right {
+			  	position: relative;
+			  	margin-right: 64px;
+			  	float:right;
+			  	width: 70%;
+			  	min-height: 100px;
+			  	padding: 0px;
+			  	background: #f0f0f0;
+			  	-webkit-border-radius: 5px;
+			  	-moz-border-radius: 5px;
+			  	border-radius: 5px;
+			  }
 
-			/* display of quote author (alternatively use a class on the element following the blockquote) */
-			.example-obtuse + p {margin:10px 150px 2em 0; text-align:right; font-style:italic;}
+			  .bubble-right:after {
+			  	content: "";
+			  	position: absolute;
+			  	bottom: 0px;
+			  	right: -20px;
+			  	border-style: solid;
+			  	border-width: 20px 0px 0px 20px;
+			  	border-color: transparent #f0f0f0;
+			  	display: block;
+			  	width: 0;
+			  	z-index: 1;
+			  }
 
-			/* creates the larger triangle */
-			.example-obtuse:before {
-			  content:"";
-			  position:absolute;
-			  bottom:-30px;
-			  right:80px;
-			  border-width:0 0 30px 50px;
-			  border-style:solid;
-			  border-color:transparent #5a8f00;
-			  /* reduce the damage in FF3.0 */
-			  display:block;
-			  width:0;
-			}
-
-			/* creates the smaller triangle */
-			.example-obtuse:after {
-			  content:"";
-			  position:absolute;
-			  bottom:-30px;
-			  right:110px;
-			  border-width:0 0 30px 20px;
-			  border-style:solid;
-			  border-color:transparent #fff;
-			  /* reduce the damage in FF3.0 */
-			  display:block;
-			  width:0;
-			}
-
+			  .bubble-right img {
+			  	 position: absolute;
+			  	 right: -64px;
+				 bottom: 0px;
+			  	 width: 64px;
+			  	 height: auto;
+			  }
 
         </style>
     </head>
@@ -109,17 +98,15 @@
 
         <div id="container" class="container">
 
-        	<blockquote class="example-right">
-        <p>Design is directed toward human beings. To design is to solve human problems by identifying them and executing the best solution.</p>
-      </blockquote>
+<!--
+        	<div class="bubble-left"><img src="images/icon.jpg">
+        		<p>Design is directed toward human beings. To design is to solve human problems by identifying them and executing the best solution. this would be a verrrry long text and it some tewtnDesign is directed toward human beings. To design is to solve human problemsDesign is directed toward human beings. To design is to solve human problemsDesign is directed toward human beings. To design is to solve human problems </p>
+        	</div>
 
-      <br/><br/>
-      <br/><br/>
+        	<div class="bubble-right"><img src="images/icon.jpg">
+        		<p>Design is directed toward human beings. To design is to solve human problems by identifying them and executing the best solution. this would be a verrrry long text and it some tewtnDesign is directed toward human beings. To design is to solve human problemsDesign is directed toward human beings. To design is to solve human problemsDesign is directed toward human beings. To design is to solve human problems.</p>
+        	</div>
 
-<blockquote class="example-obtuse">
-        <p>It&#8217;s not what you look at that matters, it&#8217;s what you see.</p>
-      </blockquote>
-          
-
+-->
 
 

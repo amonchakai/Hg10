@@ -16,6 +16,14 @@ TabbedPane {
                 }
             }
         },
+        Sheet {
+            id: settings
+            Settings {
+                onDone: {
+                    settings.close();
+                }
+            }
+        },
         
         LoginController {
             id: loginController
@@ -35,6 +43,7 @@ TabbedPane {
                 title: qsTr("Settings")
                 imageSource: "asset:///images/icon_settings.png"
                 onTriggered: {
+                    settings.open();
                 }
             }
         ]

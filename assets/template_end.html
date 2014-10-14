@@ -12,6 +12,20 @@
         container.style.width = window.innerWidth-10;
 
 
+        function pushMessage(who, what, avatar) {
+            var message = container.innerHTML;
+            if(who == 0) {
+                message = message + "<div class=\"bubble-left\"><img src=" + avatar + "><p>" + what + "</p></div>";
+            } else {
+                message = message + "<div class=\"bubble-right\"><img src=" + avatar + "><p>" + what + "</p></div>";
+            }
+
+            container.innerHTML = message;
+        }
+
+
+
+
         </script>
 
     </body>
