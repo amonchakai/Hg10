@@ -2,6 +2,13 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>Conversation</name>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LoginForm</name>
     <message>
         <source>Login</source>

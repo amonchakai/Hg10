@@ -60,45 +60,43 @@ Page {
         ScrollView {
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
+            id: scrollView
             
             WebView {
-                
-                
                 id: messageView
-//                layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                 
                 settings.textAutosizingEnabled: false
+                
+                onLoadingChanged: {
+                    if (loadRequest.status == WebLoadStatus.Succeeded) {
+                        
+                    }
+                }
             }
         }
         
-        Container {
+        
+        TextField {
+            preferredHeight: 30
             verticalAlignment: VerticalAlignment.Bottom
             horizontalAlignment: HorizontalAlignment.Fill
-            
-            layout: StackLayout {
-                orientation: LayoutOrientation.LeftToRight
-            }
-            
-            TextField {
-                layoutProperties: StackLayoutProperties { spaceQuota: 1 }
-                id: message
-            }
-            ImageButton {
-                defaultImageSource: "asset:///images/send.png"
-                verticalAlignment: VerticalAlignment.Center
-                onClicked: {
-                    conversationController.send(message.text);
-                }
-            }
-            Container {
-                minWidth: 4
-                maxWidth: 4
-            }
-            
+            id: message
         }
-
+        
     }
     
+    
+    actions: [
+        ActionItem {
+            title: qsTr("Reply")
+            imageSource: "asset:///images/send.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                conversationController.send(message.text);
+                message.text = "";            
+            }
+        }
+    ]
     
     onCreationCompleted: {
         conversationController.setWebView(messageView);

@@ -88,6 +88,9 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
 
 void ConversationController::send(const QString& message) {
     qDebug() << "CALL!";
+    if(message.isEmpty())
+        return;
+
     ConversationManager::get()->sendMessage(message);
 
     if(m_WebView == NULL) {
