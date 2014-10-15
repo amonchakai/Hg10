@@ -107,12 +107,13 @@ void ConversationManager::receiveMessage(const QString &from, const QString &mes
     if(fromC.toLower() == m_CurrentDst.toLower())
         emit messageReceived(fromC, message);
 
-    qDebug() << fromC << message;
+    // --------------------------------------------------------------------------------
+    // history file
 
-    Event e;
+    TimeEvent e;
     e.m_Who = fromC;
     e.m_What = message;
-    e.m_Read = 0;
+    e.m_Read = fromC == m_CurrentDst;
     e.m_When = QDateTime::currentDateTime().toString();
 
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
@@ -132,7 +133,58 @@ void ConversationManager::receiveMessage(const QString &from, const QString &mes
         qDebug() << "Cannot write history";
     }
 
+    // --------------------------------------------------------------------------------
+    // preview file
+
+
+    QFile file2(directory + "/" + fromC + ".preview");
+
+    if (file2.open(QIODevice::WriteOnly)) {
+    QDataStream stream(&file2);
+        stream << e;
+
+        file2.close();
+    } else {
+        qDebug() << "Cannot write preview";
+    }
+
+
     mutexConversation.unlock();
+
+    if(fromC.toLower() != m_CurrentDst.toLower())
+        emit messageReceived(fromC, message);
+
+}
+
+
+TimeEvent ConversationManager::getPreview(const QString &from) const {
+    TimeEvent e;
+
+    // --------------------------------------------------------------------------------
+    // read preview file, and return the event!
+
+
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
+    if (QFile::exists(directory)) {
+        QString fromC = from;
+        int id = fromC.indexOf("/");
+        if(id != -1)
+            fromC = fromC.mid(0,id);
+
+        QFile file2(directory + "/" + fromC + ".preview");
+
+        if (file2.open(QIODevice::ReadOnly)) {
+        QDataStream stream(&file2);
+            stream >> e;
+
+            file2.close();
+        } else {
+            qDebug() << "Cannot open preview";
+        }
+    }
+
+
+    return e;
 }
 
 
@@ -153,7 +205,10 @@ void ConversationManager::sendMessage(const QString &to, const QString &message)
     if(m_User.isEmpty())
         loadUserName();
 
-    Event e;
+    // --------------------------------------------------------------------------------
+    // history file
+
+    TimeEvent e;
     e.m_Who = m_User;
     e.m_What = message;
     e.m_Read = 0;
@@ -173,6 +228,23 @@ void ConversationManager::sendMessage(const QString &to, const QString &message)
 
         file.close();
     }
+
+
+    // --------------------------------------------------------------------------------
+    // preview file
+
+
+    QFile file2(directory + "/" + to + ".preview");
+
+    if (file2.open(QIODevice::WriteOnly)) {
+    QDataStream stream(&file2);
+        stream << e;
+
+        file2.close();
+    } else {
+        qDebug() << "Cannot write preview";
+    }
+
 
     mutexConversation.unlock();
 }

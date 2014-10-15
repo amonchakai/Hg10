@@ -15,6 +15,7 @@
 
 #include "DataObjects.h"
 #include "XMPPService.hpp"
+#include "ConversationManager.hpp"
 
 ListContactsController::ListContactsController(QObject *parent) : QObject(parent),
     m_ListView(NULL) {
@@ -23,6 +24,8 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
     Q_ASSERT(check);
     Q_UNUSED(check);
 
+    check = connect(ConversationManager::get(), SIGNAL(messageReceived(const QString &, const QString &)), this, SLOT(messageReceived(const QString &, const QString &)));
+    Q_ASSERT(check);
 }
 
 
@@ -30,7 +33,9 @@ void ListContactsController::updateContacts() {
     //qDebug() << presence.
 }
 
-
+void ListContactsController::messageReceived(const QString &from, const QString &message) {
+    updateView();
+}
 
 void ListContactsController::updateView() {
 
@@ -57,6 +62,7 @@ void ListContactsController::updateView() {
                               << "id"
                               << "timestamp"
                               << "avatar"
+                              << "preview"
                 );
         m_ListView->setDataModel(dataModel);
     }
@@ -80,6 +86,7 @@ void ListContactsController::updateView() {
     // ----------------------------------------------------------------------------------------------
     // push data to the view
 
+    QDateTime now = QDateTime::currentDateTime();
 
     const QList<Contact *> *contacts = XMPP::get()->getContacts();
 
@@ -88,10 +95,19 @@ void ListContactsController::updateView() {
         // remove yourself from the list of contact, and store the info for display
         if(contacts->at(i)->getID().toLower() != m_User.toLower()) {
 
+            TimeEvent e = ConversationManager::get()->getPreview(contacts->at(i)->getID());
+
             Contact *nc = new Contact;
             nc->setAvatar(contacts->at(i)->getAvatar());
             nc->setName(contacts->at(i)->getName());
-            nc->setTimestamp(contacts->at(i)->getTimestamp());
+
+            QDateTime time = QDateTime::fromString(e.m_When);
+            if(time.date() == now.date())
+                nc->setTimestamp(time.time().toString("hh:mm"));
+            else
+                nc->setTimestamp(time.date().toString());
+
+            nc->setPreview(e.m_What);
             nc->setID(contacts->at(i)->getID());
 
             datas.push_back(nc);

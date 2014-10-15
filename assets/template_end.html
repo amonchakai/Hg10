@@ -3,6 +3,9 @@
 
 
     <br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>
+
+    <div id="end" ></div>
+
         <script type="text/javascript">
 
         // ----------------------
@@ -14,6 +17,7 @@
 
         container.style.width = window.innerWidth-10;
 
+        function sendURL(url) { navigator.cascades.postMessage(url); }
 
         function pushMessage(who, what, avatar) {
             var message = container.innerHTML;
@@ -24,9 +28,35 @@
             }
 
             container.innerHTML = message;
+
+            scrollToEnd();
         }
 
+        function scrollToEnd() {
+            //document.getElementById(messageID).scrollIntoView();
+            if(window.innerWidth > 1000)
+                sendURL("SCROLLTO:"+GetScreenCordinates(document.getElementById("end")).y*1.395);
+            else
+                sendURL("SCROLLTO:"+GetScreenCordinates(document.getElementById("end")).y);
 
+        }
+
+        function GetScreenCordinates(obj) {
+            var p = {};
+            p.x = obj.offsetLeft;
+            p.y = obj.offsetTop;
+            while (obj.offsetParent) {
+                p.x = p.x + obj.offsetParent.offsetLeft;
+                p.y = p.y + obj.offsetParent.offsetTop;
+                if (obj == document.getElementsByTagName("body")[0]) {
+                    break;
+                }
+                else {
+                    obj = obj.offsetParent;
+                }
+            }
+            return p;
+        }
 
 
 

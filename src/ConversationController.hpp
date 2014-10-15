@@ -18,7 +18,7 @@ class ConversationController : public QObject {
 
 private:
     bb::cascades::WebView    *m_WebView;
-
+    QString                  m_DstAvatar;
 
 public:
     ConversationController(QObject *parent = 0);
@@ -27,7 +27,7 @@ public:
 public Q_SLOTS:
     inline void setWebView    (QObject *webView)      {m_WebView = dynamic_cast<bb::cascades::WebView*>(webView); }
     void updateView();
-    void load(const QString &id);
+    void load(const QString &id, const QString &avatar);
 
     void send(const QString &message);
     void pushMessage(const QString &from, const QString &message);

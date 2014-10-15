@@ -39,6 +39,7 @@ public Q_SLOTS:
     void updateView();
 
     void updateContacts();
+    void messageReceived(const QString &from, const QString &message);
 
 Q_SIGNALS:
     void complete();

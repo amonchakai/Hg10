@@ -43,6 +43,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/images/avatar.png) \
+        $$quote($$BASEDIR/assets/images/avatar.png.square.png) \
+        $$quote($$BASEDIR/assets/images/avatar.square.svg) \
         $$quote($$BASEDIR/assets/images/avatar.svg) \
         $$quote($$BASEDIR/assets/images/icon.jpg) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \

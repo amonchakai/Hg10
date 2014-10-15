@@ -58,6 +58,7 @@ XMPP *XMPP::get() {
 void XMPP::messageReceived(const QXmppMessage& message) {
     qDebug() << message.from();
     ConversationManager::get()->receiveMessage(message.from(), message.body());
+
 }
 
 void XMPP::presenceReceived(const QXmppPresence& presence) {
@@ -75,8 +76,10 @@ void XMPP::rosterReceived() {
     QStringList list = rosterManager().getRosterBareJids();
 
     mutex.lockForWrite();
-    m_WaitNbContacts = list.size();
+    m_WaitNbContacts = list.size()+1;
     mutex.unlock();
+
+    vCardManager().requestClientVCard();
 
     for(int i = 0; i < list.size(); ++i) {
         // request vCard of all the bareJids in roster
@@ -86,8 +89,16 @@ void XMPP::rosterReceived() {
 
 void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     QString bareJid = vCard.from();
-
     QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
+    bool ownInfo = false;
+
+    Contact *contact = new Contact;
+    if(bareJid.isEmpty()) {
+        bareJid = ConversationManager::get()->getUser();
+        ownInfo = true;
+    }
+    contact->setID(bareJid);
+
 
     QDir dir;
     if(!dir.exists(vCardsDir))
@@ -112,6 +123,11 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     int center_y = qImage.size().height() / 2;
     int depth = qImage.depth() / 8;
 
+    // save two representation of the picture: a square for the post, and a disk for the user list
+    if(!photo.isEmpty()) {
+        qImage.save(name + ".square.png", "PNG");
+    }
+
     for(int i = 0 ; i < qImage.size().width() ; ++i) {
         for(int j = 0 ; j < qImage.size().height() ; ++j) {
             int dstCenter = (center_x - i)*(center_x - i) + (center_y - j)*(center_y - j);
@@ -123,7 +139,6 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
         }
     }
 
-    Contact *contact = new Contact;
     if(!photo.isEmpty()) {
         if(qImage.save(name, "PNG")) {
             contact->setAvatar(vCardsDir + "/" + bareJid + ".png");
@@ -131,9 +146,12 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     } else contact->setAvatar("asset:///images/avatar.png");
 
 
+    if(ownInfo)
+        ConversationManager::get()->setAvatar(contact->getAvatar());
+
     contact->setName(vCard.fullName());
-    contact->setID(bareJid);
     contact->setTimestamp("time");
+
 
     if(vCard.fullName().isEmpty())
         contact->deleteLater();

@@ -25,7 +25,11 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
 
 }
 
-void ConversationController::load(const QString &id) {
+void ConversationController::load(const QString &id, const QString &avatar) {
+    if(avatar.mid(0,9).toLower() == "asset:///")
+        m_DstAvatar = QDir::currentPath() + "/app/native/assets/" +  avatar.mid(9);
+    else
+        m_DstAvatar = avatar;
     ConversationManager::get()->load(id);
 }
 
@@ -41,6 +45,11 @@ void ConversationController::updateView() {
     }
     QFile htmlEndTemplateFile(QDir::currentPath() + "/app/native/assets/template_end.html");
 
+    QString ownAvatar = ConversationManager::get()->getAvatar();
+    if(ownAvatar.mid(0,9).toLower() == "asset:///")
+        ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
+
+
     if (htmlTemplateFile.open(QIODevice::ReadOnly) && htmlEndTemplateFile.open(QIODevice::ReadOnly)) {
         QString htmlTemplate = htmlTemplateFile.readAll();
         QString endTemplate = htmlEndTemplateFile.readAll();
@@ -49,22 +58,22 @@ void ConversationController::updateView() {
 
         QString body;
         for(int i = 0 ; i < history.m_History.size() ; ++i) {
-            const Event &e = history.m_History.at(i);
+            const TimeEvent &e = history.m_History.at(i);
 
             if(e.m_Who.toLower() == ConversationManager::get()->getUser().toLower()) {
-                body +=  QString("<div class=\"bubble-right\"><img src=\"images/icon.jpg\" />")
+                body +=  QString("<div class=\"bubble-right\"><img src=\"file:///" + ownAvatar + ".square.png" + "\" />")
                                    + "<p>" + e.m_What + "</p>"
-                               + "</div>&nbsp;<br/>";
+                               + "</div>";
 
             } else {
-                body +=  QString("<div class=\"bubble-left\"><img src=\"images/icon.jpg\" />")
+                body +=  QString("<div class=\"bubble-left\"><img src=\"file:///" + m_DstAvatar + ".square.png" + "\" />")
                                    + "<p>" + e.m_What + "</p>"
-                               + "</div>&nbsp;<br/>";
+                               + "</div>";
             }
         }
 
 
-        m_WebView->setHtml(htmlTemplate + body  + endTemplate, QUrl("local:///assets/"));
+        m_WebView->setHtml(htmlTemplate + body  + endTemplate, "file:///" + QDir::homePath() + "/../app/native/assets/");
     }
 }
 
@@ -77,12 +86,17 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
 
     qDebug() << "push message...";
 
+    QString ownAvatar = ConversationManager::get()->getAvatar();
+    if(ownAvatar.mid(0,9).toLower() == "asset:///")
+        ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
+
+
     bool ownMessage = from.toLower() == ConversationManager::get()->getUser().toLower();
 
     if(ownMessage)
-        m_WebView->evaluateJavaScript("pushMessage(1, \"" + message +"\", \"images/icon.jpg\");");
+        m_WebView->evaluateJavaScript("pushMessage(1, \"" + message +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
     else
-        m_WebView->evaluateJavaScript("pushMessage(0, \"" + message +"\", \"images/icon.jpg\");");
+        m_WebView->evaluateJavaScript("pushMessage(0, \"" + message +"\", \"file:///" + m_DstAvatar + ".square.png\");");
 }
 
 
@@ -97,5 +111,12 @@ void ConversationController::send(const QString& message) {
         qWarning() << "did not received the webview. quit.";
         return;
     }
-    m_WebView->evaluateJavaScript("pushMessage(1, \"" + message +"\", \"images/icon.jpg\");");
+
+    QString ownAvatar = ConversationManager::get()->getAvatar();
+    if(ownAvatar.mid(0,9).toLower() == "asset:///")
+        ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
+
+
+
+    m_WebView->evaluateJavaScript("pushMessage(1, \"" + message +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
 }

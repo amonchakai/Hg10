@@ -69,8 +69,17 @@ Page {
                 
                 onLoadingChanged: {
                     if (loadRequest.status == WebLoadStatus.Succeeded) {
-                        
+                        messageView.evaluateJavaScript("scrollToEnd();")
                     }
+                }
+                
+                onMessageReceived: {
+                    var isScroll = RegExp("SCROLLTO:([0-9]+)")
+                    var match = message.data.match(isScroll);
+                    if(match)
+                        scrollView.scrollToPoint(0, match[1], ScrollAnimation.None);
+                    
+                    
                 }
             }
         }
@@ -80,7 +89,7 @@ Page {
             preferredHeight: 30
             verticalAlignment: VerticalAlignment.Bottom
             horizontalAlignment: HorizontalAlignment.Fill
-            id: message
+            id: txtField
         }
         
     }
@@ -92,8 +101,8 @@ Page {
             imageSource: "asset:///images/send.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
-                conversationController.send(message.text);
-                message.text = "";            
+                conversationController.send(txtField.text);
+                txtField.text = "";            
             }
         }
     ]
@@ -103,7 +112,7 @@ Page {
     }
     
     onIdChanged: {
-        conversationController.load(id);
+        conversationController.load(id, avatar);
     }
     
     

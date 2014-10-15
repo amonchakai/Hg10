@@ -5,6 +5,7 @@ import com.netimage 1.0
 NavigationPane {
     id: nav
     property variant tpage
+    property int depth
     
     Page {
         titleBar: TitleBar {
@@ -172,7 +173,7 @@ NavigationPane {
                                         
                                         
                                         Label {
-                                            text: "hello this is some previous message"
+                                            text: ListItemData.preview
                                             horizontalAlignment: HorizontalAlignment.Left
                                             textStyle {
                                                 base: SystemDefaults.TextStyles.SmallText
@@ -213,6 +214,7 @@ NavigationPane {
         
         onCreationCompleted: {
             listContactsController.setListView(listContactView);
+            depth = 0;
         }
         
         attachedObjects: [
@@ -224,5 +226,19 @@ NavigationPane {
                 source: "Conversation.qml"
             }
         ]
+    
+    }
+    
+    onPushTransitionEnded: {
+        ++depth;
+        console.log(depth)
+    }
+    
+    onPopTransitionEnded: {
+        --depth;
+        if(depth == 1) {
+            listContactsController.updateView();
+        }
+        console.log(depth)
     }
 }
