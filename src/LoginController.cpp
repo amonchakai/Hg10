@@ -81,6 +81,8 @@ void LoginController::logOut() {
         file.remove();
     }
 
+    XMPP::get()->disconnectFromServer();
+
 }
 
 void LoginController::deleteHistory() {

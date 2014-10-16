@@ -112,10 +112,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Login settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>User: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -129,6 +125,18 @@
     </message>
     <message>
         <source>Clear history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bright</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

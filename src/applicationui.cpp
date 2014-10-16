@@ -26,6 +26,7 @@
 #include "ListContactsController.hpp"
 #include "Image/NetImageTracker.h"
 #include "ConversationController.hpp"
+#include "SettingsController.hpp"
 
 using namespace bb::cascades;
 
@@ -55,6 +56,7 @@ ApplicationUI::ApplicationUI() :
     qmlRegisterType<ListContactsController>("Network.ListContactsController", 1, 0, "ListContactsController");
     qmlRegisterType<NetImageTracker>("com.netimage", 1, 0, "NetImageTracker");
     qmlRegisterType<ConversationController>("Network.ConversationController", 1, 0, "ConversationController");
+    qmlRegisterType<SettingsController>("conf.SettingsController", 1, 0, "SettingsController");
 
 
     // Create scene document from main.qml asset, the parent is set

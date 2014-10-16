@@ -105,26 +105,49 @@ NavigationPane {
                                     maxWidth: 5
                                 }
                                 
-                                //  Avatar
-                                ImageView {
-                                    verticalAlignment: VerticalAlignment.Center
-                                    //horizontalAlignment: HorizontalAlignment.Left
-                                    id: avatarImg
-                                    scalingMethod: ScalingMethod.AspectFit
+                                Container {
+                                    layout: AbsoluteLayout { }
                                     minHeight: 90
                                     maxHeight: 90
                                     minWidth: 90
                                     maxWidth: 90
-                                    image: tracker.image
+
+                                    //  Avatar
+                                    ImageView {
+                                        verticalAlignment: VerticalAlignment.Center
+                                        //horizontalAlignment: HorizontalAlignment.Left
+                                        id: avatarImg
+                                        scalingMethod: ScalingMethod.AspectFit
+                                        minHeight: 90
+                                        maxHeight: 90
+                                        minWidth: 90
+                                        maxWidth: 90
+                                        image: tracker.image
+                                        
+                                        attachedObjects: [
+                                            NetImageTracker {
+                                                id: tracker
+                                                
+                                                source: ListItemData.avatar                                    
+                                            } 
+                                        ]
                                     
-                                    attachedObjects: [
-                                        NetImageTracker {
-                                            id: tracker
-                                            
-                                            source: ListItemData.avatar                                    
-                                        } 
-                                    ]
-                                
+                                    }
+                                    
+                                    ImageView {
+                                        imageSource: "asset:///images/available.png"
+                                        minHeight: 20
+                                        maxHeight: 20
+                                        minWidth: 20
+                                        maxWidth: 20
+                                        layoutProperties: AbsoluteLayoutProperties {
+                                            positionX: 70
+                                            positionY: 70
+                                        }
+                                        // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
+                                        visible: ListItemData.presence == 0
+                                    }
+                                    
                                 }
                                 
                                 Container {

@@ -63,6 +63,7 @@ void ListContactsController::updateView() {
                               << "timestamp"
                               << "avatar"
                               << "preview"
+                              << "presence"
                 );
         m_ListView->setDataModel(dataModel);
     }
@@ -109,6 +110,7 @@ void ListContactsController::updateView() {
 
             nc->setPreview(e.m_What);
             nc->setID(contacts->at(i)->getID());
+            nc->setPresence(contacts->at(i)->getPresence());
 
             datas.push_back(nc);
         } else {

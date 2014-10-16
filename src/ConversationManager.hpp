@@ -30,7 +30,7 @@ public:
 
     TimeEvent              getPreview(const QString &from) const;
 
-    inline void            setAvatar(const QString& a)  { m_Avatar = a; };
+    inline void            setAvatar(const QString& a)  { m_Avatar = a; emit avatarUpdated();};
 
 
 private:
@@ -51,6 +51,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void historyLoaded();
     void messageReceived(const QString &from, const QString &message);
+    void avatarUpdated();
 
 };
 

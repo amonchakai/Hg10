@@ -75,6 +75,8 @@ void XMPP::rosterReceived() {
 
     QStringList list = rosterManager().getRosterBareJids();
 
+
+
     mutex.lockForWrite();
     m_WaitNbContacts = list.size()+1;
     mutex.unlock();
@@ -128,19 +130,20 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
         qImage.save(name + ".square.png", "PNG");
     }
 
+
     for(int i = 0 ; i < qImage.size().width() ; ++i) {
         for(int j = 0 ; j < qImage.size().height() ; ++j) {
             int dstCenter = (center_x - i)*(center_x - i) + (center_y - j)*(center_y - j);
             if(dstCenter > radius) {
                 for(int c = 0 ; c < depth ; ++c) {
-                    bits[(j*qImage.size().width()+i)*depth+c] = 255;
+                    bits[(j*qImage.size().width()+i)*depth+c] = 255*(c != 3);
                 }
             }
         }
     }
 
     if(!photo.isEmpty()) {
-        if(qImage.save(name, "PNG")) {
+        if(qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied).save(name, "PNG")) {
             contact->setAvatar(vCardsDir + "/" + bareJid + ".png");
         } else contact->setAvatar("asset:///images/avatar.png");
     } else contact->setAvatar("asset:///images/avatar.png");
@@ -152,11 +155,14 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     contact->setName(vCard.fullName());
     contact->setTimestamp("time");
 
-
     if(vCard.fullName().isEmpty())
         contact->deleteLater();
-    else
+    else {
+        QXmppPresence presence = rosterManager().getPresence(bareJid,"");
+        contact->setPresence(presence.availableStatusType());
+
         m_Datas->push_back(contact);
+    }
 
     mutex.lockForWrite();
     --m_WaitNbContacts;

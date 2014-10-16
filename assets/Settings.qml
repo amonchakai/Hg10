@@ -1,5 +1,7 @@
 import bb.cascades 1.2
 import Network.LoginController 1.0
+import conf.SettingsController 1.0
+import com.netimage 1.0
 
 NavigationPane {
     id: nav
@@ -35,7 +37,9 @@ NavigationPane {
             property string userName;
             
     	    Container {
-    	        layout: StackLayout {}
+    	        layout: StackLayout {
+    	            orientation: LayoutOrientation.TopToBottom
+    	        }
                 id: headerContainer
                 horizontalAlignment: HorizontalAlignment.Fill
     	        
@@ -53,32 +57,36 @@ NavigationPane {
     	        
                 // --------------------------------------------------------------------------
                 // Login settings
+                
                 Container {
-                    background: headerContainer.themeStyleToHeaderColor(Application.themeSupport.theme.colorTheme.style)
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    verticalAlignment: VerticalAlignment.Fill
-                    preferredHeight: 40
+                    minHeight: 100
+                    maxHeight: 100
+                }
+                
+                ImageView {
+                    verticalAlignment: VerticalAlignment.Center
+                    horizontalAlignment: HorizontalAlignment.Center
+                    id: avatarOwnImg
+                    scalingMethod: ScalingMethod.AspectFit
+                    minHeight: 200
+                    maxHeight: 200
+                    minWidth: 200
+                    maxWidth: 200
+                    image: trackerOwn.image
                     
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    
-                    Label {
-                        text: qsTr("Login settings")
-                        textStyle.fontSize: FontSize.XSmall
-                    }
-                } 
-                Container {
-                    background: Color.create("#0089bf") 
-                    minHeight: 4
-                    maxHeight: 4
-                    verticalAlignment: VerticalAlignment.Fill
-                    horizontalAlignment: HorizontalAlignment.Fill
+                    attachedObjects: [
+                        NetImageTracker {
+                            id: trackerOwn
+                            
+                            source: settingsController.avatar                                    
+                        } 
+                    ]
                 }
                 
     	        Label {
     	            id: userLabel
-                    text: qsTr("User: ") + settingPage.userName
+                    text: qsTr("User: ") + settingsController.userName
+                    horizontalAlignment: HorizontalAlignment.Center
                 }
     
     	        
@@ -109,6 +117,32 @@ NavigationPane {
     	            visible: loginController.isLogged()
     	        }
     	        
+    	        Divider { }
+    	        
+                // --------------------------------------------------------------------------
+                // Theme setting
+                DropDown {
+                    id: theme
+                    title: qsTr("Visual Theme")
+                    options: [
+                        Option {
+                            text: qsTr("Bright")
+                            selected: settingsController.theme == 1 ? true : false
+                            value: 1
+                        },
+                        Option {
+                            text: qsTr("Dark")
+                            selected: settingsController.theme == 2 ? true : false
+                            value: 2
+                        } 
+                    ]
+                    onSelectedOptionChanged: {
+                        settingsController.theme = theme.selectedOption.value;
+                    }
+                
+                } 
+    	        
+    	        Divider { }
     	        
                 Button {
                     id: clearHistory
@@ -125,6 +159,9 @@ NavigationPane {
                 LoginController {
                     id: loginController
                 },
+                SettingsController {
+                    id: settingsController
+                },
                 ComponentDefinition {
                     id: loginPage
                     source: "LoginForm.qml"
@@ -134,13 +171,13 @@ NavigationPane {
     	    
             onUserNameChanged: {
                 console.debug("name changed");
-                userLabel.setText(qsTr("User: ") + userName);
+                userLabel.setText(qsTr("User: ") + settingsController.userName);
             }
     	}
     } 
 	
 	onCreationCompleted: {
-        settingPage.userName =  loginController.savedlogin;
+        settingPage.userName =  settingsController.userName;
     }
 	
 	onPopTransitionEnded: {

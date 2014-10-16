@@ -20,6 +20,7 @@ class Contact : public QObject {
 	Q_PROPERTY( QString timestamp 	READ getTimestamp 	WRITE setTimestamp   NOTIFY timestampChanged)
 	Q_PROPERTY( QString avatar      READ getAvatar      WRITE setAvatar      NOTIFY avatarChanged)
 	Q_PROPERTY( QString preview     READ getPreview     WRITE setPreview     NOTIFY previewChanged)
+	Q_PROPERTY( int     presence    READ getPresence    WRITE setPresence    NOTIFY presenceChanged)
 
 	// ----------------------------------------------------------------------------------------------
 
@@ -30,6 +31,7 @@ private:
 	QString m_Timestamp;
 	QString m_Avatar;
 	QString m_Preview;
+	int     m_Presence;
 
 	// ----------------------------------------------------------------------------------------------
 
@@ -54,6 +56,9 @@ public:
 	inline const QString &getPreview() const                 { return m_Preview; }
 	inline void           setPreview(const QString &c)       { m_Preview = c; emit previewChanged(); }
 
+	inline int            getPresence() const                { return m_Presence; }
+	inline void           setPresence(int c)                 { m_Presence = c; emit presenceChanged(); }
+
 	// ----------------------------------------------------------------------------------------------
 	Q_SIGNALS:
 		void nameChanged();
@@ -61,6 +66,7 @@ public:
 		void timestampChanged();
 		void avatarChanged();
 		void previewChanged();
+		void presenceChanged();
 
 };
 
