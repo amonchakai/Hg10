@@ -156,6 +156,9 @@ void ConversationManager::receiveMessage(const QString &from, const QString &mes
 
 }
 
+TimeEvent ConversationManager::getPreview() const {
+    return getPreview(m_CurrentDst);
+}
 
 TimeEvent ConversationManager::getPreview(const QString &from) const {
     TimeEvent e;
@@ -245,10 +248,47 @@ void ConversationManager::sendMessage(const QString &to, const QString &message)
         qDebug() << "Cannot write preview";
     }
 
+    emit messageSent(to, message);
 
     mutexConversation.unlock();
 }
 
+void ConversationManager::markRead() {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
+    TimeEvent e;
 
+    QString fromC = m_CurrentDst;
+    int id = fromC.indexOf("/");
+    if(id != -1)
+        fromC = fromC.mid(0,id);
+
+    if (QFile::exists(directory)) {
+
+        QFile file2(directory + "/" + fromC + ".preview");
+
+        if (file2.open(QIODevice::ReadOnly)) {
+        QDataStream stream(&file2);
+            stream >> e;
+
+            file2.close();
+        } else {
+            qDebug() << "Cannot open preview";
+        }
+    }
+
+    e.m_Read = true;
+
+
+    QFile file(directory + "/" + fromC + ".preview");
+    if (file.open(QIODevice::WriteOnly)) {
+    QDataStream stream(&file);
+       stream << e;
+
+        file.close();
+    } else {
+        qDebug() << "Cannot write preview";
+    }
+
+}
 
 

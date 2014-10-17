@@ -68,6 +68,8 @@ void XMPP::presenceReceived(const QXmppPresence& presence) {
 void XMPP::rosterReceived() {
     qDebug() << "example_9_vCard:: Roster Received";
 
+    ConversationManager::get()->getUser();
+
     bool check = connect(&this->vCardManager(), SIGNAL(vCardReceived(QXmppVCardIq)), this, SLOT(vCardReceived(QXmppVCardIq)));
 
     Q_ASSERT(check);
@@ -158,9 +160,11 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     if(vCard.fullName().isEmpty())
         contact->deleteLater();
     else {
-        QXmppPresence presence = rosterManager().getPresence(bareJid,"");
-        contact->setPresence(presence.availableStatusType());
-
+        QStringList resources = rosterManager().getResources(bareJid);
+        for(int i = 0 ; i < resources.size() ; ++i) {
+            QXmppPresence presence = rosterManager().getPresence(bareJid,resources.at(i));
+            contact->setPresence(presence.availableStatusType());
+        }
         m_Datas->push_back(contact);
     }
 

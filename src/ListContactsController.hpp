@@ -40,6 +40,7 @@ public Q_SLOTS:
 
     void updateContacts();
     void messageReceived(const QString &from, const QString &message);
+    void markRead();
 
 Q_SIGNALS:
     void complete();

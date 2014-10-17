@@ -27,10 +27,15 @@ public:
     inline const History&  getHistory() const        { return m_History; };
     inline const QString&  getUser()    const        { return m_User; };
     inline const QString&  getAvatar()    const      { return m_Avatar; };
+    inline bool            isAdressee(const QString &who)   { return who.toLower() == m_CurrentDst.toLower(); }
 
+    TimeEvent              getPreview() const;
     TimeEvent              getPreview(const QString &from) const;
 
     inline void            setAvatar(const QString& a)  { m_Avatar = a; emit avatarUpdated();};
+
+    void                   markRead();
+    inline void            closeConversation()          { m_CurrentDst = ""; m_BareID = ""; }
 
 
 private:
@@ -51,6 +56,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void historyLoaded();
     void messageReceived(const QString &from, const QString &message);
+    void messageSent(const QString &to,   const QString &message);
     void avatarUpdated();
 
 };

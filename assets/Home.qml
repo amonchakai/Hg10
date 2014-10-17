@@ -6,7 +6,8 @@ NavigationPane {
     id: nav
     property variant tpage
     property int depth
-    
+
+
     Page {
         titleBar: TitleBar {
             kind: TitleBarKind.FreeForm
@@ -182,7 +183,7 @@ NavigationPane {
                                             verticalAlignment: VerticalAlignment.Center
                                             textStyle {
                                                 base: SystemDefaults.TextStyles.SmallText
-                                                color: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#00a8df") : Color.Blue
+                                                color: (ListItemData.read == 1) ? Color.Gray : (Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#00a8df") : Color.Blue);
                                             }
                                         }
                                     }
@@ -200,7 +201,7 @@ NavigationPane {
                                             horizontalAlignment: HorizontalAlignment.Left
                                             textStyle {
                                                 base: SystemDefaults.TextStyles.SmallText
-                                                color: Color.Gray
+                                                color: (ListItemData.read == 1) ? Color.Gray : (Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#00a8df") : Color.Blue);
                                             }
                                         }
                                     }
@@ -237,6 +238,7 @@ NavigationPane {
         
         onCreationCompleted: {
             listContactsController.setListView(listContactView);
+            listContactsController.updateView();
             depth = 0;
         }
         
@@ -260,7 +262,9 @@ NavigationPane {
     onPopTransitionEnded: {
         --depth;
         if(depth == 1) {
-            listContactsController.updateView();
+            listContactsController.markRead();
+            if(tpage) 
+                tpage.id = "";
         }
         console.log(depth)
     }

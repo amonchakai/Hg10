@@ -90,8 +90,12 @@ Page {
             verticalAlignment: VerticalAlignment.Bottom
             horizontalAlignment: HorizontalAlignment.Fill
             id: txtField
+            inputMode: TextFieldInputMode.Chat
+            
+            content {
+                flags: TextContentFlag.Emoticons
+            }
         }
-        
     }
     
     

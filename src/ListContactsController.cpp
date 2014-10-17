@@ -26,6 +26,9 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
 
     check = connect(ConversationManager::get(), SIGNAL(messageReceived(const QString &, const QString &)), this, SLOT(messageReceived(const QString &, const QString &)));
     Q_ASSERT(check);
+
+    check = connect(ConversationManager::get(), SIGNAL(messageSent(const QString &, const QString &)), this, SLOT(messageReceived(const QString &, const QString &)));
+    Q_ASSERT(check);
 }
 
 
@@ -34,7 +37,99 @@ void ListContactsController::updateContacts() {
 }
 
 void ListContactsController::messageReceived(const QString &from, const QString &message) {
-    updateView();
+    // updateView();
+
+    // lazy update to avoid refreshing completely the view.
+    if(m_ListView == NULL) {
+        qWarning() << "did not received the listview. quit.";
+        return;
+    }
+
+    using namespace bb::cascades;
+
+    GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
+    if(!dataModel)
+        return;
+
+    const QList<Contact *> *contacts = XMPP::get()->getContacts();
+    for(int i = contacts->length()-1 ; i >= 0 ; --i) {
+            // remove yourself from the list of contact, and store the info for display
+            if(contacts->at(i)->getID().toLower() == from.toLower()) {
+
+                QVariantMap matchMap;
+                matchMap["id"] = from;
+
+                QVariantList index = dataModel->find(matchMap);
+                QVariantMap updateMap = dataModel->data(index).toMap();
+                updateMap["preview"] = message;
+                updateMap["name"] = contacts->at(i)->getName();
+                updateMap["avatar"] = contacts->at(i)->getAvatar();
+                updateMap["presence"] = contacts->at(i)->getPresence();
+                updateMap["id"] = from;
+                updateMap["read"] = ConversationManager::get()->isAdressee(from);
+
+                QDateTime now = QDateTime::currentDateTime();
+                updateMap["timestamp"] = now.toString("hh:mm");
+
+                qDebug() << "Update message: " << dataModel->updateItem(index, updateMap);
+
+                break;
+            }
+    }
+}
+
+void ListContactsController::markRead() {
+    ConversationManager::get()->markRead();
+
+    qDebug() << "Mark READ";
+
+
+    // lazy update to avoid refreshing completely the view.
+    if(m_ListView == NULL) {
+        qWarning() << "did not received the listview. quit.";
+        return;
+    }
+
+    using namespace bb::cascades;
+
+    GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
+    if(!dataModel)
+        return;
+
+    const QList<Contact *> *contacts = XMPP::get()->getContacts();
+    for(int i = contacts->length()-1 ; i >= 0 ; --i) {
+            // remove yourself from the list of contact, and store the info for display
+       if(ConversationManager::get()->isAdressee(contacts->at(i)->getID())) {
+
+            QVariantMap matchMap;
+            matchMap["id"] = contacts->at(i)->getID();
+
+            TimeEvent e = ConversationManager::get()->getPreview();
+
+            QVariantList index = dataModel->find(matchMap);
+            QVariantMap updateMap = dataModel->data(index).toMap();
+            updateMap["preview"] = e.m_What;
+            updateMap["name"] = contacts->at(i)->getName();
+            updateMap["avatar"] = contacts->at(i)->getAvatar();
+            updateMap["presence"] = contacts->at(i)->getPresence();
+            updateMap["id"] = contacts->at(i)->getID();
+            updateMap["read"] = 1;
+
+            QDateTime now = QDateTime::currentDateTime();
+            QDateTime dt = QDateTime::fromString(e.m_When);
+            if(dt.date() == now.date())
+                updateMap["timestamp"] = dt.time().toString("hh:mm");
+            else
+                updateMap["timestamp"] = dt.date().toString();
+
+            qDebug() << "Update message: " << dataModel->updateItem(index, updateMap);
+
+            break;
+        }
+    }
+
+    ConversationManager::get()->closeConversation();
+
 }
 
 void ListContactsController::updateView() {
@@ -64,6 +159,7 @@ void ListContactsController::updateView() {
                               << "avatar"
                               << "preview"
                               << "presence"
+                              << "read"
                 );
         m_ListView->setDataModel(dataModel);
     }
@@ -111,6 +207,7 @@ void ListContactsController::updateView() {
             nc->setPreview(e.m_What);
             nc->setID(contacts->at(i)->getID());
             nc->setPresence(contacts->at(i)->getPresence());
+            nc->setRead(e.m_Read);
 
             datas.push_back(nc);
         } else {
