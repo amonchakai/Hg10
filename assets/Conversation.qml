@@ -6,6 +6,7 @@ Page {
     property string name
     property string avatar
     property string id
+    property variant previewPage
     
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
@@ -38,7 +39,7 @@ Page {
                 Label {
                     text: name
                     textStyle {
-                        color: Color.Black
+                        color: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.White : Color.Black
                     }
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
@@ -66,10 +67,13 @@ Page {
                 id: messageView
                 
                 settings.textAutosizingEnabled: false
+                settings.zoomToFitEnabled: false
+                
+                html: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "<!DOCTYPE html><html><head><style>body { background-color: #000000; } </style></head><body></body></html>" : "" ;
                 
                 onLoadingChanged: {
                     if (loadRequest.status == WebLoadStatus.Succeeded) {
-                        messageView.evaluateJavaScript("scrollToEnd();")
+                        messageView.evaluateJavaScript("scrollToEnd();");
                     }
                 }
                 
@@ -80,6 +84,23 @@ Page {
                         scrollView.scrollToPoint(0, match[1], ScrollAnimation.None);
                     
                     
+                }
+                
+                onNavigationRequested: {
+                    if(request.navigationType != WebNavigationType.Other) {
+                        request.action = WebNavigationRequestAction.Ignore;
+                        
+                        var urlImg = RegExp(".jpg");
+                        var urlImgPng = RegExp(".png");
+                        var urlImgGif = RegExp(".gif");
+                        if(urlImg.test(request.url.toString()) || urlImgPng.test(request.url.toString()) || urlImgGif.test(request.url.toString()))
+                            showPictureViewer(request.url);
+                        else
+                            linkInvocation.query.uri = request.url;
+                    
+                    } else { 
+                        request.action = WebNavigationRequestAction.Accept;
+                    }
                 }
             }
         }
@@ -108,6 +129,14 @@ Page {
                 conversationController.send(txtField.text);
                 txtField.text = "";            
             }
+        },
+        ActionItem {
+            title: qsTr("To last message")
+            imageSource: "asset:///images/icon_bottom.png"
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            onTriggered: {
+                messageView.evaluateJavaScript("scrollToEnd();")
+            }
         }
     ]
     
@@ -119,10 +148,40 @@ Page {
         conversationController.load(id, avatar);
     }
     
+    function showPictureViewer(imageUrl) {
+        if(!previewPage)
+            previewPage = imagePreview.createObject();
+        previewPage.imageList = imageUrl;
+        nav.push(previewPage);
+    }
     
     attachedObjects: [
         ConversationController {
             id: conversationController
+        },
+        Invocation {
+            id: linkInvocation
+                    
+            query.invokeTargetId: "sys.browser";
+            query.invokeActionId: "bb.action.OPEN"
+                    
+                    
+            query {
+                   onUriChanged: {
+                        linkInvocation.query.updateQuery();
+                        //linkInvocation.query.invokeTargetId = "sys.browser";
+                        //linkInvocation.query.mimeType = "text/html";
+                }
+            }
+                    
+            onArmed: {
+                        
+                  trigger("bb.action.OPEN");
+            }
+        },
+        ComponentDefinition {
+            id: imagePreview
+            source: "ImagePreview.qml"
         }
     ]
 }

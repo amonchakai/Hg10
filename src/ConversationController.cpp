@@ -62,12 +62,12 @@ void ConversationController::updateView() {
 
             if(e.m_Who.toLower() == ConversationManager::get()->getUser().toLower()) {
                 body +=  QString("<div class=\"bubble-right\"><img src=\"file:///" + ownAvatar + ".square.png" + "\" />")
-                                   + "<p>" + e.m_What + "</p>"
+                                   + "<p>" + renderMessage(e.m_What) + "</p>"
                                + "</div>";
 
             } else {
                 body +=  QString("<div class=\"bubble-left\"><img src=\"file:///" + m_DstAvatar + ".square.png" + "\" />")
-                                   + "<p>" + e.m_What + "</p>"
+                                   + "<p>" + renderMessage(e.m_What) + "</p>"
                                + "</div>";
             }
         }
@@ -75,6 +75,49 @@ void ConversationController::updateView() {
 
         m_WebView->setHtml(htmlTemplate + body  + endTemplate, "file:///" + QDir::homePath() + "/../app/native/assets/");
     }
+}
+
+bool ConversationController::isImage(const QString &url) {
+
+    QString ext;
+    if(url.length() > 3)
+        ext = url.mid(url.size()-3,3);
+
+    if(ext.toLower() == "gif") return true;
+    if(ext.toLower() == "png") return true;
+    if(ext.toLower() == "jpg") return true;
+    if(ext.toLower() == "jpeg") return true;
+    if(ext.toLower() == "bmp") return true;
+    if(ext.toLower() == "tga") return true;
+
+    qDebug() << ext;
+
+    return false;
+}
+
+QString ConversationController::renderMessage(const QString &message) {
+    QRegExp url(".*(http[s]*://[^ ]+).*");
+    //url.setMinimal(true);
+
+    int pos = 0;
+    int lastPos = 0;
+    QString nMessage;
+
+    while((pos = url.indexIn(message, lastPos)) != -1) {
+        nMessage += message.mid(lastPos, pos-lastPos);
+
+        //if(isImage(url.cap(1))) {
+        //    nMessage += "<img style=\"position: relative; right: -64px; \" src=\"" + url.cap(1) + "\" />";
+        //} else {
+            nMessage += "<a href=\"" + url.cap(1) + "\">" + url.cap(1) + "</a>";
+        //}
+
+        lastPos = pos + url.matchedLength();
+    }
+    nMessage += message.mid(lastPos);
+
+    return nMessage;
+
 }
 
 
@@ -94,9 +137,9 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
     bool ownMessage = from.toLower() == ConversationManager::get()->getUser().toLower();
 
     if(ownMessage)
-        m_WebView->evaluateJavaScript("pushMessage(1, \"" + message +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+        m_WebView->evaluateJavaScript("pushMessage(1, \"" + renderMessage(message) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
     else
-        m_WebView->evaluateJavaScript("pushMessage(0, \"" + message +"\", \"file:///" + m_DstAvatar + ".square.png\");");
+        m_WebView->evaluateJavaScript("pushMessage(0, \"" + renderMessage(message) +"\", \"file:///" + m_DstAvatar + ".square.png\");");
 }
 
 
@@ -118,5 +161,5 @@ void ConversationController::send(const QString& message) {
 
 
 
-    m_WebView->evaluateJavaScript("pushMessage(1, \"" + message +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+    m_WebView->evaluateJavaScript("pushMessage(1, \"" + renderMessage(message) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
 }

@@ -26,7 +26,7 @@ NavigationPane {
             acceptAction: ActionItem {
                 title: qsTr("Save")
                 onTriggered: {
-                    //appSettings.saveSettings(); 
+                    settingsController.save(); 
                     nav.done();
                 }
             }
@@ -136,6 +136,7 @@ NavigationPane {
                             value: 2
                         } 
                     ]
+                    selectedOption: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? 2 : 1
                     onSelectedOptionChanged: {
                         settingsController.theme = theme.selectedOption.value;
                     }

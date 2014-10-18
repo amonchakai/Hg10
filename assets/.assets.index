@@ -1,8 +1,9 @@
 1
-24
+26
 Conversation.qml
 Favorite.qml
 Home.qml
+ImagePreview.qml
 images/available.png
 images/available.svg
 images/avatar.png
@@ -10,6 +11,7 @@ images/avatar.png.square.png
 images/avatar.square.svg
 images/avatar.svg
 images/icon_about.png
+images/icon_bottom.png
 images/icon_favorites.png
 images/icon_home.png
 images/icon_left.png

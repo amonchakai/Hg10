@@ -3,6 +3,119 @@
         <meta charset="utf-8">
 
         <style>
+        	html {
+                height: 100%;
+                background: #000000;
+            }
+            p {
+                font-size: 25px;
+                text-align: justify;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                margin-left:0.5em;
+                margin-right:0.5em;
+                word-break: break-all;
+                color: #ffffff;
+            }
+
+			/* ============================================================================================================================
+			== Bubble left
+			** ============================================================================================================================ */
+
+			  .bubble-left {
+			  	position: relative;
+			  	width: 70%;
+			  	margin-left: 64px;
+			  	min-height: 100px;
+			  	padding: 0px;
+			  	background: #282828;
+			  	-webkit-border-radius: 5px;
+			  	-moz-border-radius: 5px;
+			  	border-radius: 5px;
+			  }
+
+			  .bubble-left:after {
+			  	content: "";
+			  	position: absolute;
+			  	top: 0px;
+			  	left: -20px;
+			  	border-style: solid;
+			  	border-width: 0px 20px 20px 0;
+			  	border-color: transparent #282828;
+			  	display: block;
+			  	width: 0;
+			  	z-index: 1;
+			  }
+
+			  .bubble-left img {
+			  	 position: absolute;
+			  	 left: -64px;
+			  	 top: 0px;
+			  	 width: 64px;
+			  	 height: auto;
+			  }
+
+			/* ============================================================================================================================
+			== Bubble right
+			** ============================================================================================================================ */
+
+			  .bubble-right {
+			  	position: relative;
+			  	margin-right: 64px;
+			  	margin-left: 30%;
+			  	width: 70%;
+			  	min-height: 100px;
+			  	padding: 0px;
+			  	background: #282828;
+			  	-webkit-border-radius: 5px;
+			  	-moz-border-radius: 5px;
+			  	border-radius: 5px;
+			  }
+
+			  .bubble-right:after {
+			  	content: "";
+			  	position: absolute;
+			  	bottom: 0px;
+			  	right: -20px;
+			  	border-style: solid;
+			  	border-width: 20px 0px 0px 20px;
+			  	border-color: transparent #282828;
+			  	display: block;
+			  	width: 0;
+			  	z-index: 1;
+			  }
+
+			  .bubble-right img {
+			  	 position: absolute;
+			  	 right: -64px;
+				 bottom: 0px;
+			  	 width: 64px;
+			  	 height: auto;
+			  }
+
+			  .bubble-right p {
+			  	text-align: right;
+			  }
+
+            /* unvisited link */
+            a:link {
+                color: #086eb9;
+            }
+
+            /* visited link */
+            a:visited {
+                color: #569bce;
+            }
+
+            /* mouse over link */
+            a:hover {
+                color: #086eb9;
+            }
+
+            /* selected link */
+            a:active {
+                color: #086eb9;
+            }
 
 
         </style>

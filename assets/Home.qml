@@ -42,7 +42,7 @@ NavigationPane {
                     Label {
                         text: listContactsController.userName
                         textStyle {
-                            color: Color.Black
+                            color: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.White : Color.Black
                         }
                         verticalAlignment: VerticalAlignment.Center
                         layoutProperties: StackLayoutProperties { spaceQuota: 1 }

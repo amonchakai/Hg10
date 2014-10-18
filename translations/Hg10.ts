@@ -7,6 +7,10 @@
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>To last message</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LoginForm</name>

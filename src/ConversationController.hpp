@@ -24,6 +24,9 @@ public:
     ConversationController(QObject *parent = 0);
 
 
+private:
+    bool isImage(const QString &url);
+
 public Q_SLOTS:
     inline void setWebView    (QObject *webView)      {m_WebView = dynamic_cast<bb::cascades::WebView*>(webView); }
     void updateView();
@@ -31,6 +34,7 @@ public Q_SLOTS:
 
     void send(const QString &message);
     void pushMessage(const QString &from, const QString &message);
+    QString renderMessage(const QString &message);
 
 Q_SIGNALS:
     void complete();

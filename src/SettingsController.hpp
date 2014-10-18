@@ -9,6 +9,7 @@
 #define APPSETTINGS_HPP_
 
 #include <QtCore/QObject>
+#include <QSettings>
 
 class SettingsController : public QObject {
     Q_OBJECT;
@@ -24,6 +25,7 @@ private:
      QString            m_Avatar;
      int                m_Theme;
 
+     QSettings          *m_Settings;
 
 public:
     SettingsController(QObject *parent = 0);
@@ -41,6 +43,7 @@ public:
 
 public Q_SLOTS:
     void updateAvatar();
+    void save();
 
 
 Q_SIGNALS:

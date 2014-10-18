@@ -39,6 +39,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/Favorite.qml) \
         $$quote($$BASEDIR/assets/Home.qml) \
+        $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
@@ -49,6 +50,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/avatar.square.svg) \
         $$quote($$BASEDIR/assets/images/avatar.svg) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \
+        $$quote($$BASEDIR/assets/images/icon_bottom.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
         $$quote($$BASEDIR/assets/images/icon_left.png) \
