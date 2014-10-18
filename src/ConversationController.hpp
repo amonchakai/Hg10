@@ -34,7 +34,7 @@ public Q_SLOTS:
 
     void send(const QString &message);
     void pushMessage(const QString &from, const QString &message);
-    QString renderMessage(const QString &message);
+    QString renderMessage(const QString &message, bool showImg = true);
 
 Q_SIGNALS:
     void complete();

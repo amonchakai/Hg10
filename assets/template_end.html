@@ -21,13 +21,17 @@
 
         function pushMessage(who, what, avatar) {
             var message = container.innerHTML;
+            var newcontent = document.createElement('div');
+
             if(who == 0) {
-                message = message + "<div class=\"bubble-left\"><img src=" + avatar + "><p>" + what + "</p></div>";
+                newcontent.innerHTML = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>";
             } else {
-                message = message + "<div class=\"bubble-right\"><img src=" + avatar + "><p>" + what + "</p></div>";
+                newcontent.innerHTML = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>";
             }
 
-            container.innerHTML = message;
+            while (newcontent.firstChild) {
+                container.appendChild(newcontent.firstChild);
+            }
 
             scrollToEnd();
         }

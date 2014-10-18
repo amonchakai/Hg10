@@ -17,6 +17,7 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Set
     m_Avatar = ConversationManager::get()->getAvatar();
     m_Settings = new QSettings("Amonchakai", "Hg10");
 
+    m_Theme = m_Settings->value("theme").value<int>();
 
     bool check = connect(ConversationManager::get(), SIGNAL(avatarUpdated()), this, SLOT(updateAvatar()));
 

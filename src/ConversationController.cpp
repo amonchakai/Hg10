@@ -61,12 +61,12 @@ void ConversationController::updateView() {
             const TimeEvent &e = history.m_History.at(i);
 
             if(e.m_Who.toLower() == ConversationManager::get()->getUser().toLower()) {
-                body +=  QString("<div class=\"bubble-right\"><img src=\"file:///" + ownAvatar + ".square.png" + "\" />")
+                body +=  QString("<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"file:///" + ownAvatar + ".square.png" + "\" /></div>")
                                    + "<p>" + renderMessage(e.m_What) + "</p>"
                                + "</div>";
 
             } else {
-                body +=  QString("<div class=\"bubble-left\"><img src=\"file:///" + m_DstAvatar + ".square.png" + "\" />")
+                body +=  QString("<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"file:///" + m_DstAvatar + ".square.png" + "\" /></div>")
                                    + "<p>" + renderMessage(e.m_What) + "</p>"
                                + "</div>";
             }
@@ -90,12 +90,10 @@ bool ConversationController::isImage(const QString &url) {
     if(ext.toLower() == "bmp") return true;
     if(ext.toLower() == "tga") return true;
 
-    qDebug() << ext;
-
     return false;
 }
 
-QString ConversationController::renderMessage(const QString &message) {
+QString ConversationController::renderMessage(const QString &message, bool showImg) {
     QRegExp url(".*(http[s]*://[^ ]+).*");
     //url.setMinimal(true);
 
@@ -106,11 +104,11 @@ QString ConversationController::renderMessage(const QString &message) {
     while((pos = url.indexIn(message, lastPos)) != -1) {
         nMessage += message.mid(lastPos, pos-lastPos);
 
-        //if(isImage(url.cap(1))) {
-        //    nMessage += "<img style=\"position: relative; right: -64px; \" src=\"" + url.cap(1) + "\" />";
-        //} else {
+        if(showImg && isImage(url.cap(1))) {
+            nMessage += "<img src=\"" + url.cap(1) + "\" />";
+        } else {
             nMessage += "<a href=\"" + url.cap(1) + "\">" + url.cap(1) + "</a>";
-        //}
+        }
 
         lastPos = pos + url.matchedLength();
     }
@@ -137,9 +135,9 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
     bool ownMessage = from.toLower() == ConversationManager::get()->getUser().toLower();
 
     if(ownMessage)
-        m_WebView->evaluateJavaScript("pushMessage(1, \"" + renderMessage(message) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+        m_WebView->evaluateJavaScript("pushMessage(1, \"" + renderMessage(message, false) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
     else
-        m_WebView->evaluateJavaScript("pushMessage(0, \"" + renderMessage(message) +"\", \"file:///" + m_DstAvatar + ".square.png\");");
+        m_WebView->evaluateJavaScript("pushMessage(0, \"" + renderMessage(message, false) +"\", \"file:///" + m_DstAvatar + ".square.png\");");
 }
 
 
@@ -161,5 +159,5 @@ void ConversationController::send(const QString& message) {
 
 
 
-    m_WebView->evaluateJavaScript("pushMessage(1, \"" + renderMessage(message) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+    m_WebView->evaluateJavaScript("pushMessage(1, \"" + renderMessage(message, false) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
 }
