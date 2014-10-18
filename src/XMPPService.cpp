@@ -57,8 +57,7 @@ XMPP *XMPP::get() {
 
 void XMPP::messageReceived(const QXmppMessage& message) {
     qDebug() << message.from();
-    ConversationManager::get()->receiveMessage(message.from(), message.body());
-
+    ConversationManager::get()->receiveMessage(message.from(), message.to(), message.body());
 }
 
 void XMPP::presenceReceived(const QXmppPresence& presence) {
@@ -85,10 +84,68 @@ void XMPP::rosterReceived() {
 
     vCardManager().requestClientVCard();
 
+    QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
+
     for(int i = 0; i < list.size(); ++i) {
         // request vCard of all the bareJids in roster
-        vCardManager().requestVCard(list.at(i));
+        if(QFile::exists(vCardsDir + "/" + list.at(i) + ".xml")) {
+            loadvCard(list.at(i));
+        } else {
+            vCardManager().requestVCard(list.at(i));
+        }
     }
+}
+
+void XMPP::loadvCard(const QString &bareJid) {
+    // -------------------------------------------------------------
+    // get vCard from file
+    QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
+    QFile file(vCardsDir + "/" + bareJid + ".xml");
+
+    QDomDocument doc("vCard");
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    if (!doc.setContent(&file)) {
+        file.close();
+        return;
+    }
+    file.close();
+
+    QXmppVCardIq vCard;
+    vCard.parse(doc.documentElement());
+
+
+    // --------------------------------------------------------------
+    // insert vCard content to view
+
+    Contact *contact = new Contact;
+    contact->setID(bareJid);
+
+    if(QFile::exists(vCardsDir + "/" + bareJid + ".png"))
+        contact->setAvatar(vCardsDir + "/" + bareJid + ".png");
+    else
+        contact->setAvatar("asset:///images/avatar.png");
+
+    contact->setName(vCard.fullName());
+    contact->setTimestamp("time");
+
+    if(vCard.fullName().isEmpty())
+        contact->deleteLater();
+    else {
+        QStringList resources = rosterManager().getResources(bareJid);
+        for(int i = 0 ; i < resources.size() ; ++i) {
+            QXmppPresence presence = rosterManager().getPresence(bareJid,resources.at(i));
+            contact->setPresence(presence.availableStatusType());
+        }
+        m_Datas->push_back(contact);
+    }
+
+    mutex.lockForWrite();
+    --m_WaitNbContacts;
+    if(m_WaitNbContacts == 0)
+        emit contactReceived();
+    mutex.unlock();
+
 }
 
 void XMPP::vCardReceived(const QXmppVCardIq& vCard) {

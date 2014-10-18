@@ -42,6 +42,7 @@ public Q_SLOTS:
 
     void rosterReceived();
     void vCardReceived(const QXmppVCardIq&);
+    void loadvCard(const QString& bareJid);
 
 
 Q_SIGNALS:

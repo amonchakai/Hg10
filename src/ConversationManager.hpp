@@ -22,7 +22,8 @@ public:
     void load           (const QString &from);
     void sendMessage    (const QString &message);
     void sendMessage    (const QString &to,   const QString &message);
-    void receiveMessage (const QString &from, const QString &message);
+    void logSent        (const QString &to, const QString &message);
+    void receiveMessage (const QString &from, const QString &to, const QString &message);
 
     inline const History&  getHistory() const        { return m_History; };
     inline const QString&  getUser()    const        { return m_User; };

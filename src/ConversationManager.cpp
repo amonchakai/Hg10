@@ -92,7 +92,7 @@ void ConversationManager::load(const QString &from) {
 }
 
 
-void ConversationManager::receiveMessage(const QString &from, const QString &message) {
+void ConversationManager::receiveMessage(const QString &from, const QString &to, const QString &message) {
 
     if(message.isEmpty())
         return;
@@ -103,6 +103,12 @@ void ConversationManager::receiveMessage(const QString &from, const QString &mes
     int id = fromC.indexOf("/");
     if(id != -1)
         fromC = fromC.mid(0,id);
+
+    // message sent from another computer...
+    if(from.toLower() == m_User.toLower()) {
+        logSent(to, message);
+        return;
+    }
 
     if(fromC.toLower() == m_CurrentDst.toLower())
         emit messageReceived(fromC, message);
@@ -184,6 +190,11 @@ TimeEvent ConversationManager::getPreview(const QString &from) const {
         } else {
             qDebug() << "Cannot open preview";
         }
+
+        if(e.m_When.isEmpty()) {
+            e.m_When = QDateTime(QDate(01,01,01)).toString();
+            e.m_Read = 1;
+        }
     }
 
 
@@ -202,6 +213,12 @@ void ConversationManager::sendMessage(const QString &to, const QString &message)
         return;
 
     XMPP::get()->sendMessageTo(to, message);
+
+    logSent(to, message);
+
+}
+
+void ConversationManager::logSent(const QString &to, const QString &message) {
 
     mutexConversation.lockForWrite();
 
@@ -290,5 +307,3 @@ void ConversationManager::markRead() {
     }
 
 }
-
-

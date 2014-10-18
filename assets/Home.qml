@@ -8,7 +8,9 @@ NavigationPane {
     property int depth
 
 
+
     Page {
+        
         titleBar: TitleBar {
             kind: TitleBarKind.FreeForm
             kindProperties: FreeFormTitleBarKindProperties {
@@ -54,7 +56,9 @@ NavigationPane {
                 id: listContactView
                 dataModel: GroupDataModel {
                     id: theModel
-                    sortingKeys: ["category"]
+                    sortingKeys: ["timestamp"]
+                    sortedAscending: true
+                    grouping: ItemGrouping.None
                     
                     property bool empty: true
                     

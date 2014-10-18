@@ -8,6 +8,7 @@
 
 #include "LoginController.hpp"
 #include "XMPPService.hpp"
+#include "ConversationManager.hpp"
 #include <QFile>
 #include <QDir>
 
@@ -82,6 +83,7 @@ void LoginController::logOut() {
     }
 
     XMPP::get()->disconnectFromServer();
+
 
 }
 

@@ -10,6 +10,9 @@
 
 #include <QtCore/QObject>
 #include <bb/cascades/ListView>
+#include <bb/platform/Notification>
+
+class Contact;
 
 
 class ListContactsController : public QObject {
@@ -23,7 +26,9 @@ private:
     bb::cascades::ListView   *m_ListView;
     QString                   m_User;
     QString                   m_Avatar;
+    QList<Contact *>          m_Contacts;
 
+    bb::platform::Notification *m_Notification;
 
 public:
     ListContactsController(QObject *parent = 0);
