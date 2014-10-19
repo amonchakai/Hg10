@@ -42,6 +42,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
+        $$quote($$BASEDIR/assets/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/images/available.png) \
         $$quote($$BASEDIR/assets/images/available.svg) \
@@ -58,6 +59,37 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/send.png) \
         $$quote($$BASEDIR/assets/images/send.svg) \
+        $$quote($$BASEDIR/assets/images/smiley/angel.png) \
+        $$quote($$BASEDIR/assets/images/smiley/bave.png) \
+        $$quote($$BASEDIR/assets/images/smiley/bighug.png) \
+        $$quote($$BASEDIR/assets/images/smiley/bigsmile.png) \
+        $$quote($$BASEDIR/assets/images/smiley/blink.png) \
+        $$quote($$BASEDIR/assets/images/smiley/confused.png) \
+        $$quote($$BASEDIR/assets/images/smiley/cry.png) \
+        $$quote($$BASEDIR/assets/images/smiley/dancing.png) \
+        $$quote($$BASEDIR/assets/images/smiley/demon.png) \
+        $$quote($$BASEDIR/assets/images/smiley/dunno.png) \
+        $$quote($$BASEDIR/assets/images/smiley/eyebrow.png) \
+        $$quote($$BASEDIR/assets/images/smiley/eyelash.png) \
+        $$quote($$BASEDIR/assets/images/smiley/facepalm.png) \
+        $$quote($$BASEDIR/assets/images/smiley/kiss.png) \
+        $$quote($$BASEDIR/assets/images/smiley/lol.png) \
+        $$quote($$BASEDIR/assets/images/smiley/lol2.png) \
+        $$quote($$BASEDIR/assets/images/smiley/love.png) \
+        $$quote($$BASEDIR/assets/images/smiley/noInterest.png) \
+        $$quote($$BASEDIR/assets/images/smiley/notTalking.png) \
+        $$quote($$BASEDIR/assets/images/smiley/oh.png) \
+        $$quote($$BASEDIR/assets/images/smiley/poker.png) \
+        $$quote($$BASEDIR/assets/images/smiley/question.png) \
+        $$quote($$BASEDIR/assets/images/smiley/sad.png) \
+        $$quote($$BASEDIR/assets/images/smiley/sarcastic.png) \
+        $$quote($$BASEDIR/assets/images/smiley/seald.png) \
+        $$quote($$BASEDIR/assets/images/smiley/sleep.png) \
+        $$quote($$BASEDIR/assets/images/smiley/smile.png) \
+        $$quote($$BASEDIR/assets/images/smiley/sol.png) \
+        $$quote($$BASEDIR/assets/images/smiley/stop.png) \
+        $$quote($$BASEDIR/assets/images/smiley/tongue.png) \
+        $$quote($$BASEDIR/assets/images/smiley/yawn.png) \
         $$quote($$BASEDIR/assets/images/wallpaper/wallpaper.jpg) \
         $$quote($$BASEDIR/assets/images/whiteFace.png) \
         $$quote($$BASEDIR/assets/images/write.png) \
@@ -80,6 +112,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ListContactsController.cpp) \
         $$quote($$BASEDIR/src/LoginController.cpp) \
         $$quote($$BASEDIR/src/SettingsController.cpp) \
+        $$quote($$BASEDIR/src/SmileyPickerController.cpp) \
         $$quote($$BASEDIR/src/XMPPService.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
         $$quote($$BASEDIR/src/base/QXmppArchiveIq.cpp) \
@@ -152,6 +185,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ListContactsController.hpp) \
         $$quote($$BASEDIR/src/LoginController.hpp) \
         $$quote($$BASEDIR/src/SettingsController.hpp) \
+        $$quote($$BASEDIR/src/SmileyPickerController.hpp) \
         $$quote($$BASEDIR/src/XMPPService.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp) \
         $$quote($$BASEDIR/src/base/QXmppArchiveIq.h) \
@@ -246,6 +280,9 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/images/*.qml) \
         $$quote($$BASEDIR/../assets/images/*.js) \
         $$quote($$BASEDIR/../assets/images/*.qs) \
+        $$quote($$BASEDIR/../assets/images/smiley/*.qml) \
+        $$quote($$BASEDIR/../assets/images/smiley/*.js) \
+        $$quote($$BASEDIR/../assets/images/smiley/*.qs) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.qml) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.js) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.qs)

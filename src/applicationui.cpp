@@ -27,6 +27,7 @@
 #include "Image/NetImageTracker.h"
 #include "ConversationController.hpp"
 #include "SettingsController.hpp"
+#include "SmileyPickerController.hpp"
 
 using namespace bb::cascades;
 
@@ -57,6 +58,7 @@ ApplicationUI::ApplicationUI() :
     qmlRegisterType<NetImageTracker>("com.netimage", 1, 0, "NetImageTracker");
     qmlRegisterType<ConversationController>("Network.ConversationController", 1, 0, "ConversationController");
     qmlRegisterType<SettingsController>("conf.SettingsController", 1, 0, "SettingsController");
+    qmlRegisterType<SmileyPickerController>("Network.SmileyPickerController", 1, 0, "SmileyPickerController");
 
 
     // Create scene document from main.qml asset, the parent is set

@@ -8,6 +8,8 @@ Page {
     property string avatar
     property string id
     property variant previewPage
+    property variant smileyPage
+    property string smileyToAdd
     
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
@@ -144,7 +146,9 @@ Page {
             imageSource: "asset:///images/whiteFace.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
-            
+                if(!smileyPage)
+                    smileyPage = smileyPicker.createObject();
+                nav.push(smileyPage);
             }
         },
         ActionItem {
@@ -163,6 +167,12 @@ Page {
     
     onIdChanged: {
         conversationController.load(id, avatar);
+    }
+    
+    onSmileyToAddChanged: {
+        if(smileyToAdd != "")
+            txtField.text = txtField.text + " " + smileyToAdd;
+        smileyToAdd = "";
     }
     
     function showPictureViewer(imageUrl) {
@@ -210,6 +220,10 @@ Page {
         ComponentDefinition {
             id: imagePreview
             source: "ImagePreview.qml"
+        },
+        ComponentDefinition {
+            id: smileyPicker
+            source: "SmileyPicker.qml"
         }
     ]
 }
