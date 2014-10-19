@@ -6,7 +6,7 @@ import com.netimage 1.0
 NavigationPane {
     id: nav
     property variant tpage
-    property variant colorPage
+    property variant googlePage
     signal done ()
     
 	Page {
@@ -145,6 +145,17 @@ NavigationPane {
     	        
     	        Divider { }
     	        
+    	        Button {
+    	            id: googleConnectButton
+    	            text: qsTr("Synch with Google")
+    	            horizontalAlignment: HorizontalAlignment.Fill
+    	            onClicked: {
+                        if(!tpage)
+                            googlePage = googleConnect.createObject();
+                        nav.push(googlePage);
+    	            }
+    	        }
+    	        
                 Button {
                     id: clearHistory
                     text: qsTr("Clear history");
@@ -167,6 +178,10 @@ NavigationPane {
                     id: loginPage
                     source: "LoginForm.qml"
                 
+                },
+                ComponentDefinition {
+                    id: googleConnect
+                    source: "GoogleConnect.qml"
                 }
             ]
     	    

@@ -17,6 +17,25 @@
     </message>
 </context>
 <context>
+    <name>GoogleConnect</name>
+    <message>
+        <source>Please provide authentification key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Google</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LoginForm</name>
     <message>
         <source>Login</source>
@@ -145,6 +164,10 @@
     </message>
     <message>
         <source>Dark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synch with Google</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

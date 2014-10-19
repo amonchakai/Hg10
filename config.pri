@@ -38,6 +38,7 @@ config_pri_assets {
     OTHER_FILES += \
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/Favorite.qml) \
+        $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/Home.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
@@ -96,6 +97,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/write.svg) \
         $$quote($$BASEDIR/assets/images/write_white.png) \
         $$quote($$BASEDIR/assets/main.qml) \
+        $$quote($$BASEDIR/assets/secret.txt) \
         $$quote($$BASEDIR/assets/template.html) \
         $$quote($$BASEDIR/assets/template_black.html) \
         $$quote($$BASEDIR/assets/template_end.html)
@@ -105,6 +107,7 @@ config_pri_source_group1 {
     SOURCES += \
         $$quote($$BASEDIR/src/ConversationController.cpp) \
         $$quote($$BASEDIR/src/ConversationManager.cpp) \
+        $$quote($$BASEDIR/src/GoogleConnectController.cpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.cpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.cpp) \
         $$quote($$BASEDIR/src/Image/NetImageTracker.cpp) \
@@ -178,6 +181,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ConversationController.hpp) \
         $$quote($$BASEDIR/src/ConversationManager.hpp) \
         $$quote($$BASEDIR/src/DataObjects.h) \
+        $$quote($$BASEDIR/src/GoogleConnectController.hpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.hpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.hpp) \
         $$quote($$BASEDIR/src/Image/NetImageTracker.h) \
