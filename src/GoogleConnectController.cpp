@@ -59,8 +59,6 @@ void GoogleConnectController::save(const QString& key) {
 
 void GoogleConnectController::getToken() {
 
-    qDebug() << "Request token...";
-
     QNetworkRequest request(QUrl("https://accounts.google.com/o/oauth2/token"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
@@ -114,7 +112,7 @@ void GoogleConnectController::checkReply() {
 
         reply->deleteLater();
     }
-    qDebug() << "quit...";
+
 }
 
 
@@ -140,7 +138,7 @@ void GoogleConnectController::parse(const QString &message) {
     if(refresh_token.indexIn(message) != -1)
             m_Settings->setValue("refresh_token", refresh_token.cap(1));
 
-    qDebug() << m_Settings->value("access_token").value<QString>();
+    //qDebug() << m_Settings->value("access_token").value<QString>();
     //qDebug() << m_Settings->value("expires_in").value<QString>();
     //qDebug() << m_Settings->value("refresh_token").value<QString>();
 
@@ -201,7 +199,7 @@ void GoogleConnectController::getMessages(const QString &with) {
                                 + "me"
                                 + "/messages"
                                 + "?access_token=" + m_Settings->value("access_token").value<QString>()
-                                + "&q=is:chat from:" + with
+                                + "&q=is:chat " + with
                            )
                         );
 
@@ -258,6 +256,7 @@ void GoogleConnectController::getMessageList() {
         return;
 
     m_LastThread = m_ThreadsID[0];
+    qDebug() << m_MessagesID[0];
 
     QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
                                     + "me"
@@ -288,11 +287,14 @@ void GoogleConnectController::getMessageReply() {
 
                  QRegExp content("\"snippet\"[: ]+\"([^\"]+)\"");
                  QRegExp histID("\"historyId\"[: ]+\"([0-9]+)\"");
+                 QRegExp from("\"value\".+\\u003c(.*)\\u003e\"");
+                 from.setMinimal(true);
 
                  int pos = content.indexIn(response);
                  if(pos != -1) {
-                     if(histID.indexIn(response, pos) != -1)
-                         qDebug() << histID.cap(1) << content.cap(1);
+                     if((pos = histID.indexIn(response, pos)) != -1)
+                         if(from.indexIn(response))
+                             qDebug() << from.cap(1) << content.cap(1);
                  }
              }
         } else {
