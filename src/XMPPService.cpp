@@ -29,7 +29,8 @@ XMPP* XMPP::m_This = NULL;
 
 XMPP::XMPP(QObject *parent) : QXmppClient(parent),
         m_Datas(new QList<Contact*>()),
-        m_WaitNbContacts(0) {
+        m_WaitNbContacts(0),
+        m_TransferManager(NULL) {
 
     bool check = connect(this, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(messageReceived(QXmppMessage)));
 
@@ -38,6 +39,13 @@ XMPP::XMPP(QObject *parent) : QXmppClient(parent),
     check = connect(&this->rosterManager(), SIGNAL(rosterReceived()), this, SLOT(rosterReceived()));
     Q_ASSERT(check);
     Q_UNUSED(check);
+
+    m_TransferManager = new QXmppTransferManager();
+    m_TransferManager->setProxy("proxy.eu.jabber.org");
+    addExtension(m_TransferManager);
+
+    check = connect(m_TransferManager, SIGNAL(fileReceived(QXmppTransferJob*)), this, SLOT(fileReceived(QXmppTransferJob*)));
+    Q_ASSERT(check);
 
 }
 
@@ -56,12 +64,14 @@ XMPP *XMPP::get() {
 
 
 void XMPP::messageReceived(const QXmppMessage& message) {
-    qDebug() << message.from();
-    ConversationManager::get()->receiveMessage(message.from(), message.to(), message.body());
+    if(message.body().isEmpty())
+        ConversationManager::get()->updateState(message.from(), message.state());
+    else
+        ConversationManager::get()->receiveMessage(message.from(), message.to(), message.body());
 }
 
 void XMPP::presenceReceived(const QXmppPresence& presence) {
-    qDebug() << presence.from();
+    emit presenceUpdated(presence.from(), presence.availableStatusType());
 }
 
 void XMPP::rosterReceived() {
@@ -238,3 +248,41 @@ void XMPP::sendMessageTo(const QString &to, const QString &message) {
     sendPacket(QXmppMessage("", to, message));
 }
 
+
+// -------------------------------------------------------------
+// file transfer handling
+
+void XMPP::sendData(const QString &file, const QString &to) {
+    qDebug() << "Send file request... " << file << to;
+    QXmppTransferJob *job = m_TransferManager->sendFile(to, file, "file sent from Hg10");
+
+    bool check = connect(job, SIGNAL(error(QXmppTransferJob::Error)),
+                    this, SLOT(transferError(QXmppTransferJob::Error)));
+    Q_ASSERT(check);
+
+    check = connect(job, SIGNAL(finished()),
+                    this, SLOT(transferFinished()));
+    Q_ASSERT(check);
+
+    check = connect(job, SIGNAL(progress(qint64,qint64)),
+                    this, SLOT(transferInProgress(qint64,qint64)));
+    Q_ASSERT(check);
+
+}
+
+
+void XMPP::fileReceived(QXmppTransferJob* job) {
+
+}
+
+void XMPP::transferError(QXmppTransferJob::Error error) {
+    qDebug() << "Transmission failed:" << error;
+}
+
+void XMPP::transferFinished() {
+    qDebug() << "Transmission finished";
+}
+
+void XMPP::transferInProgress(qint64 done,qint64 total) {
+    qDebug() << "Transmission progress:" << done << "/" << total;
+}

@@ -19,7 +19,7 @@
 #include "ConversationManager.hpp"
 
 ListContactsController::ListContactsController(QObject *parent) : QObject(parent),
-    m_ListView(NULL), m_Notification(NULL) {
+    m_ListView(NULL), m_OnlyFavorite(false), m_Notification(NULL) {
 
     bool check = connect(XMPP::get(), SIGNAL(contactReceived()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -30,28 +30,27 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
 
     check = connect(ConversationManager::get(), SIGNAL(messageSent(const QString &, const QString &)), this, SLOT(messageReceived(const QString &, const QString &)));
     Q_ASSERT(check);
+
+    check = connect(XMPP::get(), SIGNAL(presenceUpdated(const QString &, int)), this, SLOT(updatePresence(const QString &, int)));
+    Q_ASSERT(check);
 }
 
 
-void ListContactsController::updateContacts() {
-    //qDebug() << presence.
+void ListContactsController::updatePresence(const QString &who, int status) {
+    // lazy update to avoid refreshing completely the view.
+
+    for(int i = 0 ; i < m_Contacts.size() ; ++i) {
+        if(m_Contacts.at(i)->getID().toLower() == who.toLower()) {
+
+            m_Contacts.at(i)->setPresence(status);
+
+            break;
+        }
+    }
+
 }
 
 void ListContactsController::messageReceived(const QString &from, const QString &message) {
-    // updateView();
-
-    // lazy update to avoid refreshing completely the view.
-    if(m_ListView == NULL) {
-        qWarning() << "did not received the listview. quit.";
-        return;
-    }
-
-    using namespace bb::cascades;
-
-    GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
-    if(!dataModel)
-        return;
-
 
     for(int i = 0 ; i < m_Contacts.size() ; ++i) {
         if(m_Contacts.at(i)->getID().toLower() == from.toLower()) {
@@ -87,19 +86,6 @@ void ListContactsController::markRead() {
     m_Notification->clearEffectsForAll();
 
     qDebug() << "Mark READ";
-
-
-    // lazy update to avoid refreshing completely the view.
-    if(m_ListView == NULL) {
-        qWarning() << "did not received the listview. quit.";
-        return;
-    }
-
-    using namespace bb::cascades;
-
-    GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
-    if(!dataModel)
-        return;
 
 
     for(int i = 0 ; i < m_Contacts.size() ; ++i) {

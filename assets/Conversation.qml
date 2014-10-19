@@ -1,5 +1,6 @@
 import bb.cascades 1.2
 import com.netimage 1.0
+import bb.cascades.pickers 1.0
 import Network.ConversationController 1.0
 
 Page {
@@ -106,12 +107,12 @@ Page {
         }
         
         
-        TextField {
+        TextArea {
             preferredHeight: 30
             verticalAlignment: VerticalAlignment.Bottom
             horizontalAlignment: HorizontalAlignment.Fill
             id: txtField
-            inputMode: TextFieldInputMode.Chat
+            inputMode: TextAreaInputMode.Chat
             
             content {
                 flags: TextContentFlag.Emoticons
@@ -121,6 +122,14 @@ Page {
     
     
     actions: [
+/*        ActionItem {
+            title: qsTr("Attach")
+            imageSource: "asset:///images/icon_attach.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                filePicker.open();
+            }
+        }, */
         ActionItem {
             title: qsTr("Reply")
             imageSource: "asset:///images/send.png"
@@ -128,6 +137,14 @@ Page {
             onTriggered: {
                 conversationController.send(txtField.text);
                 txtField.text = "";            
+            }
+        },
+        ActionItem {
+            title: qsTr("Emoticons")
+            imageSource: "asset:///images/whiteFace.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+            
             }
         },
         ActionItem {
@@ -177,6 +194,17 @@ Page {
             onArmed: {
                         
                   trigger("bb.action.OPEN");
+            }
+        },
+        FilePicker {
+            id:filePicker
+            type : FileType.Picture
+            title : "Select Picture"
+            directories : ["/accounts/1000/shared/misc"]
+            onFileSelected : {
+                if(selectedFiles.length > 0) {
+                    conversationController.sendData(selectedFiles[0]);
+                }
             }
         },
         ComponentDefinition {

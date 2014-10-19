@@ -8,7 +8,7 @@
 #ifndef XMPPSERVICE_HPP_
 #define XMPPSERVICE_HPP_
 
-
+#include "client/QXmppTransferManager.h"
 #include "client/QXmppClient.h"
 #include "base/QXmppLogger.h"
 
@@ -32,6 +32,8 @@ private:
     QList<Contact*>          *m_Datas;
     int                       m_WaitNbContacts;
 
+    QXmppTransferManager     *m_TransferManager;
+
     XMPP(QObject *parent = 0);
 
 
@@ -44,9 +46,19 @@ public Q_SLOTS:
     void vCardReceived(const QXmppVCardIq&);
     void loadvCard(const QString& bareJid);
 
+    // -------------------------------------------------------------
+    // file transfer handling
+
+    void sendData(const QString &file, const QString &to);
+    void fileReceived(QXmppTransferJob* );
+    void transferError(QXmppTransferJob::Error error);
+    void transferFinished();
+    void transferInProgress(qint64 done,qint64 total);
+
 
 Q_SIGNALS:
     void contactReceived();
+    void presenceUpdated(const QString &who, int status);
 
 };
 

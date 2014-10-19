@@ -3,7 +3,7 @@ import Network.LoginController 1.0
 
 TabbedPane {
     id: mainTab
-    showTabsOnActionBar: true
+    showTabsOnActionBar: false
     activeTab: tabHome
         
     attachedObjects: [

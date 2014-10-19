@@ -33,8 +33,11 @@ public Q_SLOTS:
     void load(const QString &id, const QString &avatar);
 
     void send(const QString &message);
+    void sendData(const QString &message);
     void pushMessage(const QString &from, const QString &message);
     QString renderMessage(const QString &message, bool showImg = true);
+
+    void chatStateUpdate(int status);
 
 Q_SIGNALS:
     void complete();

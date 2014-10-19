@@ -50,6 +50,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/avatar.square.svg) \
         $$quote($$BASEDIR/assets/images/avatar.svg) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \
+        $$quote($$BASEDIR/assets/images/icon_attach.png) \
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
@@ -58,6 +59,10 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/send.png) \
         $$quote($$BASEDIR/assets/images/send.svg) \
         $$quote($$BASEDIR/assets/images/wallpaper/wallpaper.jpg) \
+        $$quote($$BASEDIR/assets/images/whiteFace.png) \
+        $$quote($$BASEDIR/assets/images/write.png) \
+        $$quote($$BASEDIR/assets/images/write.svg) \
+        $$quote($$BASEDIR/assets/images/write_white.png) \
         $$quote($$BASEDIR/assets/main.qml) \
         $$quote($$BASEDIR/assets/template.html) \
         $$quote($$BASEDIR/assets/template_black.html) \

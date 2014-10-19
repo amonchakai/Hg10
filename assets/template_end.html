@@ -1,8 +1,13 @@
 
     </div>
 
+    <div id="WriteNotif" class="WriteNotif">
+
+    </div>
 
     <br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>
+    <br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>
+
 
     <div id="end" ></div>
 
@@ -25,6 +30,9 @@
 
             if(who == 0) {
                 newcontent.innerHTML = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>";
+                var notif   = document.getElementById("WriteNotif");
+                notif.innerHTML = "";
+
             } else {
                 newcontent.innerHTML = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>";
             }
@@ -35,6 +43,24 @@
 
             scrollToEnd();
         }
+
+        // --------------------------
+        // chat notification
+
+        function chatStateUpdate(state) {
+            var notif   = document.getElementById("WriteNotif");
+            if(state > 3) {
+                notif.innerHTML = "<img src=\"" + typingIcon +  "\" />"
+            } else {
+                notif.innerHTML = "";
+            }
+
+        }
+
+
+
+        // --------------------------
+        // scrolling
 
         function scrollToEnd() {
             //document.getElementById(messageID).scrollIntoView();

@@ -23,6 +23,8 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     check = connect(ConversationManager::get(), SIGNAL(messageReceived(const QString &, const QString &)), this, SLOT(pushMessage(const QString &, const QString &)));
     Q_ASSERT(check);
 
+    check = connect(ConversationManager::get(), SIGNAL(chatStateNotify(int)), this, SLOT(chatStateUpdate(int)));
+    Q_ASSERT(check);
 }
 
 void ConversationController::load(const QString &id, const QString &avatar) {
@@ -57,7 +59,7 @@ void ConversationController::updateView() {
         const History& history = ConversationManager::get()->getHistory();
 
         QString body;
-        for(int i = 0 ; i < history.m_History.size() ; ++i) {
+        for(int i = std::max(0, history.m_History.size()-10) ; i < history.m_History.size() ; ++i) {
             const TimeEvent &e = history.m_History.at(i);
 
             if(e.m_Who.toLower() == ConversationManager::get()->getUser().toLower()) {
@@ -160,4 +162,14 @@ void ConversationController::send(const QString& message) {
 
 
     m_WebView->evaluateJavaScript("pushMessage(1, \"" + renderMessage(message, false) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+}
+
+
+void ConversationController::sendData(const QString &file) {
+    ConversationManager::get()->sendData(file);
+}
+
+
+void ConversationController::chatStateUpdate(int state) {
+    m_WebView->evaluateJavaScript("chatStateUpdate(" + QString::number(state) + ");");
 }

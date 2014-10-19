@@ -1,5 +1,5 @@
 1
-26
+31
 Conversation.qml
 Favorite.qml
 Home.qml
@@ -11,6 +11,7 @@ images/avatar.png.square.png
 images/avatar.square.svg
 images/avatar.svg
 images/icon_about.png
+images/icon_attach.png
 images/icon_bottom.png
 images/icon_favorites.png
 images/icon_home.png
@@ -19,6 +20,10 @@ images/icon_settings.png
 images/send.png
 images/send.svg
 images/wallpaper/wallpaper.jpg
+images/whiteFace.png
+images/write.png
+images/write.svg
+images/write_white.png
 LoginForm.qml
 main.qml
 Settings.qml

@@ -38,6 +38,10 @@ public:
     void                   markRead();
     inline void            closeConversation()          { m_CurrentDst = ""; m_BareID = ""; }
 
+    void                   updateState(const QString &who, int state);
+
+
+    void                   sendData(const QString &file);
 
 private:
     static ConversationManager     *m_This;
@@ -59,6 +63,7 @@ Q_SIGNALS:
     void messageReceived(const QString &from, const QString &message);
     void messageSent(const QString &to,   const QString &message);
     void avatarUpdated();
+    void chatStateNotify(int status);
 
 };
 

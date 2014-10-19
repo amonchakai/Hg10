@@ -307,3 +307,30 @@ void ConversationManager::markRead() {
     }
 
 }
+
+
+void ConversationManager::sendData(const QString &file) {
+    XMPP::get()->sendData(file, m_BareID);
+}
+
+
+
+/*
+ *
+ *   /// This enum describes a chat state as defined by
+    /// XEP-0085 : Chat State Notifications.
+    enum State
+    {
+        None = 0,   ///< The message does not contain any chat state information.
+        Active,     ///< User is actively participating in the chat session.
+        Inactive,   ///< User has not been actively participating in the chat session.
+        Gone,       ///< User has effectively ended their participation in the chat session.
+        Composing,  ///< User is composing a message.
+        Paused,     ///< User had been composing but now has stopped.
+    };
+ */
+
+void ConversationManager::updateState(const QString &who, int state) {
+    if(who.toLower() == m_BareID.toLower())
+        emit chatStateNotify(state);
+}
