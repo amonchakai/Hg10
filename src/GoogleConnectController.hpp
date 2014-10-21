@@ -24,30 +24,38 @@ private:
     QStringList                          m_ThreadsID;
     QString                              m_LastThread;
     int                                  m_HistoryIndex;
+    int                                  m_NBMessageExpected;
+    QString                              m_LastSynchId;
+
+    bool                                 m_StopListing;
 
 public:
-     GoogleConnectController(QObject *parent = 0);
+     GoogleConnectController    (QObject *parent = 0);
 
-     void getToken();
-     void renewToken();
-     void parse(const QString &message);
-     void parseRefresh(const QString &message);
+     void getToken              ();
+     void renewToken            ();
+     void parse                 (const QString &message);
+     void parseRefresh          (const QString &message);
 
 public Q_SLOTS:
-    void logInRequest();
-    void save(const QString &key);
-    void checkReply();
-    void checkRefresh();
+    void logInRequest           ();
+    void save                   (const QString &key);
+    void checkReply             ();
+    void checkRefresh           ();
 
-    void getMessages(const QString &with);
-    void getMessageList();
-    void getMessageReply();
+    void getMessages            (const QString &with, int nbMessages);
+    void getRemainingMessages   (QString lastMessageId);
+
+    void getMessageList         ();
+    void getMessageReply        ();
 
 
-    inline void setWebView(QObject *webView)                {m_WebView = dynamic_cast<bb::cascades::WebView*>(webView); }
+    inline void setWebView      (QObject *webView)                {m_WebView = dynamic_cast<bb::cascades::WebView*>(webView); }
 
 Q_SIGNALS:
 
+    void messageLoaded          (QString from, QString what, QString messageId);
+    void synchCompleted         ();
 
 };
 

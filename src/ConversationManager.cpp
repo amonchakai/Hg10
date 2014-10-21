@@ -16,15 +16,40 @@
 #include <QDebug>
 
 #include "XMPPService.hpp"
+#include "GoogleConnectController.hpp"
 
 QReadWriteLock  mutexConversation;
 ConversationManager* ConversationManager::m_This = NULL;
 
+// ===================================================================================
+// Singleton
 
-ConversationManager::ConversationManager(QObject *parent) : QObject(parent) {
+
+ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_GoogleConnect(NULL), m_SynchStatus(NONE), m_SynchPushLoc(0) {
+    m_GoogleConnect = new GoogleConnectController();
+    bool check = connect(m_GoogleConnect, SIGNAL(messageLoaded(QString, QString, QString)), this, SLOT(googleMessage(QString, QString, QString)));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
+
+    check = connect(m_GoogleConnect, SIGNAL(synchCompleted()), this, SLOT(saveHistory()));
+    Q_ASSERT(check);
 
     loadUserName();
 }
+
+
+// get singleton
+ConversationManager *ConversationManager::get() {
+    if(m_This == NULL) {
+        // if not already done, instantiate the network manager
+        m_This = new ConversationManager(NULL);
+    }
+
+    return m_This;
+}
+
+// ===================================================================================
+// User information
 
 void ConversationManager::loadUserName() {
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData");
@@ -42,17 +67,11 @@ void ConversationManager::loadUserName() {
 }
 
 
-// get singleton
-ConversationManager *ConversationManager::get() {
-    if(m_This == NULL) {
-        // if not already done, instantiate the network manager
-        m_This = new ConversationManager(NULL);
-    }
+// ===================================================================================
+// History handling
 
-    return m_This;
-}
-
-
+// ---------------------------------------------------------------------------
+// from a file
 void ConversationManager::load(const QString &from) {
     m_CurrentDst = from;
     m_BareID = from;
@@ -64,6 +83,7 @@ void ConversationManager::load(const QString &from) {
     m_History.m_History.clear();
 
     qDebug() << "Read history from: " << m_CurrentDst;
+
 
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
     if (!QFile::exists(directory)) {
@@ -79,6 +99,7 @@ void ConversationManager::load(const QString &from) {
         stream >> m_History;
 
         file.close();
+
     } else {
         qDebug() << "No history";
     }
@@ -87,11 +108,174 @@ void ConversationManager::load(const QString &from) {
 
     mutexConversation.unlock();
 
+    qDebug() << "m_GoogleConnect->getMessages(from, 1);";
+    m_GoogleConnect->getMessages(from, 1);
+    m_SynchStatus = NONE;
+
     emit historyLoaded();
 
 }
 
 
+TimeEvent ConversationManager::getPreview() const {
+    return getPreview(m_CurrentDst);
+}
+
+TimeEvent ConversationManager::getPreview(const QString &from) const {
+    TimeEvent e;
+
+    // --------------------------------------------------------------------------------
+    // read preview file, and return the event!
+
+
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
+    if (QFile::exists(directory)) {
+        QString fromC = from;
+        int id = fromC.indexOf("/");
+        if(id != -1)
+            fromC = fromC.mid(0,id);
+
+        QFile file2(directory + "/" + fromC + ".preview");
+
+        if (file2.open(QIODevice::ReadOnly)) {
+        QDataStream stream(&file2);
+            stream >> e;
+
+            file2.close();
+        } else {
+            qDebug() << "Cannot open preview";
+        }
+
+        if(e.m_When.isEmpty()) {
+            e.m_When = QDateTime(QDate(01,01,01)).toString();
+            e.m_Read = 1;
+        }
+    }
+
+
+    return e;
+}
+
+void ConversationManager::saveHistory() {
+
+    mutexConversation.lockForWrite();
+
+    // if nothing to save, quit.
+    if(m_History.m_History.size() == 0) {
+        mutexConversation.unlock();
+        return;
+    }
+
+
+    QString fromC = m_CurrentDst;
+    int id = fromC.indexOf("/");
+    if(id != -1)
+        fromC = fromC.mid(0,id);
+
+    // --------------------------------------------------------------------------------
+    // history file
+
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
+    if (!QFile::exists(directory)) {
+        QDir dir;
+        dir.mkpath(directory);
+    }
+
+    QFile file(directory + "/" + fromC);
+
+    if (file.open(QIODevice::WriteOnly)) {
+        QDataStream stream(&file);
+        stream << m_History;
+
+        file.close();
+    }
+
+    // --------------------------------------------------------------------------------
+    // preview file
+
+    QFile file2(directory + "/" + fromC + ".preview");
+
+    if (file2.open(QIODevice::WriteOnly)) {
+    QDataStream stream(&file2);
+        stream << m_History.m_History.last();
+
+        file2.close();
+    }
+
+    mutexConversation.unlock();
+}
+
+
+// ---------------------------------------------------------------------------
+// from Google...
+void ConversationManager::googleMessage(QString from, QString message, QString messageId) {
+
+    if(m_SynchStatus == NONE) {
+        mutexConversation.lockForWrite();
+        if(m_History.m_History.size() > 0) {
+            if(m_History.m_History.last().m_What == message) {
+                mutexConversation.unlock();
+                return;
+            }
+
+            QString lastSynch;
+            for(int i = m_History.m_History.size()-1 ; i >= 0 ; --i) {
+                if(!m_History.m_History.at(i).m_MessageID.isEmpty()) {
+                    lastSynch = m_History.m_History.at(i).m_MessageID;
+                    break;
+                }
+            }
+
+            m_SynchStatus = PUSH;
+            qDebug() << "complete history!";
+
+            // cleanup history...
+            // delete local messages and replace them by data from Google.
+            while(m_History.m_History.size() > 0 && m_History.m_History.last().m_Read < 2)
+                m_History.m_History.pop_back();
+
+            m_SynchPushLoc = m_History.m_History.size();
+
+            // get messages up to the last full synch
+            m_GoogleConnect->getRemainingMessages(lastSynch);
+
+        } else {
+            // history was empty, just push data from Google.
+            m_SynchStatus = FLUSH;
+            m_SynchPushLoc = 0;
+            qDebug() << "Start from no history!";
+
+            m_GoogleConnect->getRemainingMessages("");
+        }
+
+        mutexConversation.unlock();
+    }
+
+
+
+    mutexConversation.lockForWrite();
+
+        TimeEvent e;
+        e.m_Read = 1;
+        e.m_What = message;
+        e.m_Who = from;
+        e.m_When = "";
+        e.m_MessageID = messageId;
+        m_History.m_History.insert(m_SynchPushLoc, e);
+
+    mutexConversation.unlock();
+
+    qDebug() << "push message from hist!";
+    emit historyMessage(from, message);
+}
+
+
+
+
+// ===================================================================================
+// XMPP events
+
+// receive message
 void ConversationManager::receiveMessage(const QString &from, const QString &to, const QString &message) {
 
     if(message.isEmpty())
@@ -160,45 +344,6 @@ void ConversationManager::receiveMessage(const QString &from, const QString &to,
     if(fromC.toLower() != m_CurrentDst.toLower())
         emit messageReceived(fromC, message);
 
-}
-
-TimeEvent ConversationManager::getPreview() const {
-    return getPreview(m_CurrentDst);
-}
-
-TimeEvent ConversationManager::getPreview(const QString &from) const {
-    TimeEvent e;
-
-    // --------------------------------------------------------------------------------
-    // read preview file, and return the event!
-
-
-    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
-    if (QFile::exists(directory)) {
-        QString fromC = from;
-        int id = fromC.indexOf("/");
-        if(id != -1)
-            fromC = fromC.mid(0,id);
-
-        QFile file2(directory + "/" + fromC + ".preview");
-
-        if (file2.open(QIODevice::ReadOnly)) {
-        QDataStream stream(&file2);
-            stream >> e;
-
-            file2.close();
-        } else {
-            qDebug() << "Cannot open preview";
-        }
-
-        if(e.m_When.isEmpty()) {
-            e.m_When = QDateTime(QDate(01,01,01)).toString();
-            e.m_Read = 1;
-        }
-    }
-
-
-    return e;
 }
 
 
@@ -270,6 +415,38 @@ void ConversationManager::logSent(const QString &to, const QString &message) {
     mutexConversation.unlock();
 }
 
+
+
+// ---------------------------------------------------------------------------
+// File transfer through XMPP
+
+
+void ConversationManager::sendData(const QString &file) {
+    XMPP::get()->sendData(file, m_BareID);
+}
+
+
+
+
+
+// ---------------------------------------------------------------------------
+// Typing notification from XMPP
+
+
+
+void ConversationManager::updateState(const QString &who, int state) {
+    if(who.toLower() == m_BareID.toLower())
+        emit chatStateNotify(state);
+}
+
+
+
+// ===================================================================================
+// User events
+
+
+
+
 void ConversationManager::markRead() {
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
     TimeEvent e;
@@ -306,31 +483,4 @@ void ConversationManager::markRead() {
         qDebug() << "Cannot write preview";
     }
 
-}
-
-
-void ConversationManager::sendData(const QString &file) {
-    XMPP::get()->sendData(file, m_BareID);
-}
-
-
-
-/*
- *
- *   /// This enum describes a chat state as defined by
-    /// XEP-0085 : Chat State Notifications.
-    enum State
-    {
-        None = 0,   ///< The message does not contain any chat state information.
-        Active,     ///< User is actively participating in the chat session.
-        Inactive,   ///< User has not been actively participating in the chat session.
-        Gone,       ///< User has effectively ended their participation in the chat session.
-        Composing,  ///< User is composing a message.
-        Paused,     ///< User had been composing but now has stopped.
-    };
- */
-
-void ConversationManager::updateState(const QString &who, int state) {
-    if(who.toLower() == m_BareID.toLower())
-        emit chatStateNotify(state);
 }

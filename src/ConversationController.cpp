@@ -25,6 +25,9 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
 
     check = connect(ConversationManager::get(), SIGNAL(chatStateNotify(int)), this, SLOT(chatStateUpdate(int)));
     Q_ASSERT(check);
+
+    check = connect(ConversationManager::get(), SIGNAL(historyMessage(QString, QString)), this, SLOT(pushHistory(QString, QString)));
+        Q_ASSERT(check);
 }
 
 void ConversationController::load(const QString &id, const QString &avatar) {
@@ -142,6 +145,26 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
         m_WebView->evaluateJavaScript("pushMessage(0, \"" + renderMessage(message, false) +"\", \"file:///" + m_DstAvatar + ".square.png\");");
 }
 
+void ConversationController::pushHistory(QString from, QString message) {
+    if(m_WebView == NULL) {
+        qWarning() << "did not received the webview. quit.";
+        return;
+    }
+
+    qDebug() << "push message...";
+
+    QString ownAvatar = ConversationManager::get()->getAvatar();
+    if(ownAvatar.mid(0,9).toLower() == "asset:///")
+        ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
+
+
+    bool ownMessage = from.toLower() == ConversationManager::get()->getUser().toLower();
+
+    if(ownMessage)
+        m_WebView->evaluateJavaScript("pushHistory(0, 1, \"" + renderMessage(message, false) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+    else
+        m_WebView->evaluateJavaScript("pushHistory(0, 0, \"" + renderMessage(message, false) +"\", \"file:///" + m_DstAvatar + ".square.png\");");
+}
 
 void ConversationController::send(const QString& message) {
     qDebug() << "CALL!";

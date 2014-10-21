@@ -31,30 +31,45 @@ private:
 
     bb::platform::Notification *m_Notification;
 
+
+
 public:
-    ListContactsController(QObject *parent = 0);
+    ListContactsController              (QObject *parent = 0);
 
-    inline const QString &getUserName() const               { return m_User; }
-    inline void           setUserName(const QString &c)     { m_User = c; emit userNameChanged(); }
 
-    inline const QString &getAvatar() const                 { return m_Avatar; }
-    inline void           setAvatar(const QString &c)       { m_Avatar = c; emit avatarChanged(); }
+    inline const QString &getUserName   () const               { return m_User; }
+    inline void           setUserName   (const QString &c)     { m_User = c; emit userNameChanged(); }
+
+
+    inline const QString &getAvatar     () const               { return m_Avatar; }
+    inline void           setAvatar     (const QString &c)     { m_Avatar = c; emit avatarChanged(); }
+
+
+
+
 
 public Q_SLOTS:
-    inline void setListView    (QObject *listView)          {m_ListView = dynamic_cast<bb::cascades::ListView*>(listView); }
-    void updateView();
+    inline void setListView             (QObject *listView)    {m_ListView = dynamic_cast<bb::cascades::ListView*>(listView); }
+    void updateView                     ();
 
-    void updatePresence(const QString &who, int status);
-    void messageReceived(const QString &from, const QString &message);
-    void markRead();
 
-    inline void setFilter(bool onlyFav)                     { m_OnlyFavorite = onlyFav; }
+
+    void updatePresence                 (const QString &who, int status);
+    void messageReceived                (const QString &from, const QString &message);
+    void markRead                       ();
+
+
+
+    inline void setFilter               (bool onlyFav)         { m_OnlyFavorite = onlyFav; }
+
+
+
 
 Q_SIGNALS:
-    void complete();
+    void complete                       ();
 
-    void userNameChanged();
-    void avatarChanged();
+    void userNameChanged                ();
+    void avatarChanged                  ();
 
 
 };

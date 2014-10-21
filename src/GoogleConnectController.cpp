@@ -15,9 +15,18 @@
 
 #include <QDir>
 #include <QFile>
+#include <limits>
+#include <QReadWriteLock>
 
+QReadWriteLock  mutexGoogleConnect;
 
-GoogleConnectController::GoogleConnectController(QObject *parent) : QObject(parent), m_WebView(NULL), m_Settings(NULL), m_HistoryIndex(0) {
+GoogleConnectController::GoogleConnectController(QObject *parent) : QObject(parent),
+        m_WebView(NULL),
+        m_Settings(NULL),
+        m_HistoryIndex(0),
+        m_NBMessageExpected(0),
+        m_StopListing(false) {
+
     m_Settings = new QSettings("Amonchakai", "Hg10");
 }
 
@@ -190,8 +199,9 @@ void GoogleConnectController::parseRefresh(const QString &message) {
 }
 
 
-void GoogleConnectController::getMessages(const QString &with) {
-//    https://www.googleapis.com/gmail/v1/users/lebreton.pier%40gmail.com/messages?includeSpamTrash=false&maxResults=2&q=is%3Achat+from%3Amarjot.sylvere&key={YOUR_API_KEY}
+void GoogleConnectController::getMessages(const QString &with, int nbMessages) {
+
+    m_NBMessageExpected = nbMessages;
 
     QString user = ConversationManager::get()->getUser().mid(4);
     user.replace("&", "%40");
@@ -205,6 +215,9 @@ void GoogleConnectController::getMessages(const QString &with) {
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
+    mutexGoogleConnect.lockForWrite();
+    m_StopListing = true;
+    mutexGoogleConnect.unlock();
 
     QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
     bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageList()));
@@ -247,6 +260,11 @@ void GoogleConnectController::getMessageList() {
        reply->deleteLater();
     }
 
+    // last process need to end, before starting a new one.
+
+    mutexGoogleConnect.lockForWrite();
+    m_StopListing = false;
+    mutexGoogleConnect.unlock();
 
     // -----------------------------------------------------------
     // let's go back in Time...
@@ -267,7 +285,6 @@ void GoogleConnectController::getMessageList() {
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
-
     reply = HFRNetworkAccessManager::get()->get(request);
     bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageReply()));
     Q_ASSERT(ok);
@@ -276,6 +293,14 @@ void GoogleConnectController::getMessageList() {
 
 void GoogleConnectController::getMessageReply() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    mutexGoogleConnect.lockForRead();
+    if(m_StopListing) {
+        mutexGoogleConnect.unlock();
+        reply->deleteLater();
+        return;
+    }
+    mutexGoogleConnect.unlock();
 
     QString response;
     if (reply) {
@@ -293,8 +318,10 @@ void GoogleConnectController::getMessageReply() {
                  int pos = content.indexIn(response);
                  if(pos != -1) {
                      if((pos = histID.indexIn(response, pos)) != -1)
-                         if(from.indexIn(response))
+                         if(from.indexIn(response)) {
                              qDebug() << from.cap(1) << content.cap(1);
+                             emit messageLoaded(from.cap(1).mid(0, from.cap(1).size()-1), content.cap(1), m_MessagesID[m_HistoryIndex]);
+                         }
                  }
              }
         } else {
@@ -308,11 +335,14 @@ void GoogleConnectController::getMessageReply() {
     // for now, show only the last thread...
 
     ++m_HistoryIndex;
-    if(m_ThreadsID.size() <= m_HistoryIndex)
-        return;
+    if(   (m_ThreadsID.size() <= m_HistoryIndex)
+       || (m_HistoryIndex >= m_NBMessageExpected)
+       || (m_LastThread != m_ThreadsID[m_HistoryIndex])
+       || (m_LastSynchId == m_MessagesID[m_HistoryIndex])) {
 
-    if(m_LastThread != m_ThreadsID[m_HistoryIndex])
+        emit synchCompleted();
         return;
+    }
 
 
     // recursive call to get the next messages...
@@ -325,13 +355,47 @@ void GoogleConnectController::getMessageReply() {
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
-
     reply = HFRNetworkAccessManager::get()->get(request);
     bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageReply()));
     Q_ASSERT(ok);
     Q_UNUSED(ok);
 }
 
+void GoogleConnectController::getRemainingMessages(QString lastMessageId) {
+    m_NBMessageExpected = std::numeric_limits<int>::max();
+    m_LastSynchId = lastMessageId;
 
+    ++m_HistoryIndex;
+
+    qDebug() << "[GOOGLECONNECT] entering";
+
+    if(    (m_ThreadsID.size() <= m_HistoryIndex)
+        || (m_LastThread != m_ThreadsID[m_HistoryIndex])
+        || (m_LastSynchId == m_MessagesID[m_HistoryIndex])) {
+
+        emit synchCompleted();
+        return;
+    }
+
+    qDebug() << "[GOOGLECONNECT] getRemainingMessages";
+
+
+    // recursive call to get the next messages...
+    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
+                                        + "me"
+                                        + "/messages/" + m_MessagesID[m_HistoryIndex]
+                                        + "?access_token=" + m_Settings->value("access_token").value<QString>()
+                                   )
+                                );
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+    QNetworkReply *reply = HFRNetworkAccessManager::get()->get(request);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageReply()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+
+    qDebug() << "[GOOGLECONNECT] leave getRemainingMessages";
+}
 
 

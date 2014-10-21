@@ -86,6 +86,7 @@ struct TimeEvent {
     QString     m_What;
     QString     m_When;
     int         m_Read;
+    QString     m_MessageID;
 };
 
 inline QDataStream &operator<<(QDataStream& stream, const TimeEvent& event) {
@@ -93,6 +94,7 @@ inline QDataStream &operator<<(QDataStream& stream, const TimeEvent& event) {
     stream << event.m_What;
     stream << event.m_When;
     stream << event.m_Read;
+    stream << event.m_MessageID;
 
     return stream;
 }
@@ -102,6 +104,7 @@ inline QDataStream &operator>>(QDataStream& stream, TimeEvent& event) {
     stream >> event.m_What;
     stream >> event.m_When;
     stream >> event.m_Read;
+    stream >> event.m_MessageID;
 
     return stream;
 }

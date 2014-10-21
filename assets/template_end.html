@@ -44,6 +44,21 @@
             scrollToEnd();
         }
 
+        function pushHistory(where, who, what, avatar) {
+            var message = container.innerHTML;
+            
+            if(who == 0) {
+                message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>" + message;
+               
+            } else {
+                message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>" + message;
+            }
+
+            container.innerHTML = message;
+
+            scrollToEnd();
+        }
+
         // --------------------------
         // chat notification
 

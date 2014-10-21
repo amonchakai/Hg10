@@ -38,27 +38,35 @@ private:
 
 
 public Q_SLOTS:
-    void messageReceived(const QXmppMessage&);
-    void sendMessageTo(const QString &to, const QString &message);
-    void presenceReceived(const QXmppPresence&);
 
-    void rosterReceived();
-    void vCardReceived(const QXmppVCardIq&);
-    void loadvCard(const QString& bareJid);
+
+    void messageReceived    (const QXmppMessage&);
+    void sendMessageTo      (const QString &to, const QString &message);
+    void presenceReceived   (const QXmppPresence&);
+
+    void rosterReceived     ();
+    void vCardReceived      (const QXmppVCardIq&);
+    void loadvCard          (const QString& bareJid);
+
+
+
 
     // -------------------------------------------------------------
     // file transfer handling
 
-    void sendData(const QString &file, const QString &to);
-    void fileReceived(QXmppTransferJob* );
-    void transferError(QXmppTransferJob::Error error);
-    void transferFinished();
-    void transferInProgress(qint64 done,qint64 total);
+    void sendData           (const QString &file, const QString &to);
+    void fileReceived       (QXmppTransferJob* );
+    void transferError      (QXmppTransferJob::Error error);
+    void transferFinished   ();
+    void transferInProgress (qint64 done,qint64 total);
+
+
 
 
 Q_SIGNALS:
-    void contactReceived();
-    void presenceUpdated(const QString &who, int status);
+
+    void contactReceived    ();
+    void presenceUpdated    (const QString &who, int status);
 
 };
 

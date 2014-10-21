@@ -52,8 +52,8 @@ class SmileyPickerController : public QObject {
 	// ----------------------------------------------------------------------------------------------
 	private:
 
-		void parse(const QString &page, int startingPosition = 0);
-		void updateView(const QString &webpage);
+		void parse          (const QString &page, int startingPosition = 0);
+		void updateView     (const QString &webpage);
 
 };
 

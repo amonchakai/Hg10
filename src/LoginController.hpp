@@ -21,23 +21,27 @@ private:
 public:
     LoginController(QObject *parent = 0);
 
+
+
+
 public Q_SLOTS:
-    void login(const QString& login, const QString& password);
-    void logOut();
-    bool isLogged();
 
-    void deleteHistory();
+    void login                  (const QString& login, const QString& password);
+    void logOut                 ();
+    bool isLogged               ();
+    void deleteHistory          ();
+    void connected              ();
 
-    void connected();
+
 
 Q_SIGNALS:
-    void complete();
+    void complete               ();
 
 
 
 private:
-    void saveUserName();
-    void loadUserName();
+    void saveUserName           ();
+    void loadUserName           ();
 
 };
 

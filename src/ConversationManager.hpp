@@ -11,6 +11,14 @@
 #include <QString>
 #include "DataObjects.h"
 
+class GoogleConnectController;
+
+enum GoogleSynchStatus {
+    NONE  = 0,
+    PUSH  = 1,
+    FLUSH = 2
+};
+
 class ConversationManager : public QObject {
     Q_OBJECT;
 
@@ -19,29 +27,29 @@ public:
 
     static ConversationManager*    get();
 
-    void load           (const QString &from);
-    void sendMessage    (const QString &message);
-    void sendMessage    (const QString &to,   const QString &message);
-    void logSent        (const QString &to, const QString &message);
-    void receiveMessage (const QString &from, const QString &to, const QString &message);
+    void load                           (const QString &from);
+    void sendMessage                    (const QString &message);
+    void sendMessage                    (const QString &to,   const QString &message);
+    void logSent                        (const QString &to, const QString &message);
+    void receiveMessage                 (const QString &from, const QString &to, const QString &message);
 
-    inline const History&  getHistory() const        { return m_History; };
-    inline const QString&  getUser()    const        { return m_User; };
-    inline const QString&  getAvatar()    const      { return m_Avatar; };
-    inline bool            isAdressee(const QString &who)   { return who.toLower() == m_CurrentDst.toLower(); }
+    inline const History&  getHistory   ()  const               { return m_History; };
+    inline const QString&  getUser      ()  const               { return m_User; };
+    inline const QString&  getAvatar    ()  const               { return m_Avatar; };
+    inline bool            isAdressee   (const QString &who)    { return who.toLower() == m_CurrentDst.toLower(); }
 
-    TimeEvent              getPreview() const;
-    TimeEvent              getPreview(const QString &from) const;
+    TimeEvent              getPreview   () const;
+    TimeEvent              getPreview   (const QString &from) const;
 
-    inline void            setAvatar(const QString& a)  { m_Avatar = a; emit avatarUpdated();};
+    inline void            setAvatar    (const QString& a)      { m_Avatar = a; emit avatarUpdated();};
 
-    void                   markRead();
-    inline void            closeConversation()          { m_CurrentDst = ""; m_BareID = ""; }
+    void                   markRead     ();
+    inline void            closeConversation()                  { m_CurrentDst = ""; m_BareID = ""; }
 
-    void                   updateState(const QString &who, int state);
+    void                   updateState  (const QString &who, int state);
 
 
-    void                   sendData(const QString &file);
+    void                   sendData     (const QString &file);
 
 private:
     static ConversationManager     *m_This;
@@ -52,18 +60,28 @@ private:
     QString                         m_BareID;
     History                         m_History;
 
-    ConversationManager(QObject *parent = 0);
-    void loadUserName();
+    // History from Google
+    GoogleConnectController        *m_GoogleConnect;
+    GoogleSynchStatus               m_SynchStatus;
+    int                             m_SynchPushLoc;
+
+
+
+
+    ConversationManager                 (QObject *parent = 0);
+    void loadUserName                   ();
 
 public Q_SLOTS:
-
+    void googleMessage                  (QString from, QString message, QString messageId);
+    void saveHistory                    ();
 
 Q_SIGNALS:
-    void historyLoaded();
-    void messageReceived(const QString &from, const QString &message);
-    void messageSent(const QString &to,   const QString &message);
-    void avatarUpdated();
-    void chatStateNotify(int status);
+    void historyLoaded                  ();
+    void historyMessage                 (QString from, QString message);
+    void messageReceived                (const QString &from, const QString &message);
+    void messageSent                    (const QString &to,   const QString &message);
+    void avatarUpdated                  ();
+    void chatStateNotify                (int status);
 
 };
 
