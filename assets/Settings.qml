@@ -4,7 +4,7 @@ import conf.SettingsController 1.0
 import com.netimage 1.0
 
 NavigationPane {
-    id: nav
+    id: navSettings
     property variant tpage
     property variant googlePage
     signal done ()
@@ -20,14 +20,14 @@ NavigationPane {
                 onTriggered: {
                     // Emit the custom signal here to indicate that this page needs to be closed
                     // The signal would be handled by the page which invoked it
-                    nav.done();
+                    navSettings.done();
                 }
             }
             acceptAction: ActionItem {
                 title: qsTr("Save")
                 onTriggered: {
                     settingsController.save(); 
-                    nav.done();
+                    navSettings.done();
                 }
             }
         }
@@ -98,7 +98,7 @@ NavigationPane {
     	            onClicked: {
                         if(!tpage)
                         	tpage = loginPage.createObject();
-                        nav.push(tpage);
+                        navSettings.push(tpage);
     	            }
     	            visible: !loginController.isLogged()
     	        }
@@ -152,7 +152,7 @@ NavigationPane {
     	            onClicked: {
                         if(!tpage)
                             googlePage = googleConnect.createObject();
-                        nav.push(googlePage);
+                        navSettings.push(googlePage);
     	            }
     	        }
     	        
@@ -198,7 +198,7 @@ NavigationPane {
 	
 	onPopTransitionEnded: {
 	    
-        userLabel.setText(qsTr("User: ") + loginController.savedlogin);
+        userLabel.setText(qsTr("User: ") + settingsController.userName);
         loginButton.setVisible(!loginController.isLogged());
         logOutButton.setVisible(loginController.isLogged());
     }

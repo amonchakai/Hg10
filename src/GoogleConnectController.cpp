@@ -60,6 +60,31 @@ void GoogleConnectController::logInRequest() {
 
 }
 
+void GoogleConnectController::setWebView(QObject *webView) {
+    m_WebView = dynamic_cast<bb::cascades::WebView*>(webView);
+
+    if(m_WebView != NULL) {
+        bool check = connect(m_WebView, SIGNAL(titleChanged(const QString &)), this, SLOT(webviewTitleChanged(const QString& )));
+        Q_ASSERT(check);
+        Q_UNUSED(check);
+    }
+}
+
+void GoogleConnectController::webviewTitleChanged(const QString &title) {
+    QRegExp success("Success code=(.*)");
+    if(success.indexIn(title) != -1) {
+        qDebug() << "Success: " << success.cap(1);
+        save(success.cap(1));
+        emit closeConnect();
+    }
+
+    if(title == "Denied error=access_denied") {
+        qDebug() << "Denied!";
+        emit closeConnect();
+    }
+}
+
+
 void GoogleConnectController::save(const QString& key) {
     m_Settings->setValue("key", key);
     getToken();
@@ -196,12 +221,18 @@ void GoogleConnectController::parseRefresh(const QString &message) {
     if(expires_in.indexIn(message) != -1)
         m_Settings->setValue("expires_in", expires_in.cap(1));
 
+
+    if(access_token.indexIn(message) != -1) {
+        getMessages(m_WithButNoKey, m_NBMessageExpected);
+    }
+
 }
 
 
 void GoogleConnectController::getMessages(const QString &with, int nbMessages) {
 
     m_NBMessageExpected = nbMessages;
+    m_WithButNoKey = with;
 
     QString user = ConversationManager::get()->getUser().mid(4);
     user.replace("&", "%40");
@@ -255,6 +286,8 @@ void GoogleConnectController::getMessageList() {
              }
         } else {
             qDebug() << "reply... " << reply->errorString();
+            qDebug() << "try to renew the key";
+            renewToken();
        }
 
        reply->deleteLater();
@@ -337,7 +370,7 @@ void GoogleConnectController::getMessageReply() {
     ++m_HistoryIndex;
     if(   (m_ThreadsID.size() <= m_HistoryIndex)
        || (m_HistoryIndex >= m_NBMessageExpected)
-       || (m_LastThread != m_ThreadsID[m_HistoryIndex])
+       || ((m_LastThread != m_ThreadsID[m_HistoryIndex]) && (m_HistoryIndex >= 10))
        || (m_LastSynchId == m_MessagesID[m_HistoryIndex])) {
 
         emit synchCompleted();
@@ -370,7 +403,6 @@ void GoogleConnectController::getRemainingMessages(QString lastMessageId) {
     qDebug() << "[GOOGLECONNECT] entering";
 
     if(    (m_ThreadsID.size() <= m_HistoryIndex)
-        || (m_LastThread != m_ThreadsID[m_HistoryIndex])
         || (m_LastSynchId == m_MessagesID[m_HistoryIndex])) {
 
         emit synchCompleted();

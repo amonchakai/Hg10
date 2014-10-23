@@ -19,6 +19,7 @@ class ConversationController : public QObject {
 private:
     bb::cascades::WebView    *m_WebView;
     QString                  m_DstAvatar;
+    bool                     m_HistoryCleared;
 
 
 public:

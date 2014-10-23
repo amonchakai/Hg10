@@ -24,6 +24,7 @@
 #include "ConversationManager.hpp"
 
 QReadWriteLock  mutex;
+QReadWriteLock  mutexLoadLocal;
 
 XMPP* XMPP::m_This = NULL;
 
@@ -47,6 +48,8 @@ XMPP::XMPP(QObject *parent) : QXmppClient(parent),
     check = connect(m_TransferManager, SIGNAL(fileReceived(QXmppTransferJob*)), this, SLOT(fileReceived(QXmppTransferJob*)));
     Q_ASSERT(check);
 
+    loadLocal();
+
 }
 
 
@@ -61,6 +64,24 @@ XMPP *XMPP::get() {
 }
 
 
+void XMPP::loadLocal() {
+    mutexLoadLocal.lockForWrite();
+
+    QString directory = QDir::homePath() + QLatin1String("/vCards");
+    if (QFile::exists(directory)) {
+        QDir dir(directory);
+        dir.setNameFilters(QStringList() << "*.xml");
+        dir.setFilter(QDir::Files);
+        foreach(QString dirFile, dir.entryList()) {
+            //dir.remove(dirFile);
+            qDebug() << dirFile;
+            loadvCard(dirFile.mid(0,dirFile.length()-4));
+        }
+    }
+
+    mutexLoadLocal.unlock();
+
+}
 
 
 void XMPP::messageReceived(const QXmppMessage& message) {
@@ -75,7 +96,8 @@ void XMPP::presenceReceived(const QXmppPresence& presence) {
 }
 
 void XMPP::rosterReceived() {
-    qDebug() << "example_9_vCard:: Roster Received";
+    mutexLoadLocal.lockForWrite();
+    m_Datas->clear();
 
     ConversationManager::get()->getUser();
 
@@ -104,6 +126,9 @@ void XMPP::rosterReceived() {
             vCardManager().requestVCard(list.at(i));
         }
     }
+
+    mutexLoadLocal.unlock();
+    emit offline(false);
 }
 
 void XMPP::loadvCard(const QString &bareJid) {
@@ -137,7 +162,7 @@ void XMPP::loadvCard(const QString &bareJid) {
         contact->setAvatar("asset:///images/avatar.png");
 
     contact->setName(vCard.fullName());
-    contact->setTimestamp("time");
+    contact->setTimestamp(0);
 
     if(vCard.fullName().isEmpty())
         contact->deleteLater();
@@ -222,7 +247,7 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
         ConversationManager::get()->setAvatar(contact->getAvatar());
 
     contact->setName(vCard.fullName());
-    contact->setTimestamp("time");
+    contact->setTimestamp(0);
 
     if(vCard.fullName().isEmpty())
         contact->deleteLater();

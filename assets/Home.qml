@@ -6,8 +6,8 @@ NavigationPane {
     id: nav
     property variant tpage
     property int depth
-
-
+    
+    
 
     Page {
         
@@ -52,12 +52,23 @@ NavigationPane {
         }
         
         Container {
+            
+            layout: StackLayout {
+                
+            }
+            
+            ActivityIndicator {
+                id: connectingActivity
+                preferredHeight: 60
+                horizontalAlignment: HorizontalAlignment.Center
+                verticalAlignment: VerticalAlignment.Top
+            }
             ListView {
                 id: listContactView
                 dataModel: GroupDataModel {
                     id: theModel
                     sortingKeys: ["timestamp"]
-                    sortedAscending: true
+                    sortedAscending: false
                     grouping: ItemGrouping.None
                     
                     property bool empty: true
@@ -84,6 +95,7 @@ NavigationPane {
                         type: "item"
                         
                         Container {
+                            
                             layout: StackLayout {
                                 orientation: LayoutOrientation.TopToBottom
                             }
@@ -182,7 +194,8 @@ NavigationPane {
                                         }
                                         
                                         Label {
-                                            text: ListItemData.timestamp
+                                            text: ListItemData.timestampString
+                       
                                             horizontalAlignment: HorizontalAlignment.Right
                                             verticalAlignment: VerticalAlignment.Center
                                             textStyle {
@@ -242,6 +255,7 @@ NavigationPane {
         
         onCreationCompleted: {
             listContactsController.setListView(listContactView);
+            listContactsController.setActivityIndicator(connectingActivity);
             listContactsController.updateView();
             depth = 0;
         }
@@ -269,6 +283,7 @@ NavigationPane {
             listContactsController.markRead();
             if(tpage) 
                 tpage.id = "";
+                
         }
         console.log(depth)
     }

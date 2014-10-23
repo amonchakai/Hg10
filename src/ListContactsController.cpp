@@ -19,7 +19,7 @@
 #include "ConversationManager.hpp"
 
 ListContactsController::ListContactsController(QObject *parent) : QObject(parent),
-    m_ListView(NULL), m_OnlyFavorite(false), m_Notification(NULL) {
+    m_ListView(NULL), m_Activity(NULL), m_OnlyFavorite(false), m_Notification(NULL) {
 
     bool check = connect(XMPP::get(), SIGNAL(contactReceived()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -33,8 +33,20 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
 
     check = connect(XMPP::get(), SIGNAL(presenceUpdated(const QString &, int)), this, SLOT(updatePresence(const QString &, int)));
     Q_ASSERT(check);
+
+    check = connect(XMPP::get(), SIGNAL(offline(bool)), this, SLOT(updateConnectionStatus(bool)));
+    Q_ASSERT(check);
 }
 
+
+void ListContactsController::updateConnectionStatus(bool status) {
+    if(m_Activity != NULL) {
+        if(status)
+            m_Activity->start();
+        else
+            m_Activity->stop();
+    }
+}
 
 void ListContactsController::updatePresence(const QString &who, int status) {
     // lazy update to avoid refreshing completely the view.
@@ -57,7 +69,7 @@ void ListContactsController::messageReceived(const QString &from, const QString 
             m_Contacts.at(i)->setPreview(message);
 
             QDateTime now = QDateTime::currentDateTime();
-            m_Contacts.at(i)->setTimestamp(now.toString("hh:mm"));
+            m_Contacts.at(i)->setTimestamp(now.toMSecsSinceEpoch());
 
             bool read = ConversationManager::get()->isAdressee(from);
             m_Contacts.at(i)->setRead(read);
@@ -124,6 +136,7 @@ void ListContactsController::updateView() {
                 QStringList() << "name"
                               << "id"
                               << "timestamp"
+                              << "timestampString"
                               << "avatar"
                               << "preview"
                               << "presence"
@@ -157,11 +170,8 @@ void ListContactsController::updateView() {
             nc->setAvatar(contacts->at(i)->getAvatar());
             nc->setName(contacts->at(i)->getName());
 
-            QDateTime time = QDateTime::fromString(e.m_When);
-            if(time.date() == now.date())
-                nc->setTimestamp(time.time().toString("hh:mm"));
-            else
-                nc->setTimestamp(time.date().toString());
+            nc->setTimestamp(e.m_When);
+            nc->setTimestampString(formatTime(e.m_When));
 
             nc->setPreview(e.m_What);
             nc->setID(contacts->at(i)->getID());
@@ -170,6 +180,9 @@ void ListContactsController::updateView() {
 
             datas.push_back(nc);
             m_Contacts.push_back(nc);
+
+            e.m_When = 0;
+
         } else {
             setUserName(contacts->at(i)->getName());
             setAvatar(contacts->at(i)->getAvatar());
@@ -178,4 +191,20 @@ void ListContactsController::updateView() {
 
     dataModel->clear();
     dataModel->insertList(datas);
+}
+
+
+QString ListContactsController::formatTime(qint64 msecs) {
+    if(msecs == 0)
+        return "";
+
+    QDateTime now = QDateTime::currentDateTime();
+    QDateTime time = QDateTime::fromMSecsSinceEpoch(msecs);
+
+    if(now.date() == time.date()) {
+        return time.time().toString("hh:mm");
+    } else {
+
+        return time.date().toString("dd.MM.yyyy");
+    }
 }

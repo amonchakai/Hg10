@@ -146,8 +146,7 @@ TimeEvent ConversationManager::getPreview(const QString &from) const {
             qDebug() << "Cannot open preview";
         }
 
-        if(e.m_When.isEmpty()) {
-            e.m_When = QDateTime(QDate(01,01,01)).toString();
+        if(e.m_When == 0) {
             e.m_Read = 1;
         }
     }
@@ -259,7 +258,7 @@ void ConversationManager::googleMessage(QString from, QString message, QString m
         e.m_Read = 1;
         e.m_What = message;
         e.m_Who = from;
-        e.m_When = "";
+        e.m_When = QDateTime::currentDateTime().toMSecsSinceEpoch();
         e.m_MessageID = messageId;
         m_History.m_History.insert(m_SynchPushLoc, e);
 
@@ -304,7 +303,7 @@ void ConversationManager::receiveMessage(const QString &from, const QString &to,
     e.m_Who = fromC;
     e.m_What = message;
     e.m_Read = fromC == m_CurrentDst;
-    e.m_When = QDateTime::currentDateTime().toString();
+    e.m_When = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
     if (!QFile::exists(directory)) {
@@ -377,7 +376,7 @@ void ConversationManager::logSent(const QString &to, const QString &message) {
     e.m_Who = m_User;
     e.m_What = message;
     e.m_Read = 0;
-    e.m_When = QDateTime::currentDateTime().toString();
+    e.m_When = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
     if (!QFile::exists(directory)) {

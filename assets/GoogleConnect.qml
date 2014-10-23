@@ -10,14 +10,7 @@ Page {
             onTriggered: {
                 // Emit the custom signal here to indicate that this page needs to be closed
                 // The signal would be handled by the page which invoked it
-                nav.done();
-            }
-        }
-        acceptAction: ActionItem {
-            title: qsTr("Save")
-            onTriggered: {
-                googleConnect.save(password.text); 
-                //nav.done();
+                navSettings.pop();
             }
         }
     }
@@ -38,24 +31,17 @@ Page {
                 settings.textAutosizingEnabled: false
                 settings.zoomToFitEnabled: false
                 
-                onNavigationRequested: {
-                    
-                }
             }
             
         }
         
-        TextField {
-            id: password
-            hintText: qsTr("Please provide authentification key")
-            horizontalAlignment: HorizontalAlignment.Fill
-            verticalAlignment: VerticalAlignment.Bottom
-        }
-        
-        
         attachedObjects: [
             GoogleConnectController {
                 id: googleConnect
+                
+                onCloseConnect: {
+                    navSettings.pop();
+                }
             }
         ]
         

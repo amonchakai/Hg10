@@ -29,6 +29,8 @@ private:
 
     bool                                 m_StopListing;
 
+    QString                              m_WithButNoKey;
+
 public:
      GoogleConnectController    (QObject *parent = 0);
 
@@ -50,9 +52,12 @@ public Q_SLOTS:
     void getMessageReply        ();
 
 
-    inline void setWebView      (QObject *webView)                {m_WebView = dynamic_cast<bb::cascades::WebView*>(webView); }
+    void setWebView             (QObject *webView);
+    void webviewTitleChanged    (const QString &title);
 
 Q_SIGNALS:
+
+    void closeConnect();
 
     void messageLoaded          (QString from, QString what, QString messageId);
     void synchCompleted         ();

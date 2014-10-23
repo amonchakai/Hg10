@@ -11,6 +11,7 @@
 #include <QtCore/QObject>
 #include <bb/cascades/ListView>
 #include <bb/platform/Notification>
+#include <bb/cascades/ActivityIndicator>
 
 class Contact;
 
@@ -23,13 +24,14 @@ class ListContactsController : public QObject {
 
 
 private:
-    bb::cascades::ListView   *m_ListView;
-    QString                   m_User;
-    QString                   m_Avatar;
-    QList<Contact *>          m_Contacts;
-    bool                      m_OnlyFavorite;
+    bb::cascades::ListView          *m_ListView;
+    bb::cascades::ActivityIndicator *m_Activity;
+    QString                          m_User;
+    QString                          m_Avatar;
+    QList<Contact *>                 m_Contacts;
+    bool                             m_OnlyFavorite;
 
-    bb::platform::Notification *m_Notification;
+    bb::platform::Notification      *m_Notification;
 
 
 
@@ -50,6 +52,7 @@ public:
 
 public Q_SLOTS:
     inline void setListView             (QObject *listView)    {m_ListView = dynamic_cast<bb::cascades::ListView*>(listView); }
+    inline void setActivityIndicator    (QObject *activity)    {m_Activity = dynamic_cast<bb::cascades::ActivityIndicator*>(activity); m_Activity->start();}
     void updateView                     ();
 
 
@@ -58,10 +61,10 @@ public Q_SLOTS:
     void messageReceived                (const QString &from, const QString &message);
     void markRead                       ();
 
-
+    QString formatTime                  (qint64 msecs);
 
     inline void setFilter               (bool onlyFav)         { m_OnlyFavorite = onlyFav; }
-
+    void updateConnectionStatus         (bool status);
 
 
 

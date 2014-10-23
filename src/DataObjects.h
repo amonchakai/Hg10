@@ -17,7 +17,8 @@ class Contact : public QObject {
 
 	Q_PROPERTY( QString name 		READ getName      	WRITE setName        NOTIFY nameChanged)
 	Q_PROPERTY( QString id        	READ getID   	    WRITE setID          NOTIFY idChanged)
-	Q_PROPERTY( QString timestamp 	READ getTimestamp 	WRITE setTimestamp   NOTIFY timestampChanged)
+	Q_PROPERTY( qint64  timestamp 	READ getTimestamp 	WRITE setTimestamp   NOTIFY timestampChanged)
+	Q_PROPERTY( QString timestampString   READ getTimestampString   WRITE setTimestampString   NOTIFY timestampStringChanged)
 	Q_PROPERTY( QString avatar      READ getAvatar      WRITE setAvatar      NOTIFY avatarChanged)
 	Q_PROPERTY( QString preview     READ getPreview     WRITE setPreview     NOTIFY previewChanged)
 	Q_PROPERTY( int     presence    READ getPresence    WRITE setPresence    NOTIFY presenceChanged)
@@ -30,7 +31,8 @@ class Contact : public QObject {
 private:
 	QString m_Name;
 	QString m_ID;
-	QString m_Timestamp;
+	qint64  m_Timestamp;
+	QString m_TimestampString;
 	QString m_Avatar;
 	QString m_Preview;
 	int     m_Presence;
@@ -50,8 +52,11 @@ public:
 	inline void			  setID(const QString &c)		    { m_ID = c; emit idChanged();}
 
 
-	inline const QString &getTimestamp() const				{ return m_Timestamp; }
-	inline void			  setTimestamp(const QString &c)	{ m_Timestamp = c; emit timestampChanged(); }
+	inline const qint64  &getTimestamp() const				{ return m_Timestamp; }
+	inline void			  setTimestamp(qint64 c)	        { m_Timestamp = c; emit timestampChanged(); }
+
+	inline const QString  &getTimestampString() const             { return m_TimestampString; }
+	inline void            setTimestampString(const QString &c)   { m_TimestampString = c; emit timestampStringChanged(); }
 
 	inline const QString &getAvatar() const                 { return m_Avatar; }
 	inline void           setAvatar(const QString &c)       { m_Avatar = c; emit avatarChanged(); }
@@ -70,6 +75,7 @@ public:
 		void nameChanged();
 		void idChanged();
 		void timestampChanged();
+		void timestampStringChanged();
 		void avatarChanged();
 		void previewChanged();
 		void presenceChanged();
@@ -84,7 +90,7 @@ public:
 struct TimeEvent {
     QString     m_Who;
     QString     m_What;
-    QString     m_When;
+    qint64      m_When;
     int         m_Read;
     QString     m_MessageID;
 };

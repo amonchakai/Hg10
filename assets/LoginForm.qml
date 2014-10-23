@@ -18,7 +18,7 @@ Page {
             title: qsTr ("Cancel")
             
             onTriggered: {
-                nav.pop()
+                navSettings.pop()
             }
         }
     }
@@ -51,7 +51,7 @@ Page {
                 id: loginController
                 
                 onComplete: {
-                    nav.pop()
+                    navSettings.pop()
                 }
             }
         ]

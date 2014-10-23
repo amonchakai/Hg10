@@ -19,19 +19,11 @@
 <context>
     <name>GoogleConnect</name>
     <message>
-        <source>Please provide authentification key</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Google</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

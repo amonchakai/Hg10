@@ -14,7 +14,7 @@
 #include <bb/cascades/ColorTheme>
 #include <bb/cascades/Theme>
 
-ConversationController::ConversationController(QObject *parent) : QObject(parent), m_WebView(NULL) {
+ConversationController::ConversationController(QObject *parent) : QObject(parent), m_WebView(NULL), m_HistoryCleared(false) {
 
     bool check = connect(ConversationManager::get(), SIGNAL(historyLoaded()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -35,6 +35,8 @@ void ConversationController::load(const QString &id, const QString &avatar) {
         m_DstAvatar = QDir::currentPath() + "/app/native/assets/" +  avatar.mid(9);
     else
         m_DstAvatar = avatar;
+
+    m_HistoryCleared = false;
     ConversationManager::get()->load(id);
 }
 
@@ -145,10 +147,17 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
         m_WebView->evaluateJavaScript("pushMessage(0, \"" + renderMessage(message, false) +"\", \"file:///" + m_DstAvatar + ".square.png\");");
 }
 
+
+
 void ConversationController::pushHistory(QString from, QString message) {
     if(m_WebView == NULL) {
         qWarning() << "did not received the webview. quit.";
         return;
+    }
+
+    if(!m_HistoryCleared) {
+        m_HistoryCleared = true;
+        m_WebView->evaluateJavaScript("clearHistory();");
     }
 
     qDebug() << "push message...";

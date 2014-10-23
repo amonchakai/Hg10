@@ -48,10 +48,13 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 
-                ImageView {
+                ImageButton {
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Left
-                    imageSource: "asset:///images/icon_left.png"
+                    defaultImageSource: "asset:///images/icon_left.png"
+                    onClicked: {
+                        nav.pop();
+                    }
                 }
             }
         }

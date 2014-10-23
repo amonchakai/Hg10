@@ -36,6 +36,7 @@ private:
 
     XMPP(QObject *parent = 0);
 
+    void loadLocal          ();
 
 public Q_SLOTS:
 
@@ -65,6 +66,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
 
+    void offline            (bool status);
     void contactReceived    ();
     void presenceUpdated    (const QString &who, int status);
 

@@ -21,9 +21,11 @@ LoginController::LoginController(QObject *parent) : QObject(parent) {
 
 
 void LoginController::login(const QString& login, const QString &password) {
-    XMPP::get()->connectToServer(login, password);
     m_User = login;
     m_Password = password;
+
+    m_User.replace(" ", ""); // remove eventual padding spaces...
+    XMPP::get()->connectToServer(m_User, password);
 
     QObject::connect(XMPP::get(), SIGNAL(connected()), this, SLOT(connected()));
 }
