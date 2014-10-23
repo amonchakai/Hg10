@@ -121,6 +121,8 @@ QString ConversationController::renderMessage(const QString &message, bool showI
     }
     nMessage += message.mid(lastPos);
 
+    nMessage.replace("\\n", "<br/>");
+
     return nMessage;
 
 }

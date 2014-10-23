@@ -31,7 +31,7 @@ private:
     static XMPP              *m_This;
     QList<Contact*>          *m_Datas;
     int                       m_WaitNbContacts;
-
+    bool                      m_Connected;
     QXmppTransferManager     *m_TransferManager;
 
     XMPP(QObject *parent = 0);

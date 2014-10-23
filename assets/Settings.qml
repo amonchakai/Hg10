@@ -127,16 +127,14 @@ NavigationPane {
                     options: [
                         Option {
                             text: qsTr("Bright")
-                            selected: settingsController.theme == 1 ? true : false
                             value: 1
                         },
                         Option {
                             text: qsTr("Dark")
-                            selected: settingsController.theme == 2 ? true : false
                             value: 2
                         } 
                     ]
-                    selectedOption: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? 2 : 1
+                    selectedIndex: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? 1 : 2
                     onSelectedOptionChanged: {
                         settingsController.theme = theme.selectedOption.value;
                     }

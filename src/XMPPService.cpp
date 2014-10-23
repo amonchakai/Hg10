@@ -31,6 +31,7 @@ XMPP* XMPP::m_This = NULL;
 XMPP::XMPP(QObject *parent) : QXmppClient(parent),
         m_Datas(new QList<Contact*>()),
         m_WaitNbContacts(0),
+        m_Connected(false),
         m_TransferManager(NULL) {
 
     bool check = connect(this, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(messageReceived(QXmppMessage)));
@@ -74,7 +75,7 @@ void XMPP::loadLocal() {
         dir.setFilter(QDir::Files);
         foreach(QString dirFile, dir.entryList()) {
             //dir.remove(dirFile);
-            qDebug() << dirFile;
+            //qDebug() << dirFile;
             loadvCard(dirFile.mid(0,dirFile.length()-4));
         }
     }
@@ -98,6 +99,7 @@ void XMPP::presenceReceived(const QXmppPresence& presence) {
 void XMPP::rosterReceived() {
     mutexLoadLocal.lockForWrite();
     m_Datas->clear();
+    m_Connected = true;
 
     ConversationManager::get()->getUser();
 
@@ -167,11 +169,21 @@ void XMPP::loadvCard(const QString &bareJid) {
     if(vCard.fullName().isEmpty())
         contact->deleteLater();
     else {
-        QStringList resources = rosterManager().getResources(bareJid);
-        for(int i = 0 ; i < resources.size() ; ++i) {
-            QXmppPresence presence = rosterManager().getPresence(bareJid,resources.at(i));
-            contact->setPresence(presence.availableStatusType());
-        }
+        if(m_Connected) {
+            contact->setPresence(0);
+
+            QStringList resources = rosterManager().getResources(bareJid);
+            //qDebug() << "Resource size: " << resources.size();
+            for(int i = 0 ; i < resources.size() ; ++i) {
+                QXmppPresence presence = rosterManager().getPresence(bareJid,resources.at(i));
+
+                //qDebug() << "Resource values: " << i << presence.availableStatusType();
+
+                contact->setPresence(std::max<int>(contact->getPresence(), presence.availableStatusType()));
+            }
+
+        } else
+            contact->setPresence(0);
         m_Datas->push_back(contact);
     }
 

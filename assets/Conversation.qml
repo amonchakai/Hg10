@@ -18,7 +18,8 @@ Page {
                 layout: DockLayout { }
                 leftPadding: 10
                 rightPadding: 10
-                
+                background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#282828") : Color.create("#f0f0f0");
+                                
                 ImageView {
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Right
@@ -63,7 +64,6 @@ Page {
     Container {
         layout: DockLayout {
         }
-        
         ScrollView {
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill

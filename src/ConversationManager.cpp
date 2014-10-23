@@ -101,7 +101,7 @@ void ConversationManager::load(const QString &from) {
         file.close();
 
     } else {
-        qDebug() << "No history";
+        //qDebug() << "No history";
     }
 
     qDebug() << "history length: " << m_History.m_History.size();
@@ -143,7 +143,7 @@ TimeEvent ConversationManager::getPreview(const QString &from) const {
 
             file2.close();
         } else {
-            qDebug() << "Cannot open preview";
+            //qDebug() << "Cannot open preview";
         }
 
         if(e.m_When == 0) {
@@ -334,7 +334,7 @@ void ConversationManager::receiveMessage(const QString &from, const QString &to,
 
         file2.close();
     } else {
-        qDebug() << "Cannot write preview";
+        //qDebug() << "Cannot write preview";
     }
 
 
@@ -406,7 +406,7 @@ void ConversationManager::logSent(const QString &to, const QString &message) {
 
         file2.close();
     } else {
-        qDebug() << "Cannot write preview";
+        //qDebug() << "Cannot write preview";
     }
 
     emit messageSent(to, message);
@@ -465,9 +465,13 @@ void ConversationManager::markRead() {
 
             file2.close();
         } else {
-            qDebug() << "Cannot open preview";
+            //qDebug() << "Cannot open preview";
+            return;
         }
     }
+
+    if(e.m_What.isEmpty())
+        return;
 
     e.m_Read = true;
 
@@ -479,7 +483,7 @@ void ConversationManager::markRead() {
 
         file.close();
     } else {
-        qDebug() << "Cannot write preview";
+        //qDebug() << "Cannot write preview";
     }
 
 }

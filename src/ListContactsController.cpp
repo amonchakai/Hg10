@@ -103,6 +103,14 @@ void ListContactsController::markRead() {
     for(int i = 0 ; i < m_Contacts.size() ; ++i) {
         if(ConversationManager::get()->isAdressee(m_Contacts.at(i)->getID())) {
             m_Contacts.at(i)->setRead(1);
+
+            TimeEvent e = ConversationManager::get()->getPreview(m_Contacts.at(i)->getID());
+            e.m_What.replace("&#39;","\'");
+
+            m_Contacts.at(i)->setPreview(e.m_What);
+            m_Contacts.at(i)->setTimestamp(e.m_When);
+            m_Contacts.at(i)->setTimestampString(formatTime(e.m_When));
+
             break;
         }
     }
@@ -173,7 +181,11 @@ void ListContactsController::updateView() {
             nc->setTimestamp(e.m_When);
             nc->setTimestampString(formatTime(e.m_When));
 
+            e.m_What.replace("&#39;","\'");
+            e.m_What.replace(QChar(0x1F61C), ":P");
+
             nc->setPreview(e.m_What);
+
             nc->setID(contacts->at(i)->getID());
             nc->setPresence(contacts->at(i)->getPresence());
             nc->setRead(e.m_Read);
