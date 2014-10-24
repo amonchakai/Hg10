@@ -52,8 +52,6 @@ public Q_SLOTS:
     void chatStateUpdate                (int status);
 
 
-
-
 Q_SIGNALS:
     void complete();
 

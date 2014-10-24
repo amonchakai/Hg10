@@ -62,6 +62,10 @@ public Q_SLOTS:
     void transferInProgress (qint64 done,qint64 total);
 
 
+    // -------------------------------------------------------------
+    // cleanup
+
+    void clear              ();
 
 
 Q_SIGNALS:

@@ -140,6 +140,43 @@ NavigationPane {
                     }
                 
                 } 
+                
+                DropDown {
+                    id: fontSize
+                    title: qsTr("Font size")
+                    options: [
+                        Option {
+                            text: "25"
+                            value: 25
+                        },
+                        Option {
+                            text: "28"
+                            value: 28
+                        },
+                        Option {
+                            text: "31"
+                            value: 31
+                        },
+                        Option {
+                            text: "34"
+                            value: 34
+                        },
+                        Option {
+                            text: "37"
+                            value: 37
+                        },
+                        Option {
+                            text: "40"
+                            value: 40
+                        }
+                    ]
+                    selectedIndex: settingsController.fontSize
+                    onSelectedOptionChanged: {
+                        settingsController.fontSize = fontSize.selectedOption.value;
+                    }
+                    
+                    
+                }
     	        
     	        Divider { }
     	        

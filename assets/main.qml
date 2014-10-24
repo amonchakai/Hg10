@@ -293,6 +293,12 @@ NavigationPane {
         attachedObjects: [
             ListContactsController {
                 id: listContactsController
+                
+                onCleared: {
+                    if(depth > 1)
+                        nav.pop();
+                    
+                }
             },
             ComponentDefinition {
                 id: conversation

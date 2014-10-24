@@ -119,6 +119,13 @@ Page {
             id: txtField
             inputMode: TextAreaInputMode.Chat
             
+            input {
+                submitKey: SubmitKey.Send
+                onSubmitted: {
+                    conversationController.send(txtField.text);
+                    txtField.text = "";  
+                }
+            }
             content {
                 flags: TextContentFlag.Emoticons
             }

@@ -11,13 +11,16 @@
 #include "ConversationMAnager.hpp"
 
 
-SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Settings(NULL) {
+SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Settings(NULL), m_FontSize(25) {
 
     m_User = ConversationManager::get()->getUser();
     m_Avatar = ConversationManager::get()->getAvatar();
     m_Settings = new QSettings("Amonchakai", "Hg10");
 
     m_Theme = m_Settings->value("theme").value<int>();
+    m_FontSize = m_Settings->value("fontSize").value<int>();
+    if(m_FontSize == 0)
+        m_FontSize = 25;
 
     bool check = connect(ConversationManager::get(), SIGNAL(avatarUpdated()), this, SLOT(updateAvatar()));
 
@@ -28,9 +31,11 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Set
 
 void SettingsController::updateAvatar() {
     setAvatar(ConversationManager::get()->getAvatar());
+    setUserName(ConversationManager::get()->getUser());
 }
 
 
 void SettingsController::save() {
     m_Settings->setValue("theme", m_Theme);
+    m_Settings->setValue("fontSize", m_FontSize);
 }

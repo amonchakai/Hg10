@@ -84,6 +84,10 @@ void XMPP::loadLocal() {
 
 }
 
+void XMPP::clear() {
+    m_Datas->clear();
+    ConversationManager::get()->clear();
+}
 
 void XMPP::messageReceived(const QXmppMessage& message) {
     if(message.body().isEmpty())

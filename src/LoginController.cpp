@@ -34,6 +34,7 @@ void LoginController::login(const QString& login, const QString &password) {
 void LoginController::connected() {
     QObject::disconnect(XMPP::get(), SIGNAL(connected()), this, SLOT(connected()));
     saveUserName();
+    ConversationManager::get()->loadUserName();
     emit complete();
 }
 
@@ -85,6 +86,7 @@ void LoginController::logOut() {
     }
 
     XMPP::get()->disconnectFromServer();
+    XMPP::get()->clear();
 
 
 }

@@ -27,6 +27,7 @@ public:
 
     static ConversationManager*    get();
 
+    void clear                          ();
     void load                           (const QString &from);
     void sendMessage                    (const QString &message);
     void sendMessage                    (const QString &to,   const QString &message);
@@ -50,6 +51,7 @@ public:
 
 
     void                   sendData     (const QString &file);
+    void                   loadUserName ();
 
 private:
     static ConversationManager     *m_This;
@@ -69,13 +71,13 @@ private:
 
 
     ConversationManager                 (QObject *parent = 0);
-    void loadUserName                   ();
 
 public Q_SLOTS:
     void googleMessage                  (QString from, QString message, QString messageId);
     void saveHistory                    ();
 
 Q_SIGNALS:
+    void cleared                        ();
     void historyLoaded                  ();
     void historyMessage                 (QString from, QString message);
     void messageReceived                (const QString &from, const QString &message);

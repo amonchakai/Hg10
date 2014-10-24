@@ -36,6 +36,16 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
 
     check = connect(XMPP::get(), SIGNAL(offline(bool)), this, SLOT(updateConnectionStatus(bool)));
     Q_ASSERT(check);
+
+    check = connect(ConversationManager::get(), SIGNAL(cleared()), this, SLOT(clear()));
+    Q_ASSERT(check);
+}
+
+void ListContactsController::clear() {
+    updateView();
+    setUserName("");
+    setAvatar("assets://images/avatar.png");
+    emit cleared();
 }
 
 

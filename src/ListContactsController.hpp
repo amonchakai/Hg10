@@ -66,10 +66,12 @@ public Q_SLOTS:
     inline void setFilter               (bool onlyFav)         { m_OnlyFavorite = onlyFav; }
     void updateConnectionStatus         (bool status);
 
+    void clear                          ();
 
 
 Q_SIGNALS:
     void complete                       ();
+    void cleared                        ();
 
     void userNameChanged                ();
     void avatarChanged                  ();

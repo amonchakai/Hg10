@@ -48,6 +48,14 @@ ConversationManager *ConversationManager::get() {
     return m_This;
 }
 
+
+void ConversationManager::clear() {
+    m_BareID = "";
+    m_CurrentDst = "";
+
+    emit cleared();
+}
+
 // ===================================================================================
 // User information
 

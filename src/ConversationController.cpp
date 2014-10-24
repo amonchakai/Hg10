@@ -27,7 +27,7 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     Q_ASSERT(check);
 
     check = connect(ConversationManager::get(), SIGNAL(historyMessage(QString, QString)), this, SLOT(pushHistory(QString, QString)));
-        Q_ASSERT(check);
+    Q_ASSERT(check);
 }
 
 void ConversationController::load(const QString &id, const QString &avatar) {
@@ -46,6 +46,8 @@ void ConversationController::updateView() {
         return;
     }
 
+    QSettings settings("Amonchakai", "Hg10");
+
     QFile htmlTemplateFile(QDir::currentPath() + "/app/native/assets/template.html");
     if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
         htmlTemplateFile.setFileName(QDir::currentPath() + "/app/native/assets/template_black.html");
@@ -60,6 +62,10 @@ void ConversationController::updateView() {
     if (htmlTemplateFile.open(QIODevice::ReadOnly) && htmlEndTemplateFile.open(QIODevice::ReadOnly)) {
         QString htmlTemplate = htmlTemplateFile.readAll();
         QString endTemplate = htmlEndTemplateFile.readAll();
+
+        if(settings.value("fontSize").value<int>() != 25) {
+            htmlTemplate.replace("font-size: 25px;", "font-size: " + QString::number(settings.value("fontSize").value<int>()) + "px;");
+        }
 
         const History& history = ConversationManager::get()->getHistory();
 
