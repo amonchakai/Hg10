@@ -311,7 +311,6 @@ void GoogleConnectController::getMessageList() {
         return;
 
     m_LastThread = m_ThreadsID[0];
-    qDebug() << m_MessagesID[0];
 
     QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
                                     + "me"
@@ -346,6 +345,17 @@ void GoogleConnectController::getMessageReply() {
              if (available > 0) {
                  const QByteArray buffer(reply->readAll());
                  response = QString::fromUtf8(buffer);
+/*
+                 qDebug() << response.mid(15);
+                 qDebug() << response.mid(30);
+                 qDebug() << response.mid(45);
+                 qDebug() << response.mid(60);
+                 qDebug() << response.mid(75);
+                 qDebug() << response.mid(90);
+                                  qDebug() << response.mid(105);
+                                  qDebug() << response.mid(120);
+                                  qDebug() << response.mid(135);
+                                                                    qDebug() << response.mid(150);*/
 
                  QRegExp content("\"snippet\"[: ]+\"([^\"]+)\"");
                  QRegExp histID("\"historyId\"[: ]+\"([0-9]+)\"");
@@ -356,7 +366,6 @@ void GoogleConnectController::getMessageReply() {
                  if(pos != -1) {
                      if((pos = histID.indexIn(response, pos)) != -1)
                          if(from.indexIn(response)) {
-                             qDebug() << from.cap(1) << content.cap(1);
                              m_Messages.push_back(content.cap(1));
                              m_Froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
                              m_HistoryID.push_back(histID.cap(1).toInt());

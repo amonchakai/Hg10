@@ -30,6 +30,20 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     Q_ASSERT(check);
 }
 
+bool ConversationController::isOwnMessage(const QString &from) {
+    qDebug() << from;
+
+    if(from.toLower() == ConversationManager::get()->getUser().toLower()) {
+        return true;
+    }
+
+    if(ConversationManager::get()->isAdressee(from))
+        return false;
+    else
+        return true;
+
+}
+
 void ConversationController::load(const QString &id, const QString &avatar) {
     if(avatar.mid(0,9).toLower() == "asset:///")
         m_DstAvatar = QDir::currentPath() + "/app/native/assets/" +  avatar.mid(9);
@@ -73,7 +87,7 @@ void ConversationController::updateView() {
         for(int i = std::max(0, history.m_History.size()-10) ; i < history.m_History.size() ; ++i) {
             const TimeEvent &e = history.m_History.at(i);
 
-            if(e.m_Who.toLower() == ConversationManager::get()->getUser().toLower()) {
+            if(isOwnMessage(e.m_Who)) {
                 body +=  QString("<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"file:///" + ownAvatar + ".square.png" + "\" /></div>")
                                    + "<p>" + renderMessage(e.m_What) + "</p>"
                                + "</div>";
@@ -109,6 +123,7 @@ bool ConversationController::isImage(const QString &url) {
 QString ConversationController::renderMessage(const QString &message, bool showImg) {
     QRegExp url(".*(http[s]*://[^ ]+).*");
     //url.setMinimal(true);
+    url.setCaseSensitivity(Qt::CaseInsensitive);
 
     int pos = 0;
     int lastPos = 0;
@@ -140,19 +155,21 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
         return;
     }
 
-    qDebug() << "push message...";
+    qDebug() << "push message via JS...";
 
     QString ownAvatar = ConversationManager::get()->getAvatar();
     if(ownAvatar.mid(0,9).toLower() == "asset:///")
         ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
 
 
-    bool ownMessage = from.toLower() == ConversationManager::get()->getUser().toLower();
+    bool ownMessage = isOwnMessage(from);
+    QString lmessage = renderMessage(message, true);
+    lmessage.replace("\"","\\\"");
 
     if(ownMessage)
-        m_WebView->evaluateJavaScript("pushMessage(1, \"" + renderMessage(message, false) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+        m_WebView->evaluateJavaScript("pushMessage(1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
     else
-        m_WebView->evaluateJavaScript("pushMessage(0, \"" + renderMessage(message, false) +"\", \"file:///" + m_DstAvatar + ".square.png\");");
+        m_WebView->evaluateJavaScript("pushMessage(0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\");");
 }
 
 
@@ -175,12 +192,14 @@ void ConversationController::pushHistory(const QString &from, const QString &mes
         ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
 
 
-    bool ownMessage = from.toLower() == ConversationManager::get()->getUser().toLower();
+    bool ownMessage = isOwnMessage(from);
+    QString lmessage = renderMessage(message, true);
+    lmessage.replace("\"","\\\"");
 
     if(ownMessage)
-        m_WebView->evaluateJavaScript("pushHistory(0, 1, \"" + renderMessage(message, false) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+        m_WebView->evaluateJavaScript("pushHistory(0, 1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
     else
-        m_WebView->evaluateJavaScript("pushHistory(0, 0, \"" + renderMessage(message, false) +"\", \"file:///" + m_DstAvatar + ".square.png\");");
+        m_WebView->evaluateJavaScript("pushHistory(0, 0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\");");
 }
 
 void ConversationController::send(const QString& message) {
@@ -199,9 +218,10 @@ void ConversationController::send(const QString& message) {
     if(ownAvatar.mid(0,9).toLower() == "asset:///")
         ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
 
+    QString lmessage = renderMessage(message, true);
+    lmessage.replace("\"","\\\"");
 
-
-    m_WebView->evaluateJavaScript("pushMessage(1, \"" + renderMessage(message, false) +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+    m_WebView->evaluateJavaScript("pushMessage(1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
 }
 
 

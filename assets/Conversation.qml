@@ -89,7 +89,7 @@ Page {
                     if(match)
                         scrollView.scrollToPoint(0, match[1], ScrollAnimation.None);
                     
-                    
+                    console.log(message.data)
                 }
                 
                 onNavigationRequested: {

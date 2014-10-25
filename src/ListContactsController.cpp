@@ -80,6 +80,7 @@ void ListContactsController::messageReceived(const QString &from, const QString 
 
             QDateTime now = QDateTime::currentDateTime();
             m_Contacts.at(i)->setTimestamp(now.toMSecsSinceEpoch());
+            m_Contacts.at(i)->setTimestampString(formatTime(now.toMSecsSinceEpoch()));
 
             bool read = ConversationManager::get()->isAdressee(from);
             m_Contacts.at(i)->setRead(read);
@@ -168,7 +169,6 @@ void ListContactsController::updateView() {
     // ----------------------------------------------------------------------------------------------
     // Read login info
 
-    m_User = ConversationManager::get()->getUser();
     m_Contacts.clear();
 
     // ----------------------------------------------------------------------------------------------
@@ -181,7 +181,7 @@ void ListContactsController::updateView() {
     QList<QObject*> datas;
     for(int i = contacts->length()-1 ; i >= 0 ; --i) {
         // remove yourself from the list of contact, and store the info for display
-        if(contacts->at(i)->getID().toLower() != m_User.toLower()) {
+        if(contacts->at(i)->getID().toLower() != ConversationManager::get()->getUser().toLower()) {
 
             TimeEvent e = ConversationManager::get()->getPreview(contacts->at(i)->getID());
 

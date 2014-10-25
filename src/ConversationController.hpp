@@ -29,7 +29,7 @@ public:
 
 private:
     bool isImage                        (const QString &url);
-
+    bool isOwnMessage                   (const QString &from);
 
 
 

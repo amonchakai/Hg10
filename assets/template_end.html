@@ -25,21 +25,20 @@
         function sendURL(url) { navigator.cascades.postMessage(url); }
 
         function pushMessage(who, what, avatar) {
-            var message = container.innerHTML;
-            var newcontent = document.createElement('div');
+            sendURL('JS CALLED');
+            
+            var message = "";
 
             if(who == 0) {
-                newcontent.innerHTML = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>";
-                var notif   = document.getElementById("WriteNotif");
-                notif.innerHTML = "";
-
+                message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /></div><p>" + what + "</p></div>";
+                
             } else {
-                newcontent.innerHTML = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>";
+                message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /></div><p>" + what + "</p></div>";
             }
 
-            while (newcontent.firstChild) {
-                container.appendChild(newcontent.firstChild);
-            }
+            container.innerHTML = container.innerHTML + message;
+
+            sendURL(message);
 
             scrollToEnd();
         }
@@ -48,10 +47,10 @@
             var message = container.innerHTML;
             
             if(who == 0) {
-                message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>" + message;
+                message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /></div><p>" + what + "</p></div>" + message;
                
             } else {
-                message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=" + avatar + " /></div><p>" + what + "</p></div>" + message;
+                message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /></div><p>" + what + "</p></div>" + message;
             }
 
             container.innerHTML = message;
