@@ -170,7 +170,7 @@ NavigationPane {
                             value: 40
                         }
                     ]
-                    selectedIndex: settingsController.fontSize
+                    selectedIndex: (settingsController.fontSize - 25) / 3
                     onSelectedOptionChanged: {
                         settingsController.fontSize = fontSize.selectedOption.value;
                     }

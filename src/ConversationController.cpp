@@ -157,7 +157,7 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
 
 
 
-void ConversationController::pushHistory(QString from, QString message) {
+void ConversationController::pushHistory(const QString &from, const QString &message) {
     if(m_WebView == NULL) {
         qWarning() << "did not received the webview. quit.";
         return;

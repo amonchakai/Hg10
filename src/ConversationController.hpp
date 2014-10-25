@@ -43,7 +43,7 @@ public Q_SLOTS:
     void send                           (const QString &message);
     void sendData                       (const QString &message);
     void pushMessage                    (const QString &from, const QString &message);
-    void pushHistory                    (QString from, QString message);
+    void pushHistory                    (const QString &from, const QString &message);
 
 
     QString renderMessage               (const QString &message, bool showImg = true);

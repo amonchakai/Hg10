@@ -22,6 +22,11 @@ private:
 
     QStringList                          m_MessagesID;
     QStringList                          m_ThreadsID;
+    QStringList                          m_Messages;
+    QList<int>                           m_HistoryID;
+    QList<int>                           m_IdxMessageToPush;
+    QStringList                          m_Froms;
+
     QString                              m_LastThread;
     int                                  m_HistoryIndex;
     int                                  m_NBMessageExpected;
@@ -38,6 +43,10 @@ public:
      void renewToken            ();
      void parse                 (const QString &message);
      void parseRefresh          (const QString &message);
+
+
+private:
+     void checkOrder            (bool flush = false);
 
 public Q_SLOTS:
     void logInRequest           ();
@@ -59,7 +68,7 @@ Q_SIGNALS:
 
     void closeConnect();
 
-    void messageLoaded          (QString from, QString what, QString messageId);
+    void messageLoaded          (const QString &from, const QString &what, const QString &messageId);
     void synchCompleted         ();
 
 };

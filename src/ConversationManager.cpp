@@ -27,7 +27,7 @@ ConversationManager* ConversationManager::m_This = NULL;
 
 ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_GoogleConnect(NULL), m_SynchStatus(NONE), m_SynchPushLoc(0) {
     m_GoogleConnect = new GoogleConnectController();
-    bool check = connect(m_GoogleConnect, SIGNAL(messageLoaded(QString, QString, QString)), this, SLOT(googleMessage(QString, QString, QString)));
+    bool check = connect(m_GoogleConnect, SIGNAL(messageLoaded(const QString &, const QString &, const QString &)), this, SLOT(googleMessage(const QString &, const QString &, const QString &)));
     Q_ASSERT(check);
     Q_UNUSED(check);
 
@@ -144,18 +144,23 @@ TimeEvent ConversationManager::getPreview(const QString &from) const {
             fromC = fromC.mid(0,id);
 
         QFile file2(directory + "/" + fromC + ".preview");
+        if(file2.exists()) {
 
-        if (file2.open(QIODevice::ReadOnly)) {
-        QDataStream stream(&file2);
-            stream >> e;
+            if (file2.open(QIODevice::ReadOnly)) {
+            QDataStream stream(&file2);
+                stream >> e;
 
-            file2.close();
+                file2.close();
+            } else {
+                if(e.m_When == 0) {
+                     e.m_Read = 1;
+                 }
+            }
+
         } else {
-            //qDebug() << "Cannot open preview";
-        }
-
-        if(e.m_When == 0) {
+            e.m_When = 0;
             e.m_Read = 1;
+
         }
     }
 
@@ -215,7 +220,7 @@ void ConversationManager::saveHistory() {
 
 // ---------------------------------------------------------------------------
 // from Google...
-void ConversationManager::googleMessage(QString from, QString message, QString messageId) {
+void ConversationManager::googleMessage(const QString &from, const QString &message, const QString &messageId) {
 
     if(m_SynchStatus == NONE) {
         mutexConversation.lockForWrite();

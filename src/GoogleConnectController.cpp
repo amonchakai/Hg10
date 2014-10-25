@@ -263,6 +263,10 @@ void GoogleConnectController::getMessageList() {
     QString response;
     m_MessagesID.clear();
     m_ThreadsID.clear();
+    m_Messages.clear();
+    m_HistoryID.clear();
+    m_Froms.clear();
+    m_IdxMessageToPush.clear();
 
     if (reply) {
         if (reply->error() == QNetworkReply::NoError) {
@@ -353,7 +357,13 @@ void GoogleConnectController::getMessageReply() {
                      if((pos = histID.indexIn(response, pos)) != -1)
                          if(from.indexIn(response)) {
                              qDebug() << from.cap(1) << content.cap(1);
-                             emit messageLoaded(from.cap(1).mid(0, from.cap(1).size()-1), content.cap(1), m_MessagesID[m_HistoryIndex]);
+                             m_Messages.push_back(content.cap(1));
+                             m_Froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
+                             m_HistoryID.push_back(histID.cap(1).toInt());
+                             m_IdxMessageToPush.push_front(m_HistoryID.size()-1);
+
+                             checkOrder();
+
                          }
                  }
              }
@@ -372,6 +382,8 @@ void GoogleConnectController::getMessageReply() {
        || (m_HistoryIndex >= m_NBMessageExpected)
        || ((m_LastThread != m_ThreadsID[m_HistoryIndex]) && (m_HistoryIndex >= 10))
        || (m_LastSynchId == m_MessagesID[m_HistoryIndex])) {
+
+        checkOrder(true);
 
         emit synchCompleted();
         return;
@@ -394,16 +406,51 @@ void GoogleConnectController::getMessageReply() {
     Q_UNUSED(ok);
 }
 
+
+void GoogleConnectController::checkOrder(bool flush) {
+    // -------------
+    // bubble sort on timestamp
+    bool changedOrder = true;
+    while(changedOrder) {
+        changedOrder = false;
+
+        for(int n = 1 ; n < m_IdxMessageToPush.size() ; ++n) {
+            for(int i = 0 ; i < m_IdxMessageToPush.size()-n ; ++i) {
+                if(m_HistoryID[m_IdxMessageToPush[i]] > m_HistoryID[m_IdxMessageToPush[i+1]]) {
+                    std::swap(m_IdxMessageToPush[i], m_IdxMessageToPush[i+1]);
+                    changedOrder = true;
+                }
+            }
+        }
+
+    }
+
+    if(m_IdxMessageToPush.size() > 5) {
+        emit messageLoaded(m_Froms[m_IdxMessageToPush.last()], m_Messages[m_IdxMessageToPush.last()], m_MessagesID[m_IdxMessageToPush.last()]);
+        m_IdxMessageToPush.pop_back();
+    }
+
+    if(flush) {
+        for(int i = m_IdxMessageToPush.size()-1 ; i >= 0 ; --i)
+            emit messageLoaded(m_Froms[m_IdxMessageToPush.at(i)], m_Messages[m_IdxMessageToPush.at(i)], m_MessagesID[m_IdxMessageToPush.at(i)]);
+    }
+
+}
+
 void GoogleConnectController::getRemainingMessages(QString lastMessageId) {
     m_NBMessageExpected = std::numeric_limits<int>::max();
     m_LastSynchId = lastMessageId;
 
-    ++m_HistoryIndex;
+    // remove the last item which was used to detect synch requirements (already in the view)
+    if(m_IdxMessageToPush.size() > 0)
+        m_IdxMessageToPush.pop_back();
 
     qDebug() << "[GOOGLECONNECT] entering";
 
     if(    (m_ThreadsID.size() <= m_HistoryIndex)
         || (m_LastSynchId == m_MessagesID[m_HistoryIndex])) {
+
+        checkOrder(true);
 
         emit synchCompleted();
         return;

@@ -123,6 +123,7 @@ void ListContactsController::markRead() {
 
             break;
         }
+
     }
 
 

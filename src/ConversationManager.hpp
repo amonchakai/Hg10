@@ -73,13 +73,13 @@ private:
     ConversationManager                 (QObject *parent = 0);
 
 public Q_SLOTS:
-    void googleMessage                  (QString from, QString message, QString messageId);
+    void googleMessage                  (const QString &from, const QString &message, const QString &messageId);
     void saveHistory                    ();
 
 Q_SIGNALS:
     void cleared                        ();
     void historyLoaded                  ();
-    void historyMessage                 (QString from, QString message);
+    void historyMessage                 (const QString &from, const QString &message);
     void messageReceived                (const QString &from, const QString &message);
     void messageSent                    (const QString &to,   const QString &message);
     void avatarUpdated                  ();
