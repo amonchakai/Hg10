@@ -20,7 +20,7 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Set
     m_Theme = m_Settings->value("theme").value<int>();
     m_FontSize = m_Settings->value("fontSize").value<int>();
     if(m_FontSize == 0)
-        m_FontSize = 25;
+        m_FontSize = 28;
 
     bool check = connect(ConversationManager::get(), SIGNAL(avatarUpdated()), this, SLOT(updateAvatar()));
 
