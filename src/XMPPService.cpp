@@ -152,6 +152,7 @@ void XMPP::loadvCard(const QString &bareJid) {
     }
     file.close();
 
+
     QXmppVCardIq vCard;
     vCard.parse(doc.documentElement());
 
@@ -224,10 +225,38 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
         file.close();
     }
 
+
     QString name(vCardsDir + "/" + bareJid + ".png");
     QByteArray photo = vCard.photo();
     QImage qImage;
     qImage.loadFromData(vCard.photo());
+
+    qDebug() << "size: " << qImage.size().height() << qImage.size().width();
+    if(!qImage.isNull() && qImage.size().height() < 64 && qImage.size().width()) {
+        //QPixmap pixMap = QPixmap::fromImage(qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied)); /*
+        QImage nqImage = qImage.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+/*
+        QImage newImage(144,144, QImage::Format_ARGB32_Premultiplied);
+        newImage.fill(QColor(255,255,255,128));
+
+        int depth = nqImage.depth() / 8;
+        uchar *bits  = nqImage.bits();
+        uchar *bits2 = newImage.bits();
+
+        for(int i = 0 ; i < nqImage.size().width() ; ++i) {
+            for(int j = 0 ; j < nqImage.size().height() ; ++j) {
+                for(int c = 0 ; c < depth ; ++c) {
+                    bits2[((j+22)*newImage.size().width()+(i+22))*4+c] = bits[(j*nqImage.size().width()+i)*depth+c];
+                }
+            }
+        }
+
+        qImage = newImage;
+*/
+        qImage = nqImage;
+
+    }
+
 
     uchar *bits = qImage.bits();
     int radius = std::min(qImage.size().width(), qImage.size().height())/2; radius = radius*radius;
