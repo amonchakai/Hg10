@@ -134,7 +134,7 @@ NavigationPane {
                             value: 2
                         } 
                     ]
-                    selectedIndex: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? 1 : 2
+                    selectedIndex: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? 1 : 0
                     onSelectedOptionChanged: {
                         settingsController.theme = theme.selectedOption.value;
                     }
@@ -197,6 +197,15 @@ NavigationPane {
                     horizontalAlignment: HorizontalAlignment.Fill
                     onClicked: {
                         loginController.deleteHistory();
+                    }
+                }
+                
+                Button {
+                    id: clearvCard
+                    text: qsTr("Clear stored contact information")
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    onClicked: {
+                        loginController.clearContactsData();
                     }
                 }
     	    }

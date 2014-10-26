@@ -37,9 +37,7 @@ simulator {
 config_pri_assets {
     OTHER_FILES += \
         $$quote($$BASEDIR/assets/Conversation.qml) \
-        $$quote($$BASEDIR/assets/Favorite.qml) \
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
-        $$quote($$BASEDIR/assets/Home.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \

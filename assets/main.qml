@@ -76,13 +76,7 @@ NavigationPane {
             layout: StackLayout {
             
             }
-            /*Container {
-                minHeight: 4
-                maxHeight: 4
-                background: Color.create("#0677a3")
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Top
-            }*/
+
             ActivityIndicator {
                 id: connectingActivity
                 preferredHeight: 60
@@ -121,6 +115,7 @@ NavigationPane {
                         type: "item"
                         
                         Container {
+                            id: overallContactContainer
                             
                             layout: StackLayout {
                                 orientation: LayoutOrientation.TopToBottom
@@ -252,13 +247,28 @@ NavigationPane {
                                 }
                             }
                             
-                            Divider {
+                            Divider { }
                             
-                            }
+                            contextActions: [
+                                ActionSet {
+                                    title: qsTr("Contact")
+                                    
+                                    DeleteActionItem {
+                                        title: qsTr("Clear history")
+                                        onTriggered: {
+                                            overallContactContainer.ListItem.view.deleteHistory(ListItemData.id)
+                                        }
+                                    }
+                                }
+                            ]
                         
                         }
                     }
                 ]
+                
+                function deleteHistory(id) {
+                    listContactsController.deleteHistory(id);
+                }
                 
                 onTriggered: {
                     var chosenItem = dataModel.data(indexPath);
@@ -344,103 +354,6 @@ NavigationPane {
     }
 }
 
-
-/*
- * Tabs may not really be needed... 
- * 
-
-
-
-TabbedPane {
-    id: mainTab
-    showTabsOnActionBar: false
-    activeTab: tabHome
-        
-    attachedObjects: [
-        
-        Sheet {
-            id: welcome
-            Welcome {
-                onDone: {
-                    welcome.close();
-                }
-            }
-        },
-        Sheet {
-            id: settings
-            Settings {
-                onDone: {
-                    settings.close();
-                }
-            }
-        },
-        
-        LoginController {
-            id: loginController
-            
-         }
-    ]
-    
-    Menu.definition: MenuDefinition {
-        actions: [
-            ActionItem {
-                title: qsTr("About")
-                imageSource: "asset:///images/icon_about.png"
-                onTriggered: {
-                }
-            },
-            ActionItem {
-                title: qsTr("Settings")
-                imageSource: "asset:///images/icon_settings.png"
-                onTriggered: {
-                    settings.open();
-                }
-            }
-        ]
-    }    
-
-    Tab { //First tab
-        // Localized text with the dynamic translation and locale updates support
-        id: tabHome
-        title: qsTr("Home") + Retranslate.onLocaleOrLanguageChanged
-        ActionBar.placement: ActionBarPlacement.OnBar
-        imageSource: "asset:///images/icon_home.png"
-
-        delegateActivationPolicy: TabDelegateActivationPolicy.Default
-
-        delegate: Delegate {
-            source: "Home.qml"
-        }
-
-    } //End of home tab
-
-
-    Tab { //Favorite tab
-        id: tabFav
-        title: qsTr("Favorite") + Retranslate.onLocaleOrLanguageChanged
-        
-        imageSource: "asset:///images/icon_favorites.png"
-        
-        delegateActivationPolicy: TabDelegateActivationPolicy.ActivateImmediately
-        
-        delegate: Delegate {
-            source: "Favorite.qml"
-        }
-    
-    } //End of favorite tab
-    
-    onCreationCompleted: {
-        if(!loginController.isLogged()) {
-            welcome.open();
-        }
-    }
-    
-    onActiveTabChanged: {
-        
-    }
-}
-
-*/
 
 
 

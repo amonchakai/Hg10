@@ -166,6 +166,10 @@
         <source>Font size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Clear stored contact information</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Welcome</name>
@@ -190,6 +194,14 @@
     </message>
     <message>
         <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear history</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

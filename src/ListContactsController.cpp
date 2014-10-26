@@ -48,6 +48,20 @@ void ListContactsController::clear() {
     emit cleared();
 }
 
+void ListContactsController::deleteHistory(const QString &with) {
+    ConversationManager::get()->deleteHistory(with);
+
+    // reflect suppression on the view
+    for(int i = 0 ; i < m_Contacts.size() ; ++i) {
+        if(m_Contacts.at(i)->getID().toLower() == with.toLower()) {
+            m_Contacts.at(i)->setPreview("");
+            m_Contacts.at(i)->setTimestamp(0);
+            m_Contacts.at(i)->setTimestampString("");
+
+            break;
+        }
+    }
+}
 
 void ListContactsController::updateConnectionStatus(bool status) {
     if(m_Activity != NULL) {

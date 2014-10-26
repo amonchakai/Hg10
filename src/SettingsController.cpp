@@ -11,7 +11,7 @@
 #include "ConversationMAnager.hpp"
 
 
-SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Settings(NULL), m_FontSize(25) {
+SettingsController::SettingsController(QObject *parent) : QObject(parent), m_FontSize(28), m_Settings(NULL) {
 
     m_User = ConversationManager::get()->getUser();
     m_Avatar = ConversationManager::get()->getAvatar();

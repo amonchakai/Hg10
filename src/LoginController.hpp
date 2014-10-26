@@ -30,6 +30,7 @@ public Q_SLOTS:
     void logOut                 ();
     bool isLogged               ();
     void deleteHistory          ();
+    void clearContactsData      ();
     void connected              ();
 
 

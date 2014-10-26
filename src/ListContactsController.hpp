@@ -67,6 +67,7 @@ public Q_SLOTS:
     void updateConnectionStatus         (bool status);
 
     void clear                          ();
+    void deleteHistory                  (const QString &with);
 
 
 Q_SIGNALS:

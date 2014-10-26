@@ -27,6 +27,9 @@ public:
 
     static ConversationManager*    get();
 
+
+    void initGoogleConnect              ();
+
     void clear                          ();
     void load                           (const QString &from);
     void sendMessage                    (const QString &message);
@@ -46,6 +49,7 @@ public:
 
     void                   markRead     ();
     inline void            closeConversation()                  { m_CurrentDst = ""; m_BareID = ""; }
+    void                   deleteHistory(const QString &with);
 
     void                   updateState  (const QString &who, int state);
 

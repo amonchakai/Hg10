@@ -26,13 +26,7 @@ ConversationManager* ConversationManager::m_This = NULL;
 
 
 ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_GoogleConnect(NULL), m_SynchStatus(NONE), m_SynchPushLoc(0) {
-    m_GoogleConnect = new GoogleConnectController();
-    bool check = connect(m_GoogleConnect, SIGNAL(messageLoaded(const QString &, const QString &, const QString &)), this, SLOT(googleMessage(const QString &, const QString &, const QString &)));
-    Q_ASSERT(check);
-    Q_UNUSED(check);
 
-    check = connect(m_GoogleConnect, SIGNAL(synchCompleted()), this, SLOT(saveHistory()));
-    Q_ASSERT(check);
 
     loadUserName();
 }
@@ -55,6 +49,20 @@ void ConversationManager::clear() {
 
     emit cleared();
 }
+
+void ConversationManager::initGoogleConnect() {
+    if(m_GoogleConnect != NULL)
+        return;
+
+    m_GoogleConnect = new GoogleConnectController();
+    bool check = connect(m_GoogleConnect, SIGNAL(messageLoaded(const QString &, const QString &, const QString &)), this, SLOT(googleMessage(const QString &, const QString &, const QString &)));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
+
+    check = connect(m_GoogleConnect, SIGNAL(synchCompleted()), this, SLOT(saveHistory()));
+    Q_ASSERT(check);
+}
+
 
 // ===================================================================================
 // User information
@@ -116,9 +124,20 @@ void ConversationManager::load(const QString &from) {
 
     mutexConversation.unlock();
 
-    qDebug() << "m_GoogleConnect->getMessages(from, 1);";
-    m_GoogleConnect->getMessages(from, 1);
-    m_SynchStatus = NONE;
+    // ----------------------------------------------------------------
+    // check if we need to load google history
+    if(m_GoogleConnect == NULL) {
+        QSettings settings("Amonchakai", "Hg10");
+        if(!settings.value("access_token").value<QString>().isEmpty()) {
+            initGoogleConnect();
+        }
+    }
+
+    if(m_GoogleConnect != NULL) {
+        qDebug() << "m_GoogleConnect->getMessages(from, 1);";
+        m_GoogleConnect->getMessages(from, 1);
+        m_SynchStatus = NONE;
+    }
 
     emit historyLoaded();
 
@@ -282,6 +301,25 @@ void ConversationManager::googleMessage(const QString &from, const QString &mess
 }
 
 
+void ConversationManager::deleteHistory(const QString &with) {
+    QString fromC = with;
+    int id = fromC.indexOf("/");
+    if(id != -1)
+       fromC = fromC.mid(0,id);
+
+
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
+    if (QFile::exists(directory + "/" + fromC)) {
+        QDir dir(directory);
+        dir.remove(fromC);
+    }
+
+    if (QFile::exists(directory + "/" + fromC + ".preview")) {
+        QDir dir(directory);
+        dir.remove(fromC + ".preview");
+    }
+
+}
 
 
 // ===================================================================================
