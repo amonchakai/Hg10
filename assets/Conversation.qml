@@ -111,37 +111,54 @@ Page {
             }
         }
         
-        
-        TextArea {
-            preferredHeight: 30
+        Container {
+            id: inputContainer
             verticalAlignment: VerticalAlignment.Bottom
             horizontalAlignment: HorizontalAlignment.Fill
-            id: txtField
-            inputMode: TextAreaInputMode.Chat
             
-            input {
-                submitKey: SubmitKey.Send
-                onSubmitted: {
-                    conversationController.send(txtField.text);
-                    txtField.text = "";  
+            layout: StackLayout {
+                orientation: LayoutOrientation.TopToBottom
+            }
+            
+            ProgressIndicator {
+                horizontalAlignment: HorizontalAlignment.Fill
+                id: uploadingIndicator
+                fromValue: 0
+                toValue: 100
+                visible: false
+            }
+            
+            TextArea {
+                preferredHeight: 30
+                horizontalAlignment: HorizontalAlignment.Fill
+                id: txtField
+                inputMode: TextAreaInputMode.Chat
+                
+                input {
+                    submitKey: SubmitKey.Send
+                    onSubmitted: {
+                        conversationController.send(txtField.text);
+                        txtField.text = "";  
+                    }
+                }
+                content {
+                    flags: TextContentFlag.Emoticons
                 }
             }
-            content {
-                flags: TextContentFlag.Emoticons
-            }
         }
+        
     }
     
     
     actions: [
-/*        ActionItem {
+        ActionItem {
             title: qsTr("Attach")
             imageSource: "asset:///images/icon_attach.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
                 filePicker.open();
             }
-        }, */
+        }, 
         ActionItem {
             title: qsTr("Reply")
             imageSource: "asset:///images/send.png"
@@ -196,6 +213,16 @@ Page {
     attachedObjects: [
         ConversationController {
             id: conversationController
+            
+            onReceivedUrl: {
+                uploadingIndicator.visible = false;
+                txtField.text = txtField.text + " " + url;
+            }
+            
+            onUploading: {
+                uploadingIndicator.visible = true;
+                uploadingIndicator.value = status;
+            }
         },
         Invocation {
             id: linkInvocation
@@ -207,8 +234,6 @@ Page {
             query {
                    onUriChanged: {
                         linkInvocation.query.updateQuery();
-                        //linkInvocation.query.invokeTargetId = "sys.browser";
-                        //linkInvocation.query.mimeType = "text/html";
                 }
             }
                     

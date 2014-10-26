@@ -12,14 +12,17 @@
 #include <QtCore/QObject>
 #include <bb/cascades/WebView>
 
+class DropBoxConnectController;
 
 class ConversationController : public QObject {
     Q_OBJECT;
 
 private:
     bb::cascades::WebView    *m_WebView;
-    QString                  m_DstAvatar;
-    bool                     m_HistoryCleared;
+    QString                   m_DstAvatar;
+    bool                      m_HistoryCleared;
+    DropBoxConnectController *m_DropboxController;
+
 
 
 public:
@@ -30,6 +33,7 @@ public:
 private:
     bool isImage                        (const QString &url);
     bool isOwnMessage                   (const QString &from);
+    void initDropbox                    ();
 
 
 
@@ -52,8 +56,18 @@ public Q_SLOTS:
     void chatStateUpdate                (int status);
 
 
+    // -----------------------------------------------------
+    // messages with dropbox
+
+    void uploaded                       ();
+    void shared                         (const QString &url);
+    void fowardUploadingProcess         (int progress);
+
+
 Q_SIGNALS:
-    void complete();
+    void complete                       ();
+    void uploading                      (int status);
+    void receivedUrl                    (const QString &url);
 
 
 };

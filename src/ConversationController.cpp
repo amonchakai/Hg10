@@ -8,13 +8,14 @@
 
 #include "ConversationController.hpp"
 #include "ConversationManager.hpp"
+#include "DropBoxConnectController.hpp"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/ThemeSupport>
 #include <bb/cascades/ColorTheme>
 #include <bb/cascades/Theme>
 
-ConversationController::ConversationController(QObject *parent) : QObject(parent), m_WebView(NULL), m_HistoryCleared(false) {
+ConversationController::ConversationController(QObject *parent) : QObject(parent), m_WebView(NULL), m_HistoryCleared(false), m_DropboxController(NULL) {
 
     bool check = connect(ConversationManager::get(), SIGNAL(historyLoaded()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -226,10 +227,53 @@ void ConversationController::send(const QString& message) {
 
 
 void ConversationController::sendData(const QString &file) {
-    ConversationManager::get()->sendData(file);
+    // send data via XMPP
+    //ConversationManager::get()->sendData(file);
+
+    // send data to dropbox!
+    if(m_DropboxController == NULL)
+        initDropbox();
+
+    m_DropboxController->putFile(file);
+
 }
 
 
 void ConversationController::chatStateUpdate(int state) {
     m_WebView->evaluateJavaScript("chatStateUpdate(" + QString::number(state) + ");");
 }
+
+
+
+
+void ConversationController::initDropbox() {
+    m_DropboxController = new DropBoxConnectController(this);
+
+    bool check = connect(m_DropboxController, SIGNAL(uploaded()), this, SLOT(uploaded()));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
+
+    check = connect(m_DropboxController, SIGNAL(shared(const QString &)), this, SLOT(shared(const QString &)));
+    Q_ASSERT(check);
+
+    check = connect(m_DropboxController, SIGNAL(uploading(int)), this, SLOT(fowardUploadingProcess(int)));
+    Q_ASSERT(check);
+}
+
+void ConversationController::uploaded() {
+    m_DropboxController->share();
+}
+
+void ConversationController::shared(const QString &url) {
+    emit receivedUrl(url);
+}
+
+void ConversationController::fowardUploadingProcess(int status) {
+    emit uploading(status);
+}
+
+
+
+
+
+

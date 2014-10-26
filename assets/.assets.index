@@ -1,6 +1,8 @@
 1
-63
+65
 Conversation.qml
+dropbox_secret.txt
+DropboxConnect.qml
 GoogleConnect.qml
 ImagePreview.qml
 images/available.png

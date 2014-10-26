@@ -37,12 +37,14 @@ simulator {
 config_pri_assets {
     OTHER_FILES += \
         $$quote($$BASEDIR/assets/Conversation.qml) \
+        $$quote($$BASEDIR/assets/DropboxConnect.qml) \
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
+        $$quote($$BASEDIR/assets/dropbox_secret.txt) \
         $$quote($$BASEDIR/assets/images/available.png) \
         $$quote($$BASEDIR/assets/images/available.svg) \
         $$quote($$BASEDIR/assets/images/avatar.png) \
@@ -105,6 +107,7 @@ config_pri_source_group1 {
     SOURCES += \
         $$quote($$BASEDIR/src/ConversationController.cpp) \
         $$quote($$BASEDIR/src/ConversationManager.cpp) \
+        $$quote($$BASEDIR/src/DropBoxConnectController.cpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.cpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.cpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.cpp) \
@@ -179,6 +182,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ConversationController.hpp) \
         $$quote($$BASEDIR/src/ConversationManager.hpp) \
         $$quote($$BASEDIR/src/DataObjects.h) \
+        $$quote($$BASEDIR/src/DropBoxConnectController.hpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.hpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.hpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.hpp) \

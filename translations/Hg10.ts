@@ -15,6 +15,29 @@
         <source>Emoticons</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Attach</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DropboxConnect</name>
+    <message>
+        <source>Dropbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert access code</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GoogleConnect</name>
@@ -168,6 +191,10 @@
     </message>
     <message>
         <source>Clear stored contact information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use dropbox to host files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

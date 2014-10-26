@@ -7,6 +7,7 @@ NavigationPane {
     id: navSettings
     property variant tpage
     property variant googlePage
+    property variant dropboxPage
     signal done ()
     
 	Page {
@@ -185,11 +186,24 @@ NavigationPane {
     	            text: qsTr("Synch with Google")
     	            horizontalAlignment: HorizontalAlignment.Fill
     	            onClicked: {
-                        if(!tpage)
+                        if(!googlePage)
                             googlePage = googleConnect.createObject();
                         navSettings.push(googlePage);
     	            }
     	        }
+    	        
+                Button {
+                    id: dropboxConnectButton
+                    text: qsTr("Use dropbox to host files")
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    onClicked: {
+                        if(!dropboxPage)
+                            dropboxPage = dropboxConnect.createObject();
+                        navSettings.push(dropboxPage);
+                    }
+                }
+                
+                Divider { }
     	        
                 Button {
                     id: clearHistory
@@ -226,6 +240,10 @@ NavigationPane {
                 ComponentDefinition {
                     id: googleConnect
                     source: "GoogleConnect.qml"
+                },
+                ComponentDefinition {
+                    id: dropboxConnect
+                    source: "DropboxConnect.qml"
                 }
             ]
     	    

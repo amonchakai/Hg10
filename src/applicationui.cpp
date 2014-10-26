@@ -29,6 +29,7 @@
 #include "SettingsController.hpp"
 #include "SmileyPickerController.hpp"
 #include "GoogleConnectController.hpp"
+#include "DropBoxConnectController.hpp"
 
 using namespace bb::cascades;
 
@@ -61,6 +62,7 @@ ApplicationUI::ApplicationUI() :
     qmlRegisterType<SettingsController>("conf.SettingsController", 1, 0, "SettingsController");
     qmlRegisterType<SmileyPickerController>("Network.SmileyPickerController", 1, 0, "SmileyPickerController");
     qmlRegisterType<GoogleConnectController>("Network.GoogleConnectController", 1, 0, "GoogleConnectController");
+    qmlRegisterType<DropBoxConnectController>("Network.DropBoxConnectController", 1, 0, "DropBoxConnectController");
 
     // Create scene document from main.qml asset, the parent is set
     // to ensure the document gets destroyed properly at shut down.
