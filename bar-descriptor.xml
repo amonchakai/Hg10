@@ -118,4 +118,59 @@
     </entryPoint>
 
 
+
+
+    <!-- Send messages to HeadlessHg. -->
+    <invoke-target id="com.amonchakai.Hg10">
+      <entry-point-id>Hg10</entry-point-id>
+      <invoke-target-name>Hg10</invoke-target-name>
+      <invoke-target-type>card.previewer</invoke-target-type>
+      <filter>
+        <action>bb.action.VIEW</action>
+        <mime-type>hub/vnd.hg10.item</mime-type>
+        <property var="uris" value="data://,pim:"/>
+      </filter>
+    </invoke-target>
+
+    <invoke-target id="com.amonchakai.Hg10.Headless">
+      <invoke-target-type>application.headless</invoke-target-type>
+      <invoke-target-name>HeadlessHg</invoke-target-name>
+      <entry-point-id>HeadlessHg</entry-point-id>
+      <filter>
+       <action>bb.action.system.STARTED</action>
+       <mime-type>application/vnd.blackberry.system.event.STARTED</mime-type>
+       <property var="uris" value="data://local"/>
+     </filter>
+     <filter>
+       <action>bb.action.START</action>
+       <mime-type>*</mime-type>
+       <property var="uris" value="headless:"/>
+     </filter>
+     <filter>
+       <action>bb.action.DELETE</action>
+       <mime-type>hub/vnd.hg10.item</mime-type>
+       <property var="uris" value="data://,pim:"/>
+     </filter>
+     <filter>
+      <action>bb.action.MARKREAD</action>
+      <mime-type>hub/vnd.hg10.item</mime-type>
+      <property var="uris" value="data://,pim:"/>
+    </filter>
+    <filter>
+      <action>bb.action.MARKUNREAD</action>
+      <mime-type>hub/vnd.hg10.item</mime-type>
+      <property var="uris" value="data://,pim:"/>
+    </filter>
+    <filter>
+      <action>bb.action.MARKPRIORREAD</action>
+      <mime-type>hub/vnd.hg10.item</mime-type>
+      <property var="uris" value="data://,pim:"/>
+    </filter>
+    <filter>
+      <action>bb.action.DELETEPRIOR</action>
+      <mime-type>hub/vnd.hg10.item</mime-type>
+      <property var="uris" value="data://,pim:"/>
+    </filter>
+  </invoke-target>
+
 </qnx>
