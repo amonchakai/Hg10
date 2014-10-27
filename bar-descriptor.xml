@@ -30,19 +30,23 @@
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/Hg10" entry="true" type="Qnx/Elf">Hg10</asset>
+       <asset entryPointId="HeadlessHg" path="../HeadlessHg/arm/o.le-v7-g/HeadlessHg" type="Qnx/Elf">HeadlessHg</asset> 
     </configuration>
     <configuration name="Device-Release">
        <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7/Hg10.so" entry="true" type="Qnx/Elf">Hg10.so</asset>
+      <asset entryPointId="HeadlessHg" path="../HeadlessHg/arm/o.le-v7-g/HeadlessHg" type="Qnx/Elf">HeadlessHg</asset> 
     </configuration>
     <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm-p/o.le-v7-g/Hg10" entry="true" type="Qnx/Elf">Hg10</asset>
+       <asset entryPointId="HeadlessHg" path="../HeadlessHg/arm/o.le-v7-g/HeadlessHg" type="Qnx/Elf">HeadlessHg</asset> 
     </configuration>
     <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/Hg10" entry="true" type="Qnx/Elf">Hg10</asset>
+       <asset entryPointId="HeadlessHg" path="../HeadlessHg/x86/o-g/HeadlessHg" type="Qnx/Elf">HeadlessHg</asset> 
     </configuration>
 
     <!-- The name that is displayed in the BlackBerry 10 application installer.
@@ -56,7 +60,7 @@
 
     <!-- Fourth digit segment of the package version. First three segments are taken from the
          <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
-    <buildId>32</buildId>
+    <buildId>34</buildId>
 
     <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
     <!-- <versionLabel></versionLabel> -->
@@ -98,5 +102,20 @@
     <permission>post_notification</permission>
     <permission>access_shared</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
+
+
+    <!-- Set entry point for Hg10. -->
+    <entryPoint id="Hg10">
+      <name>Hg10</name>
+    </entryPoint>
+
+    <entryPoint id="HeadlessHg">
+      <name>HeadlessHg</name>
+      <entryPointType>Qnx/Elf</entryPointType>
+      <permission system="true">run_native</permission>
+      <permission system="true">_sys_run_headless</permission>
+      <permission system="true">_sys_headless_nostop</permission>
+    </entryPoint>
+
 
 </qnx>
