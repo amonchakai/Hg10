@@ -19,8 +19,8 @@ private:
     QString                              m_ShareUrl;
 
 public:
-    DropBoxConnectController(QObject *parent = 0);
-
+    DropBoxConnectController              (QObject *parent = 0);
+    virtual ~DropBoxConnectController     ()                      {};
 
 private:
     void parse                  (const QString &message);

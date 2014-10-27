@@ -30,8 +30,8 @@ private:
      QSettings          *m_Settings;
 
 public:
-    SettingsController(QObject *parent = 0);
-
+    SettingsController          (QObject *parent = 0);
+    virtual ~SettingsController ()                      {};
 
     inline const QString &getUserName() const               { return m_User; }
     inline void           setUserName(const QString &c)     { m_User = c; emit userNameChanged(); }

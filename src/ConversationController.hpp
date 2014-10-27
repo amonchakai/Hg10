@@ -27,7 +27,7 @@ private:
 
 public:
     ConversationController              (QObject *parent = 0);
-
+    virtual ~ConversationController     ()                      {};
 
 
 private:

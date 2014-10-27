@@ -19,8 +19,8 @@ private:
     QString m_Password;
 
 public:
-    LoginController(QObject *parent = 0);
-
+    LoginController             (QObject *parent = 0);
+    virtual ~LoginController    ()                      {};
 
 
 

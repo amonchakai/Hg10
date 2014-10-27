@@ -16,12 +16,14 @@
 #include <QFile>
 #include <QBuffer>
 #include <QDebug>
-
+#include <QRegExp>
 #include <bb/cascades/ImageTracker>
 
 #include "DataObjects.h"
 #include <QReadWriteLock>
 #include "ConversationManager.hpp"
+#include "Facebook.hpp"
+
 
 QReadWriteLock  mutex;
 QReadWriteLock  mutexLoadLocal;
@@ -32,7 +34,8 @@ XMPP::XMPP(QObject *parent) : QXmppClient(parent),
         m_Datas(new QList<Contact*>()),
         m_WaitNbContacts(0),
         m_Connected(false),
-        m_TransferManager(NULL) {
+        m_TransferManager(NULL),
+        m_Facebook(NULL) {
 
     bool check = connect(this, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(messageReceived(QXmppMessage)));
 
@@ -163,8 +166,16 @@ void XMPP::loadvCard(const QString &bareJid) {
     Contact *contact = new Contact;
     contact->setID(bareJid);
 
-    if(QFile::exists(vCardsDir + "/" + bareJid + ".png"))
-        contact->setAvatar(vCardsDir + "/" + bareJid + ".png");
+    QString photoName = bareJid;
+    QRegExp isFacebook("(.*)@chat.facebook.com");
+    if(isFacebook.indexIn(photoName) != -1) {
+        if(photoName[0] == '-')
+            photoName = photoName.mid(1);
+    }
+
+
+    if(QFile::exists(vCardsDir + "/" + photoName + ".png"))
+        contact->setAvatar(vCardsDir + "/" + photoName + ".png");
     else
         contact->setAvatar("asset:///images/avatar.png");
 
@@ -226,66 +237,73 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
     }
 
 
-    QString name(vCardsDir + "/" + bareJid + ".png");
-    QByteArray photo = vCard.photo();
-    QImage qImage;
-    qImage.loadFromData(vCard.photo());
+    QRegExp isFacebook("(.*)@chat.facebook.com");
+    bool delayContactReceived = false;                  // in case the picture comes from facebook, we need to wait to get the picture.
+    if(isFacebook.indexIn(bareJid) == -1) {
 
-    qDebug() << "size: " << qImage.size().height() << qImage.size().width();
-    if(!qImage.isNull() && qImage.size().height() < 64 && qImage.size().width()) {
-        //QPixmap pixMap = QPixmap::fromImage(qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied)); /*
-        QImage nqImage = qImage.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-/*
-        QImage newImage(144,144, QImage::Format_ARGB32_Premultiplied);
-        newImage.fill(QColor(255,255,255,128));
+        // ----------------------------------------------------------------------------------
+        // two options to get the picture: either it comes from XMPP or from Facebook.
+        // here it is from XMPP
 
-        int depth = nqImage.depth() / 8;
-        uchar *bits  = nqImage.bits();
-        uchar *bits2 = newImage.bits();
 
-        for(int i = 0 ; i < nqImage.size().width() ; ++i) {
-            for(int j = 0 ; j < nqImage.size().height() ; ++j) {
-                for(int c = 0 ; c < depth ; ++c) {
-                    bits2[((j+22)*newImage.size().width()+(i+22))*4+c] = bits[(j*nqImage.size().width()+i)*depth+c];
+        QString name(vCardsDir + "/" + bareJid + ".png");
+        QByteArray photo = vCard.photo();
+        QImage qImage;
+        qImage.loadFromData(vCard.photo());
+
+
+
+        if(!qImage.isNull() && qImage.size().height() < 64 && qImage.size().width()) {
+            //QPixmap pixMap = QPixmap::fromImage(qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied)); /*
+            QImage nqImage = qImage.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            qImage = nqImage;
+        }
+
+
+        uchar *bits = qImage.bits();
+        int radius = std::min(qImage.size().width(), qImage.size().height())/2; radius = radius*radius;
+        int center_x = qImage.size().width() / 2;
+        int center_y = qImage.size().height() / 2;
+        int depth = qImage.depth() / 8;
+
+        // save two representation of the picture: a square for the post, and a disk for the user list
+        if(!photo.isEmpty()) {
+            qImage.save(name + ".square.png", "PNG");
+        }
+
+
+        for(int i = 0 ; i < qImage.size().width() ; ++i) {
+            for(int j = 0 ; j < qImage.size().height() ; ++j) {
+                int dstCenter = (center_x - i)*(center_x - i) + (center_y - j)*(center_y - j);
+                if(dstCenter > radius) {
+                    for(int c = 0 ; c < depth ; ++c) {
+                        bits[(j*qImage.size().width()+i)*depth+c] = 255*(c != 3);
+                    }
                 }
             }
         }
 
-        qImage = newImage;
-*/
-        qImage = nqImage;
-
-    }
-
-
-    uchar *bits = qImage.bits();
-    int radius = std::min(qImage.size().width(), qImage.size().height())/2; radius = radius*radius;
-    int center_x = qImage.size().width() / 2;
-    int center_y = qImage.size().height() / 2;
-    int depth = qImage.depth() / 8;
-
-    // save two representation of the picture: a square for the post, and a disk for the user list
-    if(!photo.isEmpty()) {
-        qImage.save(name + ".square.png", "PNG");
-    }
-
-
-    for(int i = 0 ; i < qImage.size().width() ; ++i) {
-        for(int j = 0 ; j < qImage.size().height() ; ++j) {
-            int dstCenter = (center_x - i)*(center_x - i) + (center_y - j)*(center_y - j);
-            if(dstCenter > radius) {
-                for(int c = 0 ; c < depth ; ++c) {
-                    bits[(j*qImage.size().width()+i)*depth+c] = 255*(c != 3);
-                }
-            }
-        }
-    }
-
-    if(!photo.isEmpty()) {
-        if(qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied).save(name, "PNG")) {
-            contact->setAvatar(vCardsDir + "/" + bareJid + ".png");
+        if(!photo.isEmpty()) {
+            if(qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied).save(name, "PNG")) {
+                contact->setAvatar(vCardsDir + "/" + bareJid + ".png");
+            } else contact->setAvatar("asset:///images/avatar.png");
         } else contact->setAvatar("asset:///images/avatar.png");
-    } else contact->setAvatar("asset:///images/avatar.png");
+
+    } else {
+
+        // ----------------------------------------------------------------------------------
+        // if the photo comes from Facebook, then try to look for a better picture
+
+        if(m_Facebook == NULL)
+            initFacebook();
+
+        QString id = isFacebook.cap(1);
+        if(id[0] == '-')
+            id = id.mid(1);
+
+        m_Facebook->getAvatar(id);
+        contact->setAvatar(vCardsDir + "/" + id + "@chat.facebook.com.png");
+    }
 
 
     if(ownInfo)
@@ -305,11 +323,13 @@ void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
         m_Datas->push_back(contact);
     }
 
-    mutex.lockForWrite();
-    --m_WaitNbContacts;
-    if(m_WaitNbContacts == 0)
-        emit contactReceived();
-    mutex.unlock();
+    if(!delayContactReceived) {
+        mutex.lockForWrite();
+        --m_WaitNbContacts;
+        if(m_WaitNbContacts == 0)
+            emit contactReceived();
+        mutex.unlock();
+    }
 
 }
 
@@ -356,3 +376,26 @@ void XMPP::transferFinished() {
 void XMPP::transferInProgress(qint64 done,qint64 total) {
     qDebug() << "Transmission progress:" << done << "/" << total;
 }
+
+
+// -------------------------------------------------------------
+// aside API
+
+void XMPP::initFacebook() {
+    m_Facebook = new Facebook(this);
+
+    bool check = connect(m_Facebook, SIGNAL(imagesRetrieved()), this, SLOT(facebookImagesRetrieved()));
+    Q_ASSERT(check);
+}
+
+void XMPP::facebookImagesRetrieved() {
+    mutex.lockForWrite();
+    --m_WaitNbContacts;
+    if(m_WaitNbContacts == 0)
+        emit contactReceived();
+    mutex.unlock();
+}
+
+
+
+

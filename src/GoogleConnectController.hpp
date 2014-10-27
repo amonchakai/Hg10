@@ -37,7 +37,9 @@ private:
     QString                              m_WithButNoKey;
 
 public:
-     GoogleConnectController    (QObject *parent = 0);
+     GoogleConnectController            (QObject *parent = 0);
+     virtual ~GoogleConnectController   ()                      {};
+
 
      void getToken              ();
      void renewToken            ();

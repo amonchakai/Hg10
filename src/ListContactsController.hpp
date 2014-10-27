@@ -37,7 +37,7 @@ private:
 
 public:
     ListContactsController              (QObject *parent = 0);
-
+    virtual ~ListContactsController     ()                      {};
 
     inline const QString &getUserName   () const               { return m_User; }
     inline void           setUserName   (const QString &c)     { m_User = c; emit userNameChanged(); }

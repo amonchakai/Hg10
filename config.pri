@@ -108,6 +108,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ConversationController.cpp) \
         $$quote($$BASEDIR/src/ConversationManager.cpp) \
         $$quote($$BASEDIR/src/DropBoxConnectController.cpp) \
+        $$quote($$BASEDIR/src/Facebook.cpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.cpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.cpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.cpp) \
@@ -183,6 +184,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ConversationManager.hpp) \
         $$quote($$BASEDIR/src/DataObjects.h) \
         $$quote($$BASEDIR/src/DropBoxConnectController.hpp) \
+        $$quote($$BASEDIR/src/Facebook.hpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.hpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.hpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.hpp) \

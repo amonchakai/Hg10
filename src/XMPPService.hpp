@@ -15,6 +15,7 @@
 
 class QXmppVCardIq;
 class Contact;
+class Facebook;
 
 class XMPP : public QXmppClient {
     Q_OBJECT;
@@ -33,6 +34,7 @@ private:
     int                       m_WaitNbContacts;
     bool                      m_Connected;
     QXmppTransferManager     *m_TransferManager;
+    Facebook                 *m_Facebook;
 
     XMPP(QObject *parent = 0);
 
@@ -66,6 +68,12 @@ public Q_SLOTS:
     // cleanup
 
     void clear              ();
+
+
+    // -------------------------------------------------------------
+    // Side API
+    void initFacebook           ();
+    void facebookImagesRetrieved();
 
 
 Q_SIGNALS:
