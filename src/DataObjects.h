@@ -12,6 +12,17 @@
 #include <QString>
 
 
+struct XMPPServiceMessages {
+    enum Message {
+        LOGIN = 1,
+        REPLY_LOGGED_IN,
+        DISCONNECT,
+        REQUEST_CONTACT_LIST,
+        REPLY_CONTACT_LIST
+    };
+};
+
+
 class Contact : public QObject {
 	Q_OBJECT
 

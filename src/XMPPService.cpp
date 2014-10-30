@@ -7,10 +7,7 @@
 
 
 #include "XMPPService.hpp"
-#include "QXmppMessage.h"
-#include "client/QXmppRosterManager.h"
 #include "QXmppVCardIq.h"
-#include "client/QXmppVCardManager.h"
 
 #include <QDir>
 #include <QFile>
@@ -18,11 +15,11 @@
 #include <QDebug>
 #include <QRegExp>
 #include <bb/cascades/ImageTracker>
+#include <QtNetwork/QTcpSocket>
 
 #include "DataObjects.h"
 #include <QReadWriteLock>
 #include "ConversationManager.hpp"
-#include "Facebook.hpp"
 
 
 QReadWriteLock  mutex;
@@ -30,32 +27,20 @@ QReadWriteLock  mutexLoadLocal;
 
 XMPP* XMPP::m_This = NULL;
 
-XMPP::XMPP(QObject *parent) : QXmppClient(parent),
+XMPP::XMPP(QObject *parent) : QObject(parent),
         m_Datas(new QList<Contact*>()),
-        m_WaitNbContacts(0),
         m_Connected(false),
-        m_TransferManager(NULL),
-        m_Facebook(NULL) {
+        m_ClientSocket(new QTcpSocket(this)) {
 
-    bool check = connect(this, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(messageReceived(QXmppMessage)));
-
-    Q_ASSERT(check);
-
-    check = connect(&this->rosterManager(), SIGNAL(rosterReceived()), this, SLOT(rosterReceived()));
+    bool check = connect(m_ClientSocket, SIGNAL(connected()), this, SLOT(connected()));
     Q_ASSERT(check);
     Q_UNUSED(check);
 
-    m_TransferManager = new QXmppTransferManager();
-    m_TransferManager->setProxy("proxy.eu.jabber.org");
-    addExtension(m_TransferManager);
-
-    check = connect(m_TransferManager, SIGNAL(fileReceived(QXmppTransferJob*)), this, SLOT(fileReceived(QXmppTransferJob*)));
-    Q_ASSERT(check);
 
     loadLocal();
+    connectToXMPPService();
 
 }
-
 
 // get singleton
 XMPP *XMPP::get() {
@@ -65,6 +50,115 @@ XMPP *XMPP::get() {
     }
 
     return m_This;
+}
+
+
+void XMPP::connected() {
+
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        qDebug() << "Connected to XMPP headless!" << m_ClientSocket->state() ;
+        int code = XMPPServiceMessages::REQUEST_CONTACT_LIST;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->flush();
+    }
+
+}
+
+
+void XMPP::connectToXMPPService() {
+    if (!m_ClientSocket->isOpen()) {
+        m_ClientSocket->connectToHost(QHostAddress::LocalHost, 2014);
+        bool ok = connect(m_ClientSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+        Q_ASSERT(ok);
+        ok = connect(m_ClientSocket, SIGNAL(readyRead()), this, SLOT(readyRead()));
+        Q_ASSERT(ok);
+        Q_UNUSED(ok);
+    } else {
+        connected();
+    }
+}
+
+void XMPP::disconnected() {
+
+}
+
+void XMPP::readyRead() {
+
+    QByteArray code_str = m_ClientSocket->read(sizeof(int));
+    int code = *reinterpret_cast<int*>(code_str.data());
+    qDebug() << "COMMAND: " << code;
+
+    switch(code) {
+
+        case XMPPServiceMessages::REPLY_CONTACT_LIST: {
+            qDebug() << "list received";
+            code_str = m_ClientSocket->read(sizeof(int));
+            int nbCards = *reinterpret_cast<int*>(code_str.data());
+            mutex.lockForWrite();
+            m_WaitNbContacts = nbCards;
+            m_Datas->clear();
+            mutex.unlock();
+            for(int i = 0 ; i < nbCards ; ++i) {
+                code_str = m_ClientSocket->read(sizeof(int));
+                int length = *reinterpret_cast<int*>(code_str.data());
+                QString name(m_ClientSocket->read(length));
+
+                loadvCard(name);
+
+            }
+            emit offline(false);
+
+        }
+            break;
+
+
+        case XMPPServiceMessages::REPLY_LOGGED_IN: {
+            emit connectedXMPP();
+        }
+            break;
+
+    }
+
+}
+
+// ===========================================================================================
+
+
+void XMPP::connectToServer(const QString &user, const QString& password) {
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::LOGIN;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        code = user.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->write(user.toAscii());
+
+        code = password.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->write(password.toAscii());
+        m_ClientSocket->flush();
+    }
+
+}
+
+void XMPP::disconnectFromServer() {
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::DISCONNECT;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->flush();
+    }
+}
+
+
+// ===========================================================================================
+
+
+void XMPP::getContactList() {
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        m_ClientSocket->write(QByteArray::number(XMPPServiceMessages::REQUEST_CONTACT_LIST));
+        m_ClientSocket->flush();
+    }
 }
 
 
@@ -92,53 +186,20 @@ void XMPP::clear() {
     ConversationManager::get()->clear();
 }
 
-void XMPP::messageReceived(const QXmppMessage& message) {
+void XMPP::messageReceived() {
+/*
     if(message.body().isEmpty())
         ConversationManager::get()->updateState(message.from(), message.state());
     else
         ConversationManager::get()->receiveMessage(message.from(), message.to(), message.body());
+        */
 }
 
-void XMPP::presenceReceived(const QXmppPresence& presence) {
-    emit presenceUpdated(presence.from(), presence.availableStatusType());
+void XMPP::presenceReceived(const QString &who, int status) {
+    emit presenceUpdated(who, status);
 }
 
-void XMPP::rosterReceived() {
-    mutexLoadLocal.lockForWrite();
-    m_Datas->clear();
-    m_Connected = true;
 
-    ConversationManager::get()->getUser();
-
-    bool check = connect(&this->vCardManager(), SIGNAL(vCardReceived(QXmppVCardIq)), this, SLOT(vCardReceived(QXmppVCardIq)));
-
-    Q_ASSERT(check);
-    Q_UNUSED(check);
-
-    QStringList list = rosterManager().getRosterBareJids();
-
-
-
-    mutex.lockForWrite();
-    m_WaitNbContacts = list.size()+1;
-    mutex.unlock();
-
-    vCardManager().requestClientVCard();
-
-    QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
-
-    for(int i = 0; i < list.size(); ++i) {
-        // request vCard of all the bareJids in roster
-        if(QFile::exists(vCardsDir + "/" + list.at(i) + ".xml")) {
-            loadvCard(list.at(i));
-        } else {
-            vCardManager().requestVCard(list.at(i));
-        }
-    }
-
-    mutexLoadLocal.unlock();
-    emit offline(false);
-}
 
 void XMPP::loadvCard(const QString &bareJid) {
     // -------------------------------------------------------------
@@ -188,6 +249,7 @@ void XMPP::loadvCard(const QString &bareJid) {
         if(m_Connected) {
             contact->setPresence(0);
 
+/*
             QStringList resources = rosterManager().getResources(bareJid);
             //qDebug() << "Resource size: " << resources.size();
             for(int i = 0 ; i < resources.size() ; ++i) {
@@ -197,6 +259,7 @@ void XMPP::loadvCard(const QString &bareJid) {
 
                 contact->setPresence(std::max<int>(contact->getPresence(), presence.availableStatusType()));
             }
+*/
 
         } else
             contact->setPresence(0);
@@ -211,131 +274,8 @@ void XMPP::loadvCard(const QString &bareJid) {
 
 }
 
-void XMPP::vCardReceived(const QXmppVCardIq& vCard) {
-    QString bareJid = vCard.from();
-    QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
-    bool ownInfo = false;
-
-    Contact *contact = new Contact;
-    if(bareJid.isEmpty()) {
-        bareJid = ConversationManager::get()->getUser();
-        ownInfo = true;
-    }
-    contact->setID(bareJid);
-
-
-    QDir dir;
-    if(!dir.exists(vCardsDir))
-        dir.mkdir(vCardsDir);
-
-    QFile file(vCardsDir + "/" + bareJid + ".xml");
-    if(file.open(QIODevice::ReadWrite))
-    {
-        QXmlStreamWriter stream(&file);
-        vCard.toXml(&stream);
-        file.close();
-    }
-
-
-    QRegExp isFacebook("(.*)@chat.facebook.com");
-    bool delayContactReceived = false;                  // in case the picture comes from facebook, we need to wait to get the picture.
-    if(isFacebook.indexIn(bareJid) == -1) {
-
-        // ----------------------------------------------------------------------------------
-        // two options to get the picture: either it comes from XMPP or from Facebook.
-        // here it is from XMPP
-
-
-        QString name(vCardsDir + "/" + bareJid + ".png");
-        QByteArray photo = vCard.photo();
-        QImage qImage;
-        qImage.loadFromData(vCard.photo());
-
-
-
-        if(!qImage.isNull() && qImage.size().height() < 64 && qImage.size().width()) {
-            //QPixmap pixMap = QPixmap::fromImage(qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied)); /*
-            QImage nqImage = qImage.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            qImage = nqImage;
-        }
-
-
-        uchar *bits = qImage.bits();
-        int radius = std::min(qImage.size().width(), qImage.size().height())/2; radius = radius*radius;
-        int center_x = qImage.size().width() / 2;
-        int center_y = qImage.size().height() / 2;
-        int depth = qImage.depth() / 8;
-
-        // save two representation of the picture: a square for the post, and a disk for the user list
-        if(!photo.isEmpty()) {
-            qImage.save(name + ".square.png", "PNG");
-        }
-
-
-        for(int i = 0 ; i < qImage.size().width() ; ++i) {
-            for(int j = 0 ; j < qImage.size().height() ; ++j) {
-                int dstCenter = (center_x - i)*(center_x - i) + (center_y - j)*(center_y - j);
-                if(dstCenter > radius) {
-                    for(int c = 0 ; c < depth ; ++c) {
-                        bits[(j*qImage.size().width()+i)*depth+c] = 255*(c != 3);
-                    }
-                }
-            }
-        }
-
-        if(!photo.isEmpty()) {
-            if(qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied).save(name, "PNG")) {
-                contact->setAvatar(vCardsDir + "/" + bareJid + ".png");
-            } else contact->setAvatar("asset:///images/avatar.png");
-        } else contact->setAvatar("asset:///images/avatar.png");
-
-    } else {
-
-        // ----------------------------------------------------------------------------------
-        // if the photo comes from Facebook, then try to look for a better picture
-
-        if(m_Facebook == NULL)
-            initFacebook();
-
-        QString id = isFacebook.cap(1);
-        if(id[0] == '-')
-            id = id.mid(1);
-
-        m_Facebook->getAvatar(id);
-        contact->setAvatar(vCardsDir + "/" + id + "@chat.facebook.com.png");
-    }
-
-
-    if(ownInfo)
-        ConversationManager::get()->setAvatar(contact->getAvatar());
-
-    contact->setName(vCard.fullName());
-    contact->setTimestamp(0);
-
-    if(vCard.fullName().isEmpty())
-        contact->deleteLater();
-    else {
-        QStringList resources = rosterManager().getResources(bareJid);
-        for(int i = 0 ; i < resources.size() ; ++i) {
-            QXmppPresence presence = rosterManager().getPresence(bareJid,resources.at(i));
-            contact->setPresence(presence.availableStatusType());
-        }
-        m_Datas->push_back(contact);
-    }
-
-    if(!delayContactReceived) {
-        mutex.lockForWrite();
-        --m_WaitNbContacts;
-        if(m_WaitNbContacts == 0)
-            emit contactReceived();
-        mutex.unlock();
-    }
-
-}
-
 void XMPP::sendMessageTo(const QString &to, const QString &message) {
 
-    sendPacket(QXmppMessage("", to, message));
 }
 
 
@@ -343,58 +283,9 @@ void XMPP::sendMessageTo(const QString &to, const QString &message) {
 // file transfer handling
 
 void XMPP::sendData(const QString &file, const QString &to) {
-    qDebug() << "Send file request... " << file << to;
-    QXmppTransferJob *job = m_TransferManager->sendFile(to, file, "file sent from Hg10");
-
-    bool check = connect(job, SIGNAL(error(QXmppTransferJob::Error)),
-                    this, SLOT(transferError(QXmppTransferJob::Error)));
-    Q_ASSERT(check);
-
-    check = connect(job, SIGNAL(finished()),
-                    this, SLOT(transferFinished()));
-    Q_ASSERT(check);
-
-    check = connect(job, SIGNAL(progress(qint64,qint64)),
-                    this, SLOT(transferInProgress(qint64,qint64)));
-    Q_ASSERT(check);
 
 }
 
-
-void XMPP::fileReceived(QXmppTransferJob* job) {
-
-}
-
-void XMPP::transferError(QXmppTransferJob::Error error) {
-    qDebug() << "Transmission failed:" << error;
-}
-
-void XMPP::transferFinished() {
-    qDebug() << "Transmission finished";
-}
-
-void XMPP::transferInProgress(qint64 done,qint64 total) {
-    qDebug() << "Transmission progress:" << done << "/" << total;
-}
-
-
-// -------------------------------------------------------------
-// aside API
-
-void XMPP::initFacebook() {
-    m_Facebook = new Facebook(this);
-
-    bool check = connect(m_Facebook, SIGNAL(imagesRetrieved()), this, SLOT(facebookImagesRetrieved()));
-    Q_ASSERT(check);
-}
-
-void XMPP::facebookImagesRetrieved() {
-    mutex.lockForWrite();
-    --m_WaitNbContacts;
-    if(m_WaitNbContacts == 0)
-        emit contactReceived();
-    mutex.unlock();
-}
 
 
 

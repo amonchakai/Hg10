@@ -27,12 +27,12 @@ void LoginController::login(const QString& login, const QString &password) {
     m_User.replace(" ", ""); // remove eventual padding spaces...
     XMPP::get()->connectToServer(m_User, password);
 
-    QObject::connect(XMPP::get(), SIGNAL(connected()), this, SLOT(connected()));
+    QObject::connect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(connected()));
 }
 
 
 void LoginController::connected() {
-    QObject::disconnect(XMPP::get(), SIGNAL(connected()), this, SLOT(connected()));
+    QObject::disconnect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(connected()));
     saveUserName();
     ConversationManager::get()->loadUserName();
     emit complete();

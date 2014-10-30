@@ -8,16 +8,11 @@
 #ifndef XMPPSERVICE_HPP_
 #define XMPPSERVICE_HPP_
 
-#include "client/QXmppTransferManager.h"
-#include "client/QXmppClient.h"
-#include "base/QXmppLogger.h"
 
-
-class QXmppVCardIq;
+class QTcpSocket;
 class Contact;
-class Facebook;
 
-class XMPP : public QXmppClient {
+class XMPP : public QObject {
     Q_OBJECT;
 
 public:
@@ -26,6 +21,8 @@ public:
     static XMPP*                   get();
     inline const QList<Contact*>*  getContacts() const            {return m_Datas; }
 
+    void                           connectToServer     (const QString &user, const QString &password);
+    void                           disconnectFromServer();
 
 
 private:
@@ -33,8 +30,11 @@ private:
     QList<Contact*>          *m_Datas;
     int                       m_WaitNbContacts;
     bool                      m_Connected;
-    QXmppTransferManager     *m_TransferManager;
-    Facebook                 *m_Facebook;
+
+
+    // ------------------------------------------------------------
+    // connection to headless XMPP service.
+    QTcpSocket               *m_ClientSocket;
 
     XMPP(QObject *parent = 0);
 
@@ -42,27 +42,17 @@ private:
 
 public Q_SLOTS:
 
-
-    void messageReceived    (const QXmppMessage&);
+    void getContactList     ();
+    void messageReceived    ();
     void sendMessageTo      (const QString &to, const QString &message);
-    void presenceReceived   (const QXmppPresence&);
+    void presenceReceived   (const QString &who, int status);
 
-    void rosterReceived     ();
-    void vCardReceived      (const QXmppVCardIq&);
     void loadvCard          (const QString& bareJid);
-
-
-
 
     // -------------------------------------------------------------
     // file transfer handling
 
     void sendData           (const QString &file, const QString &to);
-    void fileReceived       (QXmppTransferJob* );
-    void transferError      (QXmppTransferJob::Error error);
-    void transferFinished   ();
-    void transferInProgress (qint64 done,qint64 total);
-
 
     // -------------------------------------------------------------
     // cleanup
@@ -70,11 +60,13 @@ public Q_SLOTS:
     void clear              ();
 
 
-    // -------------------------------------------------------------
-    // Side API
-    void initFacebook           ();
-    void facebookImagesRetrieved();
+    // ------------------------------------------------------------
+    // connection to headless XMPP service.
 
+    void connected           ();
+    void disconnected        ();
+    void readyRead           ();
+    void connectToXMPPService();
 
 Q_SIGNALS:
 
@@ -82,6 +74,7 @@ Q_SIGNALS:
     void contactReceived    ();
     void presenceUpdated    (const QString &who, int status);
 
+    void connectedXMPP       ();
 };
 
 
