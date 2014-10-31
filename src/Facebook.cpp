@@ -95,9 +95,8 @@ void Facebook::checkDownload() {
             const int available = reply->bytesAvailable();
             if (available > 0) {
                 facebookMutex.lockForWrite();
-                QString name = m_UrlToUser[reply->url().toString()];
+                saveImages(reply->readAll(), m_UrlToUser[reply->url().toString()]);
                 facebookMutex.unlock();
-                saveImages(reply->readAll(), name);
             }
         } else {
             qDebug() << "reply... " << reply->errorString();
@@ -142,7 +141,7 @@ void Facebook::saveImages(const QByteArray &buffer, const QString &username) {
     }
 
     qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied).save(name + ".png", "PNG");
-    emit imagesRetrieved();
+    emit imagesRetrieved(username);
 
 }
 

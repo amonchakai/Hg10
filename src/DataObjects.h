@@ -18,7 +18,12 @@ struct XMPPServiceMessages {
         REPLY_LOGGED_IN,
         DISCONNECT,
         REQUEST_CONTACT_LIST,
-        REPLY_CONTACT_LIST
+        REPLY_CONTACT_LIST,
+        STATUS_UPDATE,
+        PRESENCE_UPDATE,
+        MESSAGE,
+        SEND_MESSAGE,
+        SEND_FILE
     };
 };
 

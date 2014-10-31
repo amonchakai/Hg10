@@ -11,6 +11,7 @@
 
 class QTcpSocket;
 class Contact;
+class Facebook;
 
 class XMPP : public QObject {
     Q_OBJECT;
@@ -28,9 +29,9 @@ public:
 private:
     static XMPP              *m_This;
     QList<Contact*>          *m_Datas;
-    int                       m_WaitNbContacts;
+    QMap<QString, Contact*>  *m_PushStack;
     bool                      m_Connected;
-
+    Facebook                 *m_Facebook;
 
     // ------------------------------------------------------------
     // connection to headless XMPP service.
@@ -43,11 +44,9 @@ private:
 public Q_SLOTS:
 
     void getContactList     ();
-    void messageReceived    ();
     void sendMessageTo      (const QString &to, const QString &message);
-    void presenceReceived   (const QString &who, int status);
 
-    void loadvCard          (const QString& bareJid);
+    void loadvCard          (const QString& bareJid, bool push = false);
 
     // -------------------------------------------------------------
     // file transfer handling
@@ -59,6 +58,11 @@ public Q_SLOTS:
 
     void clear              ();
 
+    // -------------------------------------------------------------
+    // aside API
+
+    void initFacebook           ();
+    void facebookImagesRetrieved(const QString &who);
 
     // ------------------------------------------------------------
     // connection to headless XMPP service.
@@ -72,6 +76,7 @@ Q_SIGNALS:
 
     void offline            (bool status);
     void contactReceived    ();
+    void pushContact        (const Contact*);
     void presenceUpdated    (const QString &who, int status);
 
     void connectedXMPP       ();

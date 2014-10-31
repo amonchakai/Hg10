@@ -19,11 +19,14 @@
 #include "ConversationManager.hpp"
 
 ListContactsController::ListContactsController(QObject *parent) : QObject(parent),
-    m_ListView(NULL), m_Activity(NULL), m_OnlyFavorite(false), m_Notification(NULL) {
+    m_ListView(NULL), m_Activity(NULL), m_OnlyFavorite(false), m_PushStated(false), m_Notification(NULL) {
 
     bool check = connect(XMPP::get(), SIGNAL(contactReceived()), this, SLOT(updateView()));
     Q_ASSERT(check);
     Q_UNUSED(check);
+
+    check = connect(XMPP::get(), SIGNAL(pushContact(const Contact*)), this, SLOT(pushContact(const Contact*)));
+    Q_ASSERT(check);
 
     check = connect(ConversationManager::get(), SIGNAL(messageReceived(const QString &, const QString &)), this, SLOT(messageReceived(const QString &, const QString &)));
     Q_ASSERT(check);
@@ -148,7 +151,7 @@ void ListContactsController::markRead() {
 
 void ListContactsController::updateView() {
 
-
+    m_PushStated = false;
 
     // ----------------------------------------------------------------------------------------------
     // get the dataModel of the listview if not already available
@@ -223,6 +226,9 @@ void ListContactsController::updateView() {
         } else {
             setUserName(contacts->at(i)->getName());
             setAvatar(contacts->at(i)->getAvatar());
+
+            if(ConversationManager::get()->getAvatar().isEmpty())
+                ConversationManager::get()->setAvatar(contacts->at(i)->getAvatar());
         }
     }
 
@@ -230,6 +236,59 @@ void ListContactsController::updateView() {
     dataModel->insertList(datas);
 }
 
+void ListContactsController::pushContact(const Contact* c) {
+
+    using namespace bb::cascades;
+
+    GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
+
+    if(!m_PushStated) {
+        dataModel->clear();
+        m_Contacts.clear();
+        m_PushStated = true;
+
+        qDebug() << "PUSH CONTACT!!";
+    }
+
+    qDebug() << "Pushing: " << c->getName();
+
+    QDateTime now = QDateTime::currentDateTime();
+
+    if(c->getID().toLower() != ConversationManager::get()->getUser().toLower()) {
+
+        TimeEvent e = ConversationManager::get()->getPreview(c->getID());
+
+        Contact *nc = new Contact;
+        nc->setAvatar(c->getAvatar());
+        nc->setName(c->getName());
+
+        nc->setTimestamp(e.m_When);
+        nc->setTimestampString(formatTime(e.m_When));
+
+        e.m_What.replace("&#39;","\'");
+        e.m_What.replace(QChar(0x1F61C), ":P");
+
+        nc->setPreview(e.m_What);
+
+        nc->setID(c->getID());
+        nc->setPresence(c->getPresence());
+        nc->setRead(e.m_Read);
+
+        m_Contacts.push_back(nc);
+
+        e.m_When = 0;
+
+        dataModel->insert(nc);
+
+    } else {
+        setUserName(c->getName());
+        setAvatar(c->getAvatar());
+
+        if(ConversationManager::get()->getAvatar().isEmpty())
+            ConversationManager::get()->setAvatar(c->getAvatar());
+    }
+
+}
 
 QString ListContactsController::formatTime(qint64 msecs) {
     if(msecs == 0)

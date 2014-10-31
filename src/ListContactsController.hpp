@@ -30,6 +30,7 @@ private:
     QString                          m_Avatar;
     QList<Contact *>                 m_Contacts;
     bool                             m_OnlyFavorite;
+    bool                             m_PushStated;
 
     bb::platform::Notification      *m_Notification;
 
@@ -54,7 +55,7 @@ public Q_SLOTS:
     inline void setListView             (QObject *listView)    {m_ListView = dynamic_cast<bb::cascades::ListView*>(listView); }
     inline void setActivityIndicator    (QObject *activity)    {m_Activity = dynamic_cast<bb::cascades::ActivityIndicator*>(activity); m_Activity->start();}
     void updateView                     ();
-
+    void pushContact                    (const Contact*);
 
 
     void updatePresence                 (const QString &who, int status);

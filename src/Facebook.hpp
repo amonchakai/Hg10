@@ -31,7 +31,7 @@ public Q_SLOTS:
 
 
 Q_SIGNALS:
-    void imagesRetrieved        ();
+    void imagesRetrieved        (const QString&);
 
 };
 
