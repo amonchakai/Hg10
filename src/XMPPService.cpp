@@ -221,12 +221,19 @@ void XMPP::getContactList() {
 void XMPP::loadLocal() {
     mutexLoadLocal.lockForWrite();
 
+    QRegExp isFacebook("(.*)@chat.facebook.com");
+    bool delayPush = false;
+
     QString directory = QDir::homePath() + QLatin1String("/vCards");
     if (QFile::exists(directory)) {
         QDir dir(directory);
         dir.setNameFilters(QStringList() << "*.xml");
         dir.setFilter(QDir::Files);
         foreach(QString dirFile, dir.entryList()) {
+
+            if(isFacebook.indexIn(dirFile.mid(0,dirFile.length()-4)) != -1)
+                delayPush = true;
+
             //dir.remove(dirFile);
             //qDebug() << dirFile;
             loadvCard(dirFile.mid(0,dirFile.length()-4));
@@ -235,7 +242,8 @@ void XMPP::loadLocal() {
 
     mutexLoadLocal.unlock();
 
-    emit contactReceived();
+    if(!delayPush)
+        emit contactReceived();
 
 }
 
@@ -279,6 +287,8 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
         photoName = isFacebook.cap(1);
         if(photoName[0] == '-')
             photoName = photoName.mid(1);
+
+        push = true;
 
         if(m_Facebook == NULL)
             initFacebook();
