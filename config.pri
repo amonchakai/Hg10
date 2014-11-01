@@ -36,11 +36,14 @@ simulator {
 
 config_pri_assets {
     OTHER_FILES += \
+        $$quote($$BASEDIR/assets/Contacts.qml) \
         $$quote($$BASEDIR/assets/Conversation.qml) \
+        $$quote($$BASEDIR/assets/CreateRoom.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
+        $$quote($$BASEDIR/assets/Rooms.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
@@ -51,9 +54,14 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/avatar.png.square.png) \
         $$quote($$BASEDIR/assets/images/avatar.square.svg) \
         $$quote($$BASEDIR/assets/images/avatar.svg) \
+        $$quote($$BASEDIR/assets/images/chat_room.png) \
+        $$quote($$BASEDIR/assets/images/chat_room.svg) \
+        $$quote($$BASEDIR/assets/images/contact.png) \
+        $$quote($$BASEDIR/assets/images/contact.svg) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \
         $$quote($$BASEDIR/assets/images/icon_attach.png) \
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
+        $$quote($$BASEDIR/assets/images/icon_chat.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
         $$quote($$BASEDIR/assets/images/icon_left.png) \
@@ -117,8 +125,10 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/Image/WebResourceManager.cpp) \
         $$quote($$BASEDIR/src/ListContactsController.cpp) \
         $$quote($$BASEDIR/src/LoginController.cpp) \
+        $$quote($$BASEDIR/src/RoomController.cpp) \
         $$quote($$BASEDIR/src/SettingsController.cpp) \
         $$quote($$BASEDIR/src/SmileyPickerController.cpp) \
+        $$quote($$BASEDIR/src/SuggestContactController.cpp) \
         $$quote($$BASEDIR/src/XMPPService.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
         $$quote($$BASEDIR/src/base/QXmppArchiveIq.cpp) \
@@ -193,8 +203,10 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/Image/WebResourceManager.h) \
         $$quote($$BASEDIR/src/ListContactsController.hpp) \
         $$quote($$BASEDIR/src/LoginController.hpp) \
+        $$quote($$BASEDIR/src/RoomController.hpp) \
         $$quote($$BASEDIR/src/SettingsController.hpp) \
         $$quote($$BASEDIR/src/SmileyPickerController.hpp) \
+        $$quote($$BASEDIR/src/SuggestContactController.hpp) \
         $$quote($$BASEDIR/src/XMPPService.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp) \
         $$quote($$BASEDIR/src/base/QXmppArchiveIq.h) \

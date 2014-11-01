@@ -2,6 +2,17 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>Contacts</name>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear history</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Conversation</name>
     <message>
         <source>Reply</source>
@@ -17,6 +28,33 @@
     </message>
     <message>
         <source>Attach</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CreateRoom</name>
+    <message>
+        <source>Create room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Room name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Participants</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Look for a contact</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -147,6 +185,13 @@
     </message>
 </context>
 <context>
+    <name>Rooms</name>
+    <message>
+        <source>Rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Settings</name>
     <message>
         <source>Settings</source>
@@ -249,11 +294,11 @@ Delete and forget this stupid app&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Contact</source>
+        <source>Rooms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear history</source>
+        <source>Contacts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

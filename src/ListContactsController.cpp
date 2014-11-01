@@ -255,6 +255,9 @@ void ListContactsController::updateView() {
 
     dataModel->clear();
     dataModel->insertList(datas);
+
+    if(m_Activity != NULL)
+        m_Activity->stop();
 }
 
 void ListContactsController::pushContact(const Contact* c) {

@@ -1,6 +1,8 @@
 1
-66
+74
+Contacts.qml
 Conversation.qml
+CreateRoom.qml
 dropbox_secret.txt
 DropboxConnect.qml
 GoogleConnect.qml
@@ -11,9 +13,14 @@ images/avatar.png
 images/avatar.png.square.png
 images/avatar.square.svg
 images/avatar.svg
+images/chat_room.png
+images/chat_room.svg
+images/contact.png
+images/contact.svg
 images/icon_about.png
 images/icon_attach.png
 images/icon_bottom.png
+images/icon_chat.png
 images/icon_favorites.png
 images/icon_home.png
 images/icon_left.png
@@ -59,6 +66,7 @@ images/write.svg
 images/write_white.png
 LoginForm.qml
 main.qml
+Rooms.qml
 secret.txt
 Settings.qml
 SmileyPicker.qml
