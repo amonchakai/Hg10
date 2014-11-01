@@ -8,8 +8,8 @@
 #ifndef XMPPSERVICE_HPP_
 #define XMPPSERVICE_HPP_
 
+#include <QtNetwork/QTcpSocket>
 
-class QTcpSocket;
 class Contact;
 class Facebook;
 
@@ -68,6 +68,7 @@ public Q_SLOTS:
     // connection to headless XMPP service.
 
     void connected           ();
+    void connectionToServiceFailed(QAbstractSocket::SocketError e);
     void disconnected        ();
     void readyRead           ();
     void connectToXMPPService();
@@ -80,6 +81,7 @@ Q_SIGNALS:
     void presenceUpdated    (const QString &who, int status);
 
     void connectedXMPP       ();
+    void connectionFailed    ();
 };
 
 

@@ -11,6 +11,7 @@
 #include "ConversationManager.hpp"
 #include <QFile>
 #include <QDir>
+#include <bb/system/SystemToast>
 
 LoginController::LoginController(QObject *parent) : QObject(parent) {
     if(isLogged()) {
@@ -27,7 +28,12 @@ void LoginController::login(const QString& login, const QString &password) {
     m_User.replace(" ", ""); // remove eventual padding spaces...
     XMPP::get()->connectToServer(m_User, password);
 
-    QObject::connect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(connected()));
+    bool check = QObject::connect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(connected()));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
+
+    check = QObject::connect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(connectionFailed()));
+    Q_ASSERT(check);
 }
 
 
@@ -37,6 +43,19 @@ void LoginController::connected() {
     ConversationManager::get()->loadUserName();
     emit complete();
 }
+
+void LoginController::connectionFailed() {
+    QObject::disconnect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(connectionFailed()));
+
+    bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+    toast->setBody(tr("Login failed, please check if your user name and password are correct"));
+    toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+    toast->show();
+
+    emit connectError();
+}
+
 
 
 void LoginController::saveUserName() {

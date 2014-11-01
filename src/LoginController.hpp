@@ -32,11 +32,12 @@ public Q_SLOTS:
     void deleteHistory          ();
     void clearContactsData      ();
     void connected              ();
-
+    void connectionFailed       ();
 
 
 Q_SIGNALS:
     void complete               ();
+    void connectError           ();
 
 
 

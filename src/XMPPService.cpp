@@ -16,7 +16,7 @@
 #include <QRegExp>
 #include <QReadWriteLock>
 #include <bb/cascades/ImageTracker>
-#include <QtNetwork/QTcpSocket>
+#include <bb/system/SystemDialog>
 
 #include "DataObjects.h"
 #include "ConversationManager.hpp"
@@ -38,6 +38,8 @@ XMPP::XMPP(QObject *parent) : QObject(parent),
     Q_ASSERT(check);
     Q_UNUSED(check);
 
+    check = connect(m_ClientSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(connectionToServiceFailed(QAbstractSocket::SocketError)));
+    Q_ASSERT(check);
 
     loadLocal();
     connectToXMPPService();
@@ -67,6 +69,13 @@ void XMPP::connected() {
         mutex.unlock();
     }
 
+}
+
+void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
+    bb::system::SystemDialog *dialog = new bb::system::SystemDialog("OK");
+    dialog->setTitle(tr("Something bad :("));
+    dialog->setBody(tr("The connection to the headless service cannot be established.\n\nMaybe you did not allow it? \nMaybe it crashed...\n\nYou can check the permission, try to kill/restart the process, reinstall the app, reboot your device... \n\nDelete and forget this stupid app\'"));
+    dialog->show();
 }
 
 
@@ -115,6 +124,11 @@ void XMPP::readyRead() {
             }
                 break;
 
+            case XMPPServiceMessages::REPLY_CONNECTION_FAILED: {
+                emit connectionFailed();
+
+            }
+                break;
 
 
             case XMPPServiceMessages::STATUS_UPDATE: {

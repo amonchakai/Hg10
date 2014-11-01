@@ -10,6 +10,14 @@ Page {
         layout: DockLayout {
         }
         
+        ActivityIndicator {
+            id: connectingActivity
+            preferredHeight: 80
+            verticalAlignment: VerticalAlignment.Center
+            horizontalAlignment: HorizontalAlignment.Fill
+            accessibility.name: "connectingActivity"
+        }
+        
         Container {
             verticalAlignment: VerticalAlignment.Center    
             
@@ -46,10 +54,10 @@ Page {
                 text: qsTr("Submit")
                 horizontalAlignment: HorizontalAlignment.Center
                 onClicked: {
+                    connectingActivity.start();
+                    
                     if(login.text != "")
                         loginController.login(login.text,password.text);
-                    else 
-                        done();
                 }
             }
         }
@@ -70,7 +78,12 @@ Page {
             id: loginController
             
             onComplete: {
+                connectingActivity.stop();
                 done();
+            }
+            
+            onConnectError: {
+                connectingActivity.stop();
             }
         }
     ]

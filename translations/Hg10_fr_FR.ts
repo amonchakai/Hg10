@@ -5,19 +5,19 @@
     <name>Conversation</name>
     <message>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Répondre</translation>
     </message>
     <message>
         <source>To last message</source>
-        <translation type="unfinished"></translation>
+        <translation>Aller au dernier message</translation>
     </message>
     <message>
         <source>Emoticons</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoticons</translation>
     </message>
     <message>
         <source>Attach</source>
-        <translation type="unfinished"></translation>
+        <translation>Joindre</translation>
     </message>
 </context>
 <context>
@@ -28,15 +28,15 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <source>Insert access code</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez votre code d&apos;access</translation>
     </message>
 </context>
 <context>
@@ -47,33 +47,33 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
     <name>LoginController</name>
     <message>
         <source>Login failed, please check if your user name and password are correct</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;authentification a échoué. Vérfiez votre identifiant et mot de passe.</translation>
     </message>
 </context>
 <context>
     <name>LoginForm</name>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant</translation>
     </message>
     <message>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Connecter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot de passe</translation>
     </message>
 </context>
 <context>
@@ -150,81 +150,81 @@
     <name>Settings</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <source>User: </source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisateur: </translation>
     </message>
     <message>
         <source>Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Connection</translation>
     </message>
     <message>
         <source>log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Deconnection</translation>
     </message>
     <message>
         <source>Clear history</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer historique</translation>
     </message>
     <message>
         <source>Visual Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thème</translation>
     </message>
     <message>
         <source>Bright</source>
-        <translation type="unfinished"></translation>
+        <translation>Clair</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>Foncé</translation>
     </message>
     <message>
         <source>Synch with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Synch avec Google</translation>
     </message>
     <message>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille des polices</translation>
     </message>
     <message>
         <source>Clear stored contact information</source>
-        <translation type="unfinished"></translation>
+        <translation>Vider cache des contacts</translation>
     </message>
     <message>
         <source>Use dropbox to host files</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser dropbox</translation>
     </message>
 </context>
 <context>
     <name>Welcome</name>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot de passe</translation>
     </message>
     <message>
         <source>Submit</source>
-        <translation type="unfinished"></translation>
+        <translation>Valider</translation>
     </message>
 </context>
 <context>
     <name>XMPP</name>
     <message>
         <source>Something bad :(</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur :(</translation>
     </message>
     <message>
         <source>The connection to the headless service cannot be established.
@@ -235,26 +235,33 @@ Maybe it crashed...
 You can check the permission, try to kill/restart the process, reinstall the app, reboot your device... 
 
 Delete and forget this stupid app&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>La connection au service headless n&apos;a pas pu se faire.
+
+Peut-être avez-vous refusé les services headless?
+Peut-être l&apos;application a stoppée?
+
+Vous pouvez vérifier les droits de l&apos;application, arrêter/redémarrer le processus, réinstaller l&apos;application, redémarrer votre téléphone...
+
+Supprimer et oublier cette stupide application.</translation>
     </message>
 </context>
 <context>
     <name>main</name>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>A Propos</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Contacts</translation>
     </message>
     <message>
         <source>Clear history</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer historique</translation>
     </message>
 </context>
 </TS>
