@@ -15,10 +15,11 @@ class SettingsController : public QObject {
     Q_OBJECT;
 
 
-    Q_PROPERTY( QString userName    READ getUserName    WRITE setUserName    NOTIFY  userNameChanged)
-    Q_PROPERTY( QString avatar      READ getAvatar      WRITE setAvatar      NOTIFY  avatarChanged)
-    Q_PROPERTY( int     theme       READ getTheme       WRITE setTheme       NOTIFY  themeChanged)
-    Q_PROPERTY( int     fontSize    READ getFontSize    WRITE setFontSize    NOTIFY  fontSizeChanged)
+    Q_PROPERTY( QString userName     READ getUserName        WRITE setUserName       NOTIFY  userNameChanged)
+    Q_PROPERTY( QString avatar       READ getAvatar          WRITE setAvatar         NOTIFY  avatarChanged)
+    Q_PROPERTY( int     theme        READ getTheme           WRITE setTheme          NOTIFY  themeChanged)
+    Q_PROPERTY( int     fontSize     READ getFontSize        WRITE setFontSize       NOTIFY  fontSizeChanged)
+    Q_PROPERTY( bool    enableGoogle READ getEnableGoogle    WRITE setEnableGoogle   NOTIFY  enableGoogleChanged)
 
 private:
 
@@ -26,6 +27,7 @@ private:
      QString            m_Avatar;
      int                m_Theme;
      int                m_FontSize;
+     bool               m_IsGoogleEnabled;
 
      QSettings          *m_Settings;
 
@@ -43,7 +45,10 @@ public:
     inline void           setTheme(int c)                   { m_Theme = c; emit themeChanged(); }
 
     inline int            getFontSize() const               { return m_FontSize; }
-    inline void           setFontSize(int c)                { m_FontSize = c; emit themeChanged(); }
+    inline void           setFontSize(int c)                { m_FontSize = c;  }
+
+    inline int            getEnableGoogle() const           { return m_IsGoogleEnabled; }
+    inline void           setEnableGoogle(bool c)           { m_IsGoogleEnabled = c; emit enableGoogleChanged(); }
 
 public Q_SLOTS:
     void updateAvatar();
@@ -56,6 +61,7 @@ Q_SIGNALS:
     void avatarChanged();
     void themeChanged();
     void fontSizeChanged();
+    void enableGoogleChanged();
 
 };
 

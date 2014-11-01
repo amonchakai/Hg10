@@ -101,7 +101,7 @@ NavigationPane {
                         	tpage = loginPage.createObject();
                         navSettings.push(tpage);
     	            }
-    	            visible: !loginController.isLogged()
+                    visible: (settingsController.userName == "")
     	        }
     	        
     	        
@@ -115,7 +115,7 @@ NavigationPane {
     	                logOutButton.setVisible(false);
                         userLabel.setText(qsTr("User: "));
     	            }
-    	            visible: loginController.isLogged()
+                    visible: (settingsController.userName != "")
     	        }
     	        
     	        Divider { }
@@ -190,6 +190,8 @@ NavigationPane {
                             googlePage = googleConnect.createObject();
                         navSettings.push(googlePage);
     	            }
+    	            
+                    visible: settingsController.enableGoogle
     	        }
     	        
                 Button {

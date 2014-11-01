@@ -9,7 +9,7 @@
 
 #include "SettingsController.hpp"
 #include "ConversationMAnager.hpp"
-
+#include <QRegExp>
 
 SettingsController::SettingsController(QObject *parent) : QObject(parent), m_FontSize(28), m_Settings(NULL) {
 
@@ -22,6 +22,12 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
     if(m_FontSize == 0)
         m_FontSize = 28;
 
+    QRegExp isFacebook("(.*)@chat.facebook.com");
+    if(isFacebook.indexIn(m_User) != -1)
+        m_IsGoogleEnabled = false;
+    else
+        m_IsGoogleEnabled = true;
+
     bool check = connect(ConversationManager::get(), SIGNAL(avatarUpdated()), this, SLOT(updateAvatar()));
 
     Q_ASSERT(check);
@@ -32,6 +38,11 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
 void SettingsController::updateAvatar() {
     setAvatar(ConversationManager::get()->getAvatar());
     setUserName(ConversationManager::get()->getUser());
+
+    QRegExp isFacebook("(.*)@chat.facebook.com");
+    if(isFacebook.indexIn(ConversationManager::get()->getUser()) != -1)
+        setEnableGoogle(false);
+
 }
 
 

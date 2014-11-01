@@ -250,6 +250,12 @@ void ListContactsController::pushContact(const Contact* c) {
         qDebug() << "PUSH CONTACT!!";
     }
 
+    // check if not already in the list...
+    for(int i = 0 ; i < m_Contacts.size() ; ++i) {
+        if(c->getID() == m_Contacts.at(i)->getID())
+            return;
+    }
+
     qDebug() << "Pushing: " << c->getName();
 
     QDateTime now = QDateTime::currentDateTime();
