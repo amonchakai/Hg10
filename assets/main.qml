@@ -23,6 +23,14 @@ NavigationPane {
                 onTriggered: {
                     settings.open();
                 }
+            },
+            ActionItem {
+                title: listContactsController.notif ? " [ON]" : " [OFF]"
+                imageSource: "asset:///images/icon_notification.png"
+                onTriggered: {
+                    listContactsController.notif = !listContactsController.notif;
+                }
+            
             }
         ]
     }  
@@ -94,7 +102,10 @@ NavigationPane {
                     property bool empty: true
                     
                     
-                    onItemAdded: empty = isEmpty()  
+                    onItemAdded: {
+                        empty = isEmpty();
+                        listContactView.scrollToPosition(ScrollPosition.Beginning, ScrollAnimation.None);
+                    }
                     onItemRemoved: empty = isEmpty()  
                     onItemUpdated: empty = isEmpty()  
                     
@@ -103,6 +114,8 @@ NavigationPane {
                     onItemsChanged: empty = isEmpty()
                 
                 }
+                
+                focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
                 
                 listItemComponents: [
                     ListItemComponent {
@@ -297,6 +310,8 @@ NavigationPane {
             listContactsController.setListView(listContactView);
             listContactsController.setActivityIndicator(connectingActivity);
             listContactsController.updateView();
+            
+            
             depth = 0;
         }
         
@@ -340,17 +355,22 @@ NavigationPane {
     onPushTransitionEnded: {
         ++depth;
         console.log(depth)
+        
+        if(depth == 1)
+            listContactView.requestFocus();
     }
     
     onPopTransitionEnded: {
         --depth;
         if(depth == 1) {
+            listContactView.requestFocus();
             listContactsController.markRead();
             if(tpage) 
                 tpage.id = "";
         
         }
         console.log(depth)
+
     }
 }
 

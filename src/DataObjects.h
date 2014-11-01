@@ -24,7 +24,8 @@ struct XMPPServiceMessages {
         PRESENCE_UPDATE,
         MESSAGE,
         SEND_MESSAGE,
-        SEND_FILE
+        SEND_FILE,
+        REFRESH_SETTINGS
     };
 };
 

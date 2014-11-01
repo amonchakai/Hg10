@@ -69,6 +69,8 @@ Page {
             horizontalAlignment: HorizontalAlignment.Fill
             id: scrollView
             
+            focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
+            
             WebView {
                 id: messageView
                 
@@ -128,11 +130,11 @@ Page {
                 visible: false
             }
             
-            TextArea {
+            TextField {
                 preferredHeight: 30
                 horizontalAlignment: HorizontalAlignment.Fill
                 id: txtField
-                inputMode: TextAreaInputMode.Chat
+                inputMode: TextFieldInputMode.Chat
                 
                 input {
                     submitKey: SubmitKey.Send
@@ -222,6 +224,10 @@ Page {
             onUploading: {
                 uploadingIndicator.visible = true;
                 uploadingIndicator.value = status;
+            }
+            
+            onComplete: {
+                scrollView.requestFocus();
             }
         },
         Invocation {

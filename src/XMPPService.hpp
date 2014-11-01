@@ -36,6 +36,7 @@ private:
     // ------------------------------------------------------------
     // connection to headless XMPP service.
     QTcpSocket               *m_ClientSocket;
+    bool                      m_Restart;
 
     XMPP(QObject *parent = 0);
 
@@ -72,6 +73,14 @@ public Q_SLOTS:
     void disconnected        ();
     void readyRead           ();
     void connectToXMPPService();
+
+    void notifySettingChange ();
+
+
+    // ------------------------------------------------------------
+    // failure area
+
+    bool tryRestartHeadless ();
 
 Q_SIGNALS:
 

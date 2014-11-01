@@ -1,5 +1,5 @@
 1
-65
+66
 Conversation.qml
 dropbox_secret.txt
 DropboxConnect.qml
@@ -17,6 +17,7 @@ images/icon_bottom.png
 images/icon_favorites.png
 images/icon_home.png
 images/icon_left.png
+images/icon_notification.png
 images/icon_settings.png
 images/send.png
 images/send.svg

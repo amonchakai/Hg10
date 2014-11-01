@@ -17,6 +17,9 @@
 #include <QReadWriteLock>
 #include <bb/cascades/ImageTracker>
 #include <bb/system/SystemDialog>
+#include <bb/system/InvokeManager>
+#include <bb/system/InvokeRequest>
+#include <bb/system/InvokeTargetReply>
 
 #include "DataObjects.h"
 #include "ConversationManager.hpp"
@@ -32,7 +35,8 @@ XMPP::XMPP(QObject *parent) : QObject(parent),
         m_PushStack(NULL),
         m_Connected(false),
         m_Facebook(NULL),
-        m_ClientSocket(new QTcpSocket(this)) {
+        m_ClientSocket(new QTcpSocket(this)),
+        m_Restart(false) {
 
     bool check = connect(m_ClientSocket, SIGNAL(connected()), this, SLOT(connected()));
     Q_ASSERT(check);
@@ -67,15 +71,46 @@ void XMPP::connected() {
         m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
         m_ClientSocket->flush();
         mutex.unlock();
+
+        if(m_Restart) {
+            QString directory = QDir::homePath() + QLatin1String("/ApplicationData");
+            if (!QFile::exists(directory)) {
+                return;
+            }
+
+            QFile file(directory + "/UserID.txt");
+
+            if (file.open(QIODevice::ReadOnly)) {
+                QDataStream stream(&file);
+                QString user;
+                QString password;
+
+                stream >> user;
+                stream >> password;
+
+                file.close();
+
+                connectToServer(user, password);
+            }
+
+        }
     }
 
 }
 
 void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
-    bb::system::SystemDialog *dialog = new bb::system::SystemDialog("OK");
-    dialog->setTitle(tr("Something bad :("));
-    dialog->setBody(tr("The connection to the headless service cannot be established.\n\nMaybe you did not allow it? \nMaybe it crashed...\n\nYou can check the permission, try to kill/restart the process, reinstall the app, reboot your device... \n\nDelete and forget this stupid app\'"));
-    dialog->show();
+
+    bool result = tryRestartHeadless();
+
+    if(result == false) {
+        bb::system::SystemDialog *dialog = new bb::system::SystemDialog("OK");
+        dialog->setTitle(tr("Something bad :("));
+        dialog->setBody(tr("The connection to the headless service cannot be established.\n\nMaybe you did not allow it? \nMaybe it crashed...\n\nYou can check the permission, try to kill/restart the process, reinstall the app, reboot your device... \n\nDelete and forget this stupid app\'"));
+        dialog->show();
+    } else {
+        connectToXMPPService();
+        m_Restart = true;
+    }
 }
 
 
@@ -383,6 +418,19 @@ void XMPP::sendMessageTo(const QString &to, const QString &message) {
 }
 
 
+void XMPP::notifySettingChange() {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::REFRESH_SETTINGS;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
 // -------------------------------------------------------------
 // file transfer handling
 
@@ -428,6 +476,28 @@ void XMPP::facebookImagesRetrieved(const QString &who) {
 }
 
 
+
+
+// ------------------------------------------------------------
+// failure area
+
+
+bool XMPP::tryRestartHeadless() {
+    bb::system::InvokeRequest request;
+    request.setTarget("com.amonchakai.Hg10.Headless");
+    request.setAction("bb.action.START");
+    bb::system::InvokeManager *invokeManager = new bb::system::InvokeManager(this);
+    bb::system::InvokeTargetReply *reply = invokeManager->invoke(request);
+    if (!reply) {
+        qWarning() << "failed to start headless " << reply->errorCode();
+        reply->deleteLater();
+        invokeManager->deleteLater();
+
+        return false;
+    }
+
+    return true;
+}
 
 
 

@@ -57,6 +57,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
         $$quote($$BASEDIR/assets/images/icon_left.png) \
+        $$quote($$BASEDIR/assets/images/icon_notification.png) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/send.png) \
         $$quote($$BASEDIR/assets/images/send.svg) \

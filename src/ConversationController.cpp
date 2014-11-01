@@ -102,6 +102,7 @@ void ConversationController::updateView() {
 
 
         m_WebView->setHtml(htmlTemplate + body  + endTemplate, "file:///" + QDir::homePath() + "/../app/native/assets/");
+        emit complete();
     }
 }
 

@@ -21,6 +21,7 @@ class ListContactsController : public QObject {
 
     Q_PROPERTY( QString userName    READ getUserName    WRITE setUserName    NOTIFY userNameChanged)
     Q_PROPERTY( QString avatar      READ getAvatar      WRITE setAvatar      NOTIFY avatarChanged)
+    Q_PROPERTY( bool    notif       READ getNotif       WRITE setNotif       NOTIFY notifChanged)
 
 
 private:
@@ -31,6 +32,7 @@ private:
     QList<Contact *>                 m_Contacts;
     bool                             m_OnlyFavorite;
     bool                             m_PushStated;
+    bool                             m_Notif;
 
     bb::platform::Notification      *m_Notification;
 
@@ -47,6 +49,8 @@ public:
     inline const QString &getAvatar     () const               { return m_Avatar; }
     inline void           setAvatar     (const QString &c)     { m_Avatar = c; emit avatarChanged(); }
 
+    inline const bool     getNotif      () const               { return m_Notif; }
+    void                  setNotif      (bool c);
 
 
 
@@ -77,6 +81,7 @@ Q_SIGNALS:
 
     void userNameChanged                ();
     void avatarChanged                  ();
+    void notifChanged                   ();
 
 
 };
