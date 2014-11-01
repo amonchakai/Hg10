@@ -82,6 +82,7 @@ Page {
                 onLoadingChanged: {
                     if (loadRequest.status == WebLoadStatus.Succeeded) {
                         messageView.evaluateJavaScript("scrollToEnd();");
+                        scrollView.requestFocus();
                     }
                 }
                 
