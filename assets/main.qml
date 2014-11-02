@@ -23,10 +23,10 @@ TabbedPane {
                 }
             },
             ActionItem {
-                title: listContactsController.notif ? " [ON]" : " [OFF]"
+                title: LoginController.notif ? " [ON]" : " [OFF]"
                 imageSource: "asset:///images/icon_notification.png"
                 onTriggered: {
-                    listContactsController.notif = !listContactsController.notif;
+                    LoginController.notif = !LoginController.notif;
                 }
             
             }

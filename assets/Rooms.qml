@@ -9,6 +9,8 @@ NavigationPane {
     property int depth
     property variant createRoomPage
     
+    property string newParticipants
+    
     Page {
         
         titleBar: TitleBar {
@@ -67,12 +69,104 @@ NavigationPane {
         Container {
             ListView {
                 id: roomList
+                
+                dataModel: GroupDataModel {
+                    id: theModel
+                    grouping: ItemGrouping.None
+                }
+                
+                listItemComponents: [
+                    ListItemComponent {
+                        type: "item"
+                        
+                        Container {
+                            id: overallContactContainer
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.TopToBottom
+                            }
+                            
+                            Container {
+                                layout: StackLayout {
+                                    orientation: LayoutOrientation.LeftToRight
+                                }
+                                preferredHeight: 110
+                                
+                                ImageView {
+                                    verticalAlignment: VerticalAlignment.Center
+                                    id: avatarImg
+                                    scalingMethod: ScalingMethod.AspectFit
+                                    minHeight: 90
+                                    maxHeight: 90
+                                    minWidth: 90
+                                    maxWidth: 90
+                                    image: tracker.image
+                                    
+                                    attachedObjects: [
+                                        NetImageTracker {
+                                            id: tracker
+                                            
+                                            source: ListItemData.avatar                                    
+                                        } 
+                                    ]
+                                }
+                                
+                                Label {
+                                    id: name
+                                    text: ListItemData.name
+                                    verticalAlignment: VerticalAlignment.Center
+                                }
+                            }
+                            
+                            Divider {
+                            
+                            }
+                            
+                            contextActions: [
+                                ActionSet {
+                                    title: qsTr("Contact")
+                                    
+                                    DeleteActionItem {
+                                        title: qsTr("Clear history")
+                                        onTriggered: {
+                                            overallContactContainer.ListItem.view.deleteHistory(ListItemData.id)
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                
+                ]
+                function deleteHistory(id) {
+                    roomController.deleteRoom(id);
+                }
+                
+                onTriggered: {
+                    var chosenItem = dataModel.data(indexPath);
+                    
+                    // Create the content page and push it on top to drill down to it.
+                    if(!tpage) {
+                        tpage = conversation.createObject();
+                    }
+                    
+                    // Set the url of the page to load and thread caption. 
+                    tpage.name     = chosenItem.name;
+                    tpage.avatar   = chosenItem.avatar;
+                    tpage.id       = chosenItem.id;
+                    tpage.room     = true;
+                    
+                    nav.push(tpage);
+                    
+                }
             }
         }
         
         onCreationCompleted: {
             roomController.setListView(roomList);
+            roomController.updateView();
         }
+        
+        
         
         attachedObjects: [
             RoomController {
@@ -81,8 +175,20 @@ NavigationPane {
             ComponentDefinition {
                 id: createRoom
                 source: "CreateRoom.qml"
+            },
+            ComponentDefinition {
+                id: conversation
+                source: "Conversation.qml"
             }
         ]
         
+    }
+    
+    onNewParticipantsChanged: {
+        if(newParticipants == "")
+            return;
+            
+        roomController.createRoom(newParticipants);
+        newParticipants = "";
     }
 }

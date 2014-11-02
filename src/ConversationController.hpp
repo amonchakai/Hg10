@@ -17,11 +17,15 @@ class DropBoxConnectController;
 class ConversationController : public QObject {
     Q_OBJECT;
 
+    Q_PROPERTY( bool    isRoom    READ getRoom       WRITE setRoom       NOTIFY roomChanged)
+
 private:
     bb::cascades::WebView    *m_WebView;
     QString                   m_DstAvatar;
     bool                      m_HistoryCleared;
+    bool                      m_IsRoom;
     DropBoxConnectController *m_DropboxController;
+
 
 
 
@@ -29,6 +33,9 @@ public:
     ConversationController              (QObject *parent = 0);
     virtual ~ConversationController     ()                      {};
 
+
+    inline bool getRoom() const                                                     { return m_IsRoom; }
+    inline void setRoom(bool r)                                                     { m_IsRoom = r; }
 
 private:
     bool isImage                        (const QString &url);
@@ -69,6 +76,7 @@ Q_SIGNALS:
     void uploading                      (int status);
     void receivedUrl                    (const QString &url);
 
+    void roomChanged                    ();
 
 };
 

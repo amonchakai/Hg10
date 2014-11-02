@@ -13,11 +13,30 @@
 #include <QDir>
 #include <bb/system/SystemToast>
 
+#include <QSettings>
+
 LoginController::LoginController(QObject *parent) : QObject(parent) {
     if(isLogged()) {
         loadUserName();
         XMPP::get()->connectToServer(m_User, m_Password);
     }
+
+    {
+        QSettings setting("Amonchakai", "Hg10");
+        if(setting.contains("notifications"))
+            m_Notif = setting.value("notification").value<bool>();
+    }
+}
+
+void LoginController::setNotif(bool value) {
+    m_Notif = value;
+
+    QSettings setting("Amonchakai", "Hg10");
+    setting.setValue("notification", m_Notif);
+
+    XMPP::get()->notifySettingChange();
+
+    emit notifChanged();
 }
 
 

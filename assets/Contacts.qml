@@ -238,9 +238,10 @@ NavigationPane {
                                     title: qsTr("Contact")
                                     
                                     DeleteActionItem {
-                                        title: qsTr("Clear history")
+                                        title: qsTr("Remove room")
                                         onTriggered: {
-                                            overallContactContainer.ListItem.view.deleteHistory(ListItemData.id)
+                                            overallContactContainer.ListItem.view.deleteHistory(ListItemData.id);
+                                            theModel.removeAt(ListItem.indexPath);
                                         }
                                     }
                                 }
@@ -266,6 +267,7 @@ NavigationPane {
                     tpage.name     = chosenItem.name;
                     tpage.avatar   = chosenItem.avatar;
                     tpage.id       = chosenItem.id;
+                    tpage.room     = false;
                     
                     nav.push(tpage);
                 }

@@ -8,7 +8,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear history</source>
+        <source>Remove room</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -43,10 +43,6 @@
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Room name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -188,6 +184,14 @@
     <name>Rooms</name>
     <message>
         <source>Rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear history</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

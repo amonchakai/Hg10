@@ -25,7 +25,9 @@ struct XMPPServiceMessages {
         MESSAGE,
         SEND_MESSAGE,
         SEND_FILE,
-        REFRESH_SETTINGS
+        REFRESH_SETTINGS,
+        CREATE_ROOM,
+        ADD_PARTICIPANT
     };
 };
 
@@ -101,6 +103,74 @@ public:
 
 };
 
+
+// ----------------------------------------------------------------------------------------------
+// Objects to handle group chat
+
+class RenderRoom : public QObject {
+    Q_OBJECT
+
+    Q_PROPERTY( QString name        READ getName        WRITE setName        NOTIFY nameChanged)
+    Q_PROPERTY( QString id          READ getID          WRITE setID          NOTIFY idChanged)
+    Q_PROPERTY( QString avatar      READ getAvatar      WRITE setAvatar      NOTIFY avatarChanged)
+
+private:
+    QString m_Name;
+    QString m_ID;
+    QString m_Avatar;
+
+    // ----------------------------------------------------------------------------------------------
+
+public:
+    RenderRoom(QObject *parent = 0) : QObject(parent) {}
+    virtual ~RenderRoom() {}
+
+
+    inline const QString &getName() const                   { return m_Name; }
+    inline void           setName(const QString &s)         { m_Name = s; emit nameChanged(); }
+
+    inline const QString &getID() const                     { return m_ID; }
+    inline void           setID(const QString &c)           { m_ID = c; emit idChanged();}
+
+    inline const QString &getAvatar() const                 { return m_Avatar; }
+    inline void           setAvatar(const QString &c)       { m_Avatar = c; emit avatarChanged(); }
+
+    // ----------------------------------------------------------------------------------------------
+    Q_SIGNALS:
+        void nameChanged();
+        void idChanged();
+        void avatarChanged();
+};
+
+
+struct GroupChat {
+    QString         m_RoomID;
+    QList<QString>  m_Participants;
+};
+
+inline QDataStream &operator<<(QDataStream& stream, const GroupChat& room) {
+    stream << room.m_RoomID;
+    stream << room.m_Participants.size();
+
+    for(int i = 0 ; i < room.m_Participants.size() ; ++i)
+        stream << room.m_Participants.at(i);
+
+    return stream;
+}
+
+inline QDataStream &operator>>(QDataStream& stream, GroupChat& room) {
+    stream >> room.m_RoomID;
+    int nbParticipants = 0;
+    stream >> nbParticipants;
+
+    for(int i = 0 ; i < nbParticipants ; ++i) {
+        QString participantId;
+        stream >> participantId;
+        room.m_Participants.push_back(participantId);
+    }
+
+    return stream;
+}
 
 // ----------------------------------------------------------------------------------------------
 // Objects to handle message history

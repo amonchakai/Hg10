@@ -98,7 +98,7 @@ void XMPP::connected() {
 
 }
 
-void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
+void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError ) {
 
     bool result = tryRestartHeadless();
 
@@ -448,6 +448,47 @@ void XMPP::sendData(const QString &file, const QString &to) {
         length = file.length();
         m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
         m_ClientSocket->write(file.toAscii(), length);
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
+
+
+// -------------------------------------------------------------
+// room chat
+
+
+void XMPP::createRoom(const QString& room) {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::CREATE_ROOM;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        int length = room.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(room.toAscii(), length);
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
+
+void XMPP::addParticipant(const QString &participant) {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::ADD_PARTICIPANT;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        int length = participant.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(participant.toAscii(), length);
 
         m_ClientSocket->flush();
     }

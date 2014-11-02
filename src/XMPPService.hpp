@@ -49,21 +49,44 @@ public Q_SLOTS:
 
     void loadvCard          (const QString& bareJid, bool push = false);
 
+
+
+
     // -------------------------------------------------------------
     // file transfer handling
 
     void sendData           (const QString &file, const QString &to);
+
+
+
+
 
     // -------------------------------------------------------------
     // cleanup
 
     void clear              ();
 
+
+
+
+    // -------------------------------------------------------------
+    // chat rooms
+
+    void createRoom             (const QString &roomName);
+    void addParticipant         (const QString &participant);
+
+
+
     // -------------------------------------------------------------
     // aside API
 
     void initFacebook           ();
     void facebookImagesRetrieved(const QString &who);
+
+
+
+
+
 
     // ------------------------------------------------------------
     // connection to headless XMPP service.
@@ -75,6 +98,9 @@ public Q_SLOTS:
     void connectToXMPPService();
 
     void notifySettingChange ();
+
+
+
 
 
     // ------------------------------------------------------------

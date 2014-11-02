@@ -7,6 +7,7 @@ Page {
     property string name
     property string avatar
     property string id
+    property bool   room
     property variant previewPage
     property variant smileyPage
     property string smileyToAdd
@@ -204,6 +205,10 @@ Page {
         if(smileyToAdd != "")
             txtField.text = txtField.text + " " + smileyToAdd;
         smileyToAdd = "";
+    }
+    
+    onRoomChanged: {
+        conversationController.isRoom = room;
     }
     
     function showPictureViewer(imageUrl) {

@@ -14,14 +14,19 @@
 class LoginController : public QObject {
     Q_OBJECT;
 
+    Q_PROPERTY( bool    notif       READ getNotif       WRITE setNotif       NOTIFY notifChanged)
+
 private:
     QString m_User;
     QString m_Password;
+    bool    m_Notif;
 
 public:
     LoginController             (QObject *parent = 0);
     virtual ~LoginController    ()                      {};
 
+    inline const bool     getNotif      () const               { return m_Notif; }
+    void                  setNotif      (bool c);
 
 
 public Q_SLOTS:
@@ -38,7 +43,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void complete               ();
     void connectError           ();
-
+    void notifChanged           ();
 
 
 private:

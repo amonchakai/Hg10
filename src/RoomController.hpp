@@ -35,6 +35,13 @@ public:
 public Q_SLOTS:
     inline void setListView             (QObject *listView)    {m_ListView = dynamic_cast<bb::cascades::ListView*>(listView); }
 
+    void createRoom                     (const QString &participants);
+
+    void deleteRoom                     (const QString &roomId);
+
+    // rendering functions
+    void pushRoom                       (const QString &room);
+    void updateView                     ();
 
 
 Q_SIGNALS:

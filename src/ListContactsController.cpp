@@ -18,10 +18,9 @@
 #include "XMPPService.hpp"
 #include "ConversationManager.hpp"
 
-#include <QSettings>
 
 ListContactsController::ListContactsController(QObject *parent) : QObject(parent),
-    m_ListView(NULL), m_Activity(NULL), m_OnlyFavorite(false), m_PushStated(false), m_Notif(true), m_Notification(NULL) {
+    m_ListView(NULL), m_Activity(NULL), m_OnlyFavorite(false), m_PushStated(false), m_Notification(NULL) {
 
     bool check = connect(XMPP::get(), SIGNAL(contactReceived()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -45,11 +44,6 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
     check = connect(ConversationManager::get(), SIGNAL(cleared()), this, SLOT(clear()));
     Q_ASSERT(check);
 
-    {
-        QSettings setting("Amonchakai", "Hg10");
-        if(setting.contains("notifications"))
-            m_Notif = setting.value("notification").value<bool>();
-    }
 }
 
 void ListContactsController::clear() {
@@ -59,16 +53,6 @@ void ListContactsController::clear() {
     emit cleared();
 }
 
-void ListContactsController::setNotif(bool value) {
-    m_Notif = value;
-
-    QSettings setting("Amonchakai", "Hg10");
-    setting.setValue("notification", m_Notif);
-
-    XMPP::get()->notifySettingChange();
-
-    emit notifChanged();
-}
 
 void ListContactsController::deleteHistory(const QString &with) {
     ConversationManager::get()->deleteHistory(with);
@@ -122,12 +106,10 @@ void ListContactsController::messageReceived(const QString &from, const QString 
             m_Contacts.at(i)->setRead(read);
 
             if(read == 0) {
-                if(m_Notif) {
-                    if(m_Notification == NULL)
-                        m_Notification = new bb::platform::Notification();
+                if(m_Notification == NULL)
+                    m_Notification = new bb::platform::Notification();
 
-                    m_Notification->notify();
-                }
+                m_Notification->notify();
 
             }
 
