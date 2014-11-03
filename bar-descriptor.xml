@@ -45,8 +45,8 @@
     </configuration>
     <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
-       <asset path="x86/o-g/Hg10" entry="true" type="Qnx/Elf">Hg10</asset>
        <asset entryPointId="HeadlessHg" path="../HeadlessHg/x86/o-g/HeadlessHg" type="Qnx/Elf">HeadlessHg</asset> 
+       <asset path="x86/o-g/Hg10" entry="true" type="Qnx/Elf">Hg10</asset>
     </configuration>
 
     <!-- The name that is displayed in the BlackBerry 10 application installer.

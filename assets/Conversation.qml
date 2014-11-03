@@ -63,7 +63,8 @@ Page {
     }
     
     Container {
-        layout: DockLayout {
+        layout: StackLayout {
+            orientation: LayoutOrientation.TopToBottom
         }
         ScrollView {
             verticalAlignment: VerticalAlignment.Fill
@@ -120,6 +121,7 @@ Page {
             verticalAlignment: VerticalAlignment.Bottom
             horizontalAlignment: HorizontalAlignment.Fill
             
+            
             layout: StackLayout {
                 orientation: LayoutOrientation.TopToBottom
             }
@@ -132,25 +134,99 @@ Page {
                 visible: false
             }
             
-            TextField {
-                preferredHeight: 30
-                horizontalAlignment: HorizontalAlignment.Fill
-                id: txtField
-                inputMode: TextFieldInputMode.Chat
-                
-                input {
-                    submitKey: SubmitKey.Send
-                    onSubmitted: {
-                        conversationController.send(txtField.text);
-                        txtField.text = "";  
+            Container {
+                layout: StackLayout {
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
+                TextField {
+                    preferredHeight: 30
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    id: txtField
+                    inputMode: TextFieldInputMode.Chat
+                    
+                    input {
+                        submitKey: SubmitKey.Send
+                        onSubmitted: {
+                            conversationController.send(txtField.text);
+                            txtField.text = "";  
+                        }
+                    }
+                    content {
+                        flags: TextContentFlag.Emoticons
                     }
                 }
-                content {
-                    flags: TextContentFlag.Emoticons
+                
+                ImageButton {
+                    verticalAlignment: VerticalAlignment.Center
+                    defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/whiteFace.png" : "asset:///images/blackFace.png"
+                    preferredHeight: 60
+                    preferredWidth: 60
+                    onClicked: {
+                        toogleEmoji();
+                    }
                 }
+                Container {
+                    preferredWidth: 10
+                    background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
+                }
+            }
+            
+            Container {
+                id: emoticonsPicker
+                preferredHeight: 0
+                layout: StackLayout {
+                    orientation: LayoutOrientation.TopToBottom
+                }
+                
+                attachedObjects: [
+                    ImplicitAnimationController {
+                        id: animList
+                        propertyName: "preferredHeight"
+                    }
+                ]
+                
+                
+                ListView {
+                    layout: GridListLayout {
+                        columnCount: 9
+                    }
+                    dataModel: XmlDataModel {
+                        source: "asset:///data/emojies.xml"
+                    }
+                    
+                    listItemComponents: [
+                        ListItemComponent {
+                            type: "item"
+                            
+                            Container {
+                                
+                                Label {
+                                    content.flags: TextContentFlag.Emoticons
+                                    text: ListItemData.name
+                                    textStyle.fontSize: FontSize.XLarge
+                                }                        
+                            }
+                        }
+                    ]
+                    
+                    onTriggered: {
+                        var chosenItem = dataModel.data(indexPath);
+                        txtField.text = txtField.text  + chosenItem.name;
+                        toogleEmoji();
+                    }
+                }    
             }
         }
         
+    }
+    
+    function toogleEmoji() {
+        if(emoticonsPicker.preferredHeight == 0) {
+            emoticonsPicker.preferredHeight=500;
+        } else {
+            emoticonsPicker.preferredHeight=0;
+        }
     }
     
     
@@ -174,12 +250,10 @@ Page {
         },
         ActionItem {
             title: qsTr("Emoticons")
-            imageSource: "asset:///images/whiteFace.png"
-            ActionBar.placement: ActionBarPlacement.OnBar
+            imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/whiteFace.png" : "asset:///images/whiteFace2.png"
+            ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: {
-                if(!smileyPage)
-                    smileyPage = smileyPicker.createObject();
-                nav.push(smileyPage);
+                toogleEmoji();
             }
         },
         ActionItem {

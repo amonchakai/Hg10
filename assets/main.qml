@@ -5,7 +5,7 @@ import bb.cascades 1.2
 TabbedPane {
     id: mainTab
     showTabsOnActionBar: true
-    activeTab: tabFav
+    activeTab: tabHome
     
     Menu.definition: MenuDefinition {
         actions: [
@@ -23,10 +23,10 @@ TabbedPane {
                 }
             },
             ActionItem {
-                title: LoginController.notif ? " [ON]" : " [OFF]"
+                title: loginController.notif ? " [ON]" : " [OFF]"
                 imageSource: "asset:///images/icon_notification.png"
                 onTriggered: {
-                    LoginController.notif = !LoginController.notif;
+                    loginController.notif = !loginController.notif;
                 }
             
             }
@@ -49,6 +49,7 @@ TabbedPane {
     
     } //End of home tab
     
+    /*
     Tab {
         id: tabRoom
         title: qsTr("Rooms")
@@ -58,7 +59,9 @@ TabbedPane {
         delegate: Delegate {
             source: "Rooms.qml"
         }
+
     }
+    */
     
     onCreationCompleted: {
         if(!loginController.isLogged()) {

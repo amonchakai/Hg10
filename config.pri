@@ -45,8 +45,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/LoginForm.qml) \
         $$quote($$BASEDIR/assets/Rooms.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
-        $$quote($$BASEDIR/assets/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
+        $$quote($$BASEDIR/assets/data/emojies.xml) \
         $$quote($$BASEDIR/assets/dropbox_secret.txt) \
         $$quote($$BASEDIR/assets/images/available.png) \
         $$quote($$BASEDIR/assets/images/available.svg) \
@@ -54,6 +54,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/avatar.png.square.png) \
         $$quote($$BASEDIR/assets/images/avatar.square.svg) \
         $$quote($$BASEDIR/assets/images/avatar.svg) \
+        $$quote($$BASEDIR/assets/images/blackFace.png) \
         $$quote($$BASEDIR/assets/images/chat_room.png) \
         $$quote($$BASEDIR/assets/images/chat_room.svg) \
         $$quote($$BASEDIR/assets/images/contact.png) \
@@ -102,6 +103,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/smiley/yawn.png) \
         $$quote($$BASEDIR/assets/images/wallpaper/wallpaper.jpg) \
         $$quote($$BASEDIR/assets/images/whiteFace.png) \
+        $$quote($$BASEDIR/assets/images/whiteFace2.png) \
         $$quote($$BASEDIR/assets/images/write.png) \
         $$quote($$BASEDIR/assets/images/write.svg) \
         $$quote($$BASEDIR/assets/images/write_white.png) \
@@ -127,7 +129,6 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/LoginController.cpp) \
         $$quote($$BASEDIR/src/RoomController.cpp) \
         $$quote($$BASEDIR/src/SettingsController.cpp) \
-        $$quote($$BASEDIR/src/SmileyPickerController.cpp) \
         $$quote($$BASEDIR/src/SuggestContactController.cpp) \
         $$quote($$BASEDIR/src/XMPPService.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
@@ -205,7 +206,6 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/LoginController.hpp) \
         $$quote($$BASEDIR/src/RoomController.hpp) \
         $$quote($$BASEDIR/src/SettingsController.hpp) \
-        $$quote($$BASEDIR/src/SmileyPickerController.hpp) \
         $$quote($$BASEDIR/src/SuggestContactController.hpp) \
         $$quote($$BASEDIR/src/XMPPService.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp) \
@@ -298,6 +298,9 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/*.qml) \
         $$quote($$BASEDIR/../assets/*.js) \
         $$quote($$BASEDIR/../assets/*.qs) \
+        $$quote($$BASEDIR/../assets/data/*.qml) \
+        $$quote($$BASEDIR/../assets/data/*.js) \
+        $$quote($$BASEDIR/../assets/data/*.qs) \
         $$quote($$BASEDIR/../assets/images/*.qml) \
         $$quote($$BASEDIR/../assets/images/*.js) \
         $$quote($$BASEDIR/../assets/images/*.qs) \

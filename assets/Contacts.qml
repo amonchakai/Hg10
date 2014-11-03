@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 import Network.ListContactsController 1.0
 import com.netimage 1.0
 
@@ -23,10 +23,10 @@ NavigationPane {
                         //horizontalAlignment: HorizontalAlignment.Left
                         id: avatarOwnImg
                         scalingMethod: ScalingMethod.AspectFit
-                        minHeight: 90
-                        maxHeight: 90
-                        minWidth: 90
-                        maxWidth: 90
+                        minHeight: ui.sdu(9)
+                        maxHeight: ui.sdu(9)
+                        minWidth: ui.sdu(9)
+                        maxWidth: ui.sdu(9)
                         image: trackerOwn.image
                         
                         attachedObjects: [
@@ -58,7 +58,7 @@ NavigationPane {
             
             ActivityIndicator {
                 id: connectingActivity
-                preferredHeight: 60
+                preferredHeight: ui.sdu(6)
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Top
             }
@@ -108,12 +108,12 @@ NavigationPane {
                             verticalAlignment: VerticalAlignment.Fill
                             
                             Container {
-                                minHeight: 5
-                                maxHeight: 5
+                                minHeight: ui.sdu(.5)
+                                maxHeight: ui.sdu(.5)
                             }
                             
                             Container {
-                                preferredHeight: 100
+                                preferredHeight: ui.sdu(10)
                                 
                                 id: titleContainer
                                 layout: StackLayout {
@@ -123,16 +123,16 @@ NavigationPane {
                                 verticalAlignment: VerticalAlignment.Center
                                 
                                 Container {
-                                    minWidth: 5
-                                    maxWidth: 5
+                                    minWidth: ui.sdu(.5)
+                                    maxWidth: ui.sdu(.5)
                                 }
                                 
                                 Container {
                                     layout: AbsoluteLayout { }
-                                    minHeight: 90
-                                    maxHeight: 90
-                                    minWidth: 90
-                                    maxWidth: 90
+                                    minHeight: ui.sdu(9)
+                                    maxHeight: ui.sdu(9)
+                                    minWidth: ui.sdu(9)
+                                    maxWidth: ui.sdu(9)
                                     
                                     //  Avatar
                                     ImageView {
@@ -140,10 +140,10 @@ NavigationPane {
                                         //horizontalAlignment: HorizontalAlignment.Left
                                         id: avatarImg
                                         scalingMethod: ScalingMethod.AspectFit
-                                        minHeight: 90
-                                        maxHeight: 90
-                                        minWidth: 90
-                                        maxWidth: 90
+                                        minHeight: ui.sdu(9)
+                                        maxHeight: ui.sdu(9)
+                                        minWidth: ui.sdu(9)
+                                        maxWidth: ui.sdu(9)
                                         image: tracker.image
                                         
                                         attachedObjects: [
@@ -158,13 +158,13 @@ NavigationPane {
                                     
                                     ImageView {
                                         imageSource: "asset:///images/available.png"
-                                        minHeight: 20
-                                        maxHeight: 20
-                                        minWidth: 20
-                                        maxWidth: 20
+                                        minHeight: ui.sdu(2)
+                                        maxHeight: ui.sdu(2)
+                                        minWidth: ui.sdu(2)
+                                        maxWidth: ui.sdu(2)
                                         layoutProperties: AbsoluteLayoutProperties {
-                                            positionX: 70
-                                            positionY: 70
+                                            positionX: ui.sdu(7)
+                                            positionY: ui.sdu(7)
                                         }
                                         // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
                                         visible: ListItemData.presence > 0
@@ -173,15 +173,15 @@ NavigationPane {
                                 }
                                 
                                 Container {
-                                    minWidth: 30
-                                    maxWidth: 30
+                                    minWidth: ui.sdu(3)
+                                    maxWidth: ui.sdu(3)
                                     //horizontalAlignment: HorizontalAlignment.Left
                                 
                                 }
                                 
                                 Container {
                                     id: contactContainer
-                                    preferredWidth: 2000
+                                    preferredWidth: ui.sdu(200)
                                     layout: StackLayout {
                                         orientation: LayoutOrientation.TopToBottom
                                     }

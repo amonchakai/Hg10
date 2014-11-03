@@ -23,8 +23,8 @@ LoginController::LoginController(QObject *parent) : QObject(parent) {
 
     {
         QSettings setting("Amonchakai", "Hg10");
-        if(setting.contains("notifications"))
-            m_Notif = setting.value("notification").value<bool>();
+        m_Notif = setting.value("notification").value<bool>();
+
     }
 }
 

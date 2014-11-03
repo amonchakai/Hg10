@@ -27,7 +27,6 @@
 #include "Image/NetImageTracker.h"
 #include "ConversationController.hpp"
 #include "SettingsController.hpp"
-#include "SmileyPickerController.hpp"
 #include "GoogleConnectController.hpp"
 #include "DropBoxConnectController.hpp"
 #include "RoomController.hpp"
@@ -62,7 +61,6 @@ ApplicationUI::ApplicationUI() :
     qmlRegisterType<NetImageTracker>("com.netimage", 1, 0, "NetImageTracker");
     qmlRegisterType<ConversationController>("Network.ConversationController", 1, 0, "ConversationController");
     qmlRegisterType<SettingsController>("conf.SettingsController", 1, 0, "SettingsController");
-    qmlRegisterType<SmileyPickerController>("Network.SmileyPickerController", 1, 0, "SmileyPickerController");
     qmlRegisterType<GoogleConnectController>("Network.GoogleConnectController", 1, 0, "GoogleConnectController");
     qmlRegisterType<DropBoxConnectController>("Network.DropBoxConnectController", 1, 0, "DropBoxConnectController");
     qmlRegisterType<RoomController>("Network.RoomController", 1, 0, "RoomController");

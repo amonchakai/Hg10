@@ -1,8 +1,9 @@
 1
-74
+76
 Contacts.qml
 Conversation.qml
 CreateRoom.qml
+data/emojies.xml
 dropbox_secret.txt
 DropboxConnect.qml
 GoogleConnect.qml
@@ -13,6 +14,7 @@ images/avatar.png
 images/avatar.png.square.png
 images/avatar.square.svg
 images/avatar.svg
+images/blackFace.png
 images/chat_room.png
 images/chat_room.svg
 images/contact.png
@@ -61,6 +63,7 @@ images/smiley/tongue.png
 images/smiley/yawn.png
 images/wallpaper/wallpaper.jpg
 images/whiteFace.png
+images/whiteFace2.png
 images/write.png
 images/write.svg
 images/write_white.png
@@ -69,7 +72,6 @@ main.qml
 Rooms.qml
 secret.txt
 Settings.qml
-SmileyPicker.qml
 template.html
 template_black.html
 template_end.html

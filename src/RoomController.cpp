@@ -66,6 +66,8 @@ void RoomController::createRoom(const QString &participants) {
     }
 
     QString UID = QUuid::createUuid();
+    UID = UID.mid(1,UID.length()-2);
+    qDebug() << "UID: " << UID;
     room.m_RoomID = "private-chat-" + UID + "@groupchat.google.com";
 
     // ----------------------------------------------------------------------------
@@ -87,7 +89,7 @@ void RoomController::createRoom(const QString &participants) {
 
     // ----------------------------------------------------------------------------
 
-    //XMPP::get()->createRoom(UID);
+    XMPP::get()->createRoom(UID);
 
 
     // ----------------------------------------------------------------------------

@@ -298,10 +298,6 @@ Delete and forget this stupid app&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rooms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Contacts</source>
         <translation type="unfinished"></translation>
     </message>

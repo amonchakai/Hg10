@@ -244,6 +244,9 @@ void ListContactsController::updateView() {
 
 void ListContactsController::pushContact(const Contact* c) {
 
+    if(c->getID().isEmpty())
+        return;
+
     using namespace bb::cascades;
 
     GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
@@ -255,6 +258,8 @@ void ListContactsController::pushContact(const Contact* c) {
 
         qDebug() << "PUSH CONTACT!!";
     }
+
+    qDebug() << c->getID() << c->getName() << c->getPreview();
 
     // check if not already in the list...
     for(int i = 0 ; i < m_Contacts.size() ; ++i) {
