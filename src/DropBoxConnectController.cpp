@@ -13,6 +13,20 @@
 #include <QRegExp>
 
 
+#include "PrivateAPIKeys.h"
+/*
+ * #include "PrivateAPIKeys.h"
+ *  define:
+ *  - DROPBOX_CIENT_ID
+ *  - DROPBOX_CLIENT_SECRET
+ *
+ *  which can be obtained from the dropbox developer console:
+ *  https://www.dropbox.com/developers/apps
+ *
+ */
+
+
+
 DropBoxConnectController::DropBoxConnectController(QObject *parent) : QObject(parent), m_WebView(NULL), m_Settings(NULL) {
 
     m_Settings = new QSettings("Amonchakai", "Hg10");
@@ -23,22 +37,13 @@ void DropBoxConnectController::logInRequest() {
     if(m_WebView == NULL)
         return;
 
-    QFile dropboxInfo(QDir::currentPath() + "/app/native/assets/dropbox_secret.txt");
-     if(!dropboxInfo.open(QIODevice::ReadOnly))
-         return;
 
-     QTextStream stream(&dropboxInfo);
-     QString ClientId = stream.readLine();
-     QString ClientSecret = stream.readLine();
-
-     dropboxInfo.close();
-
-     m_Settings->setValue("DropboxClient_ID", ClientId);
-     m_Settings->setValue("DropboxClientSecret", ClientSecret);
+     m_Settings->setValue("DropboxClient_ID",       DROPBOX_CIENT_ID);
+     m_Settings->setValue("DropboxClientSecret",    DROPBOX_CLIENT_SECRET);
 
      m_WebView->setUrl(QString("https://www.dropbox.com/1/oauth2/authorize?")
                              + "&response_type=code"
-                             + "&client_id=" + ClientId);
+                             + "&client_id=" + DROPBOX_CIENT_ID);
 }
 
 void DropBoxConnectController::setWebView(QObject *webView) {

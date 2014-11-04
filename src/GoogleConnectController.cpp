@@ -18,6 +18,20 @@
 #include <limits>
 #include <QReadWriteLock>
 
+#include "PrivateAPIKeys.h"
+/*
+ * #include "PrivateAPIKeys.h"
+ *  define:
+ *  - GOOGLE_CIENT_ID
+ *  - GOOGLE_CLIENT_SECRET
+ *  - GOOGLE_API_KEY
+ *
+ *  which can be obtained from the google developer console:
+ *  https://console.developers.google.com
+ *
+ */
+
+
 QReadWriteLock  mutexGoogleConnect;
 
 GoogleConnectController::GoogleConnectController(QObject *parent) : QObject(parent),
@@ -37,26 +51,16 @@ void GoogleConnectController::logInRequest() {
     if(m_WebView == NULL)
         return;
 
-    QFile googleInfo(QDir::currentPath() + "/app/native/assets/secret.txt");
-    if(!googleInfo.open(QIODevice::ReadOnly))
-        return;
 
-    QTextStream stream(&googleInfo);
-    QString ClientId = stream.readLine();
-    QString ClientSecret = stream.readLine();
-    QString APIKey = stream.readLine();
-
-    googleInfo.close();
-
-    m_Settings->setValue("Client_ID", ClientId);
-    m_Settings->setValue("ClientSecret", ClientSecret);
-    m_Settings->setValue("APIKey", APIKey);
+    m_Settings->setValue("Client_ID",    GOOGLE_CIENT_ID);
+    m_Settings->setValue("ClientSecret", GOOGLE_CLIENT_SECRET);
+    m_Settings->setValue("APIKey",       GOOGLE_API_KEY);
 
     m_WebView->setUrl(QString("https://accounts.google.com/o/oauth2/auth?")
                             + "scope=https://www.googleapis.com/auth/gmail.readonly"
                             + "&redirect_uri=urn:ietf:wg:oauth:2.0:oob"
                             + "&response_type=code"
-                            + "&client_id=" + ClientId);
+                            + "&client_id=" + GOOGLE_CIENT_ID);
 
 }
 
