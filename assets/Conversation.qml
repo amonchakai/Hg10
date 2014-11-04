@@ -93,6 +93,11 @@ Page {
                     var match = message.data.match(isScroll);
                     if(match)
                         scrollView.scrollToPoint(0, match[1], ScrollAnimation.None);
+                        
+                    var isOpenImg = RegExp("OPEN_IMAGE:([^\']+)")
+                    match = message.data.match(isOpenImg);
+                    if(match)
+                        showPictureViewer(match[1]);
                     
                     console.log(message.data)
                 }
@@ -101,6 +106,7 @@ Page {
                     if(request.navigationType != WebNavigationType.Other) {
                         request.action = WebNavigationRequestAction.Ignore;
                         
+                        console.log("on nav requested")
                         var urlImg = RegExp(".jpg");
                         var urlImgPng = RegExp(".png");
                         var urlImgGif = RegExp(".gif");

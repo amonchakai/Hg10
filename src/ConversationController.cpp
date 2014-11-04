@@ -135,7 +135,7 @@ QString ConversationController::renderMessage(const QString &message, bool showI
         nMessage += message.mid(lastPos, pos-lastPos);
 
         if(showImg && isImage(url.cap(1))) {
-            nMessage += "<img src=\"" + url.cap(1) + "\" />";
+            nMessage += "<img src=\"" + url.cap(1) + "\" onclick=\"sendURL(\'OPEN_IMAGE:" + url.cap(1) + "\');\" />";
         } else {
             nMessage += "<a href=\"" + url.cap(1) + "\">" + url.cap(1) + "</a>";
         }
