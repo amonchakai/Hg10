@@ -72,7 +72,7 @@ QString WebResourceManager::getMatchingImage(const QString& requestedURL) const 
     // The qHash is a bucket type hash so the doubling is to remove possible collisions.
     QString diskPath = QDir::homePath() + "/../native/assets/TMP/"
             + QString::number(qHash(url.host())) + "_"
-            + QString::number(qHash(url.path())) + ".JPG";
+            + QString::number(qHash(url.path())) + ".PNG";
 
     QFile imageFile(diskPath);
 
@@ -81,7 +81,7 @@ QString WebResourceManager::getMatchingImage(const QString& requestedURL) const 
         qDebug() << requestedURL << "...existing";
         qDebug() << diskPath;
         return "asset:///TMP/" + QString::number(qHash(url.host())) + "_"
-                + QString::number(qHash(url.path())) + ".JPG";
+                + QString::number(qHash(url.path())) + ".PNG";
     } else {
         // check if the file is being downloaded, if so, skip it
         m_EditQueue->lockForRead();
@@ -89,7 +89,7 @@ QString WebResourceManager::getMatchingImage(const QString& requestedURL) const 
             if(m_DownloadQueue->at(i).compare(requestedURL) == 0) {
                 m_EditQueue->unlock();
                 return "asset:///TMP/" + QString::number(qHash(url.host())) + "_"
-                + QString::number(qHash(url.path())) + ".JPG";;
+                + QString::number(qHash(url.path())) + ".PNG";;
             }
         m_EditQueue->unlock();
 
@@ -139,7 +139,7 @@ void WebResourceManager::getImage(const QString& requestedURL) const {
 	// The qHash is a bucket type hash so the doubling is to remove possible collisions.
 	QString diskPath = QDir::homePath() + "/Cache/"
 			+ QString::number(qHash(url.host())) + "_"
-			+ QString::number(qHash(url.path())) + ".JPG";
+			+ QString::number(qHash(url.path())) + ".PNG";
 
 	QFile imageFile(diskPath);
 
@@ -188,9 +188,9 @@ void WebResourceManager::checkReply() {
 
 				QString diskPath = QDir::homePath() + "/Cache/"
 								+ QString::number(qHash(reply->url().host())) + "_"
-								+ QString::number(qHash(reply->url().path())) + ".JPG";
+								+ QString::number(qHash(reply->url().path())) + ".PNG";
 
-				if (qImage.save(diskPath)) {
+				if (qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied).save(diskPath, "PNG")) {
 						emit onImageReady(reply->url().toString(), diskPath);
 				}
 

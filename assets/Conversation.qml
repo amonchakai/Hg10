@@ -263,6 +263,15 @@ Page {
             }
         },
         ActionItem {
+            title: qsTr("Stickers")
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            onTriggered: {
+                if(!smileyPage)
+                    smileyPage = smileyPicker.createObject();
+                nav.push(smileyPage);
+            }
+        },
+        ActionItem {
             title: qsTr("To last message")
             imageSource: "asset:///images/icon_bottom.png"
             ActionBar.placement: ActionBarPlacement.InOverflow

@@ -30,6 +30,10 @@
         <source>Attach</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateRoom</name>
@@ -251,6 +255,13 @@
     </message>
     <message>
         <source>Use dropbox to host files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmileyPickerController</name>
+    <message>
+        <source>Error: %1 status: %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

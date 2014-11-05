@@ -103,6 +103,38 @@ public:
 
 };
 
+// ---------------------------------------------------------------------------------------------
+// Stickers
+
+class Sticker : public QObject {
+    Q_OBJECT
+
+    Q_PROPERTY( QString localUrl        READ getLocalUrl      WRITE setLocalUrl        NOTIFY localUrlChanged)
+    Q_PROPERTY( QString distUrl         READ getDistUrl       WRITE setDistUrl         NOTIFY distUrlChanged)
+
+private:
+    QString m_LocalUrl;
+    QString m_DistUrl;
+
+
+public:
+    Sticker(QObject *parent = 0) : QObject(parent) {}
+    virtual ~Sticker() {}
+
+    inline const QString &getLocalUrl() const                   { return m_LocalUrl; }
+    inline void           setLocalUrl(const QString &s)         { m_LocalUrl = s; emit localUrlChanged(); }
+
+    inline const QString &getDistUrl() const                     { return m_DistUrl; }
+    inline void           setDistUrl(const QString &c)           { m_DistUrl = c; emit distUrlChanged();}
+
+
+    // ----------------------------------------------------------------------------------------------
+    Q_SIGNALS:
+        void localUrlChanged();
+        void distUrlChanged();
+
+};
+
 
 // ----------------------------------------------------------------------------------------------
 // Objects to handle group chat

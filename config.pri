@@ -45,6 +45,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/LoginForm.qml) \
         $$quote($$BASEDIR/assets/Rooms.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
+        $$quote($$BASEDIR/assets/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/data/emojies.xml) \
         $$quote($$BASEDIR/assets/images/available.png) \
@@ -97,6 +98,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/LoginController.cpp) \
         $$quote($$BASEDIR/src/RoomController.cpp) \
         $$quote($$BASEDIR/src/SettingsController.cpp) \
+        $$quote($$BASEDIR/src/SmileyPickerController.cpp) \
         $$quote($$BASEDIR/src/SuggestContactController.cpp) \
         $$quote($$BASEDIR/src/XMPPService.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
@@ -175,6 +177,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/PrivateAPIKeys.h) \
         $$quote($$BASEDIR/src/RoomController.hpp) \
         $$quote($$BASEDIR/src/SettingsController.hpp) \
+        $$quote($$BASEDIR/src/SmileyPickerController.hpp) \
         $$quote($$BASEDIR/src/SuggestContactController.hpp) \
         $$quote($$BASEDIR/src/XMPPService.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp) \
