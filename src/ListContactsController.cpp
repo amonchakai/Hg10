@@ -13,6 +13,7 @@
 #include <bb/platform/Notification>
 #include <QDebug>
 #include <QRegExp>
+#include <QSettings>
 
 #include "DataObjects.h"
 #include "XMPPService.hpp"
@@ -43,6 +44,9 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
 
     check = connect(ConversationManager::get(), SIGNAL(cleared()), this, SLOT(clear()));
     Q_ASSERT(check);
+
+    QSettings settings("Amonchakai", "Hg10");
+    m_OnlyFavorite = settings.value("FilterContacts", false).toBool();
 
 }
 
@@ -204,6 +208,8 @@ void ListContactsController::updateView() {
         if(contacts->at(i)->getID().toLower() != ConversationManager::get()->getUser().toLower()) {
 
             TimeEvent e = ConversationManager::get()->getPreview(contacts->at(i)->getID());
+            if(m_OnlyFavorite && e.m_What.isEmpty())
+                 continue;
 
             Contact *nc = new Contact;
             nc->setAvatar(contacts->at(i)->getAvatar());
@@ -269,11 +275,13 @@ void ListContactsController::pushContact(const Contact* c) {
 
     qDebug() << "Pushing: " << c->getName();
 
-    QDateTime now = QDateTime::currentDateTime();
 
     if(c->getID().toLower() != ConversationManager::get()->getUser().toLower()) {
 
         TimeEvent e = ConversationManager::get()->getPreview(c->getID());
+
+        if(m_OnlyFavorite && e.m_What.isEmpty())
+            return;
 
         Contact *nc = new Contact;
         nc->setAvatar(c->getAvatar());
@@ -305,6 +313,96 @@ void ListContactsController::pushContact(const Contact* c) {
             ConversationManager::get()->setAvatar(c->getAvatar());
     }
 
+}
+
+void ListContactsController::filter(const QString &contact) {
+
+    // ----------------------------------------------------------------------------------------------
+    // get the dataModel of the listview if not already available
+    using namespace bb::cascades;
+
+    qDebug() << "UPDATE VIEW";
+
+    if(m_ListView == NULL) {
+        qWarning() << "did not received the listview. quit.";
+        return;
+    }
+
+    GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
+    if (!dataModel) {
+        qDebug() << "create new model";
+        dataModel = new GroupDataModel(
+                QStringList() << "name"
+                              << "id"
+                              << "timestamp"
+                              << "timestampString"
+                              << "avatar"
+                              << "preview"
+                              << "presence"
+                              << "read"
+                );
+        m_ListView->setDataModel(dataModel);
+    }
+    //dataModel->setGrouping(ItemGrouping::ByFullValue);
+
+    // ----------------------------------------------------------------------------------------------
+    // Read login info
+
+    m_Contacts.clear();
+
+    // ----------------------------------------------------------------------------------------------
+    // push data to the view
+
+    const QList<Contact *> *contacts = XMPP::get()->getContacts();
+
+    QList<QObject *> datas;
+    for(int i = contacts->length()-1 ; i >= 0 ; --i) {
+        // remove yourself from the list of contact, and store the info for display
+        if(contacts->at(i)->getID().toLower() != ConversationManager::get()->getUser().toLower() &&
+           contacts->at(i)->getName().mid(0, contact.length()).toLower() == contact.toLower()) {
+
+
+            TimeEvent e = ConversationManager::get()->getPreview(contacts->at(i)->getID());
+
+            Contact *nc = new Contact;
+            nc->setAvatar(contacts->at(i)->getAvatar());
+            nc->setName(contacts->at(i)->getName());
+
+            nc->setTimestamp(e.m_When);
+            nc->setTimestampString(formatTime(e.m_When));
+
+            e.m_What.replace("&#39;","\'");
+            e.m_What.replace(QChar(0x1F61C), ":P");
+
+            nc->setPreview(e.m_What);
+
+            nc->setID(contacts->at(i)->getID());
+            nc->setPresence(contacts->at(i)->getPresence());
+            nc->setRead(e.m_Read);
+
+            m_Contacts.push_back(nc);
+            datas.push_back(nc);
+
+            e.m_When = 0;
+
+        }
+    }
+
+    dataModel->clear();
+    dataModel->insertList(datas);
+
+}
+
+void ListContactsController::setFilter(bool onlyFav)  {
+    if(m_OnlyFavorite == onlyFav)
+        return;
+
+    m_OnlyFavorite = onlyFav;
+
+    QSettings settings("Amonchakai", "Hg10");
+    settings.setValue("FilterContacts", m_OnlyFavorite);
+
+    updateView();
 }
 
 QString ListContactsController::formatTime(qint64 msecs) {

@@ -62,7 +62,8 @@ public Q_SLOTS:
 
     QString formatTime                  (qint64 msecs);
 
-    inline void setFilter               (bool onlyFav)         { m_OnlyFavorite = onlyFav; }
+    void filter                         (const QString &contacts);
+    void setFilter                      (bool onlyFav);
     void updateConnectionStatus         (bool status);
 
     void clear                          ();

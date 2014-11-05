@@ -20,7 +20,7 @@ public:
     virtual ~XMPP() {};
 
     static XMPP*                   get();
-    inline const QList<Contact*>*  getContacts() const            {return m_Datas; }
+    const QList<Contact*>*         getContacts();
 
     void                           connectToServer     (const QString &user, const QString &password);
     void                           disconnectFromServer();
@@ -36,7 +36,7 @@ private:
     // ------------------------------------------------------------
     // connection to headless XMPP service.
     QTcpSocket               *m_ClientSocket;
-    bool                      m_Restart;
+    bool                      m_ScheduleContactListRequest;
 
     XMPP(QObject *parent = 0);
 

@@ -1,5 +1,5 @@
 1
-45
+47
 Contacts.qml
 Conversation.qml
 CreateRoom.qml
@@ -26,6 +26,7 @@ images/icon_favorites.png
 images/icon_home.png
 images/icon_left.png
 images/icon_notification.png
+images/icon_refresh.png
 images/icon_settings.png
 images/send.png
 images/send.svg
@@ -38,6 +39,7 @@ images/write_white.png
 LoginForm.qml
 main.qml
 mindw120h120du/Contacts.qml
+RefreshHeader.qml
 Rooms.qml
 Settings.qml
 SmileyPicker.qml

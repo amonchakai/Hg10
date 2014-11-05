@@ -43,6 +43,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
+        $$quote($$BASEDIR/assets/RefreshHeader.qml) \
         $$quote($$BASEDIR/assets/Rooms.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/SmileyPicker.qml) \
@@ -67,6 +68,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_home.png) \
         $$quote($$BASEDIR/assets/images/icon_left.png) \
         $$quote($$BASEDIR/assets/images/icon_notification.png) \
+        $$quote($$BASEDIR/assets/images/icon_refresh.png) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/send.png) \
         $$quote($$BASEDIR/assets/images/send.svg) \

@@ -35,8 +35,7 @@ XMPP::XMPP(QObject *parent) : QObject(parent),
         m_PushStack(NULL),
         m_Connected(false),
         m_Facebook(NULL),
-        m_ClientSocket(new QTcpSocket(this)),
-        m_Restart(false) {
+        m_ClientSocket(new QTcpSocket(this)), m_ScheduleContactListRequest(false) {
 
     bool check = connect(m_ClientSocket, SIGNAL(connected()), this, SLOT(connected()));
     Q_ASSERT(check);
@@ -60,42 +59,25 @@ XMPP *XMPP::get() {
     return m_This;
 }
 
+const QList<Contact*>* XMPP::getContacts() {
+    if(m_Datas->empty()) {
+        if(m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState)
+            getContactList();
+        else
+            m_ScheduleContactListRequest = true;
+    }
+
+
+    return m_Datas;
+}
 
 void XMPP::connected() {
 
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
         qDebug() << "Connected to XMPP headless!" << m_ClientSocket->state() ;
-        mutex.lockForWrite();
-        m_Datas->clear();
-        int code = XMPPServiceMessages::REQUEST_CONTACT_LIST;
-        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
-        m_ClientSocket->flush();
-        mutex.unlock();
-
-        if(m_Restart) {
-            QString directory = QDir::homePath() + QLatin1String("/ApplicationData");
-            if (!QFile::exists(directory)) {
-                return;
-            }
-
-            QFile file(directory + "/UserID.txt");
-
-            if (file.open(QIODevice::ReadOnly)) {
-                QDataStream stream(&file);
-                QString user;
-                QString password;
-
-                stream >> user;
-                stream >> password;
-
-                file.close();
-
-                connectToServer(user, password);
-            }
-
-        }
+        if(m_ScheduleContactListRequest)
+            getContactList();
     }
-
 }
 
 void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError ) {
@@ -109,7 +91,6 @@ void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError ) {
         dialog->show();
     } else {
         connectToXMPPService();
-        m_Restart = true;
     }
 }
 

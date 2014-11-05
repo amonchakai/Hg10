@@ -21,7 +21,6 @@ class SmileyPickerController : public QObject {
 
 	bb::cascades::ListView 				*m_ListView;
 	QReadWriteLock                       m_Mutex;
-	int                                  m_NbRequest;
 	QList<Sticker *>                     m_Stickers;
 
 	// ----------------------------------------------------------------------------------------------
@@ -35,6 +34,7 @@ class SmileyPickerController : public QObject {
 	public Q_SLOTS:
 		void loadDefautSmiley   ();
 		void getSmiley          (const QString &url_str);
+		void refresh            ();
 
 		void checkReply();
 		void onImageReady       (const QString &url, const QString &diskPath);
@@ -55,6 +55,7 @@ class SmileyPickerController : public QObject {
 	private:
 
 		void updateView();
+		void pushToView();
 
 };
 

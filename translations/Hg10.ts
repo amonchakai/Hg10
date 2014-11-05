@@ -11,6 +11,10 @@
         <source>Remove room</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search a contact</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Conversation</name>
@@ -185,6 +189,29 @@
     </message>
 </context>
 <context>
+    <name>RefreshHeader</name>
+    <message>
+        <source>%L1y ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1m ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1d ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1h ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>just now</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Rooms</name>
     <message>
         <source>Rooms</source>
@@ -255,6 +282,13 @@
     </message>
     <message>
         <source>Use dropbox to host files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmileyPicker</name>
+    <message>
+        <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

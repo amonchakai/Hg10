@@ -61,6 +61,16 @@ Page {
         }    
     }
     
+    actions: [
+        ActionItem {
+            title: qsTr("Refresh")
+            imageSource: "asset:///images/icon_refresh.png"
+            onTriggered: {
+                smileyPickerController.refresh();
+            }
+        }
+    ]
+    
     attachedObjects: [
     	SmileyPickerController {
             id: smileyPickerController

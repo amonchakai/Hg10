@@ -62,7 +62,55 @@ NavigationPane {
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Top
             }
+            TextField {
+                id: contactFilter
+                visible: false
+                hintText: qsTr("Search a contact")
+                onTextChanging: {
+                    if(text.length > 3) {
+                        listContactsController.filter(text);
+                    }
+                    if(text.length == 0) {
+                        listContactsController.updateView();
+                        visible = false;
+                    }
+                }
+            }
             ListView {
+                signal refreshTriggered()
+                property bool loading: false
+                leadingVisualSnapThreshold: 2.0
+                leadingVisual: RefreshHeader {
+                    id: refreshHandler
+                    onRefreshTriggered: {
+                        listContactView.refreshTriggered();
+                    }
+                }
+                onTouch: {
+                    refreshHandler.onListViewTouch(event);
+                }
+                onLoadingChanged: {
+                    refreshHandler.refreshing = refreshableList.loading;
+                    
+                    if(!refreshHandler.refreshing) {
+                        // If the refresh is done 
+                        // Force scroll to top to ensure that all items are visible
+                        scrollToPosition(ScrollPosition.Beginning, ScrollAnimation.None);
+                    }
+                }
+                
+                onRefreshTriggered: {
+                    contactFilter.visible = true;
+                }
+                
+                gestureHandlers: [
+                    PinchHandler {
+                        onPinchEnded: {
+                            listContactsController.setFilter(event.pinchRatio < 1);
+                        }
+                    }
+                ]
+                
                 id: listContactView
                 dataModel: GroupDataModel {
                     id: theModel
@@ -257,6 +305,7 @@ NavigationPane {
                 
                 onTriggered: {
                     var chosenItem = dataModel.data(indexPath);
+                    contactFilter.visible = false;
                     
                     // Create the content page and push it on top to drill down to it.
                     if(!tpage) {
@@ -324,6 +373,7 @@ NavigationPane {
         console.log(depth)
     
     }
+    
 }
 
 
