@@ -178,6 +178,7 @@ NavigationPane {
                     
                     
                 }
+                
     	        
     	        Divider { }
     	        
@@ -193,6 +194,19 @@ NavigationPane {
     	            
                     visible: settingsController.enableGoogle
     	        }
+    	        
+                Button {
+                    id: facebookConnectButton
+                    text: qsTr("Synch with Facebook")
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    onClicked: {
+                        if(!googlePage)
+                            googlePage = facebookConnect.createObject();
+                        navSettings.push(googlePage);
+                    }
+                    
+                    visible: !settingsController.enableGoogle
+                }
     	        
                 Button {
                     id: dropboxConnectButton
@@ -246,6 +260,10 @@ NavigationPane {
                 ComponentDefinition {
                     id: dropboxConnect
                     source: "DropboxConnect.qml"
+                },
+                ComponentDefinition {
+                    id: facebookConnect
+                    source: "FacebookConnect.qml"
                 }
             ]
     	    

@@ -28,6 +28,7 @@ private:
      int                m_Theme;
      int                m_FontSize;
      bool               m_IsGoogleEnabled;
+     bool               m_RunHeadless;
 
      QSettings          *m_Settings;
 
@@ -49,6 +50,7 @@ public:
 
     inline int            getEnableGoogle() const           { return m_IsGoogleEnabled; }
     inline void           setEnableGoogle(bool c)           { m_IsGoogleEnabled = c; emit enableGoogleChanged(); }
+
 
 public Q_SLOTS:
     void updateAvatar();

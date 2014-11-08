@@ -11,8 +11,9 @@
 #include <QtCore/QObject>
 #include <bb/cascades/WebView>
 #include <QSettings>
+#include "OnlineHistory.hpp"
 
-class GoogleConnectController : public QObject {
+class GoogleConnectController : public OnlineHistory {
     Q_OBJECT;
 
 
@@ -56,8 +57,8 @@ public Q_SLOTS:
     void checkReply             ();
     void checkRefresh           ();
 
-    void getMessages            (const QString &with, int nbMessages);
-    void getRemainingMessages   (QString lastMessageId);
+    virtual void getMessages            (const QString &with, int nbMessages);
+    virtual void getRemainingMessages   (QString lastMessageId);
 
     void getMessageList         ();
     void getMessageReply        ();

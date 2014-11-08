@@ -10,6 +10,7 @@
 #include "SettingsController.hpp"
 #include "ConversationMAnager.hpp"
 #include <QRegExp>
+#include "XMPPService.hpp"
 
 SettingsController::SettingsController(QObject *parent) : QObject(parent), m_FontSize(28), m_Settings(NULL) {
 
@@ -32,6 +33,8 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
 
     Q_ASSERT(check);
     Q_UNUSED(check);
+
+
 }
 
 
@@ -49,4 +52,6 @@ void SettingsController::updateAvatar() {
 void SettingsController::save() {
     m_Settings->setValue("theme", m_Theme);
     m_Settings->setValue("fontSize", m_FontSize);
+
+    XMPP::get()->notifySettingChange();
 }

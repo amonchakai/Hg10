@@ -1,10 +1,11 @@
 1
-47
+49
 Contacts.qml
 Conversation.qml
 CreateRoom.qml
 data/emojies.xml
 DropboxConnect.qml
+FacebookConnect.qml
 GoogleConnect.qml
 ImagePreview.qml
 images/available.png
@@ -18,6 +19,7 @@ images/chat_room.png
 images/chat_room.svg
 images/contact.png
 images/contact.svg
+images/document.png
 images/icon_about.png
 images/icon_attach.png
 images/icon_bottom.png

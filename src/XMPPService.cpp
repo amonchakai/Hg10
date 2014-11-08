@@ -20,6 +20,7 @@
 #include <bb/system/InvokeManager>
 #include <bb/system/InvokeRequest>
 #include <bb/system/InvokeTargetReply>
+#include <QTimer>
 
 #include "DataObjects.h"
 #include "ConversationManager.hpp"
@@ -35,7 +36,8 @@ XMPP::XMPP(QObject *parent) : QObject(parent),
         m_PushStack(NULL),
         m_Connected(false),
         m_Facebook(NULL),
-        m_ClientSocket(new QTcpSocket(this)), m_ScheduleContactListRequest(false) {
+        m_ClientSocket(new QTcpSocket(this)), m_ScheduleContactListRequest(false),
+        m_NbFails(0) {
 
     bool check = connect(m_ClientSocket, SIGNAL(connected()), this, SLOT(connected()));
     Q_ASSERT(check);
@@ -75,14 +77,29 @@ void XMPP::connected() {
 
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
         qDebug() << "Connected to XMPP headless!" << m_ClientSocket->state() ;
+
+        if(m_NbFails != 0) {
+            askConnectionStatus();
+            getContactList();
+        }
+
         if(m_ScheduleContactListRequest)
             getContactList();
     }
 }
 
-void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError ) {
+void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
+    qDebug() << "Connec error: " << e;
+    if(e == QAbstractSocket::RemoteHostClosedError && m_NbFails < 2) {
+        QTimer::singleShot(1000, this, SLOT(connectToXMPPService()));
+        ++m_NbFails;
+        return;
+    }
+
+
 
     bool result = tryRestartHeadless();
+    m_NbFails = 0;
 
     if(result == false) {
         bb::system::SystemDialog *dialog = new bb::system::SystemDialog("OK");
@@ -90,13 +107,14 @@ void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError ) {
         dialog->setBody(tr("The connection to the headless service cannot be established.\n\nMaybe you did not allow it? \nMaybe it crashed...\n\nYou can check the permission, try to kill/restart the process, reinstall the app, reboot your device... \n\nDelete and forget this stupid app\'"));
         dialog->show();
     } else {
-        connectToXMPPService();
+        QTimer::singleShot(1000, this, SLOT(connectToXMPPService()));
     }
 }
 
 
 void XMPP::connectToXMPPService() {
-    if (!m_ClientSocket->isOpen()) {
+    if (!m_ClientSocket->isOpen() || (m_ClientSocket && m_ClientSocket->state() != QTcpSocket::ConnectedState)) {
+        qDebug() << "connect";
         m_ClientSocket->connectToHost(QHostAddress::LocalHost, 2014);
         bool ok = connect(m_ClientSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
         Q_ASSERT(ok);
@@ -104,12 +122,22 @@ void XMPP::connectToXMPPService() {
         Q_ASSERT(ok);
         Q_UNUSED(ok);
     } else {
+        qDebug() << "Already connected" << m_ClientSocket->state();
         connected();
     }
 }
 
 void XMPP::disconnected() {
 
+}
+
+void XMPP::askConnectionStatus() {
+    mutex.lockForWrite();
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        m_ClientSocket->write(QByteArray::number(XMPPServiceMessages::REQUEST_CONNECTION_STATUS));
+        m_ClientSocket->flush();
+    }
+    mutex.unlock();
 }
 
 void XMPP::readyRead() {
@@ -505,6 +533,7 @@ void XMPP::facebookImagesRetrieved(const QString &who) {
 
 
 bool XMPP::tryRestartHeadless() {
+    qDebug() << "need restart";
     bb::system::InvokeRequest request;
     request.setTarget("com.amonchakai.Hg10.Headless");
     request.setAction("bb.action.START");

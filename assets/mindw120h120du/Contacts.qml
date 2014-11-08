@@ -99,6 +99,7 @@ NavigationPane {
                     }
                 }
                 
+                
                 onRefreshTriggered: {
                     contactFilter.visible = true;
                 }

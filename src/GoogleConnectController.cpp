@@ -34,7 +34,7 @@
 
 QReadWriteLock  mutexGoogleConnect;
 
-GoogleConnectController::GoogleConnectController(QObject *parent) : QObject(parent),
+GoogleConnectController::GoogleConnectController(QObject *parent) : OnlineHistory(parent),
         m_WebView(NULL),
         m_Settings(NULL),
         m_HistoryIndex(0),
@@ -181,6 +181,9 @@ void GoogleConnectController::parse(const QString &message) {
     //qDebug() << m_Settings->value("refresh_token").value<QString>();
 
 
+    // Stop facebook synch
+    m_Settings->setValue("Facebook_access_token", "");
+    m_Settings->setValue("Facebook_expires_in", "");
 }
 
 
@@ -225,6 +228,10 @@ void GoogleConnectController::parseRefresh(const QString &message) {
     if(expires_in.indexIn(message) != -1)
         m_Settings->setValue("expires_in", expires_in.cap(1));
 
+
+    // Stop facebook synch
+    m_Settings->setValue("Facebook_access_token", "");
+    m_Settings->setValue("Facebook_expires_in", "");
 
     if(access_token.indexIn(message) != -1) {
         getMessages(m_WithButNoKey, m_NBMessageExpected);

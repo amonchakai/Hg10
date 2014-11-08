@@ -40,6 +40,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \
+        $$quote($$BASEDIR/assets/FacebookConnect.qml) \
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
@@ -60,6 +61,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/chat_room.svg) \
         $$quote($$BASEDIR/assets/images/contact.png) \
         $$quote($$BASEDIR/assets/images/contact.svg) \
+        $$quote($$BASEDIR/assets/images/document.png) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \
         $$quote($$BASEDIR/assets/images/icon_attach.png) \
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
@@ -176,6 +178,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/Image/WebResourceManager.h) \
         $$quote($$BASEDIR/src/ListContactsController.hpp) \
         $$quote($$BASEDIR/src/LoginController.hpp) \
+        $$quote($$BASEDIR/src/OnlineHistory.hpp) \
         $$quote($$BASEDIR/src/PrivateAPIKeys.h) \
         $$quote($$BASEDIR/src/RoomController.hpp) \
         $$quote($$BASEDIR/src/SettingsController.hpp) \

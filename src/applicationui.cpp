@@ -32,6 +32,7 @@
 #include "RoomController.hpp"
 #include "SuggestContactController.hpp"
 #include "SmileyPickerController.hpp"
+#include "Facebook.hpp"
 
 using namespace bb::cascades;
 
@@ -67,6 +68,7 @@ ApplicationUI::ApplicationUI() :
     qmlRegisterType<RoomController>("Network.RoomController", 1, 0, "RoomController");
     qmlRegisterType<SuggestContactController>("Network.SuggestContactController", 1, 0, "SuggestContactController");
     qmlRegisterType<SmileyPickerController>("Network.SmileyPickerController", 1, 0, "SmileyPickerController");
+    qmlRegisterType<Facebook>("Network.FacebookController", 1, 0, "FacebookController");
 
     // Create scene document from main.qml asset, the parent is set
     // to ensure the document gets destroyed properly at shut down.

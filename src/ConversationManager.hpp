@@ -11,7 +11,8 @@
 #include <QString>
 #include "DataObjects.h"
 
-class GoogleConnectController;
+
+class OnlineHistory;
 
 enum GoogleSynchStatus {
     NONE  = 0,
@@ -28,7 +29,7 @@ public:
     static ConversationManager*    get();
 
 
-    void initGoogleConnect              ();
+    void initOnlineHistory              ();
 
     void clear                          ();
     void load                           (const QString &from);
@@ -67,7 +68,7 @@ private:
     History                         m_History;
 
     // History from Google
-    GoogleConnectController        *m_GoogleConnect;
+    OnlineHistory                  *m_OnlineHistory;
     GoogleSynchStatus               m_SynchStatus;
     int                             m_SynchPushLoc;
 
@@ -77,7 +78,7 @@ private:
     ConversationManager                 (QObject *parent = 0);
 
 public Q_SLOTS:
-    void googleMessage                  (const QString &from, const QString &message, const QString &messageId);
+    void onlineMessage                  (const QString &from, const QString &message, const QString &messageId);
     void saveHistory                    ();
 
 Q_SIGNALS:

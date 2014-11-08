@@ -265,6 +265,7 @@ Page {
         ActionItem {
             title: qsTr("Stickers")
             ActionBar.placement: ActionBarPlacement.InOverflow
+            imageSource: "asset:///images/document.png"
             onTriggered: {
                 if(!smileyPage)
                     smileyPage = smileyPicker.createObject();

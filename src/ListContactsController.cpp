@@ -77,8 +77,10 @@ void ListContactsController::updateConnectionStatus(bool status) {
     if(m_Activity != NULL) {
         if(status)
             m_Activity->start();
-        else
-            m_Activity->stop();
+        else {
+            if(!m_Contacts.isEmpty())
+                m_Activity->stop();
+        }
     }
 }
 
@@ -202,6 +204,8 @@ void ListContactsController::updateView() {
 
     const QList<Contact *> *contacts = XMPP::get()->getContacts();
 
+    qDebug() << "contacts: " << contacts->length();
+
     QList<QObject*> datas;
     for(int i = contacts->length()-1 ; i >= 0 ; --i) {
         // remove yourself from the list of contact, and store the info for display
@@ -232,20 +236,26 @@ void ListContactsController::updateView() {
 
             e.m_When = 0;
 
+            qDebug() << "add";
+
         } else {
             setUserName(contacts->at(i)->getName());
             setAvatar(contacts->at(i)->getAvatar());
 
             if(ConversationManager::get()->getAvatar().isEmpty())
                 ConversationManager::get()->setAvatar(contacts->at(i)->getAvatar());
+
+            qDebug() << "me";
         }
     }
 
     dataModel->clear();
     dataModel->insertList(datas);
 
-    if(m_Activity != NULL)
+    if(m_Activity != NULL && !contacts->isEmpty()) {
+        qDebug() << "ACTIVITY STOP";
         m_Activity->stop();
+    }
 }
 
 void ListContactsController::pushContact(const Contact* c) {
@@ -253,16 +263,16 @@ void ListContactsController::pushContact(const Contact* c) {
     if(c->getID().isEmpty())
         return;
 
+    if(m_Activity != NULL)
+        m_Activity->stop();
+
     using namespace bb::cascades;
 
     GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
 
-    if(!m_PushStated) {
-        dataModel->clear();
-        m_Contacts.clear();
-        m_PushStated = true;
-
-        qDebug() << "PUSH CONTACT!!";
+    for(int i = 0 ; i < m_Contacts.length() ; ++i) {
+        if(m_Contacts.at(i)->getID() == c->getID())
+            return;
     }
 
     qDebug() << c->getID() << c->getName() << c->getPreview();
@@ -273,10 +283,11 @@ void ListContactsController::pushContact(const Contact* c) {
             return;
     }
 
-    qDebug() << "Pushing: " << c->getName();
+
 
 
     if(c->getID().toLower() != ConversationManager::get()->getUser().toLower()) {
+        qDebug() << "Pushing: " << c->getName();
 
         TimeEvent e = ConversationManager::get()->getPreview(c->getID());
 
@@ -306,6 +317,8 @@ void ListContactsController::pushContact(const Contact* c) {
         dataModel->insert(nc);
 
     } else {
+        qDebug() << "nope Pushing: " << c->getName();
+
         setUserName(c->getName());
         setAvatar(c->getAvatar());
 

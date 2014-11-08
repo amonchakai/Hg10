@@ -37,10 +37,12 @@ private:
     // connection to headless XMPP service.
     QTcpSocket               *m_ClientSocket;
     bool                      m_ScheduleContactListRequest;
+    int                       m_NbFails;
 
     XMPP(QObject *parent = 0);
 
     void loadLocal          ();
+    void askConnectionStatus();
 
 public Q_SLOTS:
 

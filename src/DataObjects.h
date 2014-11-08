@@ -17,6 +17,7 @@ struct XMPPServiceMessages {
         LOGIN = 1,
         REPLY_LOGGED_IN,
         REPLY_CONNECTION_FAILED,
+        REQUEST_CONNECTION_STATUS,
         DISCONNECT,
         REQUEST_CONTACT_LIST,
         REPLY_CONTACT_LIST,

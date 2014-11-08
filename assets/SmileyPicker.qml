@@ -13,7 +13,7 @@ Page {
             horizontalAlignment: HorizontalAlignment.Center
             
             layout: GridListLayout {
-                columnCount: 4
+                columnCount: 5
             }
             
             dataModel: GroupDataModel {

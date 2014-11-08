@@ -82,6 +82,17 @@
     </message>
 </context>
 <context>
+    <name>FacebookConnect</name>
+    <message>
+        <source>Facebook</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GoogleConnect</name>
     <message>
         <source>Google</source>
@@ -282,6 +293,10 @@
     </message>
     <message>
         <source>Use dropbox to host files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synch with Facebook</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -17,6 +17,8 @@
 
 #include "XMPPService.hpp"
 #include "GoogleConnectController.hpp"
+#include "Facebook.hpp"
+#include "OnlineHistory.hpp"
 
 QReadWriteLock  mutexConversation;
 ConversationManager* ConversationManager::m_This = NULL;
@@ -25,7 +27,7 @@ ConversationManager* ConversationManager::m_This = NULL;
 // Singleton
 
 
-ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_GoogleConnect(NULL), m_SynchStatus(NONE), m_SynchPushLoc(0) {
+ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_OnlineHistory(NULL), m_SynchStatus(NONE), m_SynchPushLoc(0) {
 
 
     loadUserName();
@@ -50,17 +52,32 @@ void ConversationManager::clear() {
     emit cleared();
 }
 
-void ConversationManager::initGoogleConnect() {
-    if(m_GoogleConnect != NULL)
+void ConversationManager::initOnlineHistory() {
+    if(m_OnlineHistory != NULL)
         return;
 
-    m_GoogleConnect = new GoogleConnectController();
-    bool check = connect(m_GoogleConnect, SIGNAL(messageLoaded(const QString &, const QString &, const QString &)), this, SLOT(googleMessage(const QString &, const QString &, const QString &)));
-    Q_ASSERT(check);
-    Q_UNUSED(check);
+    QSettings settings("Amonchakai", "Hg10");
+    if(!settings.value("access_token").value<QString>().isEmpty()) {
+        GoogleConnectController *google = new GoogleConnectController();
+        bool check = connect(google, SIGNAL(messageLoaded(const QString &, const QString &, const QString &)), this, SLOT(onlineMessage(const QString &, const QString &, const QString &)));
+        Q_ASSERT(check);
+        Q_UNUSED(check);
 
-    check = connect(m_GoogleConnect, SIGNAL(synchCompleted()), this, SLOT(saveHistory()));
-    Q_ASSERT(check);
+        check = connect(google, SIGNAL(synchCompleted()), this, SLOT(saveHistory()));
+        Q_ASSERT(check);
+
+        m_OnlineHistory = google;
+    } else {
+        Facebook *facebook = new Facebook();
+        /*bool check = connect(facebook, SIGNAL(messageLoaded(const QString &, const QString &, const QString &)), this, SLOT(onlineMessage(const QString &, const QString &, const QString &)));
+        Q_ASSERT(check);
+        Q_UNUSED(check);
+
+        check = connect(facebook, SIGNAL(synchCompleted()), this, SLOT(saveHistory()));
+        Q_ASSERT(check);*/
+
+        m_OnlineHistory = facebook;
+    }
 }
 
 
@@ -126,16 +143,13 @@ void ConversationManager::load(const QString &from) {
 
     // ----------------------------------------------------------------
     // check if we need to load google history
-    if(m_GoogleConnect == NULL) {
-        QSettings settings("Amonchakai", "Hg10");
-        if(!settings.value("access_token").value<QString>().isEmpty()) {
-            initGoogleConnect();
-        }
+    if(m_OnlineHistory == NULL) {
+        initOnlineHistory();
     }
 
-    if(m_GoogleConnect != NULL) {
-        qDebug() << "m_GoogleConnect->getMessages(from, 1);";
-        m_GoogleConnect->getMessages(from, 1);
+    if(m_OnlineHistory != NULL) {
+        qDebug() << "m_OnlineHistory->getMessages(from, 1);";
+        m_OnlineHistory->getMessages(from, 1);
         m_SynchStatus = NONE;
     }
 
@@ -239,7 +253,7 @@ void ConversationManager::saveHistory() {
 
 // ---------------------------------------------------------------------------
 // from Google...
-void ConversationManager::googleMessage(const QString &from, const QString &message, const QString &messageId) {
+void ConversationManager::onlineMessage(const QString &from, const QString &message, const QString &messageId) {
 
     if(m_SynchStatus == NONE) {
         mutexConversation.lockForWrite();
@@ -268,7 +282,7 @@ void ConversationManager::googleMessage(const QString &from, const QString &mess
             m_SynchPushLoc = m_History.m_History.size();
 
             // get messages up to the last full synch
-            m_GoogleConnect->getRemainingMessages(lastSynch);
+            m_OnlineHistory->getRemainingMessages(lastSynch);
 
         } else {
             // history was empty, just push data from Google.
@@ -276,7 +290,7 @@ void ConversationManager::googleMessage(const QString &from, const QString &mess
             m_SynchPushLoc = 0;
             qDebug() << "Start from no history!";
 
-            m_GoogleConnect->getRemainingMessages("");
+            m_OnlineHistory->getRemainingMessages("");
         }
 
         mutexConversation.unlock();
