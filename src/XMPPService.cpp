@@ -36,6 +36,7 @@ XMPP::XMPP(QObject *parent) : QObject(parent),
         m_PushStack(NULL),
         m_Connected(false),
         m_Facebook(NULL),
+        m_PictureRecovery(false),
         m_ClientSocket(new QTcpSocket(this)), m_ScheduleContactListRequest(false),
         m_NbFails(0) {
 
@@ -313,6 +314,8 @@ void XMPP::clear() {
 
 
 void XMPP::loadvCard(const QString &bareJid, bool push) {
+    m_PictureRecovery = false;
+
     // -------------------------------------------------------------
     // get vCard from file
     QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
@@ -343,15 +346,20 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
     QRegExp isFacebook("(.*)@chat.facebook.com");
     if(isFacebook.indexIn(photoName) != -1) {
         photoName = isFacebook.cap(1);
-        if(photoName[0] == '-')
+        QString prefix;
+        if(photoName[0] == '-') {
             photoName = photoName.mid(1);
+            prefix = "-";
+        }
+
+
 
         push = true;
 
         if(m_Facebook == NULL)
             initFacebook();
 
-        if(!QFile::exists(vCardsDir + "/" + photoName + "@chat.facebook.com.png")) {
+        if(!QFile::exists(vCardsDir + "/" + prefix + photoName + "@chat.facebook.com.png")) {
             m_Facebook->getAvatar(photoName);
             delayPush = true;
             mutex.lockForWrite();
@@ -362,7 +370,7 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
             mutex.unlock();
         }
 
-        contact->setAvatar(vCardsDir + "/" + photoName + "@chat.facebook.com.png");
+        contact->setAvatar(vCardsDir + "/" + prefix + photoName + "@chat.facebook.com.png");
 
     } else {
 
@@ -381,17 +389,6 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
         if(m_Connected) {
             contact->setPresence(0);
 
-/*
-            QStringList resources = rosterManager().getResources(bareJid);
-            //qDebug() << "Resource size: " << resources.size();
-            for(int i = 0 ; i < resources.size() ; ++i) {
-                QXmppPresence presence = rosterManager().getPresence(bareJid,resources.at(i));
-
-                //qDebug() << "Resource values: " << i << presence.availableStatusType();
-
-                contact->setPresence(std::max<int>(contact->getPresence(), presence.availableStatusType()));
-            }
-*/
 
         } else
             contact->setPresence(0);
@@ -517,7 +514,8 @@ void XMPP::initFacebook() {
 }
 
 void XMPP::facebookImagesRetrieved(const QString &who) {
-    qDebug() << "id from facebook: " <<who;
+    if(m_PictureRecovery)
+        return;
 
     mutex.lockForWrite();
     Contact *c = m_PushStack->value(who);
@@ -531,6 +529,25 @@ void XMPP::facebookImagesRetrieved(const QString &who) {
 // ------------------------------------------------------------
 // failure area
 
+
+void XMPP::checkMissingPictures() {
+
+    for(int i = 0 ; i < m_Datas->size() ; ++i) {
+        if(!QFile::exists(m_Datas->at(i)->getAvatar())) {
+            qDebug() << m_Datas->at(i)->getAvatar();
+
+            m_PictureRecovery = true;
+
+            QRegExp id("([0-9]+)@chat.facebook.com");
+            if(id.indexIn(m_Datas->at(i)->getAvatar()) != -1) {
+                qDebug() << "request: " << id.cap(1);
+                if(m_Facebook != NULL)
+                    m_Facebook->getAvatar(id.cap(1));
+            }
+        }
+    }
+
+}
 
 bool XMPP::tryRestartHeadless() {
     qDebug() << "need restart";

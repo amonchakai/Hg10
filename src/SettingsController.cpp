@@ -55,3 +55,4 @@ void SettingsController::save() {
 
     XMPP::get()->notifySettingChange();
 }
+

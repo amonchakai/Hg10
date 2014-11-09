@@ -24,7 +24,7 @@ public:
 
     void                           connectToServer     (const QString &user, const QString &password);
     void                           disconnectFromServer();
-
+    void                           checkMissingPictures();
 
 private:
     static XMPP              *m_This;
@@ -32,7 +32,7 @@ private:
     QMap<QString, Contact*>  *m_PushStack;
     bool                      m_Connected;
     Facebook                 *m_Facebook;
-
+    bool                      m_PictureRecovery;
     // ------------------------------------------------------------
     // connection to headless XMPP service.
     QTcpSocket               *m_ClientSocket;

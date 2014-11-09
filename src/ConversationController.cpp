@@ -137,7 +137,7 @@ QString ConversationController::renderMessage(const QString &message, bool showI
         if(showImg && isImage(url.cap(1))) {
             nMessage += "<img src=\"" + url.cap(1) + "\" onclick=\"sendURL(\'OPEN_IMAGE:" + url.cap(1) + "\');\" />";
         } else {
-            nMessage += "<a href=\"" + url.cap(1) + "\">" + url.cap(1) + "</a>";
+            nMessage += "<a href=\"" + url.cap(1) + "\">" + url.cap(1).mid(0, 20) + "..." + "</a>";
         }
 
         lastPos = pos + url.matchedLength();
@@ -192,7 +192,6 @@ void ConversationController::pushHistory(const QString &from, const QString &mes
     QString ownAvatar = ConversationManager::get()->getAvatar();
     if(ownAvatar.mid(0,9).toLower() == "asset:///")
         ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
-
 
     bool ownMessage = isOwnMessage(from);
     QString lmessage = renderMessage(message, true);

@@ -28,7 +28,6 @@ private:
      int                m_Theme;
      int                m_FontSize;
      bool               m_IsGoogleEnabled;
-     bool               m_RunHeadless;
 
      QSettings          *m_Settings;
 

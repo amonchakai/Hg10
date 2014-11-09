@@ -216,7 +216,10 @@ void ListContactsController::updateView() {
                  continue;
 
             Contact *nc = new Contact;
-            nc->setAvatar(contacts->at(i)->getAvatar());
+            if(QFile::exists(contacts->at(i)->getAvatar()))
+                nc->setAvatar(contacts->at(i)->getAvatar());
+            else
+                nc->setAvatar("asset:///images/avatar.png");
             nc->setName(contacts->at(i)->getName());
 
             nc->setTimestamp(e.m_When);
@@ -378,7 +381,10 @@ void ListContactsController::filter(const QString &contact) {
             TimeEvent e = ConversationManager::get()->getPreview(contacts->at(i)->getID());
 
             Contact *nc = new Contact;
-            nc->setAvatar(contacts->at(i)->getAvatar());
+            if(QFile::exists(contacts->at(i)->getAvatar()))
+                nc->setAvatar(contacts->at(i)->getAvatar());
+            else
+                nc->setAvatar("asset:///images/avatar.png");
             nc->setName(contacts->at(i)->getName());
 
             nc->setTimestamp(e.m_When);

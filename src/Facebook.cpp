@@ -42,6 +42,8 @@ Facebook::Facebook(QObject *parent) : OnlineHistory(parent), m_WebView(NULL), m_
 
 void Facebook::getAvatar(const QString &id) {
 
+    qDebug() << id << "requested";
+
     QNetworkRequest request(QUrl(QString("https://graph.facebook.com/")
                                 + id
                                 + "/picture?type=large&redirect=false"
@@ -135,7 +137,13 @@ void Facebook::saveImages(const QByteArray &buffer, const QString &username) {
     qImage = nqImage;
 
     QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
-    QString name(vCardsDir + "/" + username + "@chat.facebook.com");
+
+    bool isNum;
+    qlonglong value = username.toLongLong(&isNum);
+    QString prefix("");
+    if(isNum) prefix = "-";
+
+    QString name(vCardsDir + "/" + prefix + username + "@chat.facebook.com");
 
     uchar *bits = qImage.bits();
     int radius = std::min(qImage.size().width(), qImage.size().height())/2; radius = radius*radius;
@@ -145,7 +153,7 @@ void Facebook::saveImages(const QByteArray &buffer, const QString &username) {
 
     // save two representation of the picture: a square for the post, and a disk for the user list
     if(!buffer.isEmpty()) {
-        qImage.save(name + ".square.png", "PNG");
+        qImage.save(name + ".png.square.png", "PNG");
     }
 
     for(int i = 0 ; i < qImage.size().width() ; ++i) {
@@ -247,7 +255,7 @@ void Facebook::checkReplyUserID() {
 }
 
 void Facebook::getMessages (const QString &with, int nbMessages) {
-    qDebug() << "get messages " << with << nbMessages << m_Settings->value("Facebook_access_token").toString();
+
     m_CurrentDst = "";
     m_CurrentDstId = with;
     m_NbMessages = nbMessages;
@@ -286,7 +294,6 @@ void Facebook::checkReplyUserName() {
 
                 if(!m_CurrentDst.isEmpty()) {
 
-                    qDebug() << "get inbox";
                     getInbox();
 
                 }
@@ -321,7 +328,6 @@ void Facebook::checkReplyInbox() {
             if (available > 0) {
                 const QByteArray buffer(reply->readAll());
                 response = QString::fromUtf8(buffer);
-                qDebug() << response;
 
                 parseInbox(response);
 
@@ -344,16 +350,15 @@ void Facebook::parseInbox(const QString &page) {
 
     int pos = 0;
     while((pos = commentRegExp.indexIn(page, pos)) != -1) {
-
         commentIdx.push_back(pos);
-        qDebug() << pos;
 
         pos += commentRegExp.matchedLength();
     }
     commentIdx.push_back(page.size());
 
     int contactP = page.indexOf(m_CurrentDst, commentIdx[0]);
-    qDebug() << "pos of interest: " << contactP;
+    if(contactP == -1)
+        return;
 
     pos = 0;
     for(int i = 0 ; i < commentIdx.size()-1; ++i) {
@@ -363,7 +368,6 @@ void Facebook::parseInbox(const QString &page) {
         }
     }
 
-    qDebug() << "index selected: " << commentIdx[pos];
 
     int startIdx = commentIdx[pos];
     int endIdx;

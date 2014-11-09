@@ -207,7 +207,7 @@ NavigationPane {
                     
                     visible: !settingsController.enableGoogle
                 }
-    	        
+                    	        
                 Button {
                     id: dropboxConnectButton
                     text: qsTr("Use dropbox to host files")
