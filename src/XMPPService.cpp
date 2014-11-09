@@ -116,7 +116,7 @@ void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
 void XMPP::connectToXMPPService() {
     if (!m_ClientSocket->isOpen() || (m_ClientSocket && m_ClientSocket->state() != QTcpSocket::ConnectedState)) {
         qDebug() << "connect";
-        m_ClientSocket->connectToHost(QHostAddress::LocalHost, 2014);
+        m_ClientSocket->connectToHost(QHostAddress::LocalHost, 27015);
         bool ok = connect(m_ClientSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
         Q_ASSERT(ok);
         ok = connect(m_ClientSocket, SIGNAL(readyRead()), this, SLOT(readyRead()));
