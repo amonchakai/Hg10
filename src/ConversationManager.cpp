@@ -69,13 +69,6 @@ void ConversationManager::initOnlineHistory() {
         m_OnlineHistory = google;
     } else {
         Facebook *facebook = new Facebook();
-        /*bool check = connect(facebook, SIGNAL(messageLoaded(const QString &, const QString &, const QString &)), this, SLOT(onlineMessage(const QString &, const QString &, const QString &)));
-        Q_ASSERT(check);
-        Q_UNUSED(check);
-
-        check = connect(facebook, SIGNAL(synchCompleted()), this, SLOT(saveHistory()));
-        Q_ASSERT(check);*/
-
         m_OnlineHistory = facebook;
     }
 }

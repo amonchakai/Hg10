@@ -351,7 +351,7 @@ void Facebook::parseInbox(const QString &page) {
     int pos = 0;
     while((pos = commentRegExp.indexIn(page, pos)) != -1) {
         commentIdx.push_back(pos);
-
+        qDebug() << pos;
         pos += commentRegExp.matchedLength();
     }
     commentIdx.push_back(page.size());
@@ -359,6 +359,8 @@ void Facebook::parseInbox(const QString &page) {
     int contactP = page.indexOf(m_CurrentDst, commentIdx[0]);
     if(contactP == -1)
         return;
+
+    qDebug() << contactP;
 
     pos = 0;
     for(int i = 0 ; i < commentIdx.size()-1; ++i) {
@@ -383,18 +385,25 @@ void Facebook::parseInbox(const QString &page) {
         if(pos > endIdx)
             break;
 
-        qDebug() << message.cap(1) << message.cap(2) << message.cap(4) << message.cap(3);
+//        qDebug() << message.cap(1) << message.cap(2) << message.cap(4) << message.cap(3);
+
+        if(message.cap(2) == m_CurrentDst)
+            m_Who.push_back(m_CurrentDstId);
+        else {
+            if(message.cap(1) == m_Settings->value("Facebook_userid").toString()) {
+                m_Who.push_back(ConversationManager::get()->getUser());
+            } else {
+                pos += message.matchedLength();
+                continue;
+            }
+        }
+
 
         QString mess = message.cap(3);
         mess.replace("\\/","/");
-
         m_Messages.push_back(mess);
-        if(message.cap(2) == m_CurrentDst)
-            m_Who.push_back(m_CurrentDstId);
-        else
-            m_Who.push_back(ConversationManager::get()->getUser());
-        m_When.push_back(message.cap(4));
 
+        m_When.push_back(message.cap(4));
 
         pos += message.matchedLength();
     }
@@ -416,7 +425,7 @@ void Facebook::sendProgressively() {
     ++m_NbMessages;
 
     if(m_NbMessages == m_Messages.size()) {
-        emit synchCompleted();
+        ConversationManager::get()->saveHistory();
         return;
     }
 
