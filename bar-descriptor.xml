@@ -75,6 +75,12 @@
     <!-- <copyright></copyright> -->
 
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
+    <splashScreens>
+       <image/>
+       <image>splash_720x720.jpg</image>
+       <image>splash_768x1280.jpg</image>
+       <image>splash_1440x1440.jpg</image>
+    </splashScreens>
     <authorId>gYAAgCQoPRQtK2AS30z0Bo75Z74</authorId>
     <author>Pierre Lebreton</author>
 
@@ -98,6 +104,9 @@
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
+    <asset path="splash_720x720.jpg">splash_720x720.jpg</asset>
+    <asset path="splash_768x1280.jpg">splash_768x1280.jpg</asset>
+    <asset path="splash_1440x1440.jpg">splash_1440x1440.jpg</asset>
 
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>

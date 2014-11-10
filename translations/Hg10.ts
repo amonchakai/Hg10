@@ -130,6 +130,17 @@
     </message>
 </context>
 <context>
+    <name>Policy</name>
+    <message>
+        <source>Policy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QDnsLookup</name>
     <message>
         <source>Operation cancelled</source>
@@ -350,15 +361,15 @@ Delete and forget this stupid app&apos;</source>
 <context>
     <name>main</name>
     <message>
-        <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Policy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

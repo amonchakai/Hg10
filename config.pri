@@ -36,6 +36,7 @@ simulator {
 
 config_pri_assets {
     OTHER_FILES += \
+        $$quote($$BASEDIR/assets/1440x1440/Contacts.qml) \
         $$quote($$BASEDIR/assets/Contacts.qml) \
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
@@ -44,6 +45,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
+        $$quote($$BASEDIR/assets/Policy.qml) \
         $$quote($$BASEDIR/assets/RefreshHeader.qml) \
         $$quote($$BASEDIR/assets/Rooms.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
@@ -81,7 +83,6 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/write.svg) \
         $$quote($$BASEDIR/assets/images/write_white.png) \
         $$quote($$BASEDIR/assets/main.qml) \
-        $$quote($$BASEDIR/assets/mindw120h120du/Contacts.qml) \
         $$quote($$BASEDIR/assets/template.html) \
         $$quote($$BASEDIR/assets/template_black.html) \
         $$quote($$BASEDIR/assets/template_end.html)
@@ -275,6 +276,9 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/*.qml) \
         $$quote($$BASEDIR/../assets/*.js) \
         $$quote($$BASEDIR/../assets/*.qs) \
+        $$quote($$BASEDIR/../assets/1440x1440/*.qml) \
+        $$quote($$BASEDIR/../assets/1440x1440/*.js) \
+        $$quote($$BASEDIR/../assets/1440x1440/*.qs) \
         $$quote($$BASEDIR/../assets/data/*.qml) \
         $$quote($$BASEDIR/../assets/data/*.js) \
         $$quote($$BASEDIR/../assets/data/*.qs) \
@@ -283,10 +287,7 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/images/*.qs) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.qml) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.js) \
-        $$quote($$BASEDIR/../assets/images/wallpaper/*.qs) \
-        $$quote($$BASEDIR/../assets/mindw120h120du/*.qml) \
-        $$quote($$BASEDIR/../assets/mindw120h120du/*.js) \
-        $$quote($$BASEDIR/../assets/mindw120h120du/*.qs)
+        $$quote($$BASEDIR/../assets/images/wallpaper/*.qs)
 
     HEADERS += \
         $$quote($$BASEDIR/../src/*.h) \

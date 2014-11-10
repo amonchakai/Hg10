@@ -1,5 +1,6 @@
 1
-49
+50
+1440x1440/Contacts.qml
 Contacts.qml
 Conversation.qml
 CreateRoom.qml
@@ -40,7 +41,7 @@ images/write.svg
 images/write_white.png
 LoginForm.qml
 main.qml
-mindw120h120du/Contacts.qml
+Policy.qml
 RefreshHeader.qml
 Rooms.qml
 Settings.qml

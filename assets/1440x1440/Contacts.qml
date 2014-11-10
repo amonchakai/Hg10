@@ -1,4 +1,4 @@
-import bb.cascades 1.3
+import bb.cascades 1.2
 import Network.ListContactsController 1.0
 import com.netimage 1.0
 
@@ -23,10 +23,10 @@ NavigationPane {
                         //horizontalAlignment: HorizontalAlignment.Left
                         id: avatarOwnImg
                         scalingMethod: ScalingMethod.AspectFit
-                        minHeight: ui.sdu(9)
-                        maxHeight: ui.sdu(9)
-                        minWidth: ui.sdu(9)
-                        maxWidth: ui.sdu(9)
+                        minHeight: 100
+                        maxHeight: 100
+                        minWidth: 100
+                        maxWidth: 100
                         image: trackerOwn.image
                         
                         attachedObjects: [
@@ -58,7 +58,7 @@ NavigationPane {
             
             ActivityIndicator {
                 id: connectingActivity
-                preferredHeight: ui.sdu(6)
+                preferredHeight: 60
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Top
             }
@@ -157,12 +157,12 @@ NavigationPane {
                             verticalAlignment: VerticalAlignment.Fill
                             
                             Container {
-                                minHeight: ui.sdu(1)
-                                maxHeight: ui.sdu(1)
+                                minHeight: 10
+                                maxHeight: 10
                             }
                             
                             Container {
-                                preferredHeight: ui.sdu(12)
+                                preferredHeight: 140
                                 
                                 id: titleContainer
                                 layout: StackLayout {
@@ -172,16 +172,16 @@ NavigationPane {
                                 verticalAlignment: VerticalAlignment.Center
                                 
                                 Container {
-                                    minWidth: ui.sdu(.5)
-                                    maxWidth: ui.sdu(.5)
+                                    minWidth: 5
+                                    maxWidth: 5
                                 }
                                 
                                 Container {
                                     layout: AbsoluteLayout { }
-                                    minHeight: ui.sdu(12)
-                                    maxHeight: ui.sdu(12)
-                                    minWidth: ui.sdu(12)
-                                    maxWidth: ui.sdu(12)
+                                    minHeight: 140
+                                    maxHeight: 140
+                                    minWidth: 140
+                                    maxWidth: 140
                                     
                                     //  Avatar
                                     ImageView {
@@ -189,10 +189,10 @@ NavigationPane {
                                         //horizontalAlignment: HorizontalAlignment.Left
                                         id: avatarImg
                                         scalingMethod: ScalingMethod.AspectFit
-                                        minHeight: ui.sdu(12)
-                                        maxHeight: ui.sdu(12)
-                                        minWidth: ui.sdu(12)
-                                        maxWidth: ui.sdu(12)
+                                        minHeight: 140
+                                        maxHeight: 140
+                                        minWidth: 140
+                                        maxWidth: 140
                                         image: tracker.image
                                         
                                         attachedObjects: [
@@ -207,13 +207,13 @@ NavigationPane {
                                     
                                     ImageView {
                                         imageSource: "asset:///images/available.png"
-                                        minHeight: ui.sdu(2)
-                                        maxHeight: ui.sdu(2)
-                                        minWidth: ui.sdu(2)
-                                        maxWidth: ui.sdu(2)
+                                        minHeight: 20
+                                        maxHeight: 20
+                                        minWidth: 20
+                                        maxWidth: 20
                                         layoutProperties: AbsoluteLayoutProperties {
-                                            positionX: ui.sdu(7)
-                                            positionY: ui.sdu(7)
+                                            positionX: 70
+                                            positionY: 70
                                         }
                                         // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
                                         visible: ListItemData.presence > 0
@@ -222,15 +222,15 @@ NavigationPane {
                                 }
                                 
                                 Container {
-                                    minWidth: ui.sdu(3)
-                                    maxWidth: ui.sdu(3)
+                                    minWidth: 40
+                                    maxWidth: 40
                                     //horizontalAlignment: HorizontalAlignment.Left
                                 
                                 }
                                 
                                 Container {
                                     id: contactContainer
-                                    preferredWidth: ui.sdu(200)
+                                    preferredWidth: 2000
                                     layout: StackLayout {
                                         orientation: LayoutOrientation.TopToBottom
                                     }

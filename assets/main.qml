@@ -10,9 +10,10 @@ TabbedPane {
     Menu.definition: MenuDefinition {
         actions: [
             ActionItem {
-                title: qsTr("About")
+                title: qsTr("Policy")
                 imageSource: "asset:///images/icon_about.png"
                 onTriggered: {
+                    about.open();
                 }
             },
             ActionItem {
@@ -83,6 +84,14 @@ TabbedPane {
             Settings {
                 onDone: {
                     settings.close();
+                }
+            }
+        },
+        Sheet {
+            id: about
+            Policy {
+                onDone: {
+                    about.close();
                 }
             }
         },
