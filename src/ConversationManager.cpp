@@ -98,7 +98,7 @@ void ConversationManager::loadUserName() {
 
 // ---------------------------------------------------------------------------
 // from a file
-void ConversationManager::load(const QString &from) {
+void ConversationManager::load(const QString &from, const QString &name) {
     m_CurrentDst = from;
     m_BareID = from;
 
@@ -142,7 +142,7 @@ void ConversationManager::load(const QString &from) {
 
     if(m_OnlineHistory != NULL) {
         qDebug() << "m_OnlineHistory->getMessages(from, 1);";
-        m_OnlineHistory->getMessages(from, 1);
+        m_OnlineHistory->getMessages(name, 1);
         m_SynchStatus = NONE;
     }
 

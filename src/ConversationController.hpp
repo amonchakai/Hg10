@@ -47,7 +47,7 @@ private:
 public Q_SLOTS:
     inline void setWebView              (QObject *webView)                          {m_WebView = dynamic_cast<bb::cascades::WebView*>(webView); }
     void updateView                     ();
-    void load                           (const QString &id, const QString &avatar);
+    void load                           (const QString &id, const QString &avatar, const QString &name);
 
 
 

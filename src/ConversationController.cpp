@@ -45,14 +45,14 @@ bool ConversationController::isOwnMessage(const QString &from) {
 
 }
 
-void ConversationController::load(const QString &id, const QString &avatar) {
+void ConversationController::load(const QString &id, const QString &avatar, const QString &name) {
     if(avatar.mid(0,9).toLower() == "asset:///")
         m_DstAvatar = QDir::currentPath() + "/app/native/assets/" +  avatar.mid(9);
     else
         m_DstAvatar = avatar;
 
     m_HistoryCleared = false;
-    ConversationManager::get()->load(id);
+    ConversationManager::get()->load(id, name);
 }
 
 void ConversationController::updateView() {

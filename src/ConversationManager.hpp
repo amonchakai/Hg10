@@ -32,7 +32,7 @@ public:
     void initOnlineHistory              ();
 
     void clear                          ();
-    void load                           (const QString &from);
+    void load                           (const QString &from, const QString &name);
     void sendMessage                    (const QString &message);
     void sendMessage                    (const QString &to,   const QString &message);
     void logSent                        (const QString &to, const QString &message);

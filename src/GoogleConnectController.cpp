@@ -241,7 +241,6 @@ void GoogleConnectController::parseRefresh(const QString &message) {
 
 
 void GoogleConnectController::getMessages(const QString &with, int nbMessages) {
-
     m_NBMessageExpected = nbMessages;
     m_WithButNoKey = with;
 
