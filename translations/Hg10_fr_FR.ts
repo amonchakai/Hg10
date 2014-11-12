@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>Contacts</name>
+    <message>
+        <source>Search a contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished">Contacts</translation>
+    </message>
+    <message>
+        <source>Remove room</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Conversation</name>
     <message>
         <source>Reply</source>
@@ -18,6 +33,33 @@
     <message>
         <source>Attach</source>
         <translation>Joindre</translation>
+    </message>
+    <message>
+        <source>Stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CreateRoom</name>
+    <message>
+        <source>Create room</source>
+        <translation>Créer une salle</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Fermer</translation>
+    </message>
+    <message>
+        <source>Create</source>
+        <translation>Créer</translation>
+    </message>
+    <message>
+        <source>Participants</source>
+        <translation>Participants</translation>
+    </message>
+    <message>
+        <source>Look for a contact</source>
+        <translation>Chercher un contact</translation>
     </message>
 </context>
 <context>
@@ -37,6 +79,17 @@
     <message>
         <source>Insert access code</source>
         <translation>Entrez votre code d&apos;access</translation>
+    </message>
+</context>
+<context>
+    <name>FacebookConnect</name>
+    <message>
+        <source>Facebook</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -74,6 +127,24 @@
     <message>
         <source>Password</source>
         <translation>Mot de passe</translation>
+    </message>
+</context>
+<context>
+    <name>Manual</name>
+    <message>
+        <source>Done!</source>
+        <translation>Fermer!</translation>
+    </message>
+</context>
+<context>
+    <name>Policy</name>
+    <message>
+        <source>Policy</source>
+        <translation>Politique</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -147,6 +218,44 @@
     </message>
 </context>
 <context>
+    <name>RefreshHeader</name>
+    <message>
+        <source>%L1y ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1m ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1d ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1h ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>just now</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Rooms</name>
+    <message>
+        <source>Rooms</source>
+        <translation>Salle</translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation>Contacts</translation>
+    </message>
+    <message>
+        <source>Clear history</source>
+        <translation>Supprimer historique</translation>
+    </message>
+</context>
+<context>
     <name>Settings</name>
     <message>
         <source>Settings</source>
@@ -204,6 +313,24 @@
         <source>Use dropbox to host files</source>
         <translation>Utiliser dropbox</translation>
     </message>
+    <message>
+        <source>Synch with Facebook</source>
+        <translation>Synch avec Facebook</translation>
+    </message>
+</context>
+<context>
+    <name>SmileyPicker</name>
+    <message>
+        <source>Refresh</source>
+        <translation>Rafraichir</translation>
+    </message>
+</context>
+<context>
+    <name>SmileyPickerController</name>
+    <message>
+        <source>Error: %1 status: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Welcome</name>
@@ -248,20 +375,16 @@ Supprimer et oublier cette stupide application.</translation>
 <context>
     <name>main</name>
     <message>
-        <source>About</source>
-        <translation>A Propos</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
     <message>
-        <source>Contact</source>
-        <translation>Contacts</translation>
+        <source>Policy</source>
+        <translation>Politique</translation>
     </message>
     <message>
-        <source>Clear history</source>
-        <translation>Supprimer historique</translation>
+        <source>Contacts</source>
+        <translation>Contacts</translation>
     </message>
 </context>
 </TS>
