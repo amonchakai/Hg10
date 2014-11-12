@@ -34,7 +34,7 @@
 
 QReadWriteLock  facebookMutex;
 
-Facebook::Facebook(QObject *parent) : OnlineHistory(parent), m_WebView(NULL), m_Settings(NULL), m_NbMessages(0) {
+Facebook::Facebook(QObject *parent) : OnlineHistory(parent), m_WebView(NULL), m_Settings(NULL), m_NbMessages(0), m_Pos(0) {
 
     m_Settings = new QSettings("Amonchakai", "Hg10");
 }

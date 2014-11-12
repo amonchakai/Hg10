@@ -71,12 +71,20 @@ TabbedPane {
     }
         
     attachedObjects: [
+        Delegate {
+            id: welcomeDelegate
+            source: "Welcome.qml"
+            
+        },
         Sheet {
             id: welcome
-            Welcome {
-                onDone: {
-                   welcome.close();
-                }
+            content: welcomeDelegate.object
+            onOpenedChanged: {
+                if (opened)
+                    welcomeDelegate.active = true;
+            }
+            onClosed: {
+                welcomeDelegate.active = false;
             }
         },
         Sheet {

@@ -45,6 +45,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
+        $$quote($$BASEDIR/assets/Manual.qml) \
         $$quote($$BASEDIR/assets/Policy.qml) \
         $$quote($$BASEDIR/assets/RefreshHeader.qml) \
         $$quote($$BASEDIR/assets/Rooms.qml) \
@@ -52,6 +53,14 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/data/emojies.xml) \
+        $$quote($$BASEDIR/assets/images/Tutorial/accept.jpg) \
+        $$quote($$BASEDIR/assets/images/Tutorial/chat.jpg) \
+        $$quote($$BASEDIR/assets/images/Tutorial/closeIcon.png) \
+        $$quote($$BASEDIR/assets/images/Tutorial/listContacts.jpg) \
+        $$quote($$BASEDIR/assets/images/Tutorial/listContactsFiltered.jpg) \
+        $$quote($$BASEDIR/assets/images/Tutorial/logIn.jpg) \
+        $$quote($$BASEDIR/assets/images/Tutorial/settings.jpg) \
+        $$quote($$BASEDIR/assets/images/Tutorial/splash_720x720.jpg) \
         $$quote($$BASEDIR/assets/images/available.png) \
         $$quote($$BASEDIR/assets/images/available.svg) \
         $$quote($$BASEDIR/assets/images/avatar.png) \
@@ -285,6 +294,9 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/images/*.qml) \
         $$quote($$BASEDIR/../assets/images/*.js) \
         $$quote($$BASEDIR/../assets/images/*.qs) \
+        $$quote($$BASEDIR/../assets/images/Tutorial/*.qml) \
+        $$quote($$BASEDIR/../assets/images/Tutorial/*.js) \
+        $$quote($$BASEDIR/../assets/images/Tutorial/*.qs) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.qml) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.js) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.qs)

@@ -1,5 +1,5 @@
 1
-50
+59
 1440x1440/Contacts.qml
 Contacts.qml
 Conversation.qml
@@ -33,6 +33,14 @@ images/icon_refresh.png
 images/icon_settings.png
 images/send.png
 images/send.svg
+images/Tutorial/accept.jpg
+images/Tutorial/chat.jpg
+images/Tutorial/closeIcon.png
+images/Tutorial/listContacts.jpg
+images/Tutorial/listContactsFiltered.jpg
+images/Tutorial/logIn.jpg
+images/Tutorial/settings.jpg
+images/Tutorial/splash_720x720.jpg
 images/wallpaper/wallpaper.jpg
 images/whiteFace.png
 images/whiteFace2.png
@@ -41,6 +49,7 @@ images/write.svg
 images/write_white.png
 LoginForm.qml
 main.qml
+Manual.qml
 Policy.qml
 RefreshHeader.qml
 Rooms.qml

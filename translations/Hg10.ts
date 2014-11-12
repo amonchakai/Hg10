@@ -130,6 +130,13 @@
     </message>
 </context>
 <context>
+    <name>Manual</name>
+    <message>
+        <source>Done!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Policy</name>
     <message>
         <source>Policy</source>

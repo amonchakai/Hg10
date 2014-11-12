@@ -27,6 +27,9 @@ Page {
             
             WebView {
                 id: facebookConnectView
+                verticalAlignment: VerticalAlignment.Fill
+                horizontalAlignment: HorizontalAlignment.Fill
+                minHeight: 720
                 
                 settings.textAutosizingEnabled: false
                 settings.zoomToFitEnabled: false

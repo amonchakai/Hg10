@@ -79,11 +79,29 @@ Page {
             
             onComplete: {
                 connectingActivity.stop();
-                done();
+                manual.open();
+                
             }
             
             onConnectError: {
                 connectingActivity.stop();
+            }
+        },
+        Delegate {
+            id: manualDelegate
+            source: "Manual.qml"
+            
+        },
+        Sheet {
+            id: manual
+            content: manualDelegate.object
+            onOpenedChanged: {
+                if (opened)
+                    manualDelegate.active = true;
+            }
+            
+            onClosed: {
+                manualDelegate.active = false;
             }
         }
     ]
