@@ -8,11 +8,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove room</source>
+        <source>Search a contact</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search a contact</source>
+        <source>Clear history</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

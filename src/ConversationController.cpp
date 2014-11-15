@@ -15,7 +15,12 @@
 #include <bb/cascades/ColorTheme>
 #include <bb/cascades/Theme>
 
-ConversationController::ConversationController(QObject *parent) : QObject(parent), m_WebView(NULL), m_HistoryCleared(false), m_DropboxController(NULL) {
+ConversationController::ConversationController(QObject *parent) : QObject(parent),
+            m_WebView(NULL),
+            m_HistoryCleared(false),
+            m_IsRoom(false),
+            m_UploadingAudio(false),
+            m_DropboxController(NULL) {
 
     bool check = connect(ConversationManager::get(), SIGNAL(historyLoaded()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -230,6 +235,9 @@ void ConversationController::sendData(const QString &file) {
     // send data via XMPP
     //ConversationManager::get()->sendData(file);
 
+    if(file.isEmpty())
+        return;
+
     // send data to dropbox!
     if(m_DropboxController == NULL)
         initDropbox();
@@ -244,6 +252,31 @@ void ConversationController::chatStateUpdate(int state) {
 }
 
 
+QString ConversationController::getNextAudioName() {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/AudioMessages/");
+    QString name;
+    if (QFile::exists(directory)) {
+        QDir dir(directory);
+        dir.setNameFilters(QStringList() << "*.m4a");
+        dir.setFilter(QDir::Files);
+        int index = 0;
+        foreach(QString dirFile, dir.entryList()) {
+            index = std::max(index, dirFile.mid(8,dirFile.length()-12).toInt());
+        }
+        name = "message_" + QString::number(index+1) + ".m4a";
+
+    } else {
+        QDir dir;
+        dir.mkpath(directory);
+
+        name = "message_1.m4a";
+    }
+
+    m_UploadingAudio = true;
+    m_AudioFileName = directory + name;
+
+    return m_AudioFileName;
+}
 
 
 void ConversationController::initDropbox() {
@@ -265,7 +298,31 @@ void ConversationController::uploaded() {
 }
 
 void ConversationController::shared(const QString &url) {
-    emit receivedUrl(url);
+    if(!m_UploadingAudio)
+        emit receivedUrl(url);
+    else {
+        m_UploadingAudio = false;
+        QString icon = QDir::currentPath() + "/app/native/assets/images/";
+        if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
+            icon += "sound_white.png";
+        } else {
+            icon += "sound.png";
+        }
+        QString nMessage = QString("<img src=\"") + icon + "\" height=\"100px\" width=\"auto\" onclick=\"sendURL(\'PLAY_SOUND:"  + m_AudioFileName + "\');\" />";
+        nMessage.replace("\"","\\\"");
+
+        QString ownAvatar = ConversationManager::get()->getAvatar();
+        if(ownAvatar.mid(0,9).toLower() == "asset:///")
+            ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
+
+        m_WebView->evaluateJavaScript("pushMessage(1, \"" + nMessage +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+
+        emit receivedUrl("");
+
+        ConversationManager::get()->sendMessage(url);
+    }
+
+
 }
 
 void ConversationController::fowardUploadingProcess(int status) {

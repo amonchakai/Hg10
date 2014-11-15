@@ -17,13 +17,17 @@ class DropBoxConnectController;
 class ConversationController : public QObject {
     Q_OBJECT;
 
-    Q_PROPERTY( bool    isRoom    READ getRoom       WRITE setRoom       NOTIFY roomChanged)
+    Q_PROPERTY( bool    isRoom         READ getRoom       WRITE setRoom       NOTIFY roomChanged)
+    Q_PROPERTY( QString nextAudioFile  READ getNextAudioName)
+    Q_PROPERTY( bool    fileReady      READ getFileReady)
 
 private:
     bb::cascades::WebView    *m_WebView;
     QString                   m_DstAvatar;
     bool                      m_HistoryCleared;
     bool                      m_IsRoom;
+    bool                      m_UploadingAudio;
+    QString                   m_AudioFileName;
     DropBoxConnectController *m_DropboxController;
 
 
@@ -36,6 +40,7 @@ public:
 
     inline bool getRoom() const                                                     { return m_IsRoom; }
     inline void setRoom(bool r)                                                     { m_IsRoom = r; }
+    inline bool getFileReady()                                                      { return m_UploadingAudio; }
 
 private:
     bool isImage                        (const QString &url);
@@ -62,6 +67,12 @@ public Q_SLOTS:
 
     void chatStateUpdate                (int status);
 
+
+    // -----------------------------------------------------
+    // audio messages
+
+
+    QString getNextAudioName            ();
 
     // -----------------------------------------------------
     // messages with dropbox

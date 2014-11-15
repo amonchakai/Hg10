@@ -12,8 +12,8 @@
         <translation type="unfinished">Contacts</translation>
     </message>
     <message>
-        <source>Remove room</source>
-        <translation type="unfinished"></translation>
+        <source>Clear history</source>
+        <translation>Supprimer historique</translation>
     </message>
 </context>
 <context>

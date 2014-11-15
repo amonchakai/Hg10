@@ -87,6 +87,10 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/send.png) \
         $$quote($$BASEDIR/assets/images/send.svg) \
+        $$quote($$BASEDIR/assets/images/sound.png) \
+        $$quote($$BASEDIR/assets/images/sound_white.png) \
+        $$quote($$BASEDIR/assets/images/walkie.png) \
+        $$quote($$BASEDIR/assets/images/walkie_white.png) \
         $$quote($$BASEDIR/assets/images/wallpaper/wallpaper.jpg) \
         $$quote($$BASEDIR/assets/images/whiteFace.png) \
         $$quote($$BASEDIR/assets/images/whiteFace2.png) \

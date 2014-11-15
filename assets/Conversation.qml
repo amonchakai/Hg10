@@ -2,6 +2,7 @@ import bb.cascades 1.2
 import com.netimage 1.0
 import bb.cascades.pickers 1.0
 import Network.ConversationController 1.0
+import bb.multimedia 1.2
 
 Page {
     property string name
@@ -11,6 +12,7 @@ Page {
     property variant previewPage
     property variant smileyPage
     property string smileyToAdd
+    property string filenameChat
     
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
@@ -63,9 +65,15 @@ Page {
     }
     
     Container {
+        layout: DockLayout {
+            
+        }
+
+    Container {
         layout: StackLayout {
             orientation: LayoutOrientation.TopToBottom
         }
+        
         ScrollView {
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
@@ -98,6 +106,15 @@ Page {
                     match = message.data.match(isOpenImg);
                     if(match)
                         showPictureViewer(match[1]);
+                    
+                    var isOpenSound = RegExp("PLAY_SOUND:([^\']+)")
+                    match = message.data.match(isOpenSound);
+                    if(match) {
+                        audioPlayer.sourceUrl = "file:///" + match[1];
+                        audioPlayer.play();
+                    }
+                    
+                    
                     
                     console.log(message.data)
                 }
@@ -145,6 +162,36 @@ Page {
                     orientation: LayoutOrientation.LeftToRight
                 }
                 background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
+                
+                
+                ImageButton {
+                    preferredWidth: 35
+                    defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/sound_white.png" : "asset:///images/sound.png"
+                    verticalAlignment: VerticalAlignment.Center
+                    
+                    onTouch: {
+                        if(event.isUp()) {
+                            console.log("stop record");
+                            voiceRecording.visible = false;
+                            if(recorder.mediaState != MediaState.Unprepared) {
+                                recorder.reset();
+                                conversationController.sendData(filenameChat);
+                            }
+                            
+                        }
+                        if(event.isDown()) {
+                            console.log("record");
+                            voiceRecording.visible = true;
+                            if(!conversationController.fileReady) {
+                                filenameChat = conversationController.nextAudioFile;
+                                recorder.setOutputUrl(filenameChat);
+                            }
+                            
+                            recorder.record();
+                        }
+                    }   
+                }
+                
                 TextField {
                     preferredHeight: 30
                     horizontalAlignment: HorizontalAlignment.Fill
@@ -224,7 +271,21 @@ Page {
                 }    
             }
         }
-        
+    }
+    
+    Container {
+        id: voiceRecording
+        visible: false
+        horizontalAlignment: HorizontalAlignment.Center
+        verticalAlignment: VerticalAlignment.Center
+        ImageView {
+            preferredHeight: 200
+            preferredWidth: 200
+            imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/walkie_white.png" : "asset:///images/walkie.png"
+            verticalAlignment: VerticalAlignment.Center
+        }
+    }
+    
     }
     
     function toogleEmoji() {
@@ -284,6 +345,9 @@ Page {
     
     onCreationCompleted: {
         conversationController.setWebView(messageView);
+        filenameChat = conversationController.nextAudioFile;
+        recorder.setOutputUrl(filenameChat);
+        recorder.prepare();
     }
     
     onIdChanged: {
@@ -324,6 +388,8 @@ Page {
             
             onComplete: {
                 scrollView.requestFocus();
+                
+                
             }
         },
         Invocation {
@@ -354,6 +420,12 @@ Page {
                     conversationController.sendData(selectedFiles[0]);
                 }
             }
+        },
+        AudioRecorder {
+            id: recorder
+        },
+        MediaPlayer {
+            id: audioPlayer
         },
         ComponentDefinition {
             id: imagePreview

@@ -143,6 +143,11 @@ void ListContactsController::markRead() {
 
             TimeEvent e = ConversationManager::get()->getPreview(m_Contacts.at(i)->getID());
             e.m_What.replace("&#39;","\'");
+            e.m_What.replace("&amp;","&");
+            e.m_What.replace("&euro;","€");
+            e.m_What.replace("&lt;","<");
+            e.m_What.replace("&gt;",">");
+            e.m_What.replace(QChar(0x1F61C), ":P");
 
             m_Contacts.at(i)->setPreview(e.m_What);
             m_Contacts.at(i)->setTimestamp(e.m_When);
@@ -226,6 +231,10 @@ void ListContactsController::updateView() {
             nc->setTimestampString(formatTime(e.m_When));
 
             e.m_What.replace("&#39;","\'");
+            e.m_What.replace("&amp;","&");
+            e.m_What.replace("&euro;","€");
+            e.m_What.replace("&lt;","<");
+            e.m_What.replace("&gt;",">");
             e.m_What.replace(QChar(0x1F61C), ":P");
 
             nc->setPreview(e.m_What);
@@ -305,6 +314,10 @@ void ListContactsController::pushContact(const Contact* c) {
         nc->setTimestampString(formatTime(e.m_When));
 
         e.m_What.replace("&#39;","\'");
+        e.m_What.replace("&amp;","&");
+        e.m_What.replace("&euro;","€");
+        e.m_What.replace("&lt;","<");
+        e.m_What.replace("&gt;",">");
         e.m_What.replace(QChar(0x1F61C), ":P");
 
         nc->setPreview(e.m_What);
@@ -391,6 +404,10 @@ void ListContactsController::filter(const QString &contact) {
             nc->setTimestampString(formatTime(e.m_When));
 
             e.m_What.replace("&#39;","\'");
+            e.m_What.replace("&amp;","&");
+            e.m_What.replace("&euro;","€");
+            e.m_What.replace("&lt;","<");
+            e.m_What.replace("&gt;",">");
             e.m_What.replace(QChar(0x1F61C), ":P");
 
             nc->setPreview(e.m_What);

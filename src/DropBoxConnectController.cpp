@@ -118,8 +118,14 @@ void DropBoxConnectController::parse(const QString &message) {
 void DropBoxConnectController::putFile(const QString &path) {
 
     QFile file(path);
+
+    if (!file.exists())
+        return;
+
     if (!file.open(QIODevice::ReadOnly))
         return;
+
+    qDebug() << path;
 
     QString name = path.mid(path.lastIndexOf("/")+1);
 
