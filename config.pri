@@ -37,6 +37,8 @@ simulator {
 config_pri_assets {
     OTHER_FILES += \
         $$quote($$BASEDIR/assets/1440x1440/Contacts.qml) \
+        $$quote($$BASEDIR/assets/720x720/Contacts.qml) \
+        $$quote($$BASEDIR/assets/720x720/Conversation.qml) \
         $$quote($$BASEDIR/assets/Contacts.qml) \
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
@@ -288,6 +290,9 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/1440x1440/*.qml) \
         $$quote($$BASEDIR/../assets/1440x1440/*.js) \
         $$quote($$BASEDIR/../assets/1440x1440/*.qs) \
+        $$quote($$BASEDIR/../assets/720x720/*.qml) \
+        $$quote($$BASEDIR/../assets/720x720/*.js) \
+        $$quote($$BASEDIR/../assets/720x720/*.qs) \
         $$quote($$BASEDIR/../assets/data/*.qml) \
         $$quote($$BASEDIR/../assets/data/*.js) \
         $$quote($$BASEDIR/../assets/data/*.qs) \
