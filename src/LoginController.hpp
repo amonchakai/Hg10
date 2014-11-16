@@ -35,6 +35,7 @@ public Q_SLOTS:
     void logOut                 ();
     bool isLogged               ();
     void deleteHistory          ();
+    void deleteAudioMessages    ();
     void clearContactsData      ();
     void connected              ();
     void connectionFailed       ();

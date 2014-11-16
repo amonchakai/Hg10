@@ -88,6 +88,23 @@ void ConversationController::updateView() {
         }
 
         const History& history = ConversationManager::get()->getHistory();
+        {
+            m_AudioMessages.clear();
+            QFile audioFileHist(QDir::homePath() + QLatin1String("/ApplicationData/AudioMessages/AudioHistory.txt"));
+            if (audioFileHist.open(QIODevice::ReadOnly)) {
+                AudioMessage message;
+                QDataStream stream(&audioFileHist);
+                stream >> message;
+                while(!message.m_DistUrl.isEmpty()) {
+                    m_AudioMessages.push_back(message);
+
+                    message.m_DistUrl = "";
+                    stream >> message;
+                }
+
+                audioFileHist.close();
+            }
+        }
 
         QString body;
         for(int i = std::max(0, history.m_History.size()-10) ; i < history.m_History.size() ; ++i) {
@@ -142,7 +159,27 @@ QString ConversationController::renderMessage(const QString &message, bool showI
         if(showImg && isImage(url.cap(1))) {
             nMessage += "<img src=\"" + url.cap(1) + "\" onclick=\"sendURL(\'OPEN_IMAGE:" + url.cap(1) + "\');\" />";
         } else {
-            nMessage += "<a href=\"" + url.cap(1) + "\">" + url.cap(1).mid(0, 20) + "..." + "</a>";
+            bool audioMessage = false;
+            QString localAudioUrl;
+
+            for(int i = m_AudioMessages.size()-1 ; i >=0 && !audioMessage && !m_AudioMessages.isEmpty() ; --i) {
+                if(m_AudioMessages.at(i).m_DistUrl == url.cap(1)) {
+                    audioMessage = true;
+                    localAudioUrl = m_AudioMessages.at(i).m_LocalUrl;
+                }
+            }
+
+            if(audioMessage) {
+                QString icon = QDir::currentPath() + "/app/native/assets/images/";
+                if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
+                    icon += "sound_white.png";
+                } else {
+                    icon += "sound.png";
+                }
+                nMessage = QString("<img src=\"") + icon + "\" height=\"100px\" width=\"auto\" onclick=\"sendURL(\'PLAY_SOUND:"  + localAudioUrl + "\');\" />";
+            } else {
+                nMessage += "<a href=\"" + url.cap(1) + "\">" + url.cap(1).mid(0, 20) + "..." + "</a>";
+            }
         }
 
         lastPos = pos + url.matchedLength();
@@ -320,6 +357,18 @@ void ConversationController::shared(const QString &url) {
         emit receivedUrl("");
 
         ConversationManager::get()->sendMessage(url);
+
+        QFile audioFileHist(QDir::homePath() + QLatin1String("/ApplicationData/AudioMessages/AudioHistory.txt"));
+        if (audioFileHist.open(QIODevice::Append)) {
+            AudioMessage message;
+            message.m_DistUrl = url;
+            message.m_LocalUrl = m_AudioFileName;
+
+            QDataStream stream(&audioFileHist);
+            stream << message;
+
+            audioFileHist.close();
+        }
     }
 
 

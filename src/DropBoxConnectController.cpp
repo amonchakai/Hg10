@@ -11,7 +11,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QRegExp>
-
+#include <bb/system/SystemToast>
 
 #include "PrivateAPIKeys.h"
 /*
@@ -125,7 +125,14 @@ void DropBoxConnectController::putFile(const QString &path) {
     if (!file.open(QIODevice::ReadOnly))
         return;
 
-    qDebug() << path;
+    if(m_Settings->value("dropbox_access_token").value<QString>().isEmpty()) {
+        bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+        toast->setBody(tr("Cannot upload to Dropbox, this feature requires you to connect to Dropbox in the settings menu."));
+        toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+        toast->show();
+        return;
+    }
 
     QString name = path.mid(path.lastIndexOf("/")+1);
 

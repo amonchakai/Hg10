@@ -264,6 +264,27 @@ inline QDataStream &operator>>(QDataStream& stream, History& history) {
 }
 
 
+// ----------------------------------------------------------------------------------------------
+// Objects to handle audio message history
+
+struct AudioMessage {
+    QString     m_LocalUrl;
+    QString     m_DistUrl;
+};
+
+inline QDataStream &operator<<(QDataStream& stream, const AudioMessage& event) {
+    stream << event.m_LocalUrl;
+    stream << event.m_DistUrl;
+
+    return stream;
+}
+
+inline QDataStream &operator>>(QDataStream& stream, AudioMessage& event) {
+    stream >> event.m_LocalUrl;
+    stream >> event.m_DistUrl;
+
+    return stream;
+}
 
 
 #endif /* DATAOBJECTS_H_ */

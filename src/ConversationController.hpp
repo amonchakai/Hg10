@@ -11,6 +11,7 @@
 
 #include <QtCore/QObject>
 #include <bb/cascades/WebView>
+#include "DataObjects.h"
 
 class DropBoxConnectController;
 
@@ -29,6 +30,7 @@ private:
     bool                      m_UploadingAudio;
     QString                   m_AudioFileName;
     DropBoxConnectController *m_DropboxController;
+    QList<AudioMessage>       m_AudioMessages;
 
 
 

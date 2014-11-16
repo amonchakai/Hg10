@@ -231,6 +231,15 @@ NavigationPane {
                 }
                 
                 Button {
+                    id: clearAudio
+                    text: qsTr("Clear audio messages");
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    onClicked: {
+                        loginController.deleteAudioMessages();
+                    }
+                }
+                
+                Button {
                     id: clearvCard
                     text: qsTr("Clear stored contact information")
                     horizontalAlignment: HorizontalAlignment.Fill

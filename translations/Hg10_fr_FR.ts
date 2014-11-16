@@ -63,6 +63,13 @@
     </message>
 </context>
 <context>
+    <name>DropBoxConnectController</name>
+    <message>
+        <source>Cannot upload to Dropbox, this feature requires you to connect to Dropbox in the settings menu.</source>
+        <translation>Impossible de déposer le fichier sur Dropbox, il est nécessaire que vous vous connectiez dans le menu de paramètres.</translation>
+    </message>
+</context>
+<context>
     <name>DropboxConnect</name>
     <message>
         <source>Dropbox</source>
@@ -316,6 +323,10 @@
     <message>
         <source>Synch with Facebook</source>
         <translation>Synch avec Facebook</translation>
+    </message>
+    <message>
+        <source>Clear audio messages</source>
+        <translation>Supprimer les messages audio</translation>
     </message>
 </context>
 <context>

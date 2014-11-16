@@ -141,6 +141,18 @@ void LoginController::deleteHistory() {
     }
 }
 
+void LoginController::deleteAudioMessages() {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/AudioMessages");
+    if (QFile::exists(directory)) {
+        QDir dir(directory);
+        dir.setNameFilters(QStringList() << "*.*");
+        dir.setFilter(QDir::Files);
+        foreach(QString dirFile, dir.entryList()) {
+            dir.remove(dirFile);
+        }
+    }
+}
+
 void LoginController::clearContactsData() {
     QString directory = QDir::homePath() + QLatin1String("/vCards");
     if (QFile::exists(directory)) {
