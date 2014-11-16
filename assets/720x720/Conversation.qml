@@ -55,7 +55,7 @@ Page {
                 ImageButton {
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Left
-                    defaultImageSource: "asset:///images/icon_left.png"
+                    defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_left.png" : "asset:///images/icon_left_black.png"
                     onClicked: {
                         nav.pop();
                     }
