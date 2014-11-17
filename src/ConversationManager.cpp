@@ -88,6 +88,8 @@ void ConversationManager::loadUserName() {
     if (file.open(QIODevice::ReadOnly)) {
         QDataStream stream(&file);
         stream >> m_User;
+
+        qDebug() << "LOAD DEFAULT: " << m_User;
     }
     file.close();
 }

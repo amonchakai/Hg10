@@ -28,7 +28,9 @@ struct XMPPServiceMessages {
         SEND_FILE,
         REFRESH_SETTINGS,
         CREATE_ROOM,
-        ADD_PARTICIPANT
+        ADD_PARTICIPANT,
+        ADVANCED_LOGIN,
+        OAUTH2_LOGIN
     };
 };
 

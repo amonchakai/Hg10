@@ -1,14 +1,16 @@
 1
-66
+68
 1440x1440/Contacts.qml
 720x720/Contacts.qml
 720x720/Conversation.qml
+AdvancedConection.qml
 Contacts.qml
 Conversation.qml
 CreateRoom.qml
 data/emojies.xml
 DropboxConnect.qml
 FacebookConnect.qml
+FurtherInformation.qml
 GoogleConnect.qml
 ImagePreview.qml
 images/available.png

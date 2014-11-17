@@ -20,6 +20,7 @@
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/LocaleHandler>
+#include <QTimer>
 
 #include "XMPPService.hpp"
 #include "LoginController.hpp"
@@ -69,6 +70,7 @@ ApplicationUI::ApplicationUI() :
     qmlRegisterType<SuggestContactController>("Network.SuggestContactController", 1, 0, "SuggestContactController");
     qmlRegisterType<SmileyPickerController>("Network.SmileyPickerController", 1, 0, "SmileyPickerController");
     qmlRegisterType<Facebook>("Network.FacebookController", 1, 0, "FacebookController");
+    qmlRegisterType<QTimer>("Lib.QTimer", 1, 0, "QTimer");
 
     // Create scene document from main.qml asset, the parent is set
     // to ensure the document gets destroyed properly at shut down.

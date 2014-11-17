@@ -45,7 +45,6 @@ void LoginController::login(const QString& login, const QString &password) {
     m_Password = password;
 
     m_User.replace(" ", ""); // remove eventual padding spaces...
-    XMPP::get()->connectToServer(m_User, password);
 
     bool check = QObject::connect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(connected()));
     Q_ASSERT(check);
@@ -53,8 +52,36 @@ void LoginController::login(const QString& login, const QString &password) {
 
     check = QObject::connect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(connectionFailed()));
     Q_ASSERT(check);
+
+    XMPP::get()->connectToServer(m_User, password);
 }
 
+void LoginController::advancedLogin(const QString& host, const QString &domain, int port, const QString &login, const QString &password, int encryption) {
+    m_User = login;
+    m_Password = password;
+
+    m_User.replace(" ", ""); // remove eventual padding spaces...
+
+    bool check = QObject::connect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(connected()));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
+
+    check = QObject::connect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(connectionFailed()));
+    Q_ASSERT(check);
+
+    XMPP::get()->advancedConnectToServer(host, domain, port, m_User, password, encryption);
+}
+
+void LoginController::oauth2Login() {
+    bool check = QObject::connect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(connected()));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
+
+    check = QObject::connect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(connectionFailed()));
+    Q_ASSERT(check);
+
+    XMPP::get()->oauth2Login();
+}
 
 void LoginController::connected() {
     QObject::disconnect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(connected()));

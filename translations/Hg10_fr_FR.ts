@@ -2,6 +2,41 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>AdvancedConection</name>
+    <message>
+        <source>Close</source>
+        <translation type="obsolete">Fermer</translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Domain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation type="unfinished">Identifiant</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Mot de passe</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="obsolete">Annuler</translation>
+    </message>
+    <message>
+        <source>Submit</source>
+        <translation type="unfinished">Valider</translation>
+    </message>
+</context>
+<context>
     <name>Contacts</name>
     <message>
         <source>Search a contact</source>
@@ -97,6 +132,45 @@
     <message>
         <source>Close</source>
         <translation>Fermer</translation>
+    </message>
+</context>
+<context>
+    <name>FurtherInformation</name>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Problem:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Solution:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Google have a documentation on how to help you to use this application (and other application) when you are having difficulites.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Google&apos;s manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Still stuck?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apparently you are having some difficulties to connect to your account. If you are trying to connect to Google, it may be Google which for safety reason is blocking the application to access to your account. Indeed, it only expect an official hangout client or Gmail.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can have different ways to contact me: either on Github, or by email. Please check the contact information on the BlackBerry© World page.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -356,6 +430,22 @@
     <message>
         <source>Submit</source>
         <translation>Valider</translation>
+    </message>
+    <message>
+        <source>Still waiting? :(</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Google (Secure)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection method</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

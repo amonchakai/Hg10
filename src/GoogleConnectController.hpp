@@ -46,7 +46,7 @@ public:
      void renewToken            ();
      void parse                 (const QString &message);
      void parseRefresh          (const QString &message);
-
+     void getUserInfo           ();
 
 private:
      void checkOrder            (bool flush = false);
@@ -56,13 +56,14 @@ public Q_SLOTS:
     void save                   (const QString &key);
     void checkReply             ();
     void checkRefresh           ();
+    bool isLogged               ();
 
     virtual void getMessages            (const QString &with, int nbMessages);
     virtual void getRemainingMessages   (QString lastMessageId);
 
     void getMessageList         ();
     void getMessageReply        ();
-
+    void replyGetUserInfo       ();
 
     void setWebView             (QObject *webView);
     void webviewTitleChanged    (const QString &title);
@@ -73,6 +74,7 @@ Q_SIGNALS:
 
     void messageLoaded          (const QString &from, const QString &what, const QString &messageId);
     void synchCompleted         ();
+    void contactInfoObtained    ();
 
 };
 

@@ -1,8 +1,7 @@
 import bb.cascades 1.2
 import Network.GoogleConnectController 1.0
 
-Page {
-    
+Page {    
     titleBar: TitleBar {
         title: qsTr("Google")
         dismissAction: ActionItem {
@@ -41,6 +40,13 @@ Page {
                 
                 onCloseConnect: {
                     navSettings.pop();
+                }
+                
+                onContactInfoObtained: {
+                    if(!(typeof loginController === 'undefined')) {
+                        console.log("Login request -- oath2")
+                        loginController.oauth2Login();
+                    }
                 }
             }
         ]

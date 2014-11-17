@@ -22,7 +22,15 @@ public:
     static XMPP*                   get();
     const QList<Contact*>*         getContacts();
 
-    void                           connectToServer     (const QString &user, const QString &password);
+    void                           connectToServer        (const QString &user, const QString &password);
+    void                           advancedConnectToServer(const QString& host,
+                                                           const QString &domain,
+                                                           int port,
+                                                           const QString &login,
+                                                           const QString &password,
+                                                           int encryption);
+    void                           oauth2Login();
+
     void                           disconnectFromServer();
     void                           checkMissingPictures();
 

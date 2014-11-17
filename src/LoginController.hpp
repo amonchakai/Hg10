@@ -25,13 +25,15 @@ public:
     LoginController             (QObject *parent = 0);
     virtual ~LoginController    ()                      {};
 
-    inline const bool     getNotif      () const               { return m_Notif; }
+    inline  bool          getNotif      () const               { return m_Notif; }
     void                  setNotif      (bool c);
 
 
 public Q_SLOTS:
 
     void login                  (const QString& login, const QString& password);
+    void oauth2Login            ();
+    void advancedLogin          (const QString& host, const QString &domain, int port, const QString &login, const QString &password, int encryption);
     void logOut                 ();
     bool isLogged               ();
     void deleteHistory          ();

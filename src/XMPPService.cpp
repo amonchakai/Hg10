@@ -253,6 +253,54 @@ void XMPP::connectToServer(const QString &user, const QString& password) {
 
 }
 
+void XMPP::advancedConnectToServer( const QString& host,
+                                    const QString &domain,
+                                    int port,
+                                    const QString &login,
+                                    const QString &password,
+                                    int encryption) {
+    mutex.lockForWrite();
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::ADVANCED_LOGIN;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        code = host.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->write(host.toAscii());
+
+        code = domain.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->write(domain.toAscii());
+
+        m_ClientSocket->write(reinterpret_cast<char*>(&port), sizeof(int));
+
+        code = login.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->write(login.toAscii());
+
+        code = password.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->write(password.toAscii());
+
+        m_ClientSocket->write(reinterpret_cast<char*>(&encryption), sizeof(int));
+
+        m_ClientSocket->flush();
+    }
+    mutex.unlock();
+}
+
+void XMPP::oauth2Login() {
+    mutex.lockForWrite();
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::OAUTH2_LOGIN;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        m_ClientSocket->flush();
+    }
+    mutex.unlock();
+}
+
+
 void XMPP::disconnectFromServer() {
     mutex.lockForWrite();
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {

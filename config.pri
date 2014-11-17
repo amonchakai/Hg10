@@ -39,11 +39,13 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/1440x1440/Contacts.qml) \
         $$quote($$BASEDIR/assets/720x720/Contacts.qml) \
         $$quote($$BASEDIR/assets/720x720/Conversation.qml) \
+        $$quote($$BASEDIR/assets/AdvancedConection.qml) \
         $$quote($$BASEDIR/assets/Contacts.qml) \
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \
         $$quote($$BASEDIR/assets/FacebookConnect.qml) \
+        $$quote($$BASEDIR/assets/FurtherInformation.qml) \
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \

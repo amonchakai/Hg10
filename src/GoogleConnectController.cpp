@@ -44,7 +44,9 @@ GoogleConnectController::GoogleConnectController(QObject *parent) : OnlineHistor
     m_Settings = new QSettings("Amonchakai", "Hg10");
 }
 
-
+bool GoogleConnectController::isLogged() {
+    return !m_Settings->value("access_token").value<QString>().isEmpty();
+}
 
 void GoogleConnectController::logInRequest() {
 
@@ -57,7 +59,7 @@ void GoogleConnectController::logInRequest() {
     m_Settings->setValue("APIKey",       GOOGLE_API_KEY);
 
     m_WebView->setUrl(QString("https://accounts.google.com/o/oauth2/auth?")
-                            + "scope=https://www.googleapis.com/auth/gmail.readonly"
+                            + "scope=https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/googletalk"
                             + "&redirect_uri=urn:ietf:wg:oauth:2.0:oob"
                             + "&response_type=code"
                             + "&client_id=" + GOOGLE_CIENT_ID);
@@ -184,6 +186,11 @@ void GoogleConnectController::parse(const QString &message) {
     // Stop facebook synch
     m_Settings->setValue("Facebook_access_token", "");
     m_Settings->setValue("Facebook_expires_in", "");
+
+    if(ConversationManager::get()->getUser().isEmpty()) {
+        qDebug() << "getting user data";
+        getUserInfo();
+    }
 }
 
 
@@ -237,6 +244,70 @@ void GoogleConnectController::parseRefresh(const QString &message) {
         getMessages(m_WithButNoKey, m_NBMessageExpected);
     }
 
+}
+
+void GoogleConnectController::getUserInfo() {
+    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
+                                    + "me"
+                                    + "/profile"
+                                    + "?access_token=" + m_Settings->value("access_token").value<QString>()
+                               )
+                            );
+
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+        mutexGoogleConnect.lockForWrite();
+        m_StopListing = true;
+        mutexGoogleConnect.unlock();
+
+        QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
+        bool ok = connect(reply, SIGNAL(finished()), this, SLOT(replyGetUserInfo()));
+        Q_ASSERT(ok);
+        Q_UNUSED(ok);
+}
+
+void GoogleConnectController::replyGetUserInfo() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    QString response;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            const int available = reply->bytesAvailable();
+            if (available > 0) {
+                const QByteArray buffer(reply->readAll());
+                response = QString::fromUtf8(buffer);
+
+                QRegExp email("\"emailAddress\"[: ]+\"([^\"]+)\"");
+                if(email.indexIn(response) != -1) {
+
+                    QString directory = QDir::homePath() + QLatin1String("/ApplicationData");
+                    if (!QFile::exists(directory)) {
+                        QDir dir;
+                        dir.mkpath(directory);
+                    }
+
+                    QFile file(directory + "/UserID.txt");
+
+                    if (file.open(QIODevice::WriteOnly)) {
+                        QDataStream stream(&file);
+                        stream << email.cap(1);
+
+                        qDebug() << "USER DATA OBTAINED: " << email.cap(1);
+
+                        file.close();
+                        ConversationManager::get()->setUser(email.cap(1));
+
+                        emit contactInfoObtained();
+                    }
+                }
+
+            }
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+        }
+
+        reply->deleteLater();
+    }
 }
 
 
