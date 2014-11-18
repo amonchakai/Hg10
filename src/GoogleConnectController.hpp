@@ -72,8 +72,6 @@ Q_SIGNALS:
 
     void closeConnect();
 
-    void messageLoaded          (const QString &from, const QString &what, const QString &messageId);
-    void synchCompleted         ();
     void contactInfoObtained    ();
 
 };

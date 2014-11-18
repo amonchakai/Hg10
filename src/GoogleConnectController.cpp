@@ -173,10 +173,10 @@ void GoogleConnectController::parse(const QString &message) {
         m_Settings->setValue("access_token", access_token.cap(1));
 
     if(expires_in.indexIn(message) != -1)
-            m_Settings->setValue("expires_in", expires_in.cap(1));
+        m_Settings->setValue("expires_in", expires_in.cap(1));
 
     if(refresh_token.indexIn(message) != -1)
-            m_Settings->setValue("refresh_token", refresh_token.cap(1));
+        m_Settings->setValue("refresh_token", refresh_token.cap(1));
 
     //qDebug() << m_Settings->value("access_token").value<QString>();
     //qDebug() << m_Settings->value("expires_in").value<QString>();
@@ -190,6 +190,8 @@ void GoogleConnectController::parse(const QString &message) {
     if(ConversationManager::get()->getUser().isEmpty()) {
         qDebug() << "getting user data";
         getUserInfo();
+    } else {
+        emit contactInfoObtained();
     }
 }
 
@@ -295,7 +297,9 @@ void GoogleConnectController::replyGetUserInfo() {
                         qDebug() << "USER DATA OBTAINED: " << email.cap(1);
 
                         file.close();
+                        m_Settings->setValue("User", email.cap(1));
                         ConversationManager::get()->setUser(email.cap(1));
+
 
                         emit contactInfoObtained();
                     }
@@ -475,7 +479,7 @@ void GoogleConnectController::getMessageReply() {
 
         checkOrder(true);
 
-        emit synchCompleted();
+        ConversationManager::get()->saveHistory();
         return;
     }
 
@@ -516,13 +520,13 @@ void GoogleConnectController::checkOrder(bool flush) {
     }
 
     if(m_IdxMessageToPush.size() > 5) {
-        emit messageLoaded(m_Froms[m_IdxMessageToPush.last()], m_Messages[m_IdxMessageToPush.last()], m_MessagesID[m_IdxMessageToPush.last()]);
+        ConversationManager::get()->onlineMessage(m_Froms[m_IdxMessageToPush.last()], m_Messages[m_IdxMessageToPush.last()], m_MessagesID[m_IdxMessageToPush.last()]);
         m_IdxMessageToPush.pop_back();
     }
 
     if(flush) {
         for(int i = m_IdxMessageToPush.size()-1 ; i >= 0 ; --i)
-            emit messageLoaded(m_Froms[m_IdxMessageToPush.at(i)], m_Messages[m_IdxMessageToPush.at(i)], m_MessagesID[m_IdxMessageToPush.at(i)]);
+            ConversationManager::get()->onlineMessage(m_Froms[m_IdxMessageToPush.at(i)], m_Messages[m_IdxMessageToPush.at(i)], m_MessagesID[m_IdxMessageToPush.at(i)]);
     }
 
 }
@@ -542,7 +546,7 @@ void GoogleConnectController::getRemainingMessages(QString lastMessageId) {
 
         checkOrder(true);
 
-        emit synchCompleted();
+        //ConversationManager::get()->saveHistory();
         return;
     }
 

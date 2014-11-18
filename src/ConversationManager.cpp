@@ -59,13 +59,6 @@ void ConversationManager::initOnlineHistory() {
     QSettings settings("Amonchakai", "Hg10");
     if(!settings.value("access_token").value<QString>().isEmpty()) {
         GoogleConnectController *google = new GoogleConnectController();
-        bool check = connect(google, SIGNAL(messageLoaded(const QString &, const QString &, const QString &)), this, SLOT(onlineMessage(const QString &, const QString &, const QString &)));
-        Q_ASSERT(check);
-        Q_UNUSED(check);
-
-        check = connect(google, SIGNAL(synchCompleted()), this, SLOT(saveHistory()));
-        Q_ASSERT(check);
-
         m_OnlineHistory = google;
     } else {
         Facebook *facebook = new Facebook();
@@ -78,20 +71,11 @@ void ConversationManager::initOnlineHistory() {
 // User information
 
 void ConversationManager::loadUserName() {
-    QString directory = QDir::homePath() + QLatin1String("/ApplicationData");
-    if (!QFile::exists(directory)) {
+    if(!m_User.isEmpty())
         return;
-    }
 
-    QFile file(directory + "/UserID.txt");
-
-    if (file.open(QIODevice::ReadOnly)) {
-        QDataStream stream(&file);
-        stream >> m_User;
-
-        qDebug() << "LOAD DEFAULT: " << m_User;
-    }
-    file.close();
+    QSettings settings("Amonchakai", "Hg10");
+    m_User = settings.value("User").toString();
 }
 
 

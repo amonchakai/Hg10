@@ -417,7 +417,7 @@ void Facebook::parseInbox(const QString &page) {
 }
 
 void Facebook::getRemainingMessages   (QString ) {
-    QTimer::singleShot(1000, this, SLOT(sendProgressively()));
+    QTimer::singleShot(400, this, SLOT(sendProgressively()));
 
 }
 

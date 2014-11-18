@@ -153,6 +153,8 @@ void LoginController::logOut() {
     XMPP::get()->disconnectFromServer();
     XMPP::get()->clear();
 
+    QSettings setting("Amonchakai", "Hg10");
+    setting.setValue("User", "");
 
 }
 
