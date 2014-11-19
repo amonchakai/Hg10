@@ -165,6 +165,7 @@ Page {
                     
                     
                     ImageButton {
+                        preferredHeight: 40
                         preferredWidth: 35
                         defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/sound_white.png" : "asset:///images/sound.png"
                         verticalAlignment: VerticalAlignment.Center

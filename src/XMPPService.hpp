@@ -29,7 +29,7 @@ public:
                                                            const QString &login,
                                                            const QString &password,
                                                            int encryption);
-    void                           oauth2Login();
+    void                           oauth2Login            (const QString &user);
 
     void                           disconnectFromServer();
     void                           checkMissingPictures();

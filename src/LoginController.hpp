@@ -20,6 +20,10 @@ private:
     QString m_User;
     QString m_Password;
     bool    m_Notif;
+    QString m_Domain;
+    QString m_Host;
+    int     m_Port;
+    int     m_Encryption;
 
 public:
     LoginController             (QObject *parent = 0);

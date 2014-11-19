@@ -192,7 +192,7 @@ NavigationPane {
                         navSettings.push(googlePage);
     	            }
     	            
-                    visible: settingsController.enableGoogle
+                    visible: settingsController.enableGoogle && !settingsController.googleLogged
     	        }
     	        
                 Button {

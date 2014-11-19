@@ -282,24 +282,14 @@ void ListContactsController::pushContact(const Contact* c) {
 
     GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
 
+    // check if not already in the list...
     for(int i = 0 ; i < m_Contacts.length() ; ++i) {
         if(m_Contacts.at(i)->getID() == c->getID())
             return;
     }
 
-    qDebug() << c->getID() << c->getName() << c->getPreview();
-
-    // check if not already in the list...
-    for(int i = 0 ; i < m_Contacts.size() ; ++i) {
-        if(c->getID() == m_Contacts.at(i)->getID())
-            return;
-    }
-
-
-
-
     if(c->getID().toLower() != ConversationManager::get()->getUser().toLower()) {
-        qDebug() << "Pushing: " << c->getName();
+        qDebug() << "Pushing: " << c->getName() << ConversationManager::get()->getUser().toLower();
 
         TimeEvent e = ConversationManager::get()->getPreview(c->getID());
 

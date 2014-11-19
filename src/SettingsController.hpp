@@ -20,6 +20,7 @@ class SettingsController : public QObject {
     Q_PROPERTY( int     theme        READ getTheme           WRITE setTheme          NOTIFY  themeChanged)
     Q_PROPERTY( int     fontSize     READ getFontSize        WRITE setFontSize       NOTIFY  fontSizeChanged)
     Q_PROPERTY( bool    enableGoogle READ getEnableGoogle    WRITE setEnableGoogle   NOTIFY  enableGoogleChanged)
+    Q_PROPERTY( bool    googleLogged READ getGoogleLogged)
 
 private:
 
@@ -50,6 +51,7 @@ public:
     inline int            getEnableGoogle() const           { return m_IsGoogleEnabled; }
     inline void           setEnableGoogle(bool c)           { m_IsGoogleEnabled = c; emit enableGoogleChanged(); }
 
+    bool                  getGoogleLogged();
 
 public Q_SLOTS:
     void updateAvatar();

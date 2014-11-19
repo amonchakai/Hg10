@@ -289,12 +289,16 @@ void XMPP::advancedConnectToServer( const QString& host,
     mutex.unlock();
 }
 
-void XMPP::oauth2Login() {
+void XMPP::oauth2Login(const QString &user) {
     qDebug() << "Request login oauth2";
     mutex.lockForWrite();
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
         int code = XMPPServiceMessages::OAUTH2_LOGIN;
         m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        code = user.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->write(user.toAscii());
 
         m_ClientSocket->flush();
     }

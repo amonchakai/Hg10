@@ -144,6 +144,7 @@ NavigationPane {
                         connectingActivity.stop();
                         manual.open();
                     } else {
+                        connectingActivity.stop();
                         welcome.close();
                     }
                     
@@ -227,5 +228,6 @@ NavigationPane {
     }
     
     onPopTransitionEnded: {
+        
     }
 }

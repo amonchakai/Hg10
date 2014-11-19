@@ -15,7 +15,7 @@
 
 #include <QSettings>
 
-LoginController::LoginController(QObject *parent) : QObject(parent) {
+LoginController::LoginController(QObject *parent) : QObject(parent) , m_Port(0){
     if(isLogged()) {
         loadUserName();
         XMPP::get()->connectToServer(m_User, m_Password);
@@ -80,7 +80,7 @@ void LoginController::oauth2Login() {
     check = QObject::connect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(connectionFailed()));
     Q_ASSERT(check);
 
-    XMPP::get()->oauth2Login();
+    XMPP::get()->oauth2Login(ConversationManager::get()->getUser());
 }
 
 void LoginController::connected() {
@@ -117,6 +117,11 @@ void LoginController::saveUserName() {
         QDataStream stream(&file);
         stream << m_User;
         stream << m_Password;
+
+        stream << m_Host;
+        stream << m_Domain;
+        stream << m_Port;
+        stream << m_Encryption;
 
         file.close();
     }

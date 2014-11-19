@@ -40,6 +40,7 @@ Page {
                 
                 onCloseConnect: {
                     navSettings.pop();
+                    connectingActivity.start();
                 }
                 
                 onContactInfoObtained: {

@@ -37,6 +37,10 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
 
 }
 
+bool SettingsController::getGoogleLogged() {
+    return !m_Settings->value("access_token").toString().isEmpty();
+}
+
 
 void SettingsController::updateAvatar() {
     setAvatar(ConversationManager::get()->getAvatar());
