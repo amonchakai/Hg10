@@ -325,6 +325,7 @@ void XMPP::getContactList() {
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
         m_ClientSocket->write(QByteArray::number(XMPPServiceMessages::REQUEST_CONTACT_LIST));
         m_ClientSocket->flush();
+        m_Datas->clear();
     }
     mutex.unlock();
 }
@@ -368,6 +369,9 @@ void XMPP::clear() {
 
 void XMPP::loadvCard(const QString &bareJid, bool push) {
     m_PictureRecovery = false;
+
+    if(bareJid.isEmpty())
+        return;
 
     // -------------------------------------------------------------
     // get vCard from file
@@ -436,9 +440,9 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
     contact->setName(vCard.fullName());
     contact->setTimestamp(0);
 
-    if(vCard.fullName().isEmpty())
+    if(vCard.fullName().isEmpty()) {
         contact->deleteLater();
-    else {
+    } else {
         if(m_Connected) {
             contact->setPresence(0);
 
@@ -449,8 +453,10 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
     }
 
     mutex.lockForWrite();
-    if(push && !vCard.fullName().isEmpty() && !delayPush)
+
+    if(push && !vCard.fullName().isEmpty() && !delayPush) {
         emit pushContact(contact);
+    }
     mutex.unlock();
 
 }

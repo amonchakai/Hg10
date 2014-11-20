@@ -97,9 +97,11 @@ NavigationPane {
     	            text: qsTr("Connect")
     	            horizontalAlignment: HorizontalAlignment.Fill
     	            onClicked: {
+                        welcome.open();
+                        /*
                         if(!tpage)
                         	tpage = loginPage.createObject();
-                        navSettings.push(tpage);
+                        navSettings.push(tpage); */
     	            }
                     visible: (settingsController.userName == "")
     	        }

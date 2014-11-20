@@ -220,6 +220,20 @@ void ListContactsController::updateView() {
             if(m_OnlyFavorite && e.m_What.isEmpty())
                  continue;
 
+            bool skip = false;
+            for(int k = 0 ; k < m_Contacts.size() ; ++k) {
+                if(contacts->at(i)->getName() == m_Contacts.at(k)->getName()) {
+                    if(QFile::exists(contacts->at(i)->getAvatar()) || contacts->at(i)->getAvatar() == "asset:///images/avatar.png") {
+                        m_Contacts.at(k)->setAvatar(contacts->at(i)->getAvatar());
+                        skip = true;
+                        break;
+                    }
+                }
+            }
+            if(skip)
+                continue;
+
+
             Contact *nc = new Contact;
             if(QFile::exists(contacts->at(i)->getAvatar()))
                 nc->setAvatar(contacts->at(i)->getAvatar());
@@ -379,6 +393,19 @@ void ListContactsController::filter(const QString &contact) {
         // remove yourself from the list of contact, and store the info for display
         if(contacts->at(i)->getID().toLower() != ConversationManager::get()->getUser().toLower() &&
            contacts->at(i)->getName().mid(0, contact.length()).toLower() == contact.toLower()) {
+
+            bool skip = false;
+            for(int k = 0 ; k < m_Contacts.size() ; ++k) {
+                if(contacts->at(i)->getName() == m_Contacts.at(k)->getName()) {
+                    if(QFile::exists(contacts->at(i)->getAvatar()) || contacts->at(i)->getAvatar() == "asset:///images/avatar.png") {
+                        m_Contacts.at(k)->setAvatar(contacts->at(i)->getAvatar());
+                        skip = true;
+                        break;
+                    }
+                }
+            }
+            if(skip)
+                continue;
 
 
             TimeEvent e = ConversationManager::get()->getPreview(contacts->at(i)->getID());

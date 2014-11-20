@@ -88,6 +88,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_notification.png) \
         $$quote($$BASEDIR/assets/images/icon_refresh.png) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
+        $$quote($$BASEDIR/assets/images/icon_top.png) \
+        $$quote($$BASEDIR/assets/images/icon_top_black.png) \
         $$quote($$BASEDIR/assets/images/send.png) \
         $$quote($$BASEDIR/assets/images/send.svg) \
         $$quote($$BASEDIR/assets/images/sound.png) \

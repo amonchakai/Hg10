@@ -63,19 +63,46 @@ NavigationPane {
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Top
             }
-            TextField {
-                id: contactFilter
-                visible: false
-                hintText: qsTr("Search a contact")
-                onTextChanging: {
-                    if(text.length > 3) {
-                        listContactsController.filter(text);
-                    }
-                    if(text.length == 0) {
-                        listContactsController.updateView();
-                        visible = false;
+            Container {
+                background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
+                id: contactFilterGroup
+                layout: StackLayout {
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                TextField {
+                    id: contactFilter
+                    visible: false
+                    hintText: qsTr("Search a contact")
+                    onTextChanging: {
+                        if(text.length > 3) {
+                            listContactsController.filter(text);
+                        }
+                        if(text.length == 0) {
+                            listContactsController.updateView();
+                            contactFilterGroup.visible = false;
+                        }
                     }
                 }
+                ImageButton {
+                    id: hideButton
+                    defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_top.png" : "asset:///images/icon_top_black.png"
+                    onClicked: {
+                        contactFilterGroup.visible = false;
+                    }
+                    verticalAlignment: VerticalAlignment.Center
+                    horizontalAlignment: HorizontalAlignment.Center
+                    visible: false
+                }
+                Container {
+                    preferredWidth: 5
+                }
+                
+                onVisibleChanged: {
+                    contactFilter.visible = visible;
+                    hideButton.visible = visible;
+                }
+                visible: false;
+                
             }
             ListView {
                 signal refreshTriggered()
@@ -102,7 +129,7 @@ NavigationPane {
                 
                 
                 onRefreshTriggered: {
-                    contactFilter.visible = true;
+                    contactFilterGroup.visible = true;
                 }
                 
                 
@@ -142,6 +169,7 @@ NavigationPane {
                 
                 }
                 
+                
                 focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
                 
                 listItemComponents: [
@@ -156,6 +184,14 @@ NavigationPane {
                         
                         Container {
                             id: overallContactContainer
+                            
+                            ListItem.onSelectionChanged: {
+                                console.log('select')
+                                if(ListItem.selected)
+                                    selectionIndicator.background = Color.create("#bd2d2d");
+                                else
+                                    selectionIndicator.background = Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.Black : Color.White;
+                            }
                             
                             layout: StackLayout {
                                 orientation: LayoutOrientation.TopToBottom
@@ -179,9 +215,13 @@ NavigationPane {
                                 verticalAlignment: VerticalAlignment.Center
                                 
                                 Container {
+                                    id: selectionIndicator
                                     minWidth: 5
                                     maxWidth: 5
+                                    preferredHeight: 100
                                 }
+                                
+                                
                                 
                                 Container {
                                     layout: AbsoluteLayout { }
@@ -313,7 +353,7 @@ NavigationPane {
                 
                 onTriggered: {
                     var chosenItem = dataModel.data(indexPath);
-                    contactFilter.visible = false;
+                    contactFilterGroup.visible = false;
                     
                     // Create the content page and push it on top to drill down to it.
                     if(!tpage) {
@@ -365,7 +405,7 @@ NavigationPane {
         ++depth;
         console.log(depth)
         
-        if(depth == 1)
+        if(depth == 1) 
             listContactView.requestFocus();
     }
     
@@ -374,6 +414,7 @@ NavigationPane {
         if(depth == 1) {
             listContactView.requestFocus();
             listContactsController.markRead();
+            contactFilter.text = "";
             if(tpage) 
                 tpage.id = "";
         
