@@ -43,10 +43,12 @@ bool ConversationController::isOwnMessage(const QString &from) {
         return true;
     }
 
-    if(ConversationManager::get()->isAdressee(from))
+    return false;
+/*
+    if(ConversationManager::get()->isAdressee(from)) // does not work: in some cases the addressee use a code [0-9]+@profiles.google.com
         return false;
     else
-        return true;
+        return true; */
 
 }
 
@@ -55,6 +57,8 @@ void ConversationController::load(const QString &id, const QString &avatar, cons
         m_DstAvatar = QDir::currentPath() + "/app/native/assets/" +  avatar.mid(9);
     else
         m_DstAvatar = avatar;
+
+    qDebug() << "conv manager" << ConversationManager::get()->getUser();
 
     m_HistoryCleared = false;
     ConversationManager::get()->load(id, name);

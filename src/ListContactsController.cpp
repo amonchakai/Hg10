@@ -222,7 +222,7 @@ void ListContactsController::updateView() {
 
             bool skip = false;
             for(int k = 0 ; k < m_Contacts.size() ; ++k) {
-                if(contacts->at(i)->getName() == m_Contacts.at(k)->getName()) {
+                if(contacts->at(i)->getID() == m_Contacts.at(k)->getID()) {
                     if(QFile::exists(contacts->at(i)->getAvatar()) || contacts->at(i)->getAvatar() == "asset:///images/avatar.png") {
                         m_Contacts.at(k)->setAvatar(contacts->at(i)->getAvatar());
                         skip = true;
@@ -262,16 +262,14 @@ void ListContactsController::updateView() {
 
             e.m_When = 0;
 
-            qDebug() << "add";
-
         } else {
+
             setUserName(contacts->at(i)->getName());
             setAvatar(contacts->at(i)->getAvatar());
 
             if(ConversationManager::get()->getAvatar().isEmpty())
                 ConversationManager::get()->setAvatar(contacts->at(i)->getAvatar());
 
-            qDebug() << "me";
         }
     }
 
@@ -396,7 +394,7 @@ void ListContactsController::filter(const QString &contact) {
 
             bool skip = false;
             for(int k = 0 ; k < m_Contacts.size() ; ++k) {
-                if(contacts->at(i)->getName() == m_Contacts.at(k)->getName()) {
+                if(contacts->at(i)->getID() == m_Contacts.at(k)->getID()) {
                     if(QFile::exists(contacts->at(i)->getAvatar()) || contacts->at(i)->getAvatar() == "asset:///images/avatar.png") {
                         m_Contacts.at(k)->setAvatar(contacts->at(i)->getAvatar());
                         skip = true;
