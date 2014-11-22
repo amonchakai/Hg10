@@ -191,6 +191,7 @@ void GoogleConnectController::parse(const QString &message) {
         qDebug() << "getting user data";
         getUserInfo();
     } else {
+        ConversationManager::get()->setUser(ConversationManager::get()->getUser());
         emit contactInfoObtained();
     }
 }

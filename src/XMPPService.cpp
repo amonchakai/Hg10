@@ -373,6 +373,7 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
     if(bareJid.isEmpty())
         return;
 
+
     // -------------------------------------------------------------
     // get vCard from file
     QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
@@ -382,15 +383,16 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
     if (!file.open(QIODevice::ReadOnly))
         return;
     if (!doc.setContent(&file)) {
-        file.close();
-        return;
+        //file.close();
+        //return;
+        qWarning() << "Problem while reading: " << bareJid;
+
     }
     file.close();
 
 
     QXmppVCardIq vCard;
     vCard.parse(doc.documentElement());
-
 
     // --------------------------------------------------------------
     // insert vCard content to view

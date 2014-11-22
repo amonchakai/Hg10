@@ -6,11 +6,11 @@
  */
 
 
-
 #include "SettingsController.hpp"
 #include "ConversationMAnager.hpp"
 #include <QRegExp>
 #include "XMPPService.hpp"
+
 
 SettingsController::SettingsController(QObject *parent) : QObject(parent), m_FontSize(28), m_Settings(NULL) {
 
@@ -33,7 +33,6 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
 
     Q_ASSERT(check);
     Q_UNUSED(check);
-
 
 }
 

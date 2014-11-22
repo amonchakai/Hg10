@@ -7,8 +7,7 @@ NavigationPane {
     property variant googlePage
         
     Page {
-        signal done ()
-        
+        signal done ()        
         property bool wasAnError
             
         Container {
@@ -26,11 +25,23 @@ NavigationPane {
             }
             
             ImageButton {
+                id: advancedSettingsButton
                 defaultImageSource: "asset:///images/icon_settings.png"
                 verticalAlignment: VerticalAlignment.Top
                 horizontalAlignment: HorizontalAlignment.Right
                 onClicked: {
                     advancedConnectionSettings.open();
+                }
+            }
+            
+            ImageButton {
+                id: closeButton
+                visible: false
+                defaultImageSource: "asset:///images/Tutorial/closeIcon.png"
+                verticalAlignment: VerticalAlignment.Top
+                horizontalAlignment: HorizontalAlignment.Right
+                onClicked: {
+                    welcome.close();
                 }
             }
             

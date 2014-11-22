@@ -98,10 +98,6 @@ NavigationPane {
     	            horizontalAlignment: HorizontalAlignment.Fill
     	            onClicked: {
                         welcome.open();
-                        /*
-                        if(!tpage)
-                        	tpage = loginPage.createObject();
-                        navSettings.push(tpage); */
     	            }
                     visible: (settingsController.userName == "")
     	        }
@@ -258,11 +254,6 @@ NavigationPane {
                 },
                 SettingsController {
                     id: settingsController
-                },
-                ComponentDefinition {
-                    id: loginPage
-                    source: "LoginForm.qml"
-                
                 },
                 ComponentDefinition {
                     id: googleConnect

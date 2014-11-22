@@ -195,19 +195,39 @@
     <name>LoginForm</name>
     <message>
         <source>Login</source>
-        <translation>Identifiant</translation>
+        <translation type="unfinished">Identifiant</translation>
     </message>
     <message>
         <source>Log</source>
-        <translation>Connecter</translation>
+        <translation type="obsolete">Connecter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation type="obsolete">Annuler</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation>Mot de passe</translation>
+        <translation type="unfinished">Mot de passe</translation>
+    </message>
+    <message>
+        <source>Google (Secure)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Submit</source>
+        <translation type="unfinished">Valider</translation>
+    </message>
+    <message>
+        <source>Still waiting? :(</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

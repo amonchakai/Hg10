@@ -48,6 +48,7 @@ Page {
                         console.log("Login request -- oath2")
                         loginController.oauth2Login();
                     }
+
                 }
             }
         ]

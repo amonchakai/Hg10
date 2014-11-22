@@ -264,14 +264,26 @@ void ListContactsController::updateView() {
 
         } else {
 
-            setUserName(contacts->at(i)->getName());
-            setAvatar(contacts->at(i)->getAvatar());
+            qDebug() << "ME: " << contacts->at(i)->getName() << contacts->at(i)->getAvatar();
 
-            if(ConversationManager::get()->getAvatar().isEmpty())
-                ConversationManager::get()->setAvatar(contacts->at(i)->getAvatar());
+            setUserName(contacts->at(i)->getName());
 
         }
     }
+
+    QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
+    QString avatar(vCardsDir + "/" + ConversationManager::get()->getUser() + ".png");
+    if(QFile::exists(avatar)) {
+        setAvatar(avatar);
+        if(ConversationManager::get()->getAvatar().isEmpty())
+            ConversationManager::get()->setAvatar(avatar);
+    } else {
+        setAvatar("asset:///images/avatar.png");
+        if(ConversationManager::get()->getAvatar().isEmpty())
+            ConversationManager::get()->setAvatar("asset:///images/avatar.png");
+    }
+
+
 
     dataModel->clear();
     dataModel->insertList(datas);

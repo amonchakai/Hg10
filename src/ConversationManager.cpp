@@ -75,7 +75,20 @@ void ConversationManager::loadUserName() {
         return;
 
     QSettings settings("Amonchakai", "Hg10");
-    m_User = settings.value("User").toString();
+    setUser(settings.value("User").toString());
+}
+
+void ConversationManager::setUser(const QString &user) {
+    m_User = user;
+
+    QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
+    QString avatar(vCardsDir + "/" + m_User + ".png");
+    if(QFile::exists(avatar)) {
+        setAvatar(avatar);
+    } else {
+        setAvatar("asset:///images/avatar.png");
+    }
+
 }
 
 

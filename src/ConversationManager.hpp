@@ -40,7 +40,7 @@ public:
 
     inline const History&  getHistory   ()  const               { return m_History; };
     inline const QString&  getUser      ()  const               { return m_User; };
-    inline void            setUser      (const QString &n)      { m_User = n; }
+    void                   setUser      (const QString &n) ;
     inline const QString&  getAvatar    ()  const               { return m_Avatar; };
     inline bool            isAdressee   (const QString &who)    { return who.toLower() == m_CurrentDst.toLower(); }
 
