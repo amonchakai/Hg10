@@ -179,33 +179,7 @@ NavigationPane {
                 
     	        
     	        Divider { }
-    	        
-    	        Button {
-    	            id: googleConnectButton
-    	            text: qsTr("Synch with Google")
-    	            horizontalAlignment: HorizontalAlignment.Fill
-    	            onClicked: {
-                        if(!googlePage)
-                            googlePage = googleConnect.createObject();
-                        navSettings.push(googlePage);
-    	            }
-    	            
-                    visible: settingsController.enableGoogle && !settingsController.googleLogged
-    	        }
-    	        
-                Button {
-                    id: facebookConnectButton
-                    text: qsTr("Synch with Facebook")
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    onClicked: {
-                        if(!googlePage)
-                            googlePage = facebookConnect.createObject();
-                        navSettings.push(googlePage);
-                    }
-                    
-                    visible: !settingsController.enableGoogle
-                }
-                    	        
+    	                            	        
                 Button {
                     id: dropboxConnectButton
                     text: qsTr("Use dropbox to host files")

@@ -69,6 +69,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void imagesRetrieved        (const QString&);
+    void contactInfoObtained    ();
 
 
     void closeConnect           ();

@@ -400,7 +400,7 @@
     </message>
     <message>
         <source>Synch with Google</source>
-        <translation>Synch avec Google</translation>
+        <translation type="obsolete">Synch avec Google</translation>
     </message>
     <message>
         <source>Font size</source>
@@ -416,7 +416,7 @@
     </message>
     <message>
         <source>Synch with Facebook</source>
-        <translation>Synch avec Facebook</translation>
+        <translation type="obsolete">Synch avec Facebook</translation>
     </message>
     <message>
         <source>Clear audio messages</source>

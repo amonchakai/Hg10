@@ -243,6 +243,8 @@ void Facebook::checkReplyUserID() {
                 QRegExp userId("\"id\":\"([0-9]+)\"");
                 if(userId.indexIn(response) != -1) {
                     m_Settings->setValue("Facebook_userid", userId.cap(1));
+
+                    emit contactInfoObtained();
                 }
 
             }

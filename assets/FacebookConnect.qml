@@ -43,7 +43,18 @@ Page {
                 id: facebookController
                 
                 onCloseConnect: {
+                    connectionMethod.visible = false;
+                    submitButton.visible = false;
                     navSettings.pop();
+                    connectingActivity.start();
+                }
+                
+                onContactInfoObtained: {
+                    if(!(typeof loginController === 'undefined')) {
+                        console.log("Login request -- oath2")
+                        loginController.oauth2Login();
+                    }
+                
                 }
                 
             }

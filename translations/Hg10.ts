@@ -383,10 +383,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Synch with Google</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Font size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -396,10 +392,6 @@
     </message>
     <message>
         <source>Use dropbox to host files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Synch with Facebook</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

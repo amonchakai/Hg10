@@ -5,6 +5,7 @@ import Lib.QTimer 1.0
 NavigationPane {
     id: navSettings
     property variant googlePage
+    property variant facebookPage
         
     Page {
         signal done ()        
@@ -63,13 +64,18 @@ NavigationPane {
                         Option {
                             text: qsTr("Google (Secure)")
                             value: 0
-                        },
+                        },/*
+                        Option {
+                            text: qsTr("Facebook (Secure)")
+                            value: 2
+                        },*/
                         Option {
                             text: qsTr("Other")
                             value: 1
                         }
                     ]
                     title: qsTr("Connection method")
+                    selectedIndex: 0
                     
                     onSelectedOptionChanged: {
                         if(selectedOption.value == 1) {
@@ -80,7 +86,7 @@ NavigationPane {
                             password.visible = false;
                         }
                     }
-                    selectedIndex: 0
+
                 }
     
                 TextField {
@@ -106,23 +112,32 @@ NavigationPane {
                 }
                 
                 Button {
+                    id: submitButton
                     text: qsTr("Submit")
                     horizontalAlignment: HorizontalAlignment.Center
                     onClicked: {
-                        if(connectionMethod.selectedValue == 1) {
-                            if(login.text != "") {
-                                loginController.login(login.text,password.text);
-                                connectingActivity.start();
-                                timer.start();
-                                wasAnError = false;
-                            }
-                        } else {
+                        if(connectionMethod.selectedValue == 0) {
                             if(!googlePage)
                                 googlePage = googleConnect.createObject();
+                            
                             navSettings.push(googlePage);
                         }
+                        if(connectionMethod.selectedValue == 1) {
+                            loginController.login(login.text,password.text);
+                            connectingActivity.start();
+                            timer.start();
+                            wasAnError = false;
+                        }
+                        
+                        if(connectionMethod.selectedValue == 2) {
+                            if(!facebookPage)
+                                facebookPage = facebookConnect.createObject();
+                            navSettings.push(facebookPage);
+                        }
+                        
                     }
                 }
+                               
                 
                 Button {
                     id: stillWaitingButton
@@ -232,7 +247,15 @@ NavigationPane {
             ComponentDefinition {
                id: googleConnect
                source: "GoogleConnect.qml"
+            },
+            
+            
+            ComponentDefinition {
+                id: facebookConnect
+                source: "FacebookConnect.qml"
             }
+            
+            
             
             
         ]
