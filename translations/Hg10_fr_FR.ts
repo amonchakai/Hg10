@@ -4,16 +4,12 @@
 <context>
     <name>AdvancedConection</name>
     <message>
-        <source>Close</source>
-        <translation type="obsolete">Fermer</translation>
-    </message>
-    <message>
         <source>Login</source>
-        <translation type="unfinished">Identifiant</translation>
+        <translation>Identifiant</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Mot de passe</translation>
+        <translation>Mot de passe</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -21,7 +17,7 @@
     </message>
     <message>
         <source>Submit</source>
-        <translation type="unfinished">Valider</translation>
+        <translation>Valider</translation>
     </message>
     <message>
         <source>Host (auto)</source>
@@ -44,11 +40,11 @@
     <name>Contacts</name>
     <message>
         <source>Search a contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Chercher un contact</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished">Contacts</translation>
+        <translation>Contacts</translation>
     </message>
     <message>
         <source>Clear history</source>
@@ -75,7 +71,7 @@
     </message>
     <message>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Stickers</translation>
     </message>
 </context>
 <context>
@@ -142,31 +138,31 @@
     <name>FurtherInformation</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <source>Problem:</source>
-        <translation type="unfinished"></translation>
+        <translation>Problème:</translation>
     </message>
     <message>
         <source>Solution:</source>
-        <translation type="unfinished"></translation>
+        <translation>Solution:</translation>
     </message>
     <message>
         <source>Google have a documentation on how to help you to use this application (and other application) when you are having difficulites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Google dispose d&apos;une documentation qui pourra vous aider à utiliser cette application. </translation>
     </message>
     <message>
         <source>Open Google&apos;s manual</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir mode d&apos;emploi</translation>
     </message>
     <message>
         <source>Still stuck?</source>
-        <translation type="unfinished"></translation>
+        <translation>Toujours bloqué?</translation>
     </message>
     <message>
         <source>Apparently you are having some difficulties to connect to your account. If you are trying to connect to Google, it may be Google which for safety reason is blocking the application to access to your account. Indeed, it only expect an official hangout client or Gmail.</source>
@@ -219,11 +215,11 @@
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Autre</translation>
     </message>
     <message>
         <source>Connection method</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Méthode de connection</translation>
     </message>
     <message>
         <source>Submit</source>
@@ -231,7 +227,7 @@
     </message>
     <message>
         <source>Still waiting? :(</source>
-        <translation type="unfinished"></translation>
+        <translation>Toujours en train d&apos;attendre? :(</translation>
     </message>
 </context>
 <context>
@@ -444,20 +440,8 @@
 <context>
     <name>Welcome</name>
     <message>
-        <source>Login</source>
-        <translation type="obsolete">Identifiant</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation type="obsolete">Mot de passe</translation>
-    </message>
-    <message>
-        <source>Submit</source>
-        <translation type="obsolete">Valider</translation>
-    </message>
-    <message>
         <source>Still waiting? :(</source>
-        <translation type="unfinished"></translation>
+        <translation>Toujours en train d&apos;attendre? :(</translation>
     </message>
     <message>
         <source>Google (Secure)</source>
@@ -465,15 +449,15 @@
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Autre</translation>
     </message>
     <message>
         <source>Connection method</source>
-        <translation type="unfinished"></translation>
+        <translation>Méthode de connection</translation>
     </message>
     <message>
         <source>Connect</source>
-        <translation type="unfinished">Connection</translation>
+        <translation>Connection</translation>
     </message>
 </context>
 <context>
