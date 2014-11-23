@@ -118,6 +118,8 @@ void LoginController::saveUserName() {
         stream << m_User;
         stream << m_Password;
 
+        ConversationManager::get()->setUser(m_User);
+
         stream << m_Host;
         stream << m_Domain;
         stream << m_Port;

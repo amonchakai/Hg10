@@ -11,14 +11,6 @@ Page {
         layout: DockLayout { }
         verticalAlignment: VerticalAlignment.Fill
         horizontalAlignment: HorizontalAlignment.Fill
-            
-        ActivityIndicator {
-            id: connectingActivity
-            preferredHeight: 80
-            verticalAlignment: VerticalAlignment.Center
-            horizontalAlignment: HorizontalAlignment.Fill
-            accessibility.name: "connectingActivity"
-        }
         
         ImageButton {
             verticalAlignment: VerticalAlignment.Top
@@ -48,7 +40,7 @@ Page {
                 
                 TextField {
                     id: host
-                    hintText: qsTr("Host")
+                    hintText: qsTr("Host (auto)")
                     textStyle {
                         color: Color.White
                     }
@@ -57,7 +49,7 @@ Page {
                 
                 TextField {
                     id: domain
-                    hintText: qsTr("Domain")
+                    hintText: qsTr("Domain (auto)")
                     textStyle {
                         color: Color.White
                     }
@@ -66,7 +58,7 @@ Page {
                 
                 TextField {
                     id: port
-                    hintText: qsTr("Port")
+                    hintText: qsTr("Port (auto)")
                     inputMode: TextFieldInputMode.Pin
                     textStyle {
                         color: Color.White
@@ -111,20 +103,27 @@ Page {
                         }
                     ]
                     selectedIndex: 0
-                    preferredWidth: 410
+                    title: qsTr("Encryption")
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 
                 Button {
                     text: qsTr("Submit")
-                    preferredWidth: 410
                     horizontalAlignment: HorizontalAlignment.Center
                     onClicked: {
                         
-                        if(login.text != "") {
-                            loginController.advancedLogin(host.text, domain.text, port.text, login.text,password.text, encryption.selectedValue);
+                        if(host.text == "" && domain.text == "") {
+                            loginController.login(login.text,password.text);
                             connectingActivity.start();
+                            timer.start();
+                        } else {
+                            if(login.text != "") {
+                                loginController.advancedLogin(host.text, domain.text, port.text, login.text,password.text, encryption.selectedValue);
+                                connectingActivity.start();
+                            }
                         }
+                        advancedConnectionSettings.close();
+                        
                     }
                 }
                 

@@ -47,7 +47,8 @@ NavigationPane {
             }
             
             Container {
-                verticalAlignment: VerticalAlignment.Center    
+                verticalAlignment: VerticalAlignment.Center
+                horizontalAlignment: HorizontalAlignment.Fill    
                 
                 Label {
                     id: label
@@ -60,6 +61,7 @@ NavigationPane {
                 
                 DropDown {
                     id: connectionMethod
+                    visible: false
                     options: [
                         Option {
                             text: qsTr("Google (Secure)")
@@ -77,43 +79,16 @@ NavigationPane {
                     title: qsTr("Connection method")
                     selectedIndex: 0
                     
-                    onSelectedOptionChanged: {
-                        if(selectedOption.value == 1) {
-                            login.visible = true;
-                            password.visible = true;
-                        } else {
-                            login.visible = false;
-                            password.visible = false;
-                        }
-                    }
-
                 }
     
-                TextField {
-                    id: login
-                    visible: false
-                    hintText: qsTr("Login")
-                    textStyle {
-                        color: Color.White
-                    }
-                    backgroundVisible: false
-                }
                 
-                TextField {
-                    id: password
-                    visible: false
-                    hintText: qsTr("Password")
-                    inputMode: TextFieldInputMode.Password
-                    backgroundVisible: false
-                    textStyle {
-                        color: Color.White
-                    }
-                    
+                Container {
+                    preferredHeight: 60
                 }
                 
                 Button {
                     id: submitButton
-                    text: qsTr("Submit")
+                    text: qsTr("Connect")
                     horizontalAlignment: HorizontalAlignment.Center
                     onClicked: {
                         if(connectionMethod.selectedValue == 0) {
@@ -121,12 +96,6 @@ NavigationPane {
                                 googlePage = googleConnect.createObject();
                             
                             navSettings.push(googlePage);
-                        }
-                        if(connectionMethod.selectedValue == 1) {
-                            loginController.login(login.text,password.text);
-                            connectingActivity.start();
-                            timer.start();
-                            wasAnError = false;
                         }
                         
                         if(connectionMethod.selectedValue == 2) {
@@ -166,14 +135,8 @@ NavigationPane {
                 id: loginController
                 
                 onComplete: {
-                    if(connectionMethod.selectedOption.value == 1) {
-                        connectingActivity.stop();
-                        manual.open();
-                    } else {
-                        connectingActivity.stop();
-                        welcome.close();
-                    }
-                    
+                    connectingActivity.stop();
+                    manual.open();
                 }
                 
                 onConnectError: {
@@ -182,21 +145,13 @@ NavigationPane {
                     
                 }
             },
-            Delegate {
-                id: manualDelegate
-                source: "Manual.qml"
-                
-            },
             Sheet {
                 id: manual
-                content: manualDelegate.object
-                onOpenedChanged: {
-                    if (opened)
-                        manualDelegate.active = true;
-                }
-                
-                onClosed: {
-                    manualDelegate.active = false;
+                Manual {
+                    onDone: {
+                        manual.close();
+                        welcome.close();
+                    }
                 }
             },
             QTimer {

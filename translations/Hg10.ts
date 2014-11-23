@@ -4,18 +4,6 @@
 <context>
     <name>AdvancedConection</name>
     <message>
-        <source>Host</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Domain</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
@@ -25,6 +13,22 @@
     </message>
     <message>
         <source>Submit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host (auto)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Domain (auto)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port (auto)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encryption</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -416,18 +420,6 @@
 <context>
     <name>Welcome</name>
     <message>
-        <source>Login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Submit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Still waiting? :(</source>
         <translation type="unfinished"></translation>
     </message>
@@ -441,6 +433,10 @@
     </message>
     <message>
         <source>Connection method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

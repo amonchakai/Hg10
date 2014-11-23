@@ -19,8 +19,7 @@ Page {
             preferredWidth: 100
             
             onClicked: {
-                welcome.close();
-                manual.close();
+                done();
             }
         }
         
@@ -60,21 +59,6 @@ Page {
                             preferredWidth: 720
                         }
                         ImageView {
-                            imageSource: "asset:///images/Tutorial/settings.jpg"
-                            preferredHeight: 720
-                            preferredWidth: 720
-                        }
-                        ImageView {
-                            imageSource: "asset:///images/Tutorial/logIn.jpg"
-                            preferredHeight: 720
-                            preferredWidth: 720
-                        }
-                        ImageView {
-                            imageSource: "asset:///images/Tutorial/accept.jpg"
-                            preferredHeight: 720
-                            preferredWidth: 720
-                        }
-                        ImageView {
                             imageSource: "asset:///images/Tutorial/chat.jpg"
                             preferredHeight: 720
                             preferredWidth: 720
@@ -97,8 +81,7 @@ Page {
                                 verticalAlignment: VerticalAlignment.Center
                                 text: qsTr("Done!")
                                 onClicked: {
-                                    welcome.close();
-                                    manual.close();
+                                    done();
                                 }
                             }
                             
@@ -133,7 +116,7 @@ Page {
         
         onCreationCompleted: {
             index = 0;
-            nbDots = 8;
+            nbDots = 5;
         }
         
         
