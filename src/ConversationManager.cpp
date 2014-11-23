@@ -144,8 +144,13 @@ void ConversationManager::load(const QString &from, const QString &name) {
         QRegExp isFacebook("@chat.facebook.com");
         if(isFacebook.indexIn(from) != -1)
             m_OnlineHistory->getMessages(from, 1);  // for facebook we need to use the user ID
-        else
-            m_OnlineHistory->getMessages(name, 1);  // for google, user id works, but name is better.
+        else {
+            QRegExp publicTalk("@public.talk.google.com");
+            if(publicTalk.indexIn(from) != -1)
+                m_OnlineHistory->getMessages(name, 1);  // for google, user id is better, but not always available. If not, use name.
+            else
+                m_OnlineHistory->getMessages(from, 1);
+        }
         m_SynchStatus = NONE;
     }
 
