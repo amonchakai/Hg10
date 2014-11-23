@@ -87,7 +87,7 @@ void ConversationController::updateView() {
         QString htmlTemplate = htmlTemplateFile.readAll();
         QString endTemplate = htmlEndTemplateFile.readAll();
 
-        if(settings.value("fontSize").value<int>() != 28) {
+        if(settings.value("fontSize", 28).value<int>() != 28) {
             htmlTemplate.replace("font-size: 28px;", "font-size: " + QString::number(settings.value("fontSize").value<int>()) + "px;");
         }
 

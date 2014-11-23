@@ -396,6 +396,19 @@ void GoogleConnectController::getMessageList() {
     if(m_ThreadsID.size() == 0)
         return;
 
+    QStringList messagesId;
+    QStringList threadsId;
+    threadsId.push_back(m_ThreadsID[0]);
+    messagesId.push_back(m_MessagesID[0]);
+    for(int i = 1 ; i < m_ThreadsID.size() ; ++i) {
+        if(m_ThreadsID.at(i) == m_ThreadsID[0]) {
+            messagesId.push_back(m_MessagesID.at(i));
+            threadsId.push_back(m_ThreadsID.at(i));
+        }
+    }
+    m_ThreadsID  = threadsId;
+    m_MessagesID = messagesId;
+
     m_LastThread = m_ThreadsID[0];
 
     QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")

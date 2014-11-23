@@ -275,11 +275,11 @@ void ListContactsController::updateView() {
     QString avatar(vCardsDir + "/" + ConversationManager::get()->getUser() + ".png");
     if(QFile::exists(avatar)) {
         setAvatar(avatar);
-        if(ConversationManager::get()->getAvatar().isEmpty())
+        if(ConversationManager::get()->getAvatar() != avatar)
             ConversationManager::get()->setAvatar(avatar);
     } else {
         setAvatar("asset:///images/avatar.png");
-        if(ConversationManager::get()->getAvatar().isEmpty())
+        if(ConversationManager::get()->getAvatar() != "asset:///images/avatar.png")
             ConversationManager::get()->setAvatar("asset:///images/avatar.png");
     }
 
@@ -350,10 +350,18 @@ void ListContactsController::pushContact(const Contact* c) {
         qDebug() << "nope Pushing: " << c->getName();
 
         setUserName(c->getName());
-        setAvatar(c->getAvatar());
+    }
 
-        if(ConversationManager::get()->getAvatar().isEmpty())
-            ConversationManager::get()->setAvatar(c->getAvatar());
+    QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
+    QString avatar(vCardsDir + "/" + ConversationManager::get()->getUser() + ".png");
+    if(QFile::exists(avatar)) {
+        setAvatar(avatar);
+        if(ConversationManager::get()->getAvatar() != avatar)
+            ConversationManager::get()->setAvatar(avatar);
+    } else {
+        setAvatar("asset:///images/avatar.png");
+        if(ConversationManager::get()->getAvatar() != "asset:///images/avatar.png")
+            ConversationManager::get()->setAvatar("asset:///images/avatar.png");
     }
 
 }
