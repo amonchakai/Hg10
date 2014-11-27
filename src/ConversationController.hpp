@@ -11,6 +11,7 @@
 
 #include <QtCore/QObject>
 #include <bb/cascades/WebView>
+#include <bb/cascades/ActivityIndicator>
 #include "DataObjects.h"
 
 class DropBoxConnectController;
@@ -24,6 +25,7 @@ class ConversationController : public QObject {
 
 private:
     bb::cascades::WebView    *m_WebView;
+    bb::cascades::ActivityIndicator *m_LinkActivity;
     QString                   m_DstAvatar;
     bool                      m_HistoryCleared;
     bool                      m_IsRoom;
@@ -53,10 +55,13 @@ private:
 
 public Q_SLOTS:
     inline void setWebView              (QObject *webView)                          {m_WebView = dynamic_cast<bb::cascades::WebView*>(webView); }
+    inline void setLinkActivity         (QObject *activity)                         {m_LinkActivity = dynamic_cast<bb::cascades::ActivityIndicator*>(activity);};
     void updateView                     ();
     void load                           (const QString &id, const QString &avatar, const QString &name);
 
 
+    void linkEstablished                ();
+    void waitingLink                    ();
 
     void send                           (const QString &message);
     void sendData                       (const QString &message);

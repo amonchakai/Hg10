@@ -9,6 +9,7 @@
 #include "ConversationController.hpp"
 #include "ConversationManager.hpp"
 #include "DropBoxConnectController.hpp"
+#include "XMPPService.hpp"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/ThemeSupport>
@@ -17,6 +18,7 @@
 
 ConversationController::ConversationController(QObject *parent) : QObject(parent),
             m_WebView(NULL),
+            m_LinkActivity(NULL),
             m_HistoryCleared(false),
             m_IsRoom(false),
             m_UploadingAudio(false),
@@ -34,6 +36,13 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
 
     check = connect(ConversationManager::get(), SIGNAL(historyMessage(QString, QString)), this, SLOT(pushHistory(QString, QString)));
     Q_ASSERT(check);
+
+    check = connect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(linkEstablished()));
+    Q_ASSERT(check);
+
+    check = connect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(waitingLink()));
+    Q_ASSERT(check);
+
 }
 
 bool ConversationController::isOwnMessage(const QString &from) {
@@ -44,12 +53,20 @@ bool ConversationController::isOwnMessage(const QString &from) {
     }
 
     return false;
-/*
-    if(ConversationManager::get()->isAdressee(from)) // does not work: in some cases the addressee use a code [0-9]+@profiles.google.com
-        return false;
-    else
-        return true; */
+}
 
+void ConversationController::waitingLink() {
+    if(m_LinkActivity == NULL)
+        return;
+
+    m_LinkActivity->start();
+}
+
+void ConversationController::linkEstablished() {
+    if(m_LinkActivity == NULL)
+        return;
+
+    m_LinkActivity->stop();
 }
 
 void ConversationController::load(const QString &id, const QString &avatar, const QString &name) {
@@ -58,7 +75,7 @@ void ConversationController::load(const QString &id, const QString &avatar, cons
     else
         m_DstAvatar = avatar;
 
-    qDebug() << "conv manager" << ConversationManager::get()->getUser();
+    XMPP::get()->askConnectionStatus();
 
     m_HistoryCleared = false;
     ConversationManager::get()->load(id, name);

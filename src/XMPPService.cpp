@@ -74,6 +74,7 @@ const QList<Contact*>* XMPP::getContacts() {
     return m_Datas;
 }
 
+
 void XMPP::connected() {
 
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
@@ -135,7 +136,8 @@ void XMPP::disconnected() {
 void XMPP::askConnectionStatus() {
     mutex.lockForWrite();
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
-        m_ClientSocket->write(QByteArray::number(XMPPServiceMessages::REQUEST_CONNECTION_STATUS));
+        int code = XMPPServiceMessages::REQUEST_CONNECTION_STATUS;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
         m_ClientSocket->flush();
     }
     mutex.unlock();
@@ -166,11 +168,13 @@ void XMPP::readyRead() {
 
             case XMPPServiceMessages::REPLY_LOGGED_IN: {
                 emit connectedXMPP();
+                qDebug() << "ok log in";
             }
                 break;
 
             case XMPPServiceMessages::REPLY_CONNECTION_FAILED: {
                 emit connectionFailed();
+                qDebug() << "failed to log in";
 
             }
                 break;

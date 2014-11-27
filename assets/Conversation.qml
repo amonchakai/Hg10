@@ -74,6 +74,12 @@ Page {
             orientation: LayoutOrientation.TopToBottom
         }
         
+        ActivityIndicator {
+            id: linkStatusActivity
+            preferredHeight: 50
+            horizontalAlignment: HorizontalAlignment.Center
+        }
+        
         ScrollView {
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
@@ -345,6 +351,7 @@ Page {
     
     onCreationCompleted: {
         conversationController.setWebView(messageView);
+        conversationController.setLinkActivity(linkStatusActivity);
         filenameChat = conversationController.nextAudioFile;
         recorder.setOutputUrl(filenameChat);
         recorder.prepare();

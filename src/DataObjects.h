@@ -14,7 +14,7 @@
 
 struct XMPPServiceMessages {
     enum Message {
-        LOGIN = 1,
+        LOGIN                       = 1,
         REPLY_LOGGED_IN,
         REPLY_CONNECTION_FAILED,
         REQUEST_CONNECTION_STATUS,
@@ -23,7 +23,7 @@ struct XMPPServiceMessages {
         REPLY_CONTACT_LIST,
         STATUS_UPDATE,
         PRESENCE_UPDATE,
-        MESSAGE,
+        MESSAGE                     = 10,
         SEND_MESSAGE,
         SEND_FILE,
         REFRESH_SETTINGS,

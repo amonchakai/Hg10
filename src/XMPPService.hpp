@@ -33,6 +33,7 @@ public:
 
     void                           disconnectFromServer();
     void                           checkMissingPictures();
+    void                           askConnectionStatus();
 
 private:
     static XMPP              *m_This;
@@ -50,7 +51,7 @@ private:
     XMPP(QObject *parent = 0);
 
     void loadLocal          ();
-    void askConnectionStatus();
+
 
 public Q_SLOTS:
 
