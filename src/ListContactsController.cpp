@@ -171,8 +171,6 @@ void ListContactsController::updateView() {
     // get the dataModel of the listview if not already available
     using namespace bb::cascades;
 
-    qDebug() << "UPDATE VIEW";
-
     if(m_ListView == NULL) {
         qWarning() << "did not received the listview. quit.";
         return;
@@ -208,8 +206,6 @@ void ListContactsController::updateView() {
     QDateTime now = QDateTime::currentDateTime();
 
     const QList<Contact *> *contacts = XMPP::get()->getContacts();
-
-    qDebug() << "contacts: " << contacts->length();
 
     QList<QObject*> datas;
     for(int i = contacts->length()-1 ; i >= 0 ; --i) {
@@ -263,9 +259,6 @@ void ListContactsController::updateView() {
             e.m_When = 0;
 
         } else {
-
-            qDebug() << "ME: " << contacts->at(i)->getName() << contacts->at(i)->getAvatar();
-
             setUserName(contacts->at(i)->getName());
 
         }
@@ -289,7 +282,6 @@ void ListContactsController::updateView() {
     dataModel->insertList(datas);
 
     if(m_Activity != NULL && !contacts->isEmpty()) {
-        qDebug() << "ACTIVITY STOP";
         m_Activity->stop();
     }
 }
@@ -371,8 +363,6 @@ void ListContactsController::filter(const QString &contact) {
     // ----------------------------------------------------------------------------------------------
     // get the dataModel of the listview if not already available
     using namespace bb::cascades;
-
-    qDebug() << "UPDATE VIEW";
 
     if(m_ListView == NULL) {
         qWarning() << "did not received the listview. quit.";

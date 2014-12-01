@@ -91,7 +91,7 @@ void XMPP::connected() {
 }
 
 void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
-    qDebug() << "Connec error: " << e;
+    qDebug() << "Connection error to headless service: " << e << " restart in 1s...";
     if(e == QAbstractSocket::RemoteHostClosedError && m_NbFails < 2) {
         QTimer::singleShot(1000, this, SLOT(connectToXMPPService()));
         ++m_NbFails;
@@ -116,7 +116,7 @@ void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
 
 void XMPP::connectToXMPPService() {
     if (!m_ClientSocket->isOpen() || (m_ClientSocket && m_ClientSocket->state() != QTcpSocket::ConnectedState)) {
-        qDebug() << "connect";
+        qDebug() << "Request connection to Headless service";
         m_ClientSocket->connectToHost(QHostAddress::LocalHost, 27015);
         bool ok = connect(m_ClientSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
         Q_ASSERT(ok);
@@ -136,6 +136,7 @@ void XMPP::disconnected() {
 void XMPP::askConnectionStatus() {
     mutex.lockForWrite();
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        qDebug() << "To headless: XMPPServiceMessages::REQUEST_CONNECTION_STATUS";
         int code = XMPPServiceMessages::REQUEST_CONNECTION_STATUS;
         m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
         m_ClientSocket->flush();
@@ -168,13 +169,13 @@ void XMPP::readyRead() {
 
             case XMPPServiceMessages::REPLY_LOGGED_IN: {
                 emit connectedXMPP();
-                qDebug() << "ok log in";
+                qDebug() << "XMPPServiceMessages::REPLY_LOGGED_IN";
             }
                 break;
 
             case XMPPServiceMessages::REPLY_CONNECTION_FAILED: {
                 emit connectionFailed();
-                qDebug() << "failed to log in";
+                qDebug() << "XMPPServiceMessages::REPLY_CONNECTION_FAILED";
 
             }
                 break;
@@ -327,7 +328,8 @@ void XMPP::disconnectFromServer() {
 void XMPP::getContactList() {
     mutex.lockForWrite();
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
-        m_ClientSocket->write(QByteArray::number(XMPPServiceMessages::REQUEST_CONTACT_LIST));
+        int code = XMPPServiceMessages::REQUEST_CONTACT_LIST;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
         m_ClientSocket->flush();
         m_Datas->clear();
     }
@@ -389,7 +391,7 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
     if (!doc.setContent(&file)) {
         //file.close();
         //return;
-        qWarning() << "Problem while reading: " << bareJid;
+        qWarning() << "Problem while reading vcard: " << bareJid << " file not complete, some data may be missing.";
 
     }
     file.close();

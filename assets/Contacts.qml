@@ -337,7 +337,6 @@ NavigationPane {
                                         title: qsTr("Clear history")
                                         onTriggered: {
                                             overallContactContainer.ListItem.view.deleteHistory(ListItemData.id);
-                                            theModel.removeAt(ListItem.indexPath);
                                         }
                                     }
                                 }

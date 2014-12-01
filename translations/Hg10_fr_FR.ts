@@ -37,6 +37,17 @@
     </message>
 </context>
 <context>
+    <name>ApplicationLog</name>
+    <message>
+        <source>Clear logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Rafraichir</translation>
+    </message>
+</context>
+<context>
     <name>Contacts</name>
     <message>
         <source>Search a contact</source>
@@ -421,6 +432,10 @@
     <message>
         <source>Clear audio messages</source>
         <translation>Supprimer les messages audio</translation>
+    </message>
+    <message>
+        <source>Application Logs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

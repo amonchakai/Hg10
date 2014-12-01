@@ -140,16 +140,18 @@ void ConversationManager::load(const QString &from, const QString &name) {
     }
 
     if(m_OnlineHistory != NULL) {
-        qDebug() << "m_OnlineHistory->getMessages(from, 1);";
         QRegExp isFacebook("@chat.facebook.com");
         if(isFacebook.indexIn(from) != -1)
             m_OnlineHistory->getMessages(from, 1);  // for facebook we need to use the user ID
         else {
             QRegExp publicTalk("@public.talk.google.com");
-            if(publicTalk.indexIn(from) != -1)
+            if(publicTalk.indexIn(from) != -1) {
+                qDebug() << "m_OnlineHistory->getMessages(\"" + name + "\", 1);";
                 m_OnlineHistory->getMessages(name, 1);  // for google, user id is better, but not always available. If not, use name.
-            else
+            } else {
+                qDebug() << "m_OnlineHistory->getMessages(\"" + from + "\", 1);";
                 m_OnlineHistory->getMessages(from, 1);
+            }
         }
         m_SynchStatus = NONE;
     }
@@ -261,6 +263,7 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
         if(m_History.m_History.size() > 0) {
             if(m_History.m_History.last().m_What == message) {
                 mutexConversation.unlock();
+                qDebug() << "History up to date!";
                 return;
             }
 
@@ -311,7 +314,7 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
 
     mutexConversation.unlock();
 
-    qDebug() << "push message from hist!";
+    qDebug() << "push message: " << from << message << messageId;
     emit historyMessage(from, message);
 }
 

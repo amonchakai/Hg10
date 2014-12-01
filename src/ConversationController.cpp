@@ -46,7 +46,6 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
 }
 
 bool ConversationController::isOwnMessage(const QString &from) {
-    qDebug() << from;
 
     if(from.toLower() == ConversationManager::get()->getUser().toLower()) {
         return true;
@@ -249,8 +248,6 @@ void ConversationController::pushHistory(const QString &from, const QString &mes
         m_HistoryCleared = true;
         m_WebView->evaluateJavaScript("clearHistory();");
     }
-
-    qDebug() << "push message...";
 
     QString ownAvatar = ConversationManager::get()->getAvatar();
     if(ownAvatar.mid(0,9).toLower() == "asset:///")

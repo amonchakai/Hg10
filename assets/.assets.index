@@ -1,9 +1,10 @@
 1
-70
+71
 1440x1440/Contacts.qml
 720x720/Contacts.qml
 720x720/Conversation.qml
 AdvancedConection.qml
+ApplicationLog.qml
 Contacts.qml
 Conversation.qml
 CreateRoom.qml

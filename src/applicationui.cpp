@@ -34,6 +34,7 @@
 #include "SuggestContactController.hpp"
 #include "SmileyPickerController.hpp"
 #include "Facebook.hpp"
+#include "ApplicationLogController.hpp"
 
 using namespace bb::cascades;
 
@@ -71,6 +72,7 @@ ApplicationUI::ApplicationUI() :
     qmlRegisterType<SmileyPickerController>("Network.SmileyPickerController", 1, 0, "SmileyPickerController");
     qmlRegisterType<Facebook>("Network.FacebookController", 1, 0, "FacebookController");
     qmlRegisterType<QTimer>("Lib.QTimer", 1, 0, "QTimer");
+    qmlRegisterType<ApplicationLogController>("Lib.ApplicationLogController", 1, 0, "ApplicationLogController");
 
     // Create scene document from main.qml asset, the parent is set
     // to ensure the document gets destroyed properly at shut down.
