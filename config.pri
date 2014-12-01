@@ -40,6 +40,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/720x720/Contacts.qml) \
         $$quote($$BASEDIR/assets/720x720/Conversation.qml) \
         $$quote($$BASEDIR/assets/AdvancedConection.qml) \
+        $$quote($$BASEDIR/assets/ApplicationLog.qml) \
         $$quote($$BASEDIR/assets/Contacts.qml) \
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
@@ -110,6 +111,7 @@ config_pri_assets {
 
 config_pri_source_group1 {
     SOURCES += \
+        $$quote($$BASEDIR/src/ApplicationLogController.cpp) \
         $$quote($$BASEDIR/src/ConversationController.cpp) \
         $$quote($$BASEDIR/src/ConversationManager.cpp) \
         $$quote($$BASEDIR/src/DropBoxConnectController.cpp) \
@@ -187,6 +189,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/main.cpp)
 
     HEADERS += \
+        $$quote($$BASEDIR/src/ApplicationLogController.hpp) \
         $$quote($$BASEDIR/src/ConversationController.hpp) \
         $$quote($$BASEDIR/src/ConversationManager.hpp) \
         $$quote($$BASEDIR/src/DataObjects.h) \

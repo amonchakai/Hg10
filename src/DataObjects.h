@@ -32,7 +32,10 @@ struct XMPPServiceMessages {
         ADVANCED_LOGIN,
         OAUTH2_LOGIN
     };
+
 };
+
+
 
 
 class Contact : public QObject {

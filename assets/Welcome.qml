@@ -98,7 +98,7 @@ NavigationPane {
                             navSettings.push(googlePage);
                         }
                         
-                        if(connectionMethod.selectedValue == 2) {
+                        if(connectionMethod.selectedValue == 2) { 
                             if(!facebookPage)
                                 facebookPage = facebookConnect.createObject();
                             navSettings.push(facebookPage);

@@ -8,6 +8,7 @@ NavigationPane {
     property variant tpage
     property variant googlePage
     property variant dropboxPage
+    property variant logPage
     signal done ()
     
 	Page {
@@ -219,6 +220,20 @@ NavigationPane {
                         loginController.clearContactsData();
                     }
                 }
+                
+                Divider { }
+                
+                Button {
+                    id: log
+                    text: qsTr("Application Logs")
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    onClicked: {
+                        if(!logPage)
+                            logPage = applicationLog.createObject();
+                        navSettings.push(logPage);
+                    }
+                }
+                
     	    }
     	    
     	    
@@ -240,6 +255,10 @@ NavigationPane {
                 ComponentDefinition {
                     id: facebookConnect
                     source: "FacebookConnect.qml"
+                },
+                ComponentDefinition {
+                    id: applicationLog
+                    source: "ApplicationLog.qml"
                 }
             ]
     	    
