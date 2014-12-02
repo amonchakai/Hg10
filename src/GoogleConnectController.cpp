@@ -489,7 +489,7 @@ void GoogleConnectController::getMessageReply() {
     if(   (m_ThreadsID.size() <= m_HistoryIndex)
        || (m_HistoryIndex >= m_NBMessageExpected)
        || ((m_LastThread != m_ThreadsID[m_HistoryIndex]) && (m_HistoryIndex >= 10))
-       || (m_LastSynchId == m_MessagesID[m_HistoryIndex])) {
+       || (m_HistoryIndex < m_MessagesID.size() && (m_LastSynchId == m_MessagesID[m_HistoryIndex]))) {
 
         checkOrder(true);
 
@@ -540,6 +540,7 @@ void GoogleConnectController::checkOrder(bool flush) {
 
     if(flush) {
         for(int i = m_IdxMessageToPush.size()-1 ; i >= 0 ; --i)
+            //qDebug() << m_IdxMessageToPush.at(i) << m_Froms.size() << m_Messages.size() << m_MessagesID.size();
             ConversationManager::get()->onlineMessage(m_Froms[m_IdxMessageToPush.at(i)], m_Messages[m_IdxMessageToPush.at(i)], m_MessagesID[m_IdxMessageToPush.at(i)]);
     }
 
@@ -555,8 +556,10 @@ void GoogleConnectController::getRemainingMessages(QString lastMessageId) {
 
     qDebug() << "[GOOGLECONNECT] entering";
 
+
     if(    (m_ThreadsID.size() <= m_HistoryIndex)
-        || (m_LastSynchId == m_MessagesID[m_HistoryIndex])) {
+        || (m_HistoryIndex < m_MessagesID.size() && (m_LastSynchId == m_MessagesID[m_HistoryIndex]))) {
+        //qDebug() << m_ThreadsID.size() << m_HistoryIndex; // << m_LastSynchId << m_MessagesID[m_HistoryIndex];
 
         checkOrder(true);
 

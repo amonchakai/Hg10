@@ -148,6 +148,15 @@ void ConversationController::updateView() {
     }
 }
 
+void ConversationController::refreshHistory(const QString &id, const QString &avatar, const QString &name) {
+    ConversationManager::get()->deleteHistory();
+    //ConversationManager::get()->clear();
+    updateView();
+
+    m_HistoryCleared = false;
+    ConversationManager::get()->load(id, name);
+}
+
 bool ConversationController::isImage(const QString &url) {
 
     QString ext;

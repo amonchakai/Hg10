@@ -84,6 +84,10 @@
         <source>Stickers</source>
         <translation>Stickers</translation>
     </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Rafraichir</translation>
+    </message>
 </context>
 <context>
     <name>CreateRoom</name>

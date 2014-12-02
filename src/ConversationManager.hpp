@@ -33,6 +33,7 @@ public:
 
     void clear                          ();
     void load                           (const QString &from, const QString &name);
+    void reload                         ();
     void sendMessage                    (const QString &message);
     void sendMessage                    (const QString &to,   const QString &message);
     void logSent                        (const QString &to, const QString &message);
@@ -51,7 +52,7 @@ public:
 
     void                   markRead     ();
     inline void            closeConversation()                  { m_CurrentDst = ""; m_BareID = ""; }
-    void                   deleteHistory(const QString &with);
+    void                   deleteHistory(const QString &with = "");
 
     void                   updateState  (const QString &who, int state);
 

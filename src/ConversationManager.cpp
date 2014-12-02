@@ -146,8 +146,8 @@ void ConversationManager::load(const QString &from, const QString &name) {
         else {
             QRegExp publicTalk("@public.talk.google.com");
             if(publicTalk.indexIn(from) != -1) {
-                qDebug() << "m_OnlineHistory->getMessages(\"" + name + "\", 1);";
-                m_OnlineHistory->getMessages(name, 1);  // for google, user id is better, but not always available. If not, use name.
+                qDebug() << "m_OnlineHistory->getMessages(\" from:(" + name + ") OR to:(" + name + ") \", 1);";
+                m_OnlineHistory->getMessages(" from:(" + name + ") OR to:(" + name +")", 1);  // for google, user id is better, but not always available. If not, use name.
             } else {
                 qDebug() << "m_OnlineHistory->getMessages(\"" + from + "\", 1);";
                 m_OnlineHistory->getMessages(from, 1);
@@ -160,6 +160,10 @@ void ConversationManager::load(const QString &from, const QString &name) {
 
 }
 
+
+void ConversationManager::reload() {
+    m_OnlineHistory->getRemainingMessages("");
+}
 
 TimeEvent ConversationManager::getPreview() const {
     return getPreview(m_CurrentDst);
@@ -286,6 +290,7 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
             m_SynchPushLoc = m_History.m_History.size();
 
             // get messages up to the last full synch
+            mutexConversation.unlock();
             m_OnlineHistory->getRemainingMessages(lastSynch);
 
         } else {
@@ -294,13 +299,11 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
             m_SynchPushLoc = 0;
             qDebug() << "Start from no history!";
 
+            mutexConversation.unlock();
             m_OnlineHistory->getRemainingMessages("");
         }
 
-        mutexConversation.unlock();
     }
-
-
 
     mutexConversation.lockForWrite();
 
@@ -320,7 +323,13 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
 
 
 void ConversationManager::deleteHistory(const QString &with) {
-    QString fromC = with;
+
+    QString fromC;
+    if(with.isEmpty())
+        fromC = m_CurrentDst;
+    else
+        fromC = with;
+
     int id = fromC.indexOf("/");
     if(id != -1)
        fromC = fromC.mid(0,id);

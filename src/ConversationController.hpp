@@ -58,7 +58,7 @@ public Q_SLOTS:
     inline void setLinkActivity         (QObject *activity)                         {m_LinkActivity = dynamic_cast<bb::cascades::ActivityIndicator*>(activity);};
     void updateView                     ();
     void load                           (const QString &id, const QString &avatar, const QString &name);
-
+    void refreshHistory                 (const QString &id, const QString &avatar, const QString &name);
 
     void linkEstablished                ();
     void waitingLink                    ();

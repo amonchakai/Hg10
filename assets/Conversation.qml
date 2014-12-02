@@ -305,6 +305,14 @@ Page {
     
     actions: [
         ActionItem {
+            title: qsTr("Refresh")
+            imageSource: "asset:///images/icon_refresh.png"
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            onTriggered: {
+                conversationController.refreshHistory(id, avatar, name);
+            }
+        }, 
+        ActionItem {
             title: qsTr("Attach")
             imageSource: "asset:///images/icon_attach.png"
             ActionBar.placement: ActionBarPlacement.OnBar
