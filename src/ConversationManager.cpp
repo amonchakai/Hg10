@@ -265,7 +265,7 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
     if(m_SynchStatus == NONE) {
         mutexConversation.lockForWrite();
         if(m_History.m_History.size() > 0) {
-            if(m_History.m_History.last().m_What == message) {
+            if(m_History.m_History.last().m_What == message && !message.isEmpty()) {
                 mutexConversation.unlock();
                 qDebug() << "History up to date!";
                 return;
