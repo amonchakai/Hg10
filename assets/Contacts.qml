@@ -402,7 +402,6 @@ NavigationPane {
     
     onPushTransitionEnded: {
         ++depth;
-        console.log(depth)
         
         if(depth == 1) 
             listContactView.requestFocus();
@@ -417,9 +416,7 @@ NavigationPane {
             if(tpage) 
                 tpage.id = "";
         
-        }
-        console.log(depth)
-    
+        }    
     }
 }
 

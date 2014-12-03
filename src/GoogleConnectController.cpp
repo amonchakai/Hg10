@@ -426,6 +426,12 @@ void GoogleConnectController::getMessageList() {
     Q_UNUSED(ok);
 }
 
+QString base64_decode(const QString &string){
+    QByteArray ba;
+    ba.append(string);
+    return QTextCodec::codecForName("UTF-8")->toUnicode(QByteArray::fromBase64(ba));
+}
+
 void GoogleConnectController::getMessageReply() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
@@ -444,28 +450,26 @@ void GoogleConnectController::getMessageReply() {
              if (available > 0) {
                  const QByteArray buffer(reply->readAll());
                  response = QString::fromUtf8(buffer);
-/*
-                 qDebug() << response.mid(15);
-                 qDebug() << response.mid(30);
-                 qDebug() << response.mid(45);
-                 qDebug() << response.mid(60);
-                 qDebug() << response.mid(75);
-                 qDebug() << response.mid(90);
-                                  qDebug() << response.mid(105);
-                                  qDebug() << response.mid(120);
-                                  qDebug() << response.mid(135);
-                                                                    qDebug() << response.mid(150);*/
 
-                 QRegExp content("\"snippet\"[: ]+\"([^\"]+)\"");
+                 QRegExp snippet("\"snippet\"[: ]+\"([^\"]+)\"");
+                 QRegExp content("\"data\"[: ]+\"([^\"]+)\"");
                  QRegExp histID("\"historyId\"[: ]+\"([0-9]+)\"");
                  QRegExp from("\"value\".+\\u003c(.*)\\u003e\"");
                  from.setMinimal(true);
 
                  int pos = content.indexIn(response);
+                 snippet.indexIn(response);
                  if(pos != -1) {
-                     if((pos = histID.indexIn(response, pos)) != -1)
+                     if((pos = histID.indexIn(response, 0)) != -1)
                          if(from.indexIn(response)) {
-                             m_Messages.push_back(content.cap(1));
+                             if(snippet.cap(1) != content.cap(1).mid(0, snippet.cap(1).length())) {
+                                 if(snippet.cap(1).length() < 200)
+                                     m_Messages.push_back(snippet.cap(1));
+                                 else
+                                     m_Messages.push_back(base64_decode(content.cap(1)));
+                             } else
+                                 m_Messages.push_back(base64_decode(content.cap(1)));
+
                              m_Froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
                              m_HistoryID.push_back(histID.cap(1).toInt());
                              m_IdxMessageToPush.push_front(m_HistoryID.size()-1);
