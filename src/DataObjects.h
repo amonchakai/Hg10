@@ -30,7 +30,8 @@ struct XMPPServiceMessages {
         CREATE_ROOM,
         ADD_PARTICIPANT,
         ADVANCED_LOGIN,
-        OAUTH2_LOGIN
+        OAUTH2_LOGIN,
+        REQUEST_CONTACT_LIST_PRESENCE
     };
 
 };

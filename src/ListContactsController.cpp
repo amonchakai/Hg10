@@ -86,7 +86,7 @@ void ListContactsController::updateConnectionStatus(bool status) {
 
 void ListContactsController::updatePresence(const QString &who, int status) {
     // lazy update to avoid refreshing completely the view.
-
+    qDebug() << "update presence: " << who << status;
     for(int i = 0 ; i < m_Contacts.size() ; ++i) {
         if(m_Contacts.at(i)->getID().toLower() == who.toLower()) {
 

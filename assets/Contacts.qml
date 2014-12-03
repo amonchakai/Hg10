@@ -263,7 +263,7 @@ NavigationPane {
                                             positionY: 70
                                         }
                                         // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
-                                        visible: ListItemData.presence > 0
+                                        visible: ListItemData.presence == 0
                                     }
                                 
                                 }

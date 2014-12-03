@@ -87,6 +87,8 @@ void XMPP::connected() {
 
         if(m_ScheduleContactListRequest)
             getContactList();
+
+        requestPresence();
     }
 }
 
@@ -159,7 +161,10 @@ void XMPP::readyRead() {
                 int length = *reinterpret_cast<int*>(code_str.data());
                 QString name(m_ClientSocket->read(length));
 
-                loadvCard(name, true);
+                code_str = m_ClientSocket->read(sizeof(int));
+                int status = *reinterpret_cast<int*>(code_str.data());
+
+                loadvCard(name, true, status);
 
                 emit offline(false);
 
@@ -338,6 +343,7 @@ void XMPP::getContactList() {
 
 
 void XMPP::loadLocal() {
+    qDebug() << "Load local data";
     mutexLoadLocal.lockForWrite();
 
     QRegExp isFacebook("(.*)@chat.facebook.com");
@@ -366,6 +372,21 @@ void XMPP::loadLocal() {
 
 }
 
+void XMPP::requestPresence() {
+    mutex.lockForWrite();
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        qDebug() << "XMPPServiceMessages::REQUEST_CONTACT_LIST_PRESENCE";
+
+        int code = XMPPServiceMessages::REQUEST_CONTACT_LIST_PRESENCE;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->flush();
+        m_Datas->clear();
+    }
+    mutex.unlock();
+
+
+}
+
 void XMPP::clear() {
     m_Datas->clear();
     ConversationManager::get()->clear();
@@ -373,7 +394,7 @@ void XMPP::clear() {
 
 
 
-void XMPP::loadvCard(const QString &bareJid, bool push) {
+void XMPP::loadvCard(const QString &bareJid, bool push, int status) {
     m_PictureRecovery = false;
 
     if(bareJid.isEmpty())
@@ -451,12 +472,7 @@ void XMPP::loadvCard(const QString &bareJid, bool push) {
     if(vCard.fullName().isEmpty()) {
         contact->deleteLater();
     } else {
-        if(m_Connected) {
-            contact->setPresence(0);
-
-
-        } else
-            contact->setPresence(0);
+        contact->setPresence(status);
         m_Datas->push_back(contact);
     }
 

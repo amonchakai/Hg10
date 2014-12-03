@@ -56,9 +56,10 @@ private:
 public Q_SLOTS:
 
     void getContactList     ();
+    void requestPresence    ();
     void sendMessageTo      (const QString &to, const QString &message);
 
-    void loadvCard          (const QString& bareJid, bool push = false);
+    void loadvCard          (const QString& bareJid, bool push = false, int status = -1);
 
 
 
