@@ -35,8 +35,8 @@
     <configuration name="Device-Release">
        <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7/Hg10.so" entry="true" type="Qnx/Elf">Hg10.so</asset>
-      <asset entryPointId="HeadlessHg" path="../HeadlessHg/arm/o.le-v7-g/HeadlessHg" type="Qnx/Elf">HeadlessHg</asset> 
+       <asset entryPointId="Hg10" path="arm/o.le-v7/Hg10.so" entry="true" type="Qnx/Elf">Hg10.so</asset>
+       <asset entryPointId="HeadlessHg" path="../HeadlessHg/arm/o.le-v7/HeadlessHg" type="Qnx/Elf">HeadlessHg</asset> 
     </configuration>
     <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>

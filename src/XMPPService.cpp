@@ -151,7 +151,8 @@ void XMPP::readyRead() {
     QByteArray code_str = m_ClientSocket->read(sizeof(int));
     while(code_str.size() == sizeof(int)) {
         int code = *reinterpret_cast<int*>(code_str.data());
-        qDebug() << "COMMAND: " << code;
+        if(code != 9)
+            qDebug() << "COMMAND: " << code;
 
         switch(code) {
 
