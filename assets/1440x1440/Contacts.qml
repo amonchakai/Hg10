@@ -244,16 +244,16 @@ NavigationPane {
                                     
                                     ImageView {
                                         imageSource: "asset:///images/available.png"
-                                        minHeight: 20
-                                        maxHeight: 20
-                                        minWidth: 20
-                                        maxWidth: 20
+                                        minHeight: 30
+                                        maxHeight: 30
+                                        minWidth: 30
+                                        maxWidth: 30
                                         layoutProperties: AbsoluteLayoutProperties {
-                                            positionX: 70
-                                            positionY: 70
+                                            positionX: 110
+                                            positionY: 110
                                         }
                                         // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
-                                        visible: ListItemData.presence > 0
+                                        visible: ListItemData.presence == 0
                                     }
                                 
                                 }

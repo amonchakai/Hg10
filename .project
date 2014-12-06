@@ -3,6 +3,7 @@
 	<name>Hg10</name>
 	<comment></comment>
 	<projects>
+		<project>Hg10Service</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

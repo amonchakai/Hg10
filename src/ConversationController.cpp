@@ -253,6 +253,7 @@ void ConversationController::pushHistory(const QString &from, const QString &mes
         return;
     }
 
+
     if(!m_HistoryCleared) {
         m_HistoryCleared = true;
         m_WebView->evaluateJavaScript("clearHistory();");

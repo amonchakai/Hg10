@@ -30,7 +30,7 @@ using namespace bb::cascades;
 
 void debugOutputMessages(QtMsgType type, const char *msg) {
 
-#ifndef DEBUG
+#ifdef DEBUG
     switch (type) {
          case QtDebugMsg:
              fprintf(stderr, "%s\n", msg);

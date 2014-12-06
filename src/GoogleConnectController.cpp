@@ -457,11 +457,13 @@ void GoogleConnectController::getMessageReply() {
                  QRegExp from("\"value\".+\\u003c(.*)\\u003e\"");
                  from.setMinimal(true);
 
-                 int pos = content.indexIn(response);
-                 snippet.indexIn(response);
+
+                 content.indexIn(response);
+                 int pos = snippet.indexIn(response);
                  if(pos != -1) {
                      if((pos = histID.indexIn(response, 0)) != -1)
                          if(from.indexIn(response)) {
+                             /*
                              if(snippet.cap(1) != content.cap(1).mid(0, snippet.cap(1).length())) {
                                  if(snippet.cap(1).length() < 200)
                                      m_Messages.push_back(snippet.cap(1));
@@ -469,6 +471,8 @@ void GoogleConnectController::getMessageReply() {
                                      m_Messages.push_back(base64_decode(content.cap(1)));
                              } else
                                  m_Messages.push_back(base64_decode(content.cap(1)));
+                             */
+                             m_Messages.push_back(snippet.cap(1));
 
                              m_Froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
                              m_HistoryID.push_back(histID.cap(1).toInt());

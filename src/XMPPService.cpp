@@ -82,7 +82,7 @@ void XMPP::connected() {
 
         if(m_NbFails != 0) {
             askConnectionStatus();
-            getContactList();
+            //getContactList();
         }
 
         if(m_ScheduleContactListRequest)

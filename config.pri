@@ -270,6 +270,11 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/client/QXmppVersionManager.h)
 }
 
+INCLUDEPATH += $$quote($$BASEDIR/src/base) \
+    $$quote($$BASEDIR/src/Image) \
+    $$quote($$BASEDIR/src) \
+    $$quote($$BASEDIR/src/client)
+
 CONFIG += precompile_header
 
 PRECOMPILED_HEADER = $$quote($$BASEDIR/precompiled.h)
@@ -326,5 +331,4 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../src/*.hxx)
 }
 
-TRANSLATIONS = $$quote($${TARGET}_fr_FR.ts) \
-    $$quote($${TARGET}.ts)
+TRANSLATIONS = $$quote($${TARGET}.ts)
