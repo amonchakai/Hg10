@@ -50,6 +50,7 @@ public:
 
 private:
      void checkOrder            (bool flush = false);
+     void cleanupMessage        (QString &message);
 
 public Q_SLOTS:
     void logInRequest           ();

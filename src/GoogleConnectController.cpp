@@ -427,8 +427,13 @@ void GoogleConnectController::getMessageList() {
 }
 
 QString base64_decode(const QString &string){
+    QString clean(string);
+    clean.replace('-', '+');
+    clean.replace('_', '/');
+
     QByteArray ba;
-    ba.append(string);
+    ba.append(clean);
+
     return QTextCodec::codecForName("UTF-8")->toUnicode(QByteArray::fromBase64(ba));
 }
 
@@ -451,28 +456,20 @@ void GoogleConnectController::getMessageReply() {
                  const QByteArray buffer(reply->readAll());
                  response = QString::fromUtf8(buffer);
 
-                 QRegExp snippet("\"snippet\"[: ]+\"([^\"]+)\"");
+                 //QRegExp snippet("\"snippet\"[: ]+\"([^\"]+)\"");
                  QRegExp content("\"data\"[: ]+\"([^\"]+)\"");
                  QRegExp histID("\"historyId\"[: ]+\"([0-9]+)\"");
                  QRegExp from("\"value\".+\\u003c(.*)\\u003e\"");
                  from.setMinimal(true);
 
 
-                 content.indexIn(response);
-                 int pos = snippet.indexIn(response);
+
+                 int pos = content.indexIn(response);
                  if(pos != -1) {
                      if((pos = histID.indexIn(response, 0)) != -1)
                          if(from.indexIn(response)) {
-                             /*
-                             if(snippet.cap(1) != content.cap(1).mid(0, snippet.cap(1).length())) {
-                                 if(snippet.cap(1).length() < 200)
-                                     m_Messages.push_back(snippet.cap(1));
-                                 else
-                                     m_Messages.push_back(base64_decode(content.cap(1)));
-                             } else
-                                 m_Messages.push_back(base64_decode(content.cap(1)));
-                             */
-                             m_Messages.push_back(snippet.cap(1));
+
+                             m_Messages.push_back(base64_decode(content.cap(1)));
 
                              m_Froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
                              m_HistoryID.push_back(histID.cap(1).toInt());
@@ -542,15 +539,38 @@ void GoogleConnectController::checkOrder(bool flush) {
     }
 
     if(m_IdxMessageToPush.size() > 5) {
+        cleanupMessage(m_Messages[m_IdxMessageToPush.last()]);
         ConversationManager::get()->onlineMessage(m_Froms[m_IdxMessageToPush.last()], m_Messages[m_IdxMessageToPush.last()], m_MessagesID[m_IdxMessageToPush.last()]);
         m_IdxMessageToPush.pop_back();
     }
 
     if(flush) {
-        for(int i = m_IdxMessageToPush.size()-1 ; i >= 0 ; --i)
+        for(int i = m_IdxMessageToPush.size()-1 ; i >= 0 ; --i) {
             //qDebug() << m_IdxMessageToPush.at(i) << m_Froms.size() << m_Messages.size() << m_MessagesID.size();
+            cleanupMessage(m_Messages[m_IdxMessageToPush.at(i)]);
             ConversationManager::get()->onlineMessage(m_Froms[m_IdxMessageToPush.at(i)], m_Messages[m_IdxMessageToPush.at(i)], m_MessagesID[m_IdxMessageToPush.at(i)]);
+        }
     }
+
+}
+
+// remove some HTML extra-stuff. <a></a>
+void GoogleConnectController::cleanupMessage(QString& message) {
+    QRegExp url("<a href=\"([^\"]+)\">[^<]+</a>");
+    int lastPos = 0;
+    int pos = 0;
+    QString cleanMessage;
+    while((pos = url.indexIn(message, lastPos)) != -1) {
+        if(pos-lastPos != 0)
+            cleanMessage += message.mid(lastPos, pos-lastPos) + " " + url.cap(1);
+        else
+            cleanMessage += url.cap(1);
+
+        lastPos = pos + url.matchedLength();
+    }
+    cleanMessage += message.mid(lastPos);
+
+    message = cleanMessage;
 
 }
 
