@@ -5,6 +5,7 @@ import com.netimage 1.0
 NavigationPane {
     id: nav
     property variant tpage
+    property variant spage
     property int depth
         
     Page {
@@ -13,11 +14,12 @@ NavigationPane {
             kind: TitleBarKind.FreeForm
             kindProperties: FreeFormTitleBarKindProperties {
                 Container {
+                        
                     layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
                     leftPadding: 10
                     rightPadding: 10
                     background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#282828") : Color.create("#f0f0f0");
-                    
+                        
                     ImageView {
                         verticalAlignment: VerticalAlignment.Center
                         //horizontalAlignment: HorizontalAlignment.Left
@@ -28,16 +30,16 @@ NavigationPane {
                         minWidth: 90
                         maxWidth: 90
                         image: trackerOwn.image
-                        
+                            
                         attachedObjects: [
                             NetImageTracker {
                                 id: trackerOwn
-                                
+                                    
                                 source: listContactsController.avatar                                    
                             } 
                         ]
                     }
-                    
+                        
                     Label {
                         text: listContactsController.userName
                         textStyle {
@@ -46,7 +48,7 @@ NavigationPane {
                         verticalAlignment: VerticalAlignment.Center
                         layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                     }
-                }
+                }    
             }
         }
         
@@ -381,6 +383,25 @@ NavigationPane {
             depth = 0;
         }
         
+        actions: [
+            ActionItem {
+                title: qsTr("Change status")
+                imageSource: "asset:///images/icon_chat.png"
+                onTriggered: {
+                    if(!spage)
+                        spage = statusSetter.createObject();
+                    nav.push(spage);
+                }
+            },
+            ActionItem {
+                title: qsTr("Mark All as Read")
+                imageSource: "asset:///images/icon_check.png"
+                onTriggered: {
+                    listContactsController.markAllRead();
+                }
+            }
+        ]
+        
         attachedObjects: [
             ListContactsController {
                 id: listContactsController
@@ -395,6 +416,10 @@ NavigationPane {
             ComponentDefinition {
                 id: conversation
                 source: "Conversation.qml"
+            },
+            ComponentDefinition {
+                id: statusSetter
+                source: "Status.qml"
             }
         ]
     

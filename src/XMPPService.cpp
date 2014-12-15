@@ -521,6 +521,41 @@ void XMPP::notifySettingChange() {
     mutex.unlock();
 }
 
+
+void XMPP::setStatusText(const QString &text, int presence) {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::SET_STATUS_TEXT;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        int length = text.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(text.toAscii(), length);
+
+        m_ClientSocket->write(reinterpret_cast<char*>(&presence), sizeof(int));
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
+
+void XMPP::setPresence(int presence) {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::SET_PRESENCE;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code),     sizeof(int));
+        m_ClientSocket->write(reinterpret_cast<char*>(&presence), sizeof(int));
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
 // -------------------------------------------------------------
 // file transfer handling
 
@@ -636,7 +671,7 @@ void XMPP::checkMissingPictures() {
 bool XMPP::tryRestartHeadless() {
     qDebug() << "need restart";
     bb::system::InvokeRequest request;
-    request.setTarget("com.amonchakai.Hg10.Headless");
+    request.setTarget("com.amonchakai.Hg10Service");
     request.setAction("bb.action.START");
     bb::system::InvokeManager *invokeManager = new bb::system::InvokeManager(this);
     bb::system::InvokeTargetReply *reply = invokeManager->invoke(request);

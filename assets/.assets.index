@@ -1,5 +1,5 @@
 1
-71
+73
 1440x1440/Contacts.qml
 720x720/Contacts.qml
 720x720/Conversation.qml
@@ -30,6 +30,7 @@ images/icon_about.png
 images/icon_attach.png
 images/icon_bottom.png
 images/icon_chat.png
+images/icon_check.png
 images/icon_favorites.png
 images/icon_home.png
 images/icon_left.png
@@ -67,6 +68,7 @@ RefreshHeader.qml
 Rooms.qml
 Settings.qml
 SmileyPicker.qml
+Status.qml
 template.html
 template_black.html
 template_end.html

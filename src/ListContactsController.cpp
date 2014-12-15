@@ -47,6 +47,8 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
 
     QSettings settings("Amonchakai", "Hg10");
     m_OnlyFavorite = settings.value("FilterContacts", false).toBool();
+    m_Presence  = settings.value("Presence", "").toString();
+    m_Available = settings.value("Available", 0).toInt();
 
 }
 
@@ -82,6 +84,14 @@ void ListContactsController::updateConnectionStatus(bool status) {
                 m_Activity->stop();
         }
     }
+}
+
+void ListContactsController::setPresence(const QString &text, int presence) {
+    XMPP::get()->setStatusText(text, presence);
+
+    QSettings settings("Amonchakai", "Hg10");
+    settings.setValue("Presence", text);
+    settings.setValue("Available", presence);
 }
 
 void ListContactsController::updatePresence(const QString &who, int status) {
@@ -155,6 +165,41 @@ void ListContactsController::markRead() {
 
             break;
         }
+
+    }
+
+
+    ConversationManager::get()->closeConversation();
+
+}
+
+void ListContactsController::markAllRead() {
+
+    if(m_Notification == NULL) {
+        m_Notification = new bb::platform::Notification();
+    }
+
+    m_Notification->clearEffectsForAll();
+
+    qDebug() << "Mark all READ";
+
+
+    for(int i = 0 ; i < m_Contacts.size() ; ++i) {
+        m_Contacts.at(i)->setRead(1);
+
+        TimeEvent e = ConversationManager::get()->getPreview(m_Contacts.at(i)->getID());
+        e.m_What.replace("&#39;","\'");
+        e.m_What.replace("&amp;","&");
+        e.m_What.replace("&euro;","€");
+        e.m_What.replace("&lt;","<");
+        e.m_What.replace("&gt;",">");
+        e.m_What.replace(QChar(0x1F61C), ":P");
+
+        m_Contacts.at(i)->setPreview(e.m_What);
+        m_Contacts.at(i)->setTimestamp(e.m_When);
+        m_Contacts.at(i)->setTimestampString(formatTime(e.m_When));
+
+        ConversationManager::get()->markRead(m_Contacts.at(i)->getID());
 
     }
 

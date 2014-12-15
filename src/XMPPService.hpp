@@ -62,6 +62,12 @@ public Q_SLOTS:
     void loadvCard          (const QString& bareJid, bool push = false, int status = -1);
 
 
+    // -------------------------------------------------------------
+    // User status
+
+    void setStatusText      (const QString &text, int presence);
+    void setPresence        (int presence);
+
 
 
     // -------------------------------------------------------------

@@ -31,7 +31,9 @@ struct XMPPServiceMessages {
         ADD_PARTICIPANT,
         ADVANCED_LOGIN,
         OAUTH2_LOGIN,
-        REQUEST_CONTACT_LIST_PRESENCE
+        REQUEST_CONTACT_LIST_PRESENCE,
+        SET_STATUS_TEXT,
+        SET_PRESENCE
     };
 
 };

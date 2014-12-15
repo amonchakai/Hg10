@@ -51,6 +51,7 @@ public:
     inline void            setAvatar    (const QString& a)      { m_Avatar = a; emit avatarUpdated();};
 
     void                   markRead     ();
+    void                   markRead     (const QString &who);
     inline void            closeConversation()                  { m_CurrentDst = ""; m_BareID = ""; }
     void                   deleteHistory(const QString &with = "");
 

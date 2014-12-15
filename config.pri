@@ -56,6 +56,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Rooms.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/SmileyPicker.qml) \
+        $$quote($$BASEDIR/assets/Status.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/data/emojies.xml) \
         $$quote($$BASEDIR/assets/images/Tutorial/accept.jpg) \
@@ -82,6 +83,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_attach.png) \
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
         $$quote($$BASEDIR/assets/images/icon_chat.png) \
+        $$quote($$BASEDIR/assets/images/icon_check.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
         $$quote($$BASEDIR/assets/images/icon_left.png) \

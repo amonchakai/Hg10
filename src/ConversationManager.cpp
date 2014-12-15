@@ -521,14 +521,16 @@ void ConversationManager::updateState(const QString &who, int state) {
 // ===================================================================================
 // User events
 
-
-
-
 void ConversationManager::markRead() {
+    markRead(m_CurrentDst);
+}
+
+
+void ConversationManager::markRead(const QString &who) {
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/History");
     TimeEvent e;
 
-    QString fromC = m_CurrentDst;
+    QString fromC = who;
     int id = fromC.indexOf("/");
     if(id != -1)
         fromC = fromC.mid(0,id);

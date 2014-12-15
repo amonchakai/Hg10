@@ -6,6 +6,7 @@ NavigationPane {
     id: nav
     property variant tpage
     property int depth
+    property variant spage
         
     Page {
         
@@ -377,6 +378,25 @@ NavigationPane {
             depth = 0;
         }
         
+        actions: [
+            ActionItem {
+                title: qsTr("Change status")
+                imageSource: "asset:///images/icon_chat.png"
+                onTriggered: {
+                    if(!spage)
+                        spage = statusSetter.createObject();
+                    nav.push(spage);
+                }
+            },
+            ActionItem {
+                title: qsTr("Mark All as Read")
+                imageSource: "asset:///images/icon_check.png"
+                onTriggered: {
+                    listContactsController.markAllRead();
+                }
+            }
+        ]
+        
         attachedObjects: [
             ListContactsController {
                 id: listContactsController
@@ -391,6 +411,10 @@ NavigationPane {
             ComponentDefinition {
                 id: conversation
                 source: "Conversation.qml"
+            },
+            ComponentDefinition {
+                id: statusSetter
+                source: "Status.qml"
             }
         ]
     

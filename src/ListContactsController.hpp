@@ -21,6 +21,8 @@ class ListContactsController : public QObject {
 
     Q_PROPERTY( QString userName    READ getUserName    WRITE setUserName    NOTIFY userNameChanged)
     Q_PROPERTY( QString avatar      READ getAvatar      WRITE setAvatar      NOTIFY avatarChanged)
+    Q_PROPERTY( QString presence    READ getPresence    WRITE setPresence    NOTIFY presenceChanged)
+    Q_PROPERTY( int     available   READ isAvailable    WRITE setAvailable   NOTIFY availableChanged)
 
 
 private:
@@ -28,6 +30,8 @@ private:
     bb::cascades::ActivityIndicator *m_Activity;
     QString                          m_User;
     QString                          m_Avatar;
+    QString                          m_Presence;
+    int                              m_Available;
     QList<Contact *>                 m_Contacts;
     bool                             m_OnlyFavorite;
     bool                             m_PushStated;
@@ -47,6 +51,12 @@ public:
     inline const QString &getAvatar     () const               { return m_Avatar; }
     inline void           setAvatar     (const QString &c)     { m_Avatar = c; emit avatarChanged(); }
 
+    inline const QString &getPresence   () const               { return m_Presence; }
+    inline void           setPresence   (const QString &c)     { m_Presence = c; emit presenceChanged(); }
+
+    inline bool           isAvailable   () const               { return m_Available; }
+    inline void           setAvailable  (bool c)               { m_Available = c; emit availableChanged(); }
+
 
 
 public Q_SLOTS:
@@ -59,6 +69,7 @@ public Q_SLOTS:
     void updatePresence                 (const QString &who, int status);
     void messageReceived                (const QString &from, const QString &message);
     void markRead                       ();
+    void markAllRead                    ();
 
     QString formatTime                  (qint64 msecs);
 
@@ -69,6 +80,8 @@ public Q_SLOTS:
     void clear                          ();
     void deleteHistory                  (const QString &with);
 
+    void setPresence                    (const QString &text, int presence);
+
 
 Q_SIGNALS:
     void complete                       ();
@@ -76,6 +89,9 @@ Q_SIGNALS:
 
     void userNameChanged                ();
     void avatarChanged                  ();
+
+    void presenceChanged                ();
+    void availableChanged               ();
 
 
 };
