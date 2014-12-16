@@ -433,6 +433,10 @@
         <source>Application Logs</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enable logs</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmileyPicker</name>

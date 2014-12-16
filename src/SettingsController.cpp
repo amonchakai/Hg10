@@ -11,6 +11,8 @@
 #include <QRegExp>
 #include "XMPPService.hpp"
 
+bool SettingsController::m_LogEnabled = false;
+
 
 SettingsController::SettingsController(QObject *parent) : QObject(parent), m_FontSize(28), m_Settings(NULL) {
 
@@ -22,6 +24,7 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
     m_FontSize = m_Settings->value("fontSize").value<int>();
     if(m_FontSize == 0)
         m_FontSize = 28;
+    m_LogEnabled = m_Settings->value("logsEnabled", false).toBool();
 
     QRegExp isFacebook("(.*)@chat.facebook.com");
     if(isFacebook.indexIn(m_User) != -1)
@@ -55,6 +58,7 @@ void SettingsController::updateAvatar() {
 void SettingsController::save() {
     m_Settings->setValue("theme", m_Theme);
     m_Settings->setValue("fontSize", m_FontSize);
+    m_Settings->setValue("logsEnabled", m_LogEnabled);
 
     XMPP::get()->notifySettingChange();
 }

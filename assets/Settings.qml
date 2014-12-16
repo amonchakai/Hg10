@@ -222,6 +222,27 @@ NavigationPane {
                 }
                 
                 Divider { }
+                Container {
+                    layout: DockLayout { }
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    
+                    Label {
+                        text: qsTr("Enable logs")
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Center
+                    }
+                
+                    ToggleButton {
+                        horizontalAlignment: HorizontalAlignment.Right
+                        verticalAlignment: VerticalAlignment.Center
+                        id: enableLogs
+                        
+                        checked: settingsController.enableLogs
+                        onCheckedChanged: {
+                            settingsController.enableLogs = checked;
+                        }
+                    }    
+                }
                 
                 Button {
                     id: log

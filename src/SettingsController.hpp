@@ -21,6 +21,7 @@ class SettingsController : public QObject {
     Q_PROPERTY( int     fontSize     READ getFontSize        WRITE setFontSize       NOTIFY  fontSizeChanged)
     Q_PROPERTY( bool    enableGoogle READ getEnableGoogle    WRITE setEnableGoogle   NOTIFY  enableGoogleChanged)
     Q_PROPERTY( bool    googleLogged READ getGoogleLogged)
+    Q_PROPERTY( bool    enableLogs   READ getLogEnabled      WRITE setLogEnabled     NOTIFY  logEnabledChanged)
 
 private:
 
@@ -29,6 +30,7 @@ private:
      int                m_Theme;
      int                m_FontSize;
      bool               m_IsGoogleEnabled;
+     static bool        m_LogEnabled;
 
      QSettings          *m_Settings;
 
@@ -48,8 +50,12 @@ public:
     inline int            getFontSize() const               { return m_FontSize; }
     inline void           setFontSize(int c)                { m_FontSize = c;  }
 
-    inline int            getEnableGoogle() const           { return m_IsGoogleEnabled; }
+    inline bool           getEnableGoogle() const           { return m_IsGoogleEnabled; }
     inline void           setEnableGoogle(bool c)           { m_IsGoogleEnabled = c; emit enableGoogleChanged(); }
+
+    inline bool           getLogEnabled() const             { return m_LogEnabled; }
+    inline void           setLogEnabled(bool c)             { m_LogEnabled = c;  }
+    static bool           isLogEnabled()                    { return m_LogEnabled; }
 
     bool                  getGoogleLogged();
 
@@ -65,6 +71,7 @@ Q_SIGNALS:
     void themeChanged();
     void fontSizeChanged();
     void enableGoogleChanged();
+    void logEnabledChanged();
 
 };
 

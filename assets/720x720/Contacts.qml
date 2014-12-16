@@ -381,7 +381,7 @@ NavigationPane {
         actions: [
             ActionItem {
                 title: qsTr("Change status")
-                imageSource: "asset:///images/icon_chat.png"
+                imageSource: "asset:///images/icon_quoted_white.png"
                 onTriggered: {
                     if(!spage)
                         spage = statusSetter.createObject();

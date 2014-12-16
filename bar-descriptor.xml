@@ -38,12 +38,17 @@
         An updated version of application must have a versionNumber value higher
         than the previous version. Required. -->
     <versionNumber>1.1.2</versionNumber>
+    <splashScreens>
+       <image>splash_1440x1440.jpg</image>
+       <image>splash_720x720.jpg</image>
+       <image>splash_768x1280.jpg</image>
+    </splashScreens>
     <platformVersion>10.2.0</platformVersion>
     <authorId>gYAAgCQoPRQtK2AS30z0Bo75Z74</authorId>
 
     <!-- Fourth digit segment of the package version. First three segments are
         taken from the <versionNumber> element. Must be an integer from 0 to 2^16-1 -->
-    <buildId>93</buildId>
+    <buildId>94</buildId>
 
     <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents
         the version of the application, as it should be shown to users. Optional. -->
@@ -167,6 +172,9 @@
     <asset path="translations" dest="qm">
         <include name="*.qm" />
     </asset>
+    <asset path="splash_1440x1440.jpg">splash_1440x1440.jpg</asset>
+    <asset path="splash_720x720.jpg">splash_720x720.jpg</asset>
+    <asset path="splash_768x1280.jpg">splash_768x1280.jpg</asset>
 
     <!-- Request permission to post notification. -->
     <permission>post_notification</permission>

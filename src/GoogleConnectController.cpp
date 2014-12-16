@@ -448,6 +448,13 @@ void GoogleConnectController::getMessageReply() {
     }
     mutexGoogleConnect.unlock();
 
+    QRegExp andAmp("&amp;");
+    QRegExp quote("&#034;");
+    QRegExp euro("&euro;");
+    QRegExp inf("&lt;");
+    QRegExp sup("&gt;");
+    QRegExp quote2("&quot;");
+
     QString response;
     if (reply) {
         if (reply->error() == QNetworkReply::NoError) {
@@ -456,20 +463,32 @@ void GoogleConnectController::getMessageReply() {
                  const QByteArray buffer(reply->readAll());
                  response = QString::fromUtf8(buffer);
 
-                 //QRegExp snippet("\"snippet\"[: ]+\"([^\"]+)\"");
+                 QRegExp snippet("\"snippet\"[: ]+\"([^\"]+)\"");
                  QRegExp content("\"data\"[: ]+\"([^\"]+)\"");
                  QRegExp histID("\"historyId\"[: ]+\"([0-9]+)\"");
                  QRegExp from("\"value\".+\\u003c(.*)\\u003e\"");
                  from.setMinimal(true);
 
 
-
+                 snippet.indexIn(response);
                  int pos = content.indexIn(response);
                  if(pos != -1) {
                      if((pos = histID.indexIn(response, 0)) != -1)
                          if(from.indexIn(response)) {
 
-                             m_Messages.push_back(base64_decode(content.cap(1)));
+                             if(snippet.cap(1).length() < 200)
+                                 m_Messages.push_back(snippet.cap(1));
+                             else
+                                 m_Messages.push_back(base64_decode(content.cap(1)));
+
+
+                             m_Messages.last().replace(andAmp,"&");
+                             m_Messages.last().replace(quote,"\"");
+                             m_Messages.last().replace(quote2,"\"");
+                             m_Messages.last().replace(euro, "e");
+                             m_Messages.last().replace(inf, "<");
+                             m_Messages.last().replace(sup, ">");
+
 
                              m_Froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
                              m_HistoryID.push_back(histID.cap(1).toInt());
