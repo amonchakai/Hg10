@@ -3,6 +3,7 @@ import com.netimage 1.0
 import bb.cascades.pickers 1.0
 import Network.ConversationController 1.0
 import bb.multimedia 1.2
+import Lib.QTimer 1.0
 
 Page {
     property string name
@@ -360,9 +361,7 @@ Page {
     onCreationCompleted: {
         conversationController.setWebView(messageView);
         conversationController.setLinkActivity(linkStatusActivity);
-        filenameChat = conversationController.nextAudioFile;
-        recorder.setOutputUrl(filenameChat);
-        recorder.prepare();
+        timer.start();
     }
     
     onIdChanged: {
@@ -441,6 +440,18 @@ Page {
         },
         MediaPlayer {
             id: audioPlayer
+        },
+        QTimer {
+            id: timer
+            
+            singleShot: true
+            interval: 1500
+            
+            onTimeout: {
+                filenameChat = conversationController.nextAudioFile;
+                recorder.setOutputUrl(filenameChat);
+                recorder.prepare();
+            }
         },
         ComponentDefinition {
             id: imagePreview
