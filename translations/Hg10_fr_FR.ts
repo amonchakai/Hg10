@@ -40,15 +40,15 @@
     <name>ApplicationLog</name>
     <message>
         <source>Clear logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer logs</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Rafraichir</translation>
+        <translation>Rafraichir</translation>
     </message>
     <message>
         <source>To Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Bas de page</translation>
     </message>
 </context>
 <context>
@@ -90,7 +90,7 @@
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Rafraichir</translation>
+        <translation>Rafraichir</translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     <name>LoginForm</name>
     <message>
         <source>Login</source>
-        <translation type="unfinished">Identifiant</translation>
+        <translation>Identifiant</translation>
     </message>
     <message>
         <source>Log</source>
@@ -226,23 +226,23 @@
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Mot de passe</translation>
+        <translation>Mot de passe</translation>
     </message>
     <message>
         <source>Google (Secure)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Autre</translation>
+        <translation>Autre</translation>
     </message>
     <message>
         <source>Connection method</source>
-        <translation type="unfinished">Méthode de connection</translation>
+        <translation>Méthode de connection</translation>
     </message>
     <message>
         <source>Submit</source>
-        <translation type="unfinished">Valider</translation>
+        <translation>Valider</translation>
     </message>
     <message>
         <source>Still waiting? :(</source>
@@ -271,7 +271,7 @@
     <name>QDnsLookup</name>
     <message>
         <source>Operation cancelled</source>
-        <translation type="unfinished"></translation>
+        <translation>Opération annulée</translation>
     </message>
 </context>
 <context>
@@ -443,7 +443,7 @@
     </message>
     <message>
         <source>Application Logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Logs de l'application</translation>
     </message>
 </context>
 <context>

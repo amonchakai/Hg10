@@ -62,11 +62,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Change status</source>
+        <source>Mark All as Read</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mark All as Read</source>
+        <source>Change status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
