@@ -241,8 +241,10 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
 
     if(ownMessage)
         m_WebView->evaluateJavaScript("pushMessage(1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
-    else
-        m_WebView->evaluateJavaScript("pushMessage(0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\");");
+    else {
+        if(ConversationManager::get()->isAdressee(from))
+            m_WebView->evaluateJavaScript("pushMessage(0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\");");
+    }
 }
 
 
