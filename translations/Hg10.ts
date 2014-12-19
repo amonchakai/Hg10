@@ -69,6 +69,14 @@
         <source>Change status</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>History will be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Conversation</name>

@@ -11,6 +11,7 @@
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/GroupDataModel>
 #include <bb/platform/Notification>
+
 #include <QDebug>
 #include <QRegExp>
 #include <QSettings>
@@ -61,6 +62,9 @@ void ListContactsController::clear() {
 
 
 void ListContactsController::deleteHistory(const QString &with) {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
     ConversationManager::get()->deleteHistory(with);
 
     // reflect suppression on the view

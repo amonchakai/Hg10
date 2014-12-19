@@ -42,22 +42,46 @@ public:
      virtual ~GoogleConnectController   ()                      {};
 
 
+     // -------------------------------------------------------------------------
+     // oauth
+
      void getToken              ();
      void renewToken            ();
      void parse                 (const QString &message);
      void parseRefresh          (const QString &message);
      void getUserInfo           ();
 
+
+
+
+     // -------------------------------------------------------------------------
+     // google drive
+
+
+     void putFile                (const QString &path);
+
+
 private:
      void checkOrder            (bool flush = false);
      void cleanupMessage        (QString &message);
 
 public Q_SLOTS:
+
+    // -------------------------------------------------------------------------
+    // oauth login
+
+
     void logInRequest           ();
     void save                   (const QString &key);
     void checkReply             ();
     void checkRefresh           ();
     bool isLogged               ();
+
+
+
+    // -------------------------------------------------------------------------
+    // gmail
+
 
     virtual void getMessages            (const QString &with, int nbMessages);
     virtual void getRemainingMessages   (QString lastMessageId);
@@ -65,6 +89,19 @@ public Q_SLOTS:
     void getMessageList         ();
     void getMessageReply        ();
     void replyGetUserInfo       ();
+
+
+
+    // -------------------------------------------------------------------------
+    // google drive
+
+    void checkUploadReply       ();
+    void uploading              (qint64 status, qint64 total);
+
+
+    // -------------------------------------------------------------------------
+    // interface
+
 
     void setWebView             (QObject *webView);
     void webviewTitleChanged    (const QString &title);

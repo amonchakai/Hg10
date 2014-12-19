@@ -59,7 +59,7 @@ void GoogleConnectController::logInRequest() {
     m_Settings->setValue("APIKey",       GOOGLE_API_KEY);
 
     m_WebView->setUrl(QString("https://accounts.google.com/o/oauth2/auth?")
-                            + "scope=https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/googletalk"
+                            + "scope=https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/googletalk https://www.googleapis.com/auth/drive.file"
                             + "&redirect_uri=urn:ietf:wg:oauth:2.0:oob"
                             + "&response_type=code"
                             + "&client_id=" + GOOGLE_CIENT_ID);
@@ -633,6 +633,21 @@ void GoogleConnectController::getRemainingMessages(QString lastMessageId) {
     Q_UNUSED(ok);
 
     qDebug() << "[GOOGLECONNECT] leave getRemainingMessages";
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+void GoogleConnectController::putFile(const QString &path) {
+
+}
+
+
+void GoogleConnectController::checkUploadReply() {
+
+}
+
+void GoogleConnectController::uploading(qint64 status, qint64 total) {
+
 }
 
 

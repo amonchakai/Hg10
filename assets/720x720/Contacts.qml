@@ -1,6 +1,8 @@
 import bb.cascades 1.2
+import bb.system 1.2
 import Network.ListContactsController 1.0
 import com.netimage 1.0
+import Lib.QTimer 1.0
 
 NavigationPane {
     id: nav
@@ -344,7 +346,11 @@ NavigationPane {
                 ]
                 
                 function deleteHistory(id) {
-                    listContactsController.deleteHistory(id);
+                    //listContactsController.deleteHistory(id);
+                    deleteToast.who = id;
+                    deleteToast.dismissed = false;
+                    deleteToast.show();
+                    timerDelete.start();
                 }
                 
                 onTriggered: {
@@ -415,6 +421,37 @@ NavigationPane {
             ComponentDefinition {
                 id: statusSetter
                 source: "Status.qml"
+            },
+            SystemToast {
+                id: deleteToast
+                property string who
+                property bool dismissed
+                body: qsTr("History will be deleted") + Retranslate.onLanguageChanged
+                button.label: qsTr("Undo")
+                
+                
+                
+                onFinished: {
+                    console.log('undo' + value)
+                    if(value == SystemUiResult.ButtonSelection){
+                        dismissed = true;
+                        // UNDO clicked - revert to normal Icon in this case
+                    } else {
+                        listContactsController.deleteHistory(who);
+                    }
+                }
+            },
+            QTimer {
+                id: timerDelete
+                singleShot: true
+                interval: 3000
+                
+                onTimeout: {
+                    if(!deleteToast.dismissed) {
+                        deleteToast.cancel();
+                        listContactsController.deleteHistory(deleteToast.who);
+                    }
+                }
             }
         ]
     
