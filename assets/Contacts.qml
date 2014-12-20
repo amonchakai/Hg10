@@ -55,327 +55,396 @@ NavigationPane {
         }
         
         Container {
-            
-            layout: StackLayout {
-            
-            }
-            
-            
-            ActivityIndicator {
-                id: connectingActivity
-                preferredHeight: 60
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Top
-            }
+            layout: DockLayout { }
+            verticalAlignment: VerticalAlignment.Fill
+            horizontalAlignment: HorizontalAlignment.Fill
             Container {
-                background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
-                id: contactFilterGroup
+                
                 layout: StackLayout {
-                    orientation: LayoutOrientation.LeftToRight
+                    orientation: LayoutOrientation.TopToBottom
                 }
-                TextField {
-                    id: contactFilter
-                    visible: false
-                    hintText: qsTr("Search a contact")
-                    onTextChanging: {
-                        if(text.length > 3) {
-                            listContactsController.filter(text);
-                        }
-                        if(text.length == 0) {
-                            listContactsController.updateView();
-                            contactFilterGroup.visible = false;
-                        }
-                    }
-                }
-                ImageButton {
-                    id: hideButton
-                    defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_top.png" : "asset:///images/icon_top_black.png"
-                    onClicked: {
-                        contactFilterGroup.visible = false;
-                    }
-                    verticalAlignment: VerticalAlignment.Center
+                verticalAlignment: VerticalAlignment.Fill
+                horizontalAlignment: HorizontalAlignment.Fill
+                ActivityIndicator {
+                    id: connectingActivity
+                    preferredHeight: 60
                     horizontalAlignment: HorizontalAlignment.Center
-                    visible: false
+                    verticalAlignment: VerticalAlignment.Top
                 }
                 Container {
-                    preferredWidth: 5
-                }
-                
-                onVisibleChanged: {
-                    contactFilter.visible = visible;
-                    hideButton.visible = visible;
-                }
-                visible: false;
-                
-            }
-            ListView {
-                signal refreshTriggered()
-                property bool loading: false
-                leadingVisualSnapThreshold: 2.0
-                leadingVisual: RefreshHeader {
-                    id: refreshHandler
-                    onRefreshTriggered: {
-                        listContactView.refreshTriggered();
+                    background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
+                    id: contactFilterGroup
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
                     }
-                }
-                onTouch: {
-                    refreshHandler.onListViewTouch(event);
-                }
-                onLoadingChanged: {
-                    refreshHandler.refreshing = refreshableList.loading;
-                    
-                    if(!refreshHandler.refreshing) {
-                        // If the refresh is done 
-                        // Force scroll to top to ensure that all items are visible
-                        scrollToPosition(ScrollPosition.Beginning, ScrollAnimation.None);
-                    }
-                }
-                
-                
-                onRefreshTriggered: {
-                    contactFilterGroup.visible = true;
-                }
-                
-                
-                gestureHandlers: [
-                    PinchHandler {
-                        onPinchEnded: {
-                            listContactsController.setFilter(event.pinchRatio < 1);
+                    TextField {
+                        id: contactFilter
+                        visible: false
+                        hintText: qsTr("Search a contact")
+                        onTextChanging: {
+                            if(text.length > 3) {
+                                listContactsController.filter(text);
+                            }
+                            if(text.length == 0) {
+                                listContactsController.updateView();
+                                contactFilterGroup.visible = false;
+                            }
                         }
                     }
-                ]
-                
-                                
-                id: listContactView
-                dataModel: GroupDataModel {
-                    id: theModel
-                    sortingKeys: ["timestamp", "name"]
-                    sortedAscending: false
-                    grouping: ItemGrouping.None
-                    
-                    property bool empty: true
-                    
-                    
-                    onItemAdded: {
-                        listContactView.scroll(-1);
-                        empty = isEmpty();
-                        listContactView.scrollToPosition(ScrollPosition.Beginning, ScrollAnimation.None);
-                    }
-                    onItemRemoved: {
-                        empty = isEmpty();
-                        listContactView.scroll(-1);
-                    }  
-                    onItemUpdated: empty = isEmpty()  
-                    
-                    // You might see an 'unknown signal' error  
-                    // in the QML-editor, guess it's a SDK bug.  
-                    onItemsChanged: empty = isEmpty()
-                
-                }
-                
-                
-                focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
-                
-                listItemComponents: [
-                    ListItemComponent {
-                        type: "header"
-                        Header {
-                            title: ListItemData
+                    ImageButton {
+                        id: hideButton
+                        defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_top.png" : "asset:///images/icon_top_black.png"
+                        onClicked: {
+                            contactFilterGroup.visible = false;
                         }
-                    },
-                    ListItemComponent {
-                        type: "item"
+                        verticalAlignment: VerticalAlignment.Center
+                        horizontalAlignment: HorizontalAlignment.Center
+                        visible: false
+                    }
+                    Container {
+                        preferredWidth: 5
+                    }
+                    
+                    onVisibleChanged: {
+                        contactFilter.visible = visible;
+                        hideButton.visible = visible;
+                    }
+                    visible: false;
+                    
+                }
+                ListView {
+                    verticalAlignment: VerticalAlignment.Fill
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    signal refreshTriggered()
+                    property bool loading: false
+                    leadingVisualSnapThreshold: 2.0
+                    leadingVisual: RefreshHeader {
+                        id: refreshHandler
+                        onRefreshTriggered: {
+                            listContactView.refreshTriggered();
+                        }
+                    }
+                    onTouch: {
+                        refreshHandler.onListViewTouch(event);
+                    }
+                    onLoadingChanged: {
+                        refreshHandler.refreshing = refreshableList.loading;
                         
-                        Container {
-                            id: overallContactContainer
-                            
-                            ListItem.onSelectionChanged: {
-                                console.log('select')
-                                if(ListItem.selected)
-                                    selectionIndicator.background = Color.create("#bd2d2d");
-                                else
-                                    selectionIndicator.background = Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.Black : Color.White;
+                        if(!refreshHandler.refreshing) {
+                            // If the refresh is done 
+                            // Force scroll to top to ensure that all items are visible
+                            scrollToPosition(ScrollPosition.Beginning, ScrollAnimation.None);
+                        }
+                    }
+                    
+                    
+                    onRefreshTriggered: {
+                        contactFilterGroup.visible = true;
+                    }
+                    
+                    
+                    gestureHandlers: [
+                        PinchHandler {
+                            onPinchEnded: {
+                                listContactsController.setFilter(event.pinchRatio < 1);
                             }
-                            
-                            layout: StackLayout {
-                                orientation: LayoutOrientation.TopToBottom
+                        }
+                    ]
+                    
+                                    
+                    id: listContactView
+                    dataModel: GroupDataModel {
+                        id: theModel
+                        sortingKeys: ["timestamp", "name"]
+                        sortedAscending: false
+                        grouping: ItemGrouping.None
+                        
+                        property bool empty: true
+                        
+                        
+                        onItemAdded: {
+                            listContactView.scroll(-1);
+                            empty = isEmpty();
+                            listContactView.scrollToPosition(ScrollPosition.Beginning, ScrollAnimation.None);
+                        }
+                        onItemRemoved: {
+                            empty = isEmpty();
+                            listContactView.scroll(-1);
+                        }  
+                        onItemUpdated: empty = isEmpty()  
+                        
+                        // You might see an 'unknown signal' error  
+                        // in the QML-editor, guess it's a SDK bug.  
+                        onItemsChanged: empty = isEmpty()
+                        
+                    }
+                    
+                    
+                    focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
+                    
+                    listItemComponents: [
+                        ListItemComponent {
+                            type: "header"
+                            Header {
+                                title: ListItemData
                             }
-                            horizontalAlignment: HorizontalAlignment.Fill
-                            verticalAlignment: VerticalAlignment.Fill
+                        },
+                        ListItemComponent {
+                            type: "item"
                             
                             Container {
-                                minHeight: 5
-                                maxHeight: 5
-                            }
-                            
-                            Container {
-                                preferredHeight: 100
+                                id: overallContactContainer
                                 
-                                id: titleContainer
+                                ListItem.onSelectionChanged: {
+                                    console.log('select')
+                                    if(ListItem.selected)
+                                        selectionIndicator.background = Color.create("#bd2d2d");
+                                    else
+                                        selectionIndicator.background = Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.Black : Color.White;
+                                }
+                                
                                 layout: StackLayout {
-                                    orientation: LayoutOrientation.LeftToRight
+                                    orientation: LayoutOrientation.TopToBottom
                                 }
                                 horizontalAlignment: HorizontalAlignment.Fill
-                                verticalAlignment: VerticalAlignment.Center
+                                verticalAlignment: VerticalAlignment.Fill
                                 
                                 Container {
-                                    id: selectionIndicator
-                                    minWidth: 5
-                                    maxWidth: 5
+                                    minHeight: 5
+                                    maxHeight: 5
+                                }
+                                
+                                Container {
                                     preferredHeight: 100
-                                }
-                                
-                                
-                                
-                                Container {
-                                    layout: AbsoluteLayout { }
-                                    minHeight: 90
-                                    maxHeight: 90
-                                    minWidth: 90
-                                    maxWidth: 90
                                     
-                                    //  Avatar
-                                    ImageView {
-                                        verticalAlignment: VerticalAlignment.Center
-                                        //horizontalAlignment: HorizontalAlignment.Left
-                                        id: avatarImg
-                                        scalingMethod: ScalingMethod.AspectFit
-                                        minHeight: 90
-                                        maxHeight: 90
-                                        minWidth: 90
-                                        maxWidth: 90
-                                        image: tracker.image
-                                        
-                                        attachedObjects: [
-                                            NetImageTracker {
-                                                id: tracker
-                                                
-                                                source: ListItemData.avatar                                    
-                                            } 
-                                        ]
-                                    
-                                    }
-                                    
-                                    ImageView {
-                                        imageSource: "asset:///images/available.png"
-                                        minHeight: 20
-                                        maxHeight: 20
-                                        minWidth: 20
-                                        maxWidth: 20
-                                        layoutProperties: AbsoluteLayoutProperties {
-                                            positionX: 70
-                                            positionY: 70
-                                        }
-                                        // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
-                                        visible: ListItemData.presence == 0
-                                    }
-                                
-                                }
-                                
-                                Container {
-                                    minWidth: 30
-                                    maxWidth: 30
-                                    //horizontalAlignment: HorizontalAlignment.Left
-                                
-                                }
-                                
-                                Container {
-                                    id: contactContainer
-                                    preferredWidth: 2000
+                                    id: titleContainer
                                     layout: StackLayout {
-                                        orientation: LayoutOrientation.TopToBottom
+                                        orientation: LayoutOrientation.LeftToRight
                                     }
                                     horizontalAlignment: HorizontalAlignment.Fill
                                     verticalAlignment: VerticalAlignment.Center
                                     
                                     Container {
-                                        layout: DockLayout {
+                                        id: selectionIndicator
+                                        minWidth: 5
+                                        maxWidth: 5
+                                        preferredHeight: 100
+                                    }
+                                    
+                                    
+                                    
+                                    Container {
+                                        layout: AbsoluteLayout { }
+                                        minHeight: 90
+                                        maxHeight: 90
+                                        minWidth: 90
+                                        maxWidth: 90
+                                        
+                                        //  Avatar
+                                        ImageView {
+                                            verticalAlignment: VerticalAlignment.Center
+                                            //horizontalAlignment: HorizontalAlignment.Left
+                                            id: avatarImg
+                                            scalingMethod: ScalingMethod.AspectFit
+                                            minHeight: 90
+                                            maxHeight: 90
+                                            minWidth: 90
+                                            maxWidth: 90
+                                            image: tracker.image
+                                            
+                                            attachedObjects: [
+                                                NetImageTracker {
+                                                    id: tracker
+                                                    
+                                                    source: ListItemData.avatar                                    
+                                                } 
+                                            ]
+                                        
+                                        }
+                                        
+                                        ImageView {
+                                            imageSource: "asset:///images/available.png"
+                                            minHeight: 20
+                                            maxHeight: 20
+                                            minWidth: 20
+                                            maxWidth: 20
+                                            layoutProperties: AbsoluteLayoutProperties {
+                                                positionX: 70
+                                                positionY: 70
+                                            }
+                                            // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
+                                            visible: ListItemData.presence == 0
+                                        }
+                                    
+                                    }
+                                    
+                                    Container {
+                                        minWidth: 30
+                                        maxWidth: 30
+                                        //horizontalAlignment: HorizontalAlignment.Left
+                                    
+                                    }
+                                    
+                                    Container {
+                                        id: contactContainer
+                                        preferredWidth: 2000
+                                        layout: StackLayout {
+                                            orientation: LayoutOrientation.TopToBottom
                                         }
                                         horizontalAlignment: HorizontalAlignment.Fill
                                         verticalAlignment: VerticalAlignment.Center
                                         
-                                        Label {
-                                            text: ListItemData.name
-                                        }
-                                        
-                                        Label {
-                                            text: ListItemData.timestampString
-                                            
-                                            horizontalAlignment: HorizontalAlignment.Right
+                                        Container {
+                                            layout: DockLayout {
+                                            }
+                                            horizontalAlignment: HorizontalAlignment.Fill
                                             verticalAlignment: VerticalAlignment.Center
-                                            textStyle {
-                                                base: SystemDefaults.TextStyles.SmallText
-                                                color: (ListItemData.read == 1) ? Color.Gray : (Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#00a8df") : Color.Blue);
+                                            
+                                            Label {
+                                                text: ListItemData.name
+                                            }
+                                            
+                                            Label {
+                                                text: ListItemData.timestampString
+                                                
+                                                horizontalAlignment: HorizontalAlignment.Right
+                                                verticalAlignment: VerticalAlignment.Center
+                                                textStyle {
+                                                    base: SystemDefaults.TextStyles.SmallText
+                                                    color: (ListItemData.read == 1) ? Color.Gray : (Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#00a8df") : Color.Blue);
+                                                }
                                             }
                                         }
-                                    }
-                                    
-                                    
-                                    Container {
-                                        layout: DockLayout {
-                                        }
-                                        horizontalAlignment: HorizontalAlignment.Fill
-                                        verticalAlignment: VerticalAlignment.Bottom
                                         
                                         
-                                        Label {
-                                            text: ListItemData.preview
-                                            horizontalAlignment: HorizontalAlignment.Left
-                                            textStyle {
-                                                base: SystemDefaults.TextStyles.SmallText
-                                                color: (ListItemData.read == 1) ? Color.Gray : (Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#00a8df") : Color.Blue);
+                                        Container {
+                                            layout: DockLayout {
+                                            }
+                                            horizontalAlignment: HorizontalAlignment.Fill
+                                            verticalAlignment: VerticalAlignment.Bottom
+                                            
+                                            
+                                            Label {
+                                                text: ListItemData.preview
+                                                horizontalAlignment: HorizontalAlignment.Left
+                                                textStyle {
+                                                    base: SystemDefaults.TextStyles.SmallText
+                                                    color: (ListItemData.read == 1) ? Color.Gray : (Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#00a8df") : Color.Blue);
+                                                }
                                             }
                                         }
+                                    
                                     }
+                                }
                                 
-                                }
-                            }
-                            
-                            Divider { }
-                            
-                            contextActions: [
-                                ActionSet {
-                                    title: qsTr("Contact")
-                                    
-                                    DeleteActionItem {
-                                        title: qsTr("Clear history")
-                                        onTriggered: {
-                                            overallContactContainer.ListItem.view.deleteHistory(ListItemData.id);
+                                Divider { }
+                                
+                                contextActions: [
+                                    ActionSet {
+                                        title: qsTr("Contact")
+                                        
+                                        DeleteActionItem {
+                                            title: qsTr("Clear history")
+                                            onTriggered: {
+                                                overallContactContainer.ListItem.view.deleteHistory(ListItemData.id);
+                                            }
                                         }
                                     }
-                                }
-                            ]
-                        
+                                ]
+                            
+                            }
                         }
-                    }
-                ]
-                
-                function deleteHistory(id) {
-                    //listContactsController.deleteHistory(id);
-                    deleteToast.who = id;
-                    deleteToast.dismissed = false;
-                    deleteToast.show();
-                    timerDelete.start();
-                }
-                
-                onTriggered: {
-                    var chosenItem = dataModel.data(indexPath);
-                    contactFilterGroup.visible = false;
+                    ]
                     
-                    // Create the content page and push it on top to drill down to it.
-                    if(!tpage) {
-                        tpage = conversation.createObject();
+                    function deleteHistory(id) {
+                        //listContactsController.deleteHistory(id);
+                        deleteToast.who = id;
+                        deleteToast.dismissed = false;
+                        deleteToast.show();
+                        timerDelete.start();
                     }
                     
-                    // Set the url of the page to load and thread caption. 
-                    tpage.name     = chosenItem.name;
-                    tpage.avatar   = chosenItem.avatar;
-                    tpage.id       = chosenItem.id;
-                    tpage.room     = false;
-                    
-                    nav.push(tpage);
+                    onTriggered: {
+                        var chosenItem = dataModel.data(indexPath);
+                        contactFilterGroup.visible = false;
+                        
+                        // Create the content page and push it on top to drill down to it.
+                        if(!tpage) {
+                            tpage = conversation.createObject();
+                        }
+                        
+                        // Set the url of the page to load and thread caption. 
+                        tpage.name     = chosenItem.name;
+                        tpage.avatar   = chosenItem.avatar;
+                        tpage.id       = chosenItem.id;
+                        tpage.room     = false;
+                        
+                        nav.push(tpage);
+                    }
+                
                 }
-            
+            }
+                        
+            Container {  
+                id: dataEmptyLabel
+                visible: theModel.empty //model.isEmpty() will not work  
+                horizontalAlignment: HorizontalAlignment.Center  
+                verticalAlignment: VerticalAlignment.Center  
+                
+                layout: StackLayout {
+                    orientation: LayoutOrientation.TopToBottom
+                }
+                
+                
+                Container {
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Center
+                    ImageView {
+                        imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/pinch_out.png" : "asset:///images/pinch_out_black.png"
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Center
+                        preferredHeight: 100
+                        scalingMethod: ScalingMethod.AspectFit
+                    }
+                    
+                    Label {
+                        horizontalAlignment: HorizontalAlignment.Right
+                        verticalAlignment: VerticalAlignment.Center
+                        text: qsTr("Pinch out to stop filtering")  
+                        textStyle.textAlign: TextAlign.Center  
+                    }
+                }
+                
+                Divider {
+                
+                }
+                
+                Container {
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Center
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    ImageView {
+                        imageSource: "asset:///images/pull-to-refresh.png"
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Center
+                        preferredHeight: 100
+                        scalingMethod: ScalingMethod.AspectFit
+                    }
+                    
+                    Label {
+                        horizontalAlignment: HorizontalAlignment.Right
+                        verticalAlignment: VerticalAlignment.Center
+                        text: qsTr("Pull down to search a contact")  
+                        textStyle.textAlign: TextAlign.Center  
+                    }
+                }
+                
+                            
             }
         }
         
@@ -407,6 +476,8 @@ NavigationPane {
                 }
             }
         ]
+        
+        
         
         attachedObjects: [
             ListContactsController {

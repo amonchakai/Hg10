@@ -65,6 +65,30 @@
         <source>Clear history</source>
         <translation>Supprimer historique</translation>
     </message>
+    <message>
+        <source>Pinch out to stop filtering</source>
+        <translation>Ecarter pour arrêter de filtrer</translation>
+    </message>
+    <message>
+        <source>Pull down to search a contact</source>
+        <translation>Tirer pour rechercher un contact</translation>
+    </message>
+    <message>
+        <source>Change status</source>
+        <translation>Changer son statut</translation>
+    </message>
+    <message>
+        <source>Mark All as Read</source>
+        <translation>Marquer tout comme lu</translation>
+    </message>
+    <message>
+        <source>History will be deleted</source>
+        <translation>Historique va être supprimé</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation>Annuler</translation>
+    </message>
 </context>
 <context>
     <name>Conversation</name>
@@ -443,7 +467,11 @@
     </message>
     <message>
         <source>Application Logs</source>
-        <translation>Logs de l'application</translation>
+        <translation>Logs de l&apos;application</translation>
+    </message>
+    <message>
+        <source>Enable logs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -458,6 +486,37 @@
     <message>
         <source>Error: %1 status: %2</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Status</name>
+    <message>
+        <source>Set your status</source>
+        <translation>Définir votre statut</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Fermer</translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation>Valider</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Statut</translation>
+    </message>
+    <message>
+        <source>Available</source>
+        <translation>Disponible</translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation>Occupé</translation>
+    </message>
+    <message>
+        <source>What is your mood?</source>
+        <translation>Quel est votre humeur?</translation>
     </message>
 </context>
 <context>

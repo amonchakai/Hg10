@@ -77,6 +77,14 @@
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Pull down to search a contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pinch out to stop filtering</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Conversation</name>

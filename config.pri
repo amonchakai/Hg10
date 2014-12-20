@@ -94,6 +94,9 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/icon_top.png) \
         $$quote($$BASEDIR/assets/images/icon_top_black.png) \
+        $$quote($$BASEDIR/assets/images/pinch_out.png) \
+        $$quote($$BASEDIR/assets/images/pinch_out_black.png) \
+        $$quote($$BASEDIR/assets/images/pull-to-refresh.png) \
         $$quote($$BASEDIR/assets/images/send.png) \
         $$quote($$BASEDIR/assets/images/send.svg) \
         $$quote($$BASEDIR/assets/images/sound.png) \
@@ -334,4 +337,5 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../src/*.hxx)
 }
 
-TRANSLATIONS = $$quote($${TARGET}.ts)
+TRANSLATIONS = $$quote($${TARGET}_fr_FR.ts) \
+    $$quote($${TARGET}.ts)
