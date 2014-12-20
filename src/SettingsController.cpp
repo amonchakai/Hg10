@@ -32,6 +32,8 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
     else
         m_IsGoogleEnabled = true;
 
+    m_DropBoxEnabled = m_Settings->value("DropBoxEnabled", false).toBool();
+
     bool check = connect(ConversationManager::get(), SIGNAL(avatarUpdated()), this, SLOT(updateAvatar()));
 
     Q_ASSERT(check);
@@ -59,6 +61,7 @@ void SettingsController::save() {
     m_Settings->setValue("theme", m_Theme);
     m_Settings->setValue("fontSize", m_FontSize);
     m_Settings->setValue("logsEnabled", m_LogEnabled);
+    m_Settings->setValue("DropBoxEnabled", m_DropBoxEnabled);
 
     XMPP::get()->notifySettingChange();
 }

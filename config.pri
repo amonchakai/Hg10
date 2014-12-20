@@ -201,6 +201,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/DataObjects.h) \
         $$quote($$BASEDIR/src/DropBoxConnectController.hpp) \
         $$quote($$BASEDIR/src/Facebook.hpp) \
+        $$quote($$BASEDIR/src/FileTransfert.hpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.hpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.hpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.hpp) \

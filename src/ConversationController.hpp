@@ -14,7 +14,7 @@
 #include <bb/cascades/ActivityIndicator>
 #include "DataObjects.h"
 
-class DropBoxConnectController;
+class FileTransfert;
 
 class ConversationController : public QObject {
     Q_OBJECT;
@@ -31,7 +31,7 @@ private:
     bool                      m_IsRoom;
     bool                      m_UploadingAudio;
     QString                   m_AudioFileName;
-    DropBoxConnectController *m_DropboxController;
+    FileTransfert            *m_FileTransfert;
     QList<AudioMessage>       m_AudioMessages;
 
 
@@ -50,6 +50,7 @@ private:
     bool isImage                        (const QString &url);
     bool isOwnMessage                   (const QString &from);
     void initDropbox                    ();
+    void initGoogleDrive                ();
 
 
 
@@ -64,6 +65,7 @@ public Q_SLOTS:
     void waitingLink                    ();
 
     void send                           (const QString &message);
+    void sendAudioData                  (const QString &message);
     void sendData                       (const QString &message);
     void pushMessage                    (const QString &from, const QString &message);
     void pushHistory                    (const QString &from, const QString &message);

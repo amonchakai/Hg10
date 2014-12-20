@@ -14,7 +14,6 @@ public:
     virtual void getMessages            (const QString &from, int nbMessages = 1) = 0;
     virtual void getRemainingMessages   (QString lastMessageId) = 0;
 
-
 };
 
 #endif

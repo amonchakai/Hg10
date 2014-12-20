@@ -455,7 +455,7 @@
     </message>
     <message>
         <source>Use dropbox to host files</source>
-        <translation>Utiliser dropbox</translation>
+        <translation type="unfinished">Utiliser dropbox</translation>
     </message>
     <message>
         <source>Synch with Facebook</source>
@@ -471,6 +471,10 @@
     </message>
     <message>
         <source>Enable logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log to dropbox</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

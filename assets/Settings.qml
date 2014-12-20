@@ -180,10 +180,35 @@ NavigationPane {
                 
     	        
     	        Divider { }
+    	        
+    	        Container {
+    	            layout: DockLayout {
+    	                
+    	            }
+    	            horizontalAlignment: HorizontalAlignment.Fill
+    	            
+    	            Label {
+                        text: qsTr("Use dropbox to host files")
+                        verticalAlignment: VerticalAlignment.Center
+                        horizontalAlignment: HorizontalAlignment.Left
+    	            }
+    	            
+    	            ToggleButton {
+    	                id: useDropbox
+                        checked: settingsController.useDropbox
+                        verticalAlignment: VerticalAlignment.Center
+                        horizontalAlignment: HorizontalAlignment.Right
+                        
+                        onCheckedChanged: {
+                            settingsController.useDropbox = checked;
+                        }
+    	            }
+    	            
+    	        }
     	                            	        
                 Button {
                     id: dropboxConnectButton
-                    text: qsTr("Use dropbox to host files")
+                    text: qsTr("Log to dropbox")
                     horizontalAlignment: HorizontalAlignment.Fill
                     onClicked: {
                         if(!dropboxPage)

@@ -12,8 +12,9 @@
 #include <bb/cascades/WebView>
 #include <QSettings>
 #include "OnlineHistory.hpp"
+#include "FileTransfert.hpp"
 
-class GoogleConnectController : public OnlineHistory {
+class GoogleConnectController : public OnlineHistory, public FileTransfert {
     Q_OBJECT;
 
 
@@ -36,6 +37,8 @@ private:
     bool                                 m_StopListing;
 
     QString                              m_WithButNoKey;
+    QString                              m_LastUploadedFile;
+    QString                              m_DistUrl;
 
 public:
      GoogleConnectController            (QObject *parent = 0);
@@ -57,13 +60,15 @@ public:
      // -------------------------------------------------------------------------
      // google drive
 
-
-     void putFile                (const QString &path);
+     void createHomeFolder      ();
+     virtual void putFile       (const QString &path);
+     virtual void share         ();
 
 
 private:
      void checkOrder            (bool flush = false);
      void cleanupMessage        (QString &message);
+     QString getContentTypeByExtension(const QString &extension);
 
 public Q_SLOTS:
 
@@ -97,7 +102,8 @@ public Q_SLOTS:
 
     void checkUploadReply       ();
     void uploading              (qint64 status, qint64 total);
-
+    void checkCreateHomeReply   ();
+    void checkReplyShare        ();
 
     // -------------------------------------------------------------------------
     // interface
@@ -111,6 +117,9 @@ Q_SIGNALS:
     void closeConnect();
 
     void contactInfoObtained    ();
+    void uploading              (int status);
+    void uploaded               ();
+    void shared                 (const QString &url);
 
 };
 

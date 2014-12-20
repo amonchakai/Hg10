@@ -9,6 +9,8 @@
 #include "ConversationController.hpp"
 #include "ConversationManager.hpp"
 #include "DropBoxConnectController.hpp"
+#include "GoogleConnectController.hpp"
+#include "FileTransfert.hpp"
 #include "XMPPService.hpp"
 
 #include <bb/cascades/Application>
@@ -22,7 +24,7 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
             m_HistoryCleared(false),
             m_IsRoom(false),
             m_UploadingAudio(false),
-            m_DropboxController(NULL) {
+            m_FileTransfert(NULL) {
 
     bool check = connect(ConversationManager::get(), SIGNAL(historyLoaded()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -298,6 +300,11 @@ void ConversationController::send(const QString& message) {
 }
 
 
+void ConversationController::sendAudioData(const QString &message) {
+    m_UploadingAudio = true;
+    sendData(message);
+}
+
 void ConversationController::sendData(const QString &file) {
     // send data via XMPP
     //ConversationManager::get()->sendData(file);
@@ -305,12 +312,20 @@ void ConversationController::sendData(const QString &file) {
     if(file.isEmpty())
         return;
 
-    // send data to dropbox!
-    if(m_DropboxController == NULL)
-        initDropbox();
+    // is it a connection to google?
+    if(m_FileTransfert == NULL) {
+        QSettings settings("Amonchakai", "Hg10");
+        if(!settings.value("DropBoxEnabled", false).toBool())
+            initGoogleDrive();
+        else
+            initDropbox();
 
-    m_DropboxController->putFile(file);
+    }
 
+    if(m_FileTransfert == NULL)
+        return;
+
+    m_FileTransfert->putFile(file);
 }
 
 
@@ -339,7 +354,6 @@ QString ConversationController::getNextAudioName() {
         name = "message_1.m4a";
     }
 
-    m_UploadingAudio = true;
     m_AudioFileName = directory + name;
 
     return m_AudioFileName;
@@ -347,21 +361,46 @@ QString ConversationController::getNextAudioName() {
 
 
 void ConversationController::initDropbox() {
-    m_DropboxController = new DropBoxConnectController(this);
+    DropBoxConnectController *dropbox = new DropBoxConnectController(this);
 
-    bool check = connect(m_DropboxController, SIGNAL(uploaded()), this, SLOT(uploaded()));
+    bool check = connect(dropbox, SIGNAL(uploaded()), this, SLOT(uploaded()));
     Q_ASSERT(check);
     Q_UNUSED(check);
 
-    check = connect(m_DropboxController, SIGNAL(shared(const QString &)), this, SLOT(shared(const QString &)));
+    check = connect(dropbox, SIGNAL(shared(const QString &)), this, SLOT(shared(const QString &)));
     Q_ASSERT(check);
 
-    check = connect(m_DropboxController, SIGNAL(uploading(int)), this, SLOT(fowardUploadingProcess(int)));
+    check = connect(dropbox, SIGNAL(uploading(int)), this, SLOT(fowardUploadingProcess(int)));
     Q_ASSERT(check);
+
+    m_FileTransfert = dropbox;
+}
+
+void ConversationController::initGoogleDrive() {
+
+    GoogleConnectController *transfert= ConversationManager::get()->getFileTransfert();
+
+    if(transfert == NULL) {
+        return;
+    }
+
+    bool check = connect(transfert, SIGNAL(uploaded()), this, SLOT(uploaded()));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
+
+    check = connect(transfert, SIGNAL(shared(const QString &)), this, SLOT(shared(const QString &)));
+    Q_ASSERT(check);
+
+    check = connect(transfert, SIGNAL(uploading(int)), this, SLOT(fowardUploadingProcess(int)));
+    Q_ASSERT(check);
+
+
+
+    m_FileTransfert = dynamic_cast<FileTransfert*>(transfert);
 }
 
 void ConversationController::uploaded() {
-    m_DropboxController->share();
+    m_FileTransfert->share();
 }
 
 void ConversationController::shared(const QString &url) {

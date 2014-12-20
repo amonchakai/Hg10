@@ -22,6 +22,7 @@ class SettingsController : public QObject {
     Q_PROPERTY( bool    enableGoogle READ getEnableGoogle    WRITE setEnableGoogle   NOTIFY  enableGoogleChanged)
     Q_PROPERTY( bool    googleLogged READ getGoogleLogged)
     Q_PROPERTY( bool    enableLogs   READ getLogEnabled      WRITE setLogEnabled     NOTIFY  logEnabledChanged)
+    Q_PROPERTY( bool    useDropbox   READ getDropboxEnabled  WRITE setDropboxEnabled NOTIFY  dropboxEnabledChanged)
 
 private:
 
@@ -31,6 +32,7 @@ private:
      int                m_FontSize;
      bool               m_IsGoogleEnabled;
      static bool        m_LogEnabled;
+     bool               m_DropBoxEnabled;
 
      QSettings          *m_Settings;
 
@@ -57,6 +59,9 @@ public:
     inline void           setLogEnabled(bool c)             { m_LogEnabled = c;  }
     static bool           isLogEnabled()                    { return m_LogEnabled; }
 
+    inline bool           getDropboxEnabled() const         { return m_DropBoxEnabled; }
+    inline void           setDropboxEnabled(bool c)         { m_DropBoxEnabled = c;  }
+
     bool                  getGoogleLogged();
 
 public Q_SLOTS:
@@ -72,6 +77,7 @@ Q_SIGNALS:
     void fontSizeChanged();
     void enableGoogleChanged();
     void logEnabledChanged();
+    void dropboxEnabledChanged();
 
 };
 

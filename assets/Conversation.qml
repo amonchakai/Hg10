@@ -182,7 +182,7 @@ Page {
                             voiceRecording.visible = false;
                             if(recorder.mediaState != MediaState.Unprepared) {
                                 recorder.reset();
-                                conversationController.sendData(filenameChat);
+                                conversationController.sendAudioData(filenameChat);
                             }
                             
                         }

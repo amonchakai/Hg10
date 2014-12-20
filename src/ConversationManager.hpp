@@ -13,6 +13,7 @@
 
 
 class OnlineHistory;
+class GoogleConnectController;
 
 enum GoogleSynchStatus {
     NONE  = 0,
@@ -61,6 +62,8 @@ public:
     void                   sendData     (const QString &file);
     void                   loadUserName ();
 
+    inline GoogleConnectController  *getFileTransfert()         { return m_FileTransfert; }
+
 private:
     static ConversationManager     *m_This;
 
@@ -72,6 +75,7 @@ private:
 
     // History from Google
     OnlineHistory                  *m_OnlineHistory;
+    GoogleConnectController        *m_FileTransfert;
     GoogleSynchStatus               m_SynchStatus;
     int                             m_SynchPushLoc;
 

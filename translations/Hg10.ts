@@ -438,10 +438,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use dropbox to host files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Clear audio messages</source>
         <translation type="unfinished"></translation>
     </message>
@@ -451,6 +447,14 @@
     </message>
     <message>
         <source>Enable logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log to dropbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use dropbox to host files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

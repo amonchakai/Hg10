@@ -436,3 +436,7 @@ void Facebook::sendProgressively() {
 
     QTimer::singleShot(1000, this, SLOT(sendProgressively()));
 }
+
+
+
+

@@ -4,9 +4,9 @@
 #include <QtCore/QObject>
 #include <bb/cascades/WebView>
 #include <QSettings>
+#include "FileTransfert.hpp"
 
-
-class DropBoxConnectController : public QObject {
+class DropBoxConnectController : public QObject, public FileTransfert {
     Q_OBJECT;
 
 
@@ -38,7 +38,7 @@ public Q_SLOTS:
     void checkUploadReply       ();
     void uploading              (qint64 status, qint64 total);
 
-    void share                  ();
+    virtual void share          ();
     void checkShareReply        ();
 
 Q_SIGNALS:

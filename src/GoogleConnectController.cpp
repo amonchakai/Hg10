@@ -638,16 +638,211 @@ void GoogleConnectController::getRemainingMessages(QString lastMessageId) {
 // -----------------------------------------------------------------------------------------------------------
 
 void GoogleConnectController::putFile(const QString &path) {
+    QFile file(path);
+
+    if (!file.exists())
+        return;
+
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+
+    if(!m_Settings->contains("DriveHomeFolderID")) {
+        m_LastUploadedFile = path;
+        createHomeFolder();
+        return;
+    }
+
+    QString name = path.mid(path.lastIndexOf("/")+1);
+    QString extension = getContentTypeByExtension(path.mid(path.lastIndexOf(".")+1));
+
+
+    QString boundary = "---------------------------193971182219750";
+    QByteArray datas(QString("\r\n\r\n--" + boundary + "\r\n").toAscii());
+    datas += QString("Content-Type: application/json; charset=UTF-8\r\n\r\n").toAscii();
+    datas += QString("{\r\n").toAscii();
+    datas += QString("\"title\": \"" + name + "\",\r\n").toAscii();
+    datas += QString("\"mimeType\": \"" + extension + "\",\r\n").toAscii();
+    datas += (QString("\"parents\": [{\r\n")
+                         +  "\"kind\": \"drive#fileLink\",\r\n"
+                         +  "\"id\": \"" + m_Settings->value("DriveHomeFolderID").toString() + "\"\r\n"
+                   + "}]\r\n").toAscii();
+
+    datas += QString("}\r\n\r\n").toAscii();
+
+    datas += QString("--" + boundary + "\r\n").toAscii();
+    datas += QString("Content-Type:" + extension + "\r\n\r\n").toAscii();
+
+    datas += file.readAll();
+    datas += QString("\r\n").toAscii();
+    datas += QString("--" + boundary + "--").toAscii();
+
+    QNetworkRequest request(QUrl("https://www.googleapis.com/upload/drive/v2/files?uploadType=multipart"));
+    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "multipart/related; boundary=\"" + boundary + "\"");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, QString::number(datas.length()).toAscii());
+    file.close();
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->post(request, datas);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkUploadReply()));
+    connect(reply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(uploading(qint64, qint64)));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+
 
 }
 
+void GoogleConnectController::createHomeFolder() {
+    QByteArray datas;
+    datas += QString("{\r\n").toAscii();
+    datas += QString("\"title\": \"Hg10\",\r\n").toAscii();
+    datas += QString("\"mimeType\": \"application/vnd.google-apps.folder\"\r\n").toAscii();
+    datas += QString("}\r\n\r\n").toAscii();
+
+    QNetworkRequest request(QUrl("https://www.googleapis.com/drive/v2/files"));
+    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->post(request, datas);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkCreateHomeReply()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+}
+
+void GoogleConnectController::checkCreateHomeReply() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    QString response;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            const int available = reply->bytesAvailable();
+            if (available > 0) {
+                const QByteArray buffer(reply->readAll());
+                response = QString::fromUtf8(buffer);
+
+                QRegExp homeFolderId("\"id\": \"([^\"]+)\",");
+                if(homeFolderId.indexIn(response) != -1) {
+                    m_Settings->setValue("DriveHomeFolderID", homeFolderId.cap(1));
+                    putFile(m_LastUploadedFile);
+                }
+
+            }
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+        }
+
+        reply->deleteLater();
+    }
+}
 
 void GoogleConnectController::checkUploadReply() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
+    QString response;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            const int available = reply->bytesAvailable();
+            if (available > 0) {
+                const QByteArray buffer(reply->readAll());
+                response = QString::fromUtf8(buffer);
+
+                QRegExp fileID("\"id\": \"([^\"]+)\",");
+                if(fileID.indexIn(response) != -1) {
+                    m_LastUploadedFile = fileID.cap(1);
+                }
+
+                QRegExp distUrl("\"alternateLink\": \"([^\"]+)\",");
+                if(distUrl.indexIn(response) != -1) {
+                    m_DistUrl = distUrl.cap(1);
+                }
+
+
+                emit uploaded();
+            }
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+        }
+
+        reply->deleteLater();
+    }
 }
 
 void GoogleConnectController::uploading(qint64 status, qint64 total) {
-
+    emit uploading(100 * status / total);
 }
 
+QString GoogleConnectController::getContentTypeByExtension(const QString &extension) {
+    QString contentType;
+
+    if(extension == "doc" || extension == "docx") contentType = "application/msword";
+    if(extension == "xls") contentType = "application/vnd.ms-excel";
+    if(extension == "ppt" || extension == "pptx") contentType = "application/vnd.ms-powerpoint";
+    if(extension == "pdf") contentType = "application/pdf";
+    if(extension == "exe") contentType = "application/x-msdos-program";
+    if(extension == "rar") contentType = "application/rar";
+    if(extension == "png") contentType = "image/png";
+    if(extension == "png") contentType = "application/rtf";
+    if(extension == "tar") contentType = "application/x-tar";
+    if(extension == "zip") contentType = "application/zip";
+    if(extension == "") contentType = "";
+    if(extension == "jpeg" || extension == "jpg" || extension == "jpe") contentType = "image/jpeg";
+    if(extension == "gif") contentType = "image/gif";
+    if(extension == "wav") contentType = "application/x-wav";
+    if(extension == "tiff" || extension == "tif") contentType = "image/tiff";
+    if(extension == "txt" || extension == "cpp" || extension == "h" || extension == "c") contentType = "text/plain";
+    if(extension == "mpeg" || extension == "mpg" || extension == "mpe" ) contentType = "video/mpeg";
+    if(extension == "qt" || extension == "mov") contentType = "video/quicktime";
+    if(extension == "qvi") contentType = "video/x-msvideo";
+    if(extension == "video/x-sgi-movie") contentType = "movie";
+    if(extension == "exe") contentType = "application/x-msdos-program";
+
+    return contentType;
+}
+
+void GoogleConnectController::share() {
+    qDebug() << "share request!";
+
+    QByteArray datas;
+    datas += QString("{\r\n").toAscii();
+    datas += QString("\"role\": \"reader\",\r\n").toAscii();
+    datas += QString("\"type\": \"anyone\",\r\n").toAscii();
+    datas += QString("\"withLink\": true\r\n").toAscii();
+    datas += QString("}\r\n\r\n").toAscii();
+
+    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files/") + m_LastUploadedFile + "/permissions"));
+    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->post(request, datas);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkReplyShare()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+}
+
+
+
+
+void GoogleConnectController::checkReplyShare() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+        QString response;
+        if (reply) {
+            if (reply->error() == QNetworkReply::NoError) {
+                const int available = reply->bytesAvailable();
+                if (available > 0) {
+                    const QByteArray buffer(reply->readAll());
+                    response = QString::fromUtf8(buffer);
+
+                    QRegExp check("anyoneWithLink");
+                    if(check.indexIn(response) != -1)
+                        emit shared(m_DistUrl);
+
+
+                }
+            } else {
+                qDebug() << "reply... " << reply->errorString();
+            }
+
+            reply->deleteLater();
+        }
+}
 

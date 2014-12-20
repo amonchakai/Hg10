@@ -19,6 +19,7 @@
 #include "GoogleConnectController.hpp"
 #include "Facebook.hpp"
 #include "OnlineHistory.hpp"
+#include "FileTransfert.hpp"
 
 QReadWriteLock  mutexConversation;
 ConversationManager* ConversationManager::m_This = NULL;
@@ -27,7 +28,7 @@ ConversationManager* ConversationManager::m_This = NULL;
 // Singleton
 
 
-ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_OnlineHistory(NULL), m_SynchStatus(NONE), m_SynchPushLoc(0) {
+ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_OnlineHistory(NULL), m_FileTransfert(NULL), m_SynchStatus(NONE), m_SynchPushLoc(0) {
 
 
     loadUserName();
@@ -60,6 +61,7 @@ void ConversationManager::initOnlineHistory() {
     if(!settings.value("access_token").value<QString>().isEmpty()) {
         GoogleConnectController *google = new GoogleConnectController();
         m_OnlineHistory = google;
+        m_FileTransfert = google;
     } else {
         Facebook *facebook = new Facebook();
         m_OnlineHistory = facebook;
@@ -501,9 +503,6 @@ void ConversationManager::logSent(const QString &to, const QString &message) {
 void ConversationManager::sendData(const QString &file) {
     XMPP::get()->sendData(file, m_BareID);
 }
-
-
-
 
 
 // ---------------------------------------------------------------------------
