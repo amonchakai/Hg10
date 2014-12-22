@@ -89,6 +89,10 @@
         <source>Undo</source>
         <translation>Annuler</translation>
     </message>
+    <message>
+        <source>Add contact</source>
+        <translation>Ajouter un contact</translation>
+    </message>
 </context>
 <context>
     <name>Conversation</name>
@@ -225,6 +229,17 @@
     <message>
         <source>Close</source>
         <translation>Fermer</translation>
+    </message>
+</context>
+<context>
+    <name>ListContactsController</name>
+    <message>
+        <source>Add a new contact</source>
+        <translation>Ajouter un nouveau contact</translation>
+    </message>
+    <message>
+        <source>email address...</source>
+        <translation>Adresse email...</translation>
     </message>
 </context>
 <context>

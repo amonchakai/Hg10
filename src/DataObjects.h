@@ -33,7 +33,8 @@ struct XMPPServiceMessages {
         OAUTH2_LOGIN,
         REQUEST_CONTACT_LIST_PRESENCE,
         SET_STATUS_TEXT,
-        SET_PRESENCE
+        SET_PRESENCE                = 20,
+        ADD_CONTACT
     };
 
 };

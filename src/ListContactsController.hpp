@@ -12,6 +12,7 @@
 #include <bb/cascades/ListView>
 #include <bb/platform/Notification>
 #include <bb/cascades/ActivityIndicator>
+#include <bb/system/SystemUiResult>
 
 class Contact;
 
@@ -81,6 +82,10 @@ public Q_SLOTS:
     void deleteHistory                  (const QString &with);
 
     void setPresence                    (const QString &text, int presence);
+
+
+    void addContact                     ();
+    void onPromptFinishedAddContact     (bb::system::SystemUiResult::Type);
 
 
 Q_SIGNALS:

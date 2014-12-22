@@ -80,6 +80,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/contact.svg) \
         $$quote($$BASEDIR/assets/images/document.png) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \
+        $$quote($$BASEDIR/assets/images/icon_add_contact.png) \
+        $$quote($$BASEDIR/assets/images/icon_add_contact.svg) \
         $$quote($$BASEDIR/assets/images/icon_attach.png) \
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
         $$quote($$BASEDIR/assets/images/icon_chat.png) \

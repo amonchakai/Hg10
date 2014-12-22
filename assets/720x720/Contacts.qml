@@ -470,6 +470,13 @@ NavigationPane {
                 onTriggered: {
                     listContactsController.markAllRead();
                 }
+            },
+            ActionItem {
+                title: qsTr("Add contact")
+                imageSource: "asset:///images/icon_add_contact.png"
+                onTriggered: {
+                    listContactsController.addContact();
+                }
             }
         ]
         

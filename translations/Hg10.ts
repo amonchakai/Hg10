@@ -85,6 +85,10 @@
         <source>Pinch out to stop filtering</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add contact</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Conversation</name>
@@ -220,6 +224,17 @@
     </message>
     <message>
         <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ListContactsController</name>
+    <message>
+        <source>Add a new contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>email address...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

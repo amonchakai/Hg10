@@ -556,6 +556,25 @@ void XMPP::setPresence(int presence) {
     mutex.unlock();
 }
 
+
+void XMPP::addContact(const QString &email) {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::ADD_CONTACT;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code),   sizeof(int));
+
+        int length = email.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(email.toAscii(), length);
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
+
 // -------------------------------------------------------------
 // file transfer handling
 

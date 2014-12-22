@@ -68,6 +68,10 @@ public Q_SLOTS:
     void setStatusText      (const QString &text, int presence);
     void setPresence        (int presence);
 
+    // -------------------------------------------------------------
+    // Add new contact
+
+    void addContact         (const QString &email);
 
 
     // -------------------------------------------------------------

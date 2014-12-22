@@ -11,6 +11,8 @@
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/GroupDataModel>
 #include <bb/platform/Notification>
+#include <bb/system/SystemPrompt>
+
 
 #include <QDebug>
 #include <QRegExp>
@@ -111,6 +113,49 @@ void ListContactsController::updatePresence(const QString &who, int status) {
     }
 
 }
+
+void ListContactsController::addContact() {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    SystemPrompt *prompt = new SystemPrompt();
+    prompt->setTitle(tr("Add a new contact"));
+    prompt->setDismissAutomatically(true);
+    prompt->inputField()->setEmptyText(tr("email address..."));
+
+
+    bool success = QObject::connect(prompt,
+        SIGNAL(finished(bb::system::SystemUiResult::Type)),
+        this,
+        SLOT(onPromptFinishedAddContact(bb::system::SystemUiResult::Type)));
+
+    if (success) {
+        prompt->show();
+     } else {
+        prompt->deleteLater();
+    }
+    //XMPP::get()->addContact(email);
+}
+
+
+void ListContactsController::onPromptFinishedAddContact(bb::system::SystemUiResult::Type result) {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    if(result == bb::system::SystemUiResult::ConfirmButtonSelection) {
+        qDebug()<< "onPromptFinishedAddContact: " << result;
+
+        SystemPrompt* prompt = qobject_cast<SystemPrompt*>(sender());
+        if(prompt != NULL) {
+            //qDebug() << "Prompt Accepted:" << prompt->inputFieldTextEntry();
+            XMPP::get()->addContact(prompt->inputFieldTextEntry());
+
+            prompt->deleteLater();
+        }
+    }
+}
+
+
 
 void ListContactsController::messageReceived(const QString &from, const QString &message) {
 
