@@ -120,6 +120,10 @@
         <source>Refresh</source>
         <translation>Rafraichir</translation>
     </message>
+    <message>
+        <source>Drive</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateRoom</name>
@@ -142,6 +146,75 @@
     <message>
         <source>Look for a contact</source>
         <translation>Chercher un contact</translation>
+    </message>
+</context>
+<context>
+    <name>Drive</name>
+    <message>
+        <source>No files found in this folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading, please wait.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Rafraichir</translation>
+    </message>
+    <message>
+        <source>Actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set as home folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DriveController</name>
+    <message>
+        <source>Cannot open this file...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create new folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>name...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DrivePicker</name>
+    <message>
+        <source>Loading, please wait.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No files found in this folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set as home folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Rafraichir</translation>
+    </message>
+    <message>
+        <source>Create a new folder</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -229,6 +302,13 @@
     <message>
         <source>Close</source>
         <translation>Fermer</translation>
+    </message>
+</context>
+<context>
+    <name>GoogleConnectController</name>
+    <message>
+        <source>last edit: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -599,6 +679,10 @@ Supprimer et oublier cette stupide application.</translation>
     <message>
         <source>Contacts</source>
         <translation>Contacts</translation>
+    </message>
+    <message>
+        <source>Drive</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

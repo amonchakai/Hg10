@@ -44,6 +44,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Contacts.qml) \
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
+        $$quote($$BASEDIR/assets/Drive.qml) \
+        $$quote($$BASEDIR/assets/DrivePicker.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \
         $$quote($$BASEDIR/assets/FacebookConnect.qml) \
         $$quote($$BASEDIR/assets/FurtherInformation.qml) \
@@ -57,6 +59,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/Status.qml) \
+        $$quote($$BASEDIR/assets/WebEditor.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/data/emojies.xml) \
         $$quote($$BASEDIR/assets/images/Tutorial/accept.jpg) \
@@ -86,7 +89,9 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
         $$quote($$BASEDIR/assets/images/icon_chat.png) \
         $$quote($$BASEDIR/assets/images/icon_check.png) \
+        $$quote($$BASEDIR/assets/images/icon_drive.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
+        $$quote($$BASEDIR/assets/images/icon_folder.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
         $$quote($$BASEDIR/assets/images/icon_left.png) \
         $$quote($$BASEDIR/assets/images/icon_left_black.png) \
@@ -122,6 +127,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ApplicationLogController.cpp) \
         $$quote($$BASEDIR/src/ConversationController.cpp) \
         $$quote($$BASEDIR/src/ConversationManager.cpp) \
+        $$quote($$BASEDIR/src/DriveController.cpp) \
         $$quote($$BASEDIR/src/DropBoxConnectController.cpp) \
         $$quote($$BASEDIR/src/Facebook.cpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.cpp) \
@@ -201,6 +207,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ConversationController.hpp) \
         $$quote($$BASEDIR/src/ConversationManager.hpp) \
         $$quote($$BASEDIR/src/DataObjects.h) \
+        $$quote($$BASEDIR/src/DriveController.hpp) \
         $$quote($$BASEDIR/src/DropBoxConnectController.hpp) \
         $$quote($$BASEDIR/src/Facebook.hpp) \
         $$quote($$BASEDIR/src/FileTransfert.hpp) \

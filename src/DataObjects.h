@@ -40,6 +40,56 @@ struct XMPPServiceMessages {
 };
 
 
+class DriveItem : public QObject {
+    Q_OBJECT
+
+    Q_PROPERTY( QString id          READ getID          WRITE setID          NOTIFY idChanged)
+    Q_PROPERTY( QString iconLink    READ getIconLink    WRITE setIconLink    NOTIFY iconLinkChanged)
+    Q_PROPERTY( QString title       READ getTitle       WRITE setTitle       NOTIFY titleChanged)
+    Q_PROPERTY( QString type        READ getType        WRITE setType        NOTIFY typeChanged)
+    Q_PROPERTY( QString timestamp   READ getTimestamp   WRITE setTimestamp   NOTIFY timestampChanged)
+    Q_PROPERTY( QString openLink    READ getOpenLink    WRITE setOpenLink    NOTIFY openLinkChanged)
+
+private:
+    QString         m_Id;
+    QString         m_IconLink;
+    QString         m_Title;
+    QString         m_Type;
+    QString         m_Timestamp;
+    QString         m_OpenLink;
+
+public:
+    DriveItem(QObject *parent)  : QObject(parent) {};
+
+    inline const QString &getID() const                     { return m_Id; }
+    inline void           setID(const QString &c)           { m_Id = c; emit idChanged();}
+
+    inline const QString &getIconLink() const               { return m_IconLink; }
+    inline void           setIconLink(const QString &c)     { m_IconLink = c; emit iconLinkChanged();}
+
+    inline const QString &getTitle() const                  { return m_Title; }
+    inline void           setTitle(const QString &c)        { m_Title = c; emit titleChanged();}
+
+    inline const QString &getType() const                   { return m_Type; }
+    inline void           setType(const QString &c)         { m_Type = c; emit typeChanged();}
+
+    inline const QString &getTimestamp() const              { return m_Timestamp; }
+    inline void           setTimestamp(const QString &c)    { m_Timestamp = c; emit timestampChanged();}
+
+    inline const QString &getOpenLink() const               { return m_OpenLink; }
+    inline void           setOpenLink(const QString &c)     { m_OpenLink = c; emit openLinkChanged();}
+
+    // ----------------------------------------------------------------------------------------------
+Q_SIGNALS:
+
+    void idChanged();
+    void iconLinkChanged();
+    void titleChanged();
+    void typeChanged();
+    void timestampChanged();
+    void openLinkChanged();
+
+};
 
 
 class Contact : public QObject {

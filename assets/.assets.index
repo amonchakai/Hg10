@@ -1,5 +1,5 @@
 1
-79
+84
 1440x1440/Contacts.qml
 720x720/Contacts.qml
 720x720/Conversation.qml
@@ -9,6 +9,8 @@ Contacts.qml
 Conversation.qml
 CreateRoom.qml
 data/emojies.xml
+Drive.qml
+DrivePicker.qml
 DropboxConnect.qml
 FacebookConnect.qml
 FurtherInformation.qml
@@ -33,7 +35,9 @@ images/icon_attach.png
 images/icon_bottom.png
 images/icon_chat.png
 images/icon_check.png
+images/icon_drive.png
 images/icon_favorites.png
+images/icon_folder.png
 images/icon_home.png
 images/icon_left.png
 images/icon_left_black.png
@@ -78,4 +82,5 @@ Status.qml
 template.html
 template_black.html
 template_end.html
+WebEditor.qml
 Welcome.qml

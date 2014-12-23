@@ -18,6 +18,8 @@
 #include <limits>
 #include <QReadWriteLock>
 
+#include "DataObjects.h"
+
 #include "PrivateAPIKeys.h"
 /*
  * #include "PrivateAPIKeys.h"
@@ -39,7 +41,8 @@ GoogleConnectController::GoogleConnectController(QObject *parent) : OnlineHistor
         m_Settings(NULL),
         m_HistoryIndex(0),
         m_NBMessageExpected(0),
-        m_StopListing(false) {
+        m_StopListing(false),
+        m_CreatingRootDir(false) {
 
     m_Settings = new QSettings("Amonchakai", "Hg10");
 }
@@ -244,7 +247,19 @@ void GoogleConnectController::parseRefresh(const QString &message) {
     m_Settings->setValue("Facebook_expires_in", "");
 
     if(access_token.indexIn(message) != -1) {
-        getMessages(m_WithButNoKey, m_NBMessageExpected);
+        int pos = m_WithButNoKey.indexOf(":");
+        if(pos == -1)
+            return;
+
+        QString query = m_WithButNoKey.mid(0,pos);
+        QString data = m_WithButNoKey.mid(pos+1);
+
+        qDebug() << "token renewed: " << query << data;
+
+        if(query == "HISTORY_REQUEST")
+            getMessages(data, m_NBMessageExpected);
+        else
+            getFileList(data);
     }
 
 }
@@ -318,7 +333,7 @@ void GoogleConnectController::replyGetUserInfo() {
 
 void GoogleConnectController::getMessages(const QString &with, int nbMessages) {
     m_NBMessageExpected = nbMessages;
-    m_WithButNoKey = with;
+    m_WithButNoKey = "HISTORY_REQUEST:" + with;
 
     QString user = ConversationManager::get()->getUser().mid(4);
     user.replace("&", "%40");
@@ -648,7 +663,8 @@ void GoogleConnectController::putFile(const QString &path) {
 
     if(!m_Settings->contains("DriveHomeFolderID")) {
         m_LastUploadedFile = path;
-        createHomeFolder();
+        m_CreatingRootDir = true;
+        createFolder();
         return;
     }
 
@@ -691,11 +707,16 @@ void GoogleConnectController::putFile(const QString &path) {
 
 }
 
-void GoogleConnectController::createHomeFolder() {
+void GoogleConnectController::createFolder(const QString &name, const QString &root) {
     QByteArray datas;
     datas += QString("{\r\n").toAscii();
-    datas += QString("\"title\": \"Hg10\",\r\n").toAscii();
+    datas += QString("\"title\": \"" + name + "\",\r\n").toAscii();
     datas += QString("\"mimeType\": \"application/vnd.google-apps.folder\"\r\n").toAscii();
+    if(!root.isEmpty())
+        datas += QString(",\"parents\": [{\"id\":\"" + root + "\"}]");
+    else
+        if(!m_CurrentDir.isEmpty())
+            datas += QString(",\"parents\": [{\"id\":\"" + m_CurrentDir + "\"}]");
     datas += QString("}\r\n\r\n").toAscii();
 
     QNetworkRequest request(QUrl("https://www.googleapis.com/drive/v2/files"));
@@ -721,8 +742,12 @@ void GoogleConnectController::checkCreateHomeReply() {
 
                 QRegExp homeFolderId("\"id\": \"([^\"]+)\",");
                 if(homeFolderId.indexIn(response) != -1) {
-                    m_Settings->setValue("DriveHomeFolderID", homeFolderId.cap(1));
-                    putFile(m_LastUploadedFile);
+                    if(m_CreatingRootDir) {
+                        setHomeFolder(homeFolderId.cap(1));
+                        putFile(m_LastUploadedFile);
+                    } else {
+                        emit folderCreated();
+                    }
                 }
 
             }
@@ -798,8 +823,11 @@ QString GoogleConnectController::getContentTypeByExtension(const QString &extens
     return contentType;
 }
 
-void GoogleConnectController::share() {
+void GoogleConnectController::shareId(const QString &id, const QString &path) {
     qDebug() << "share request!";
+
+    if(!path.isEmpty())
+        m_DistUrl = path;
 
     QByteArray datas;
     datas += QString("{\r\n").toAscii();
@@ -808,7 +836,7 @@ void GoogleConnectController::share() {
     datas += QString("\"withLink\": true\r\n").toAscii();
     datas += QString("}\r\n\r\n").toAscii();
 
-    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files/") + m_LastUploadedFile + "/permissions"));
+    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files/") + id + "/permissions"));
     request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -818,31 +846,191 @@ void GoogleConnectController::share() {
     Q_UNUSED(ok);
 }
 
+void GoogleConnectController::share() {
+    shareId(m_LastUploadedFile);
+}
+
 
 
 
 void GoogleConnectController::checkReplyShare() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
-        QString response;
-        if (reply) {
-            if (reply->error() == QNetworkReply::NoError) {
-                const int available = reply->bytesAvailable();
-                if (available > 0) {
-                    const QByteArray buffer(reply->readAll());
-                    response = QString::fromUtf8(buffer);
+    QString response;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            const int available = reply->bytesAvailable();
+            if (available > 0) {
+                const QByteArray buffer(reply->readAll());
+                response = QString::fromUtf8(buffer);
 
-                    QRegExp check("anyoneWithLink");
-                    if(check.indexIn(response) != -1)
-                        emit shared(m_DistUrl);
+                qDebug() << m_DistUrl;
+
+                QRegExp check("anyoneWithLink");
+                if(check.indexIn(response) != -1)
+                    emit shared(m_DistUrl);
 
 
-                }
-            } else {
-                qDebug() << "reply... " << reply->errorString();
+            }
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+        }
+
+        reply->deleteLater();
+    }
+}
+
+//------------------------------------------------------------------------------
+// google drive stuff
+
+void GoogleConnectController::refresh() {
+    getFileList(m_CurrentDir);
+}
+
+void GoogleConnectController::getFileList(const QString &directory) {
+
+    QString query;
+    if(directory.isEmpty())
+        query = "\'root\' in parents";
+    else {
+        query = "\'" + directory + "\' in parents";
+        m_CurrentDir = directory;
+    }
+
+    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files?")
+                                    + "q=" + query
+                                    + "&key=" + GOOGLE_API_KEY
+                               )
+                            );
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
+
+    m_WithButNoKey = "DIRECTORY_REQUEST:" + directory;
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getFileListReply()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+}
+
+void GoogleConnectController::popFolder() {
+    getFileList(m_ParentID);
+}
+
+void GoogleConnectController::getFileListReply() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    QString response;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            const int available = reply->bytesAvailable();
+            if (available > 0) {
+                const QByteArray buffer(reply->readAll());
+                response = QString::fromUtf8(buffer);
+                parseFileList(response);
             }
 
-            reply->deleteLater();
+            QRegExp parent("\"selfLink\": \"https://www.googleapis.com/drive/v2/files?q=\'([^\']+)\'");
+            if(parent.indexIn(response) != -1) {
+                m_ParentID = parent.cap(1);
+            } else {
+                m_ParentID = "root";
+            }
+
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+            renewToken();
         }
+
+        reply->deleteLater();
+    }
 }
+
+
+
+void GoogleConnectController::parseFileList(const QString &page) {
+    QRegExp regexp("\"kind\": \"drive#file\",");
+    int pos = 0;
+    int lastPos = regexp.indexIn(page, pos);
+
+
+    if(lastPos == -1) {
+        qDebug()<< "empty";
+        emit folderEmpty();
+        return;
+    }
+
+    while((pos = regexp.indexIn(page, lastPos)) != -1) {
+        pos += regexp.matchedLength();
+
+        // parse each file individually
+        parseFileEntry(page.mid(lastPos, pos-lastPos));
+
+        lastPos = pos;
+    }
+    parseFileEntry(page.mid(lastPos, pos-lastPos));
+
+}
+
+
+void GoogleConnectController::parseFileEntry(const QString &entry) {
+    QRegExp id("\"id\": \"([^\"]+)\"");
+    QRegExp iconLink("\"iconLink\": \"([^\"]+)\",");
+    QRegExp title("\"title\": \"([^\"]+)\",");
+    QRegExp type ("\"mimeType\": \"([^\"]+)\",");
+    QRegExp lastEdit("\"modifiedDate\": \"([^\"]+)\",");
+    QRegExp openLink("\"embedLink\": \"([^\"]+)\"");
+
+    int pos = id.indexIn(entry);
+    if(pos == -1) return;
+    pos += id.matchedLength();
+
+    pos = iconLink.indexIn(entry, pos);
+    if(pos == -1) return;
+    pos += iconLink.matchedLength();
+
+    pos = title.indexIn(entry, pos);
+    if(pos == -1) return;
+    pos += title.matchedLength();
+
+    pos = type.indexIn(entry, pos);
+    if(pos == -1) return;
+    pos += type.matchedLength();
+
+    pos = lastEdit.indexIn(entry, pos);
+    if(pos == -1) return;
+    pos += lastEdit.matchedLength();
+
+
+    DriveItem *d = new DriveItem(this);
+    d->setID(id.cap(1));
+    d->setIconLink(iconLink.cap(1));
+    d->setTitle(title.cap(1));
+    d->setType(type.cap(1));
+
+    if(openLink.indexIn(entry) != -1) {
+        QString link = openLink.cap(1);
+        d->setOpenLink(link);
+    }
+
+
+    QDateTime date = QDateTime::fromString(lastEdit.cap(1).mid(0,lastEdit.cap(1).length()-1), "yyyy-MM-ddThh:mm:ss.zzz");
+    if(date.currentDateTime().date() == date.date()) {
+        d->setTimestamp(tr("last edit: ") + date.time().toString("hh:mm:ss"));
+    } else {
+        d->setTimestamp(tr("last edit: ") + date.date().toString());
+    }
+
+
+
+    emit driveItemLoaded(d);
+
+}
+
+void GoogleConnectController::setHomeFolder(const QString &id) {
+    m_Settings->setValue("DriveHomeFolderID", id);
+}
+
+
 

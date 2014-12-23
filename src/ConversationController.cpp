@@ -45,6 +45,7 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     check = connect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(waitingLink()));
     Q_ASSERT(check);
 
+
 }
 
 bool ConversationController::isOwnMessage(const QString &from) {

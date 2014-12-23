@@ -14,6 +14,8 @@
 #include "OnlineHistory.hpp"
 #include "FileTransfert.hpp"
 
+class DriveItem;
+
 class GoogleConnectController : public OnlineHistory, public FileTransfert {
     Q_OBJECT;
 
@@ -39,6 +41,9 @@ private:
     QString                              m_WithButNoKey;
     QString                              m_LastUploadedFile;
     QString                              m_DistUrl;
+    QString                              m_ParentID;
+    bool                                 m_CreatingRootDir;
+    QString                              m_CurrentDir;
 
 public:
      GoogleConnectController            (QObject *parent = 0);
@@ -60,9 +65,16 @@ public:
      // -------------------------------------------------------------------------
      // google drive
 
-     void createHomeFolder      ();
+     void createFolder          (const QString &name = "Hg10", const QString &root = "");
      virtual void putFile       (const QString &path);
      virtual void share         ();
+     void shareId               (const QString &id, const QString &path = "");
+     void popFolder             ();
+     void refresh               ();
+     void setHomeFolder         (const QString &id);
+
+     void parseFileList         (const QString &page);
+     void parseFileEntry        (const QString &entry);
 
 
 private:
@@ -97,6 +109,8 @@ public Q_SLOTS:
 
 
 
+
+
     // -------------------------------------------------------------------------
     // google drive
 
@@ -104,6 +118,9 @@ public Q_SLOTS:
     void uploading              (qint64 status, qint64 total);
     void checkCreateHomeReply   ();
     void checkReplyShare        ();
+
+    void getFileList            (const QString &directory = "");
+    void getFileListReply       ();
 
     // -------------------------------------------------------------------------
     // interface
@@ -120,6 +137,9 @@ Q_SIGNALS:
     void uploading              (int status);
     void uploaded               ();
     void shared                 (const QString &url);
+    void driveItemLoaded        (DriveItem *);
+    void folderEmpty            ();
+    void folderCreated          ();
 
 };
 

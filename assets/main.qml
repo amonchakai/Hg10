@@ -4,7 +4,7 @@ import bb.cascades 1.2
 
 TabbedPane {
     id: mainTab
-    showTabsOnActionBar: true
+    showTabsOnActionBar: false
     activeTab: tabHome
     
     Menu.definition: MenuDefinition {
@@ -63,6 +63,17 @@ TabbedPane {
 
     }
     */
+    
+    Tab {
+        id: tabDrive
+        title: qsTr("Drive")
+        ActionBar.placement: ActionBarPlacement.InOverflow
+        imageSource: "asset:///images/icon_drive.png"
+        
+        delegate: Delegate {
+            source: "Drive.qml"
+        }
+    }
     
     onCreationCompleted: {
         if(!loginController.isLogged()) {
