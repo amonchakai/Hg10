@@ -120,10 +120,6 @@
         <source>Refresh</source>
         <translation>Rafraichir</translation>
     </message>
-    <message>
-        <source>Drive</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>CreateRoom</name>
@@ -152,69 +148,50 @@
     <name>Drive</name>
     <message>
         <source>No files found in this folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun fichier dans ce dossier</translation>
     </message>
     <message>
         <source>Loading, please wait.</source>
-        <translation type="unfinished"></translation>
+        <translation>Chargement, veuillez patienter</translation>
     </message>
     <message>
         <source>Create a new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau dossier</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Rafraichir</translation>
+        <translation>Rafraichir</translation>
     </message>
     <message>
         <source>Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Actions</translation>
     </message>
     <message>
         <source>Set as home folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Définir dossier de l'application</translation>
+    </message>
+    <message>
+        <source>Share</source>
+        <translation>Partager</translation>
     </message>
 </context>
 <context>
     <name>DriveController</name>
     <message>
         <source>Cannot open this file...</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d'ouvrir ce fichier...</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau dossier</translation>
     </message>
     <message>
         <source>name...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DrivePicker</name>
-    <message>
-        <source>Loading, please wait.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom...</translation>
     </message>
     <message>
-        <source>No files found in this folder.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Actions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set as home folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="unfinished">Rafraichir</translation>
-    </message>
-    <message>
-        <source>Create a new folder</source>
-        <translation type="unfinished"></translation>
+        <source>Link copied to clipboard</source>
+        <translation>Lien copié dans le presse papier</translation>
     </message>
 </context>
 <context>
@@ -682,7 +659,7 @@ Supprimer et oublier cette stupide application.</translation>
     </message>
     <message>
         <source>Drive</source>
-        <translation type="unfinished"></translation>
+        <translation>Drive</translation>
     </message>
 </context>
 </TS>

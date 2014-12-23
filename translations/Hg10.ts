@@ -116,10 +116,6 @@
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Drive</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>CreateRoom</name>
@@ -170,6 +166,10 @@
         <source>Set as home folder</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Share</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DriveController</name>
@@ -185,31 +185,8 @@
         <source>name...</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>DrivePicker</name>
     <message>
-        <source>Loading, please wait.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No files found in this folder.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Actions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set as home folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create a new folder</source>
+        <source>Link copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

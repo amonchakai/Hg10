@@ -16,6 +16,7 @@
 #include <bb/system/SystemToast>
 #include <bb/system/SystemPrompt>
 #include <bb/system/SystemDialog>
+#include <bb/system/Clipboard>
 
 #include "ConversationManager.hpp"
 
@@ -313,3 +314,15 @@ void DriveController::setHomeFolder(const QString &id) {
     m_Google->setHomeFolder(id);
 }
 
+void DriveController::copyShareLink(const QString& id, const QString &link) {
+    m_Google->shareId(id);
+
+    bb::system::Clipboard clipboard;
+    clipboard.clear();
+    clipboard.insert("text/plain", link.toAscii());
+
+    bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+    toast->setBody(tr("Link copied to clipboard"));
+    toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+    toast->show();
+}

@@ -14,7 +14,6 @@ Page {
     property variant smileyPage
     property string smileyToAdd
     property string filenameChat
-    property variant drivePage
     
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
@@ -321,16 +320,6 @@ Page {
             onTriggered: {
                 filePicker.open();
             }
-        }, 
-        ActionItem {
-            title: qsTr("Drive")
-            imageSource: "asset:///images/icon_drive.png"
-            ActionBar.placement: ActionBarPlacement.InOverflow
-            onTriggered: {
-                if(!drivePage)
-                    drivePage = drivePicker.createObject();
-                nav.push(drivePage);
-            }
         },
         ActionItem {
             title: qsTr("Reply")
@@ -471,10 +460,6 @@ Page {
         ComponentDefinition {
             id: smileyPicker
             source: "SmileyPicker.qml"
-        },
-        ComponentDefinition {
-            id: drivePicker
-            source: "DrivePicker.qml"
         }
     ]
 }

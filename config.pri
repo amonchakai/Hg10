@@ -45,7 +45,6 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
         $$quote($$BASEDIR/assets/Drive.qml) \
-        $$quote($$BASEDIR/assets/DrivePicker.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \
         $$quote($$BASEDIR/assets/FacebookConnect.qml) \
         $$quote($$BASEDIR/assets/FurtherInformation.qml) \

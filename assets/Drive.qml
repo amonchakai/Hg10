@@ -193,6 +193,13 @@ NavigationPane {
                                                 overallContactContainer.ListItem.view.setHome(ListItemData.id);
                                             }
                                         }
+                                        ActionItem {
+                                            title: qsTr("Share")
+//                                            imageSource: "asset:///images/icon_home.png"
+                                            onTriggered: {
+                                                overallContactContainer.ListItem.view.shareLink(ListItemData.id, ListItemData.openLink);
+                                            }
+                                        }
                                     }
                                 ]
                             }
@@ -201,6 +208,10 @@ NavigationPane {
                     
                     function setHome(id) {
                         driveController.setHomeFolder(id);
+                    }
+                    
+                    function shareLink(id, link) {
+                        driveController.copyShareLink(id, link);
                     }
                     
                     onTriggered: {

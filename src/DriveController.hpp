@@ -52,6 +52,7 @@ public Q_SLOTS:
     void createNewFolder                ();
     void setHomeFolder                  (const QString &id);
     void openForSharing                 (const QString &id, const QString &type);
+    void copyShareLink                  (const QString& id, const QString &link);
 
     void onPromptFinishedCreateFolder(bb::system::SystemUiResult::Type);
     void onPromptFinishedShareFile(bb::system::SystemUiResult::Type);

@@ -1,5 +1,5 @@
 1
-84
+83
 1440x1440/Contacts.qml
 720x720/Contacts.qml
 720x720/Conversation.qml
@@ -10,7 +10,6 @@ Conversation.qml
 CreateRoom.qml
 data/emojies.xml
 Drive.qml
-DrivePicker.qml
 DropboxConnect.qml
 FacebookConnect.qml
 FurtherInformation.qml

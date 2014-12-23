@@ -900,6 +900,7 @@ void GoogleConnectController::getFileList(const QString &directory) {
     QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files?")
                                     + "q=" + query
                                     + "&key=" + GOOGLE_API_KEY
+                                    + "&trashed=false"
                                )
                             );
 
@@ -928,6 +929,7 @@ void GoogleConnectController::getFileListReply() {
             if (available > 0) {
                 const QByteArray buffer(reply->readAll());
                 response = QString::fromUtf8(buffer);
+
                 parseFileList(response);
             }
 
@@ -1012,6 +1014,12 @@ void GoogleConnectController::parseFileEntry(const QString &entry) {
     if(openLink.indexIn(entry) != -1) {
         QString link = openLink.cap(1);
         d->setOpenLink(link);
+    } else {
+        QRegExp alternateLink("\"alternateLink\": \"([^\"]+)\"");
+        if(alternateLink.indexIn(entry) != -1) {
+            QString link = alternateLink.cap(1);
+            d->setOpenLink(link);
+        }
     }
 
 
