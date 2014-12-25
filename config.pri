@@ -43,6 +43,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/ApplicationLog.qml) \
         $$quote($$BASEDIR/assets/Contacts.qml) \
         $$quote($$BASEDIR/assets/Conversation.qml) \
+        $$quote($$BASEDIR/assets/ConversationCard.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
         $$quote($$BASEDIR/assets/Drive.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \

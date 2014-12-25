@@ -1,5 +1,5 @@
 1
-83
+84
 1440x1440/Contacts.qml
 720x720/Contacts.qml
 720x720/Conversation.qml
@@ -7,6 +7,7 @@ AdvancedConection.qml
 ApplicationLog.qml
 Contacts.qml
 Conversation.qml
+ConversationCard.qml
 CreateRoom.qml
 data/emojies.xml
 Drive.qml

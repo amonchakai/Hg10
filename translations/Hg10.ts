@@ -118,6 +118,33 @@
     </message>
 </context>
 <context>
+    <name>ConversationCard</name>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attach</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To last message</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CreateRoom</name>
     <message>
         <source>Create room</source>

@@ -34,7 +34,9 @@ struct XMPPServiceMessages {
         REQUEST_CONTACT_LIST_PRESENCE,
         SET_STATUS_TEXT,
         SET_PRESENCE                = 20,
-        ADD_CONTACT
+        ADD_CONTACT,
+        HUB_CALL_INIT_ACCOUNT,
+        HUB_CALL_DELETE_ACCOUNT
     };
 
 };

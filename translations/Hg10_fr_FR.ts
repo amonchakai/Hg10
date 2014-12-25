@@ -122,6 +122,33 @@
     </message>
 </context>
 <context>
+    <name>ConversationCard</name>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Rafraichir</translation>
+    </message>
+    <message>
+        <source>Attach</source>
+        <translation type="unfinished">Joindre</translation>
+    </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished">Répondre</translation>
+    </message>
+    <message>
+        <source>Emoticons</source>
+        <translation type="unfinished">Emoticons</translation>
+    </message>
+    <message>
+        <source>Stickers</source>
+        <translation type="unfinished">Stickers</translation>
+    </message>
+    <message>
+        <source>To last message</source>
+        <translation type="unfinished">Aller au dernier message</translation>
+    </message>
+</context>
+<context>
     <name>CreateRoom</name>
     <message>
         <source>Create room</source>
@@ -168,7 +195,7 @@
     </message>
     <message>
         <source>Set as home folder</source>
-        <translation>Définir dossier de l'application</translation>
+        <translation>Définir dossier de l&apos;application</translation>
     </message>
     <message>
         <source>Share</source>
@@ -179,7 +206,7 @@
     <name>DriveController</name>
     <message>
         <source>Cannot open this file...</source>
-        <translation>Impossible d'ouvrir ce fichier...</translation>
+        <translation>Impossible d&apos;ouvrir ce fichier...</translation>
     </message>
     <message>
         <source>Create new folder</source>

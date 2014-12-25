@@ -68,6 +68,8 @@ public Q_SLOTS:
     void updateAvatar();
     void save();
 
+    void initHub();
+    void removeHub();
 
 Q_SIGNALS:
 

@@ -37,7 +37,7 @@
         can also be 1-part or 2-part. It is not necessary to have a 3-part value.
         An updated version of application must have a versionNumber value higher
         than the previous version. Required. -->
-    <versionNumber>1.1.3</versionNumber>
+    <versionNumber>1.2.0</versionNumber>
     <splashScreens>
        <image>splash_1440x1440.jpg</image>
        <image>splash_720x720.jpg</image>
@@ -118,9 +118,13 @@
         <name>Hg10 Service</name>
         <entryPointType>Qnx/Elf</entryPointType>
         <!-- Request permission to run a backend headless process. -->
+        <permission system="true">run_native</permission>
         <permission system="true">_sys_run_headless</permission>
         <permission system="true">_sys_headless_nostop</permission>
+		<permission system="true">_sys_manage_pimdomain_external_accounts</permission>
+		<permission system="true">_sys_access_pim_unified</permission>
     </entryPoint>
+    
 
     <invoke-target id="com.amonchakai.Hg10Service">
         <invoke-target-type>application.headless</invoke-target-type>
@@ -141,6 +145,31 @@
             <mime-type>*</mime-type>
             <property var="uris" value="headless:" />
         </filter>
+        <filter>
+		   <action>bb.action.DELETE</action>
+		   <mime-type>hub/vnd.hg10.item</mime-type>
+		   <property var="uris" value="data://,pim:"/>
+		</filter>
+		<filter>
+			<action>bb.action.MARKREAD</action>
+			<mime-type>hub/vnd.hg10.item</mime-type>
+			<property var="uris" value="data://,pim:"/>
+		</filter>
+		<filter>
+			<action>bb.action.MARKUNREAD</action>
+			<mime-type>hub/vnd.hg10.item</mime-type>
+			<property var="uris" value="data://,pim:"/>
+		</filter>
+		<filter>
+			<action>bb.action.MARKPRIORREAD</action>
+			<mime-type>hub/vnd.hg10.item</mime-type>
+			<property var="uris" value="data://,pim:"/>
+		</filter>
+		<filter>
+			<action>bb.action.DELETEPRIOR</action>
+			<mime-type>hub/vnd.hg10.item</mime-type>
+			<property var="uris" value="data://,pim:"/>
+		</filter>
     </invoke-target>
 
     <invoke-target id="com.amonchakai.Hg10">
@@ -151,6 +180,17 @@
         </icon>
         <entry-point-id>Hg10</entry-point-id>
     </invoke-target>
+    
+    <invoke-target id="com.amonchakai.Hg10.card">
+	<entry-point-id>Hg10</entry-point-id>
+	<invoke-target-name>Hg10</invoke-target-name>
+	<invoke-target-type>card.previewer</invoke-target-type>
+	<filter>
+		<action>bb.action.VIEW</action>
+		<mime-type>hub/vnd.hg10.item</mime-type>
+		<property var="uris" value="data://,pim:"/>
+	</filter>
+	</invoke-target>
 
     <!-- Unique author ID assigned by signing authority. Required if using debug
         tokens. -->
@@ -168,6 +208,7 @@
 
     <asset path="icon.png">icon.png</asset>
     <asset path="assets">assets</asset>
+    <asset public="true" path="hubassets">hubassets</asset>
 
     <!-- Locale support -->
     <asset path="translations" dest="qm">

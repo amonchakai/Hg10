@@ -62,7 +62,7 @@ void GoogleConnectController::logInRequest() {
     m_Settings->setValue("APIKey",       GOOGLE_API_KEY);
 
     m_WebView->setUrl(QString("https://accounts.google.com/o/oauth2/auth?")
-                            + "scope=https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/googletalk https://www.googleapis.com/auth/drive.file"
+                            + "scope=https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/googletalk https://www.googleapis.com/auth/drive"
                             + "&redirect_uri=urn:ietf:wg:oauth:2.0:oob"
                             + "&response_type=code"
                             + "&client_id=" + GOOGLE_CIENT_ID);
@@ -1024,7 +1024,7 @@ void GoogleConnectController::parseFileEntry(const QString &entry) {
 
 
     QDateTime date = QDateTime::fromString(lastEdit.cap(1).mid(0,lastEdit.cap(1).length()-1), "yyyy-MM-ddThh:mm:ss.zzz");
-    if(date.currentDateTime().date() == date.date()) {
+    if(QDateTime::currentDateTime().date() == date.date()) {
         d->setTimestamp(tr("last edit: ") + date.time().toString("hh:mm:ss"));
     } else {
         d->setTimestamp(tr("last edit: ") + date.date().toString());
