@@ -227,11 +227,11 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
          QByteArray bytes;
          jda.saveToBuffer(objectMap, &bytes);
          request.setData(bytes);
-
+/*
          bb::platform::Notification *notif = new bb::platform::Notification();
          notif->clearEffectsForAll();
          notif->deleteLater();
-
+*/
          m_InvokeManager->invoke(request);
 
     }

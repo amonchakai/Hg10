@@ -479,12 +479,10 @@ NavigationPane {
     
     onPopTransitionEnded: {
         --depth;
-        console.log(depth);
-        _app.closeCard();
+        
     }
     
     onPushTransitionEnded: {
         ++depth;
-        console.log(depth);
     }
 }

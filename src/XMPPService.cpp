@@ -117,9 +117,10 @@ void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
 
 void XMPP::disconnectToXMPPService() {
     qDebug() << "UI hidden";
+    //return;
     if (m_ClientSocket->isOpen() || (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState)) {
         qDebug() << "disconnect UI from headless service";
-        m_ClientSocket->disconnect();
+        m_ClientSocket->disconnectFromHost();
     }
 }
 
