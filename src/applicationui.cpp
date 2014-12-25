@@ -20,6 +20,7 @@
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/LocaleHandler>
+#include <bb/system/CardDoneMessage>
 #include <QTimer>
 
 #include "XMPPService.hpp"
@@ -129,6 +130,15 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     qmlRegisterType<DriveController>("Network.DriveController", 1, 0, "DriveController");
 
     if(!m_HeadlessStart) {
+
+        // ------------------------------------------------------------
+        // disconnect the UI from the headless, when the app is minimized.
+
+        connect(m_app, SIGNAL(thumbnail()),  XMPP::get(), SLOT(disconnectToXMPPService()));
+        connect(m_app, SIGNAL(fullscreen()), XMPP::get(), SLOT(connectToXMPPService()));
+
+
+
         // Create scene document from main.qml asset, the parent is set
         // to ensure the document gets destroyed properly at shut down.
         QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
@@ -191,12 +201,12 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
                                                           .parent(this);
 
          m_root = qml->createRootObject<NavigationPane>();
-         qml->setContextProperty("_app", this);
+
          m_app->setScene(m_root);
 
          QObject *thread = m_root->findChild<QObject*>("conversationCard");
          if(thread != NULL) {
-
+             qml->setContextProperty("_app", this);
              thread->setProperty("name", item["name"].toString());
              thread->setProperty("avatar", QDir::homePath() + QLatin1String("/vCards/") + addresse + ".png");
              thread->setProperty("room", false);
@@ -250,6 +260,21 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
     }
 
 
+}
+
+void ApplicationUI::closeCard() {
+    m_app->requestExit();
+
+    if (m_isCard) {
+        // Assemble response message
+        CardDoneMessage message;
+        message.setData(tr(""));
+        message.setDataType("text/plain");
+        message.setReason(tr("Success!"));
+
+        // Send message
+        m_InvokeManager->sendCardDone(message);
+    }
 }
 
 

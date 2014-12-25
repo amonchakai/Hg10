@@ -48,6 +48,13 @@
     </message>
 </context>
 <context>
+    <name>ApplicationUI</name>
+    <message>
+        <source>Success!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Contacts</name>
     <message>
         <source>Contact</source>

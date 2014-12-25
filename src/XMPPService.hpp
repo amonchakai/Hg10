@@ -123,6 +123,7 @@ public Q_SLOTS:
     void disconnected        ();
     void readyRead           ();
     void connectToXMPPService();
+    void disconnectToXMPPService();
 
     void notifySettingChange ();
 
