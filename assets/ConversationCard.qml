@@ -66,7 +66,7 @@ NavigationPane {
                         horizontalAlignment: HorizontalAlignment.Left
                         defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_left.png" : "asset:///images/icon_left_black.png"
                         onClicked: {
-                            _app.closeCard();
+                            conversationController.closeCard();
                         }
                     }
                 }

@@ -234,6 +234,8 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
 */
          m_InvokeManager->invoke(request);
 
+         connect(XMPP::get(), SIGNAL(closeCardRequest()), this, SLOT(closeCard()));
+
     }
 
     if(request.action().compare("bb.action.COMPOSE") == 0) {

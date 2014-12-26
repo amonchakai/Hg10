@@ -324,47 +324,47 @@
     </message>
     <message>
         <source>Restricted access. Hg10 can only list and access to the files it has created. </source>
-        <translation type="unfinished"></translation>
+        <translation>Accès restreint. Hg10 ne peut accéder qu&apos;aux fichiers qu&apos;il a créé.</translation>
     </message>
     <message>
         <source>Deny access. Hg10 cannot access to Google Drive. </source>
-        <translation type="unfinished"></translation>
+        <translation>Refuser l&apos;access. Hg10 ne peut accéder a Google Drive.</translation>
     </message>
     <message>
         <source>Permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Permisssions</translation>
     </message>
     <message>
         <source>Full access. This enable you to see all your files, open them within Hg10, and share them with your friends.</source>
-        <translation type="unfinished"></translation>
+        <translation>Accès non limité. Hg10 sera capable de lister vos fichiers, les ouvrir, et les partager avec vos amis.</translation>
     </message>
     <message>
         <source>Google drive</source>
-        <translation type="unfinished"></translation>
+        <translation>Google Drive</translation>
     </message>
     <message>
         <source>Full access</source>
-        <translation type="unfinished"></translation>
+        <translation>Accès non limité</translation>
     </message>
     <message>
         <source>Restricted access</source>
-        <translation type="unfinished"></translation>
+        <translation>Accès restreint</translation>
     </message>
     <message>
         <source>Deny access</source>
-        <translation type="unfinished"></translation>
+        <translation>Refuser l&apos;accès</translation>
     </message>
     <message>
         <source>Request permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Demander les authorisations</translation>
     </message>
     <message>
         <source>Instant messaging service: Connect to Google Hangout</source>
-        <translation type="unfinished"></translation>
+        <translation>Messagerie instantanée: accès à Google Hangout</translation>
     </message>
     <message>
         <source>Gmail: Retrieve history, enabling synchronization between devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Gmail: Recupérer l&apos;historique des précédentes conversations.</translation>
     </message>
 </context>
 <context>
@@ -397,14 +397,6 @@
     <message>
         <source>Login</source>
         <translation>Identifiant</translation>
-    </message>
-    <message>
-        <source>Log</source>
-        <translation type="obsolete">Connecter</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Annuler</translation>
     </message>
     <message>
         <source>Password</source>

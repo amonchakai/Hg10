@@ -34,6 +34,7 @@ public:
     void                           disconnectFromServer();
     void                           checkMissingPictures();
     void                           askConnectionStatus();
+    void                           closeCard();
 
 private:
     static XMPP              *m_This;
@@ -144,6 +145,7 @@ Q_SIGNALS:
 
     void connectedXMPP       ();
     void connectionFailed    ();
+    void closeCardRequest    ();
 };
 
 

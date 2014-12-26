@@ -449,3 +449,7 @@ void ConversationController::fowardUploadingProcess(int status) {
 }
 
 
+void ConversationController::closeCard() {
+    XMPP::get()->closeCard();
+}
+

@@ -90,7 +90,10 @@ public Q_SLOTS:
     void shared                         (const QString &url);
     void fowardUploadingProcess         (int progress);
 
+    // -----------------------------------------------------
+    // messages with Hub
 
+    void closeCard                      ();
 
 Q_SIGNALS:
     void complete                       ();
