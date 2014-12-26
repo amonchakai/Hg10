@@ -99,6 +99,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_quoted_white.png) \
         $$quote($$BASEDIR/assets/images/icon_refresh.png) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
+        $$quote($$BASEDIR/assets/images/icon_share.png) \
         $$quote($$BASEDIR/assets/images/icon_top.png) \
         $$quote($$BASEDIR/assets/images/icon_top_black.png) \
         $$quote($$BASEDIR/assets/images/pinch_out.png) \

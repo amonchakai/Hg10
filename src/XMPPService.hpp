@@ -111,8 +111,7 @@ public Q_SLOTS:
     // ------------------------------------------------------------
     // Hub interface
 
-    void initHubAccount         ();
-    void removeHubAccount       ();
+    void updateHub              ();
 
 
     // ------------------------------------------------------------

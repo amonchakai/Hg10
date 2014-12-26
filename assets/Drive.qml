@@ -195,7 +195,7 @@ NavigationPane {
                                         }
                                         ActionItem {
                                             title: qsTr("Share")
-//                                            imageSource: "asset:///images/icon_home.png"
+                                            imageSource: "asset:///images/icon_share.png"
                                             onTriggered: {
                                                 overallContactContainer.ListItem.view.shareLink(ListItemData.id, ListItemData.openLink);
                                             }

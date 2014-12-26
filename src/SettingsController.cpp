@@ -66,10 +66,3 @@ void SettingsController::save() {
     XMPP::get()->notifySettingChange();
 }
 
-
-void SettingsController::initHub() {
-    XMPP::get()->initHubAccount();
-}
-void SettingsController::removeHub() {
-    XMPP::get()->removeHubAccount();
-}

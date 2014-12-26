@@ -1,5 +1,5 @@
 1
-84
+85
 1440x1440/Contacts.qml
 720x720/Contacts.qml
 720x720/Conversation.qml
@@ -45,6 +45,7 @@ images/icon_notification.png
 images/icon_quoted_white.png
 images/icon_refresh.png
 images/icon_settings.png
+images/icon_share.png
 images/icon_top.png
 images/icon_top_black.png
 images/pinch_out.png

@@ -312,6 +312,12 @@ void DriveController::onPromptFinishedCreateFolder(bb::system::SystemUiResult::T
 
 void DriveController::setHomeFolder(const QString &id) {
     m_Google->setHomeFolder(id);
+
+    bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+    toast->setBody(tr("Home folder set!"));
+    toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+    toast->show();
 }
 
 void DriveController::copyShareLink(const QString& id, const QString &link) {

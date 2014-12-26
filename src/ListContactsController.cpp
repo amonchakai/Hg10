@@ -219,6 +219,7 @@ void ListContactsController::markRead() {
 
 
     ConversationManager::get()->closeConversation();
+    XMPP::get()->updateHub();
 
 }
 

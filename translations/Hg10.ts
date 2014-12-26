@@ -223,6 +223,10 @@
         <source>Link copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Home folder set!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DropBoxConnectController</name>

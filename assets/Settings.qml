@@ -282,25 +282,6 @@ NavigationPane {
                 
                 Divider { }
                 
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    Button {
-                        text: ("Init Hub")
-                        onClicked: {
-                            settingsController.initHub();
-                        }
-                    }
-                    Button {
-                        text: ("Remove Hub")
-                        onClicked: {
-                            settingsController.removeHub();
-                        }
-                    }
-                }
-                
     	    }
     	    
     	    

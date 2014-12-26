@@ -227,6 +227,10 @@
         <source>Link copied to clipboard</source>
         <translation>Lien copié dans le presse papier</translation>
     </message>
+    <message>
+        <source>Home folder set!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DropBoxConnectController</name>

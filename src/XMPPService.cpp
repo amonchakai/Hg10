@@ -673,23 +673,11 @@ void XMPP::facebookImagesRetrieved(const QString &who) {
 // ------------------------------------------------------------
 // Hub interface
 
-void XMPP::initHubAccount() {
+void XMPP::updateHub() {
     mutex.lockForWrite();
 
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
-        int code = XMPPServiceMessages::HUB_CALL_INIT_ACCOUNT;
-        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
-        m_ClientSocket->flush();
-    }
-
-    mutex.unlock();
-}
-
-void XMPP::removeHubAccount() {
-    mutex.lockForWrite();
-
-    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
-        int code = XMPPServiceMessages::HUB_CALL_DELETE_ACCOUNT;
+        int code = XMPPServiceMessages::UPDATE_HUB;
         m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
         m_ClientSocket->flush();
     }
