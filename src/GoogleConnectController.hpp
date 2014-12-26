@@ -19,8 +19,15 @@ class DriveItem;
 class GoogleConnectController : public OnlineHistory, public FileTransfert {
     Q_OBJECT;
 
+    Q_PROPERTY( bool    gmailAccess       READ getGmailAccess       WRITE setGmailAccess)
+    Q_PROPERTY( int     driveAccess       READ getDriveAccess       WRITE setDriveAccess)
 
 private:
+
+    bool                                 m_GmailAccess;
+    int                                  m_DriveAccess;
+
+
     bb::cascades::WebView               *m_WebView;
     QSettings                           *m_Settings;
 
@@ -59,8 +66,11 @@ public:
      void parseRefresh          (const QString &message);
      void getUserInfo           ();
 
+     inline bool getGmailAccess() const         { return m_GmailAccess; };
+     inline void setGmailAccess(bool c)         { m_GmailAccess = c;    };
 
-
+     inline int  getDriveAccess() const         { return m_DriveAccess; };
+     inline void setDriveAccess(int c)          { m_DriveAccess = c;    };
 
      // -------------------------------------------------------------------------
      // google drive

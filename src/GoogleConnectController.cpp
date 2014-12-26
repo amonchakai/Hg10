@@ -37,6 +37,8 @@
 QReadWriteLock  mutexGoogleConnect;
 
 GoogleConnectController::GoogleConnectController(QObject *parent) : OnlineHistory(parent),
+        m_GmailAccess(true),
+        m_DriveAccess(1),
         m_WebView(NULL),
         m_Settings(NULL),
         m_HistoryIndex(0),
@@ -61,8 +63,23 @@ void GoogleConnectController::logInRequest() {
     m_Settings->setValue("ClientSecret", GOOGLE_CLIENT_SECRET);
     m_Settings->setValue("APIKey",       GOOGLE_API_KEY);
 
+    QString scope = "https://www.googleapis.com/auth/googletalk ";
+    if(m_GmailAccess)
+        scope += "https://www.googleapis.com/auth/gmail.readonly ";
+
+    switch(m_DriveAccess) {
+        case 1:
+            scope += "https://www.googleapis.com/auth/drive";
+            break;
+        case 2:
+            scope += "https://www.googleapis.com/auth/drive.file";
+            break;
+        default:
+            break;
+    }
+
     m_WebView->setUrl(QString("https://accounts.google.com/o/oauth2/auth?")
-                            + "scope=https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/googletalk https://www.googleapis.com/auth/drive"
+                            + "scope=" + scope
                             + "&redirect_uri=urn:ietf:wg:oauth:2.0:oob"
                             + "&response_type=code"
                             + "&client_id=" + GOOGLE_CIENT_ID);

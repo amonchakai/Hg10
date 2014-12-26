@@ -314,6 +314,54 @@
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Google Drive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restricted access. Hg10 can only list and access to the files it has created. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deny access. Hg10 cannot access to Google Drive. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full access. This enable you to see all your files, open them within Hg10, and share them with your friends.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Google drive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restricted access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deny access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Request permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Instant messaging service: Connect to Google Hangout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gmail: Retrieve history, enabling synchronization between devices</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GoogleConnectController</name>
