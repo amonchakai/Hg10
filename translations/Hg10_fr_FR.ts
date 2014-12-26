@@ -55,7 +55,7 @@
     <name>ApplicationUI</name>
     <message>
         <source>Success!</source>
-        <translation type="unfinished"></translation>
+        <translation>Réussi!</translation>
     </message>
 </context>
 <context>
@@ -132,27 +132,27 @@
     <name>ConversationCard</name>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Rafraichir</translation>
+        <translation>Rafraichir</translation>
     </message>
     <message>
         <source>Attach</source>
-        <translation type="unfinished">Joindre</translation>
+        <translation>Joindre</translation>
     </message>
     <message>
         <source>Reply</source>
-        <translation type="unfinished">Répondre</translation>
+        <translation>Répondre</translation>
     </message>
     <message>
         <source>Emoticons</source>
-        <translation type="unfinished">Emoticons</translation>
+        <translation>Emoticons</translation>
     </message>
     <message>
         <source>Stickers</source>
-        <translation type="unfinished">Stickers</translation>
+        <translation>Stickers</translation>
     </message>
     <message>
         <source>To last message</source>
-        <translation type="unfinished">Aller au dernier message</translation>
+        <translation>Aller au dernier message</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     </message>
     <message>
         <source>Home folder set!</source>
-        <translation type="unfinished"></translation>
+        <translation>Le dossier de l&apos;application a été défini!</translation>
     </message>
 </context>
 <context>

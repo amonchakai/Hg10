@@ -240,28 +240,6 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
         QmlDocument *qml = QmlDocument::create("asset:///StartupCardCompose.qml")
                                                                   .parent(this);
 
-        m_root = qml->createRootObject<NavigationPane>();
-        qml->setContextProperty("_app", this);
-        m_app->setScene(m_root);
-
-        QString directory = QDir::homePath() + QLatin1String("/HFRBlackData");
-        if (!QFile::exists(directory)) {
-            return;
-        }
-
-        QFile file(directory + "/UserID.txt");
-
-        QString userName;
-        if (file.open(QIODevice::ReadOnly)) {
-            QDataStream stream(&file);
-            stream >> userName;
-
-            file.close();
-        }
-
-        QObject *thread = m_root->findChild<QObject*>("postMesssage");
-        if(thread != NULL)
-            thread->setProperty("pseudo", userName);
     }
 
 

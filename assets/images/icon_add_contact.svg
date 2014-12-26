@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="64.005043"
+   height="63.932461"
+   id="svg3039"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="icon_add_contact.svg"
+   inkscape:export-filename="/Users/pierre/Documents/Code/momentics/Hg10/assets/images/icon_add_contact.png"
+   inkscape:export-xdpi="106.96411"
+   inkscape:export-ydpi="106.96411">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1462"
+     inkscape:window-height="990"
+     id="namedview7"
+     showgrid="false"
+     inkscape:zoom="7.1713891"
+     inkscape:cx="-3.0600639"
+     inkscape:cy="29.196634"
+     inkscape:window-x="138"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3039" />
+  <metadata
+     id="metadata3045">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3043" />
+  <path
+     d="m 37.966103,27.050848 a 8.4237289,8.3050852 0 1 1 -16.847458,0 8.4237289,8.3050852 0 1 1 16.847458,0 z"
+     transform="matrix(1.3917164,0,0,1.3917164,-8.4183038,-12.622226)"
+     id="path3049-4"
+     style="fill:#d3d3d3;fill-opacity:1;stroke:none" />
+  <path
+     d="m 12.964594,63.932459 0,-9.944945 c 0.0243,-1.080643 -0.08925,-3.632491 1.532613,-3.665027 2.339024,-0.04692 4.808324,-0.009 4.808324,-0.009 l -0.07347,-4.522074 c -0.03483,-2.143584 7.92468,-4.400317 12.225737,-4.506773 9.639205,-0.238582 20.696475,5.045146 20.805099,8.838329 l 0.247669,13.793586 c -14.290635,0 -32.059733,0.01592 -39.545972,0.01592 z"
+     id="path3069"
+     style="fill:#d3d3d3;fill-opacity:1;stroke:none"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="ccscssccc" />
+  <rect
+     style="fill:#d3d3d3;fill-opacity:1;fill-rule:evenodd;stroke:none"
+     id="rect2983"
+     width="5.4180059"
+     height="17.995914"
+     x="6.5224323"
+     y="38.142887" />
+  <rect
+     style="fill:#d3d3d3;fill-opacity:1;fill-rule:evenodd;stroke:none"
+     id="rect2983-6"
+     width="5.4180031"
+     height="18.450911"
+     x="-49.550392"
+     y="-0.017319197"
+     transform="matrix(0,-1,1,0,0,0)" />
+</svg>
