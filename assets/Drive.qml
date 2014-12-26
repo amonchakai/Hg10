@@ -94,6 +94,8 @@ NavigationPane {
                     
                     }
                     
+                    focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
+                    
                     listItemComponents: [
                         ListItemComponent {
                             type: "header"
@@ -265,6 +267,7 @@ NavigationPane {
                 
                 onComplete: {
                     connectingActivity.stop();
+                    fileListView.requestFocus();
                 }
                 
                 onPushOpenLink: {
