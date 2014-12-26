@@ -172,7 +172,7 @@ void ApplicationUI::onSystemLanguageChanged()
 void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
 //    qDebug() << "invoke!" << request.action();
 
-    if(request.action().compare("bb.action.VIEW") == 0) {
+    if(request.action().compare("bb.action.VIEW") == 0 || request.action().compare("bb.action.OPEN") == 0) {
 //         qDebug() << "HubIntegration: onInvoked: view item: " << request.data();
 
          JsonDataAccess jda;
@@ -184,6 +184,7 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
          QVariantList items = m_Settings.value("hub/items").toList();
 
          QString addresse;
+         QString name;
          QVariantMap item;
          for(int index = 0; index < items.size(); index++) {
              item = items.at(index).toMap();

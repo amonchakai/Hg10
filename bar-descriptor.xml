@@ -187,6 +187,8 @@
 	<invoke-target-type>card.previewer</invoke-target-type>
 	<filter>
 		<action>bb.action.VIEW</action>
+		<action>bb.action.OPEN</action>
+        <action>bb.action.SHARE</action>
 		<mime-type>hub/vnd.hg10.item</mime-type>
 		<property var="uris" value="data://,pim:"/>
 	</filter>
