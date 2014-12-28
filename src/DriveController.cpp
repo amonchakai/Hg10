@@ -41,6 +41,14 @@ DriveController::DriveController(QObject *parent) : QObject(parent), m_ListView(
     check = QObject::connect(WebResourceManager::get(), SIGNAL(onImageReady(const QString &, const QString &)), this, SLOT(onImageReady(const QString &, const QString &)));
     Q_ASSERT(check);
     Q_UNUSED(check);
+
+    check = QObject::connect(m_Google, SIGNAL(uploading(int)), this, SLOT(fowardUploading(int)));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
+
+    check = QObject::connect(m_Google, SIGNAL(uploaded()), this, SLOT(updateView()));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
 }
 
 
@@ -331,4 +339,51 @@ void DriveController::copyShareLink(const QString& id, const QString &link) {
     toast->setBody(tr("Link copied to clipboard"));
     toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
     toast->show();
+}
+
+
+void DriveController::upload(const QString &path) {
+    m_Google->uploadFile(path, m_Google->getCurrentPath());
+}
+
+void DriveController::fowardUploading(int status) {
+    emit uploading(status);
+}
+
+void DriveController::askName() {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    SystemPrompt *prompt = new SystemPrompt();
+    prompt->setTitle(tr("Recording\'s name"));
+    prompt->setDismissAutomatically(true);
+    prompt->inputField()->setEmptyText(tr("name..."));
+
+
+    bool success = QObject::connect(prompt,
+        SIGNAL(finished(bb::system::SystemUiResult::Type)),
+        this,
+        SLOT(onPromptFinishedChooseName(bb::system::SystemUiResult::Type)));
+
+    if (success) {
+        prompt->show();
+     } else {
+        prompt->deleteLater();
+    }
+
+}
+
+void DriveController::onPromptFinishedChooseName(bb::system::SystemUiResult::Type result) {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    if(result == bb::system::SystemUiResult::ConfirmButtonSelection) {
+        SystemPrompt* prompt = qobject_cast<SystemPrompt*>(sender());
+        if(prompt != NULL) {
+            QString directory = QDir::homePath() + QLatin1String("/ApplicationData/AudioMessages/");
+            m_AudioName = directory + prompt->inputFieldTextEntry() + ".m4a";
+            emit startRecording();
+            prompt->deleteLater();
+        }
+    }
 }

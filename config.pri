@@ -103,6 +103,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_share.png) \
         $$quote($$BASEDIR/assets/images/icon_top.png) \
         $$quote($$BASEDIR/assets/images/icon_top_black.png) \
+        $$quote($$BASEDIR/assets/images/icon_upload.png) \
+        $$quote($$BASEDIR/assets/images/icon_walkie.png) \
         $$quote($$BASEDIR/assets/images/pinch_out.png) \
         $$quote($$BASEDIR/assets/images/pinch_out_black.png) \
         $$quote($$BASEDIR/assets/images/pull-to-refresh.png) \

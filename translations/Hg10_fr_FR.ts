@@ -208,6 +208,14 @@
         <source>Share</source>
         <translation>Partager</translation>
     </message>
+    <message>
+        <source>Upload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DriveController</name>
@@ -230,6 +238,10 @@
     <message>
         <source>Home folder set!</source>
         <translation>Le dossier de l&apos;application a été défini!</translation>
+    </message>
+    <message>
+        <source>Recording&apos;s name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

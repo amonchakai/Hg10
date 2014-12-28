@@ -75,8 +75,13 @@ public:
      // -------------------------------------------------------------------------
      // google drive
 
+     inline const QString &getCurrentPath() const    { return   m_CurrentDir; }
+
+
+
      void createFolder          (const QString &name = "Hg10", const QString &root = "");
      virtual void putFile       (const QString &path);
+     void uploadFile            (const QString &path, const QString &folder = "");
      virtual void share         ();
      void shareId               (const QString &id, const QString &path = "");
      void popFolder             ();

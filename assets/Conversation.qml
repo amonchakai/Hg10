@@ -428,7 +428,7 @@ Page {
             id:filePicker
             type : FileType.Picture
             title : "Select Picture"
-            directories : ["/accounts/1000/shared/misc"]
+            directories : ["/accounts/1000/shared/"]
             onFileSelected : {
                 if(selectedFiles.length > 0) {
                     conversationController.sendData(selectedFiles[0]);

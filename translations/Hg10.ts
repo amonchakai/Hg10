@@ -204,6 +204,14 @@
         <source>Share</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Upload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DriveController</name>
@@ -225,6 +233,10 @@
     </message>
     <message>
         <source>Home folder set!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recording&apos;s name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

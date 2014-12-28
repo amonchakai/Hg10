@@ -1,5 +1,5 @@
 1
-86
+88
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 720x720/Contacts.qml
@@ -49,6 +49,8 @@ images/icon_settings.png
 images/icon_share.png
 images/icon_top.png
 images/icon_top_black.png
+images/icon_upload.png
+images/icon_walkie.png
 images/pinch_out.png
 images/pinch_out_black.png
 images/pull-to-refresh.png

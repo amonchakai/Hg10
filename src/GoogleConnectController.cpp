@@ -670,6 +670,10 @@ void GoogleConnectController::getRemainingMessages(QString lastMessageId) {
 // -----------------------------------------------------------------------------------------------------------
 
 void GoogleConnectController::putFile(const QString &path) {
+    uploadFile(path);
+}
+
+void GoogleConnectController::uploadFile(const QString &path, const QString &folder) {
     QFile file(path);
 
     if (!file.exists())
@@ -695,9 +699,15 @@ void GoogleConnectController::putFile(const QString &path) {
     datas += QString("{\r\n").toAscii();
     datas += QString("\"title\": \"" + name + "\",\r\n").toAscii();
     datas += QString("\"mimeType\": \"" + extension + "\",\r\n").toAscii();
-    datas += (QString("\"parents\": [{\r\n")
+    if(folder.isEmpty())
+        datas += (QString("\"parents\": [{\r\n")
                          +  "\"kind\": \"drive#fileLink\",\r\n"
                          +  "\"id\": \"" + m_Settings->value("DriveHomeFolderID").toString() + "\"\r\n"
+                   + "}]\r\n").toAscii();
+    else
+        datas += (QString("\"parents\": [{\r\n")
+                         +  "\"kind\": \"drive#fileLink\",\r\n"
+                         +  "\"id\": \"" + folder + "\"\r\n"
                    + "}]\r\n").toAscii();
 
     datas += QString("}\r\n\r\n").toAscii();

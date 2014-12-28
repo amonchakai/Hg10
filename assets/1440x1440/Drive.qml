@@ -1,6 +1,8 @@
 import bb.cascades 1.2
 import Network.DriveController 1.0
 import com.netimage 1.0
+import bb.cascades.pickers 1.0
+import bb.multimedia 1.2
 
 NavigationPane {
     id: nav
@@ -57,10 +59,14 @@ NavigationPane {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
             }
-        
+            
             Container {
                 layout: StackLayout {
                     orientation: LayoutOrientation.TopToBottom
+                }
+                ProgressIndicator {
+                    id: uploadingIndicator
+                    visible: false
                 }
                 ActivityIndicator {
                     id: connectingActivity
@@ -93,6 +99,8 @@ NavigationPane {
                         onItemsChanged: empty = isEmpty()
                     
                     }
+                    
+                    focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
                     
                     listItemComponents: [
                         ListItemComponent {
@@ -177,7 +185,7 @@ NavigationPane {
                                             }
                                         }
                                     }
-                                    
+                                
                                 }
                                 
                                 Divider { }
@@ -200,11 +208,13 @@ NavigationPane {
                                                 overallContactContainer.ListItem.view.shareLink(ListItemData.id, ListItemData.openLink);
                                             }
                                         }
+                                    
                                     }
                                 ]
                             }
                         }
                     ]
+                    
                     
                     function setHome(id) {
                         driveController.setHomeFolder(id);
@@ -216,21 +226,43 @@ NavigationPane {
                     
                     onTriggered: {
                         var chosenItem = dataModel.data(indexPath);
-                                       
+                        
                         driveController.open(chosenItem.id, chosenItem.type);
                         
                         if(chosenItem.type == "application/vnd.google-apps.folder")
                             connectingActivity.start();
-
-                        
+                    
+                    
                     }
-                    
-                    
-                    
-                }
                 
+                
+                
+                }
+            
             }
             
+            Container {
+                id: voiceRecording
+                visible: false
+                horizontalAlignment: HorizontalAlignment.Center
+                verticalAlignment: VerticalAlignment.Center
+                ImageView {
+                    preferredHeight: 200
+                    preferredWidth: 200
+                    imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/walkie_white.png" : "asset:///images/walkie.png"
+                    verticalAlignment: VerticalAlignment.Center
+                    
+                    onTouch: {
+                        voiceRecording.visible = false;
+                        if(recorder.mediaState != MediaState.Unprepared) {
+                            uploadingIndicator.visible = true;
+                            recorder.reset();
+                            driveController.upload(driveController.audioFile);
+                        } 
+                    }
+                }
+            }
+        
         }
         
         actions: [
@@ -238,6 +270,7 @@ NavigationPane {
                 id: refresh
                 title: qsTr("Refresh")
                 imageSource: "asset:///images/icon_refresh.png"
+                ActionBar.placement: ActionBarPlacement.OnBar
                 onTriggered: {
                     driveController.updateView();
                 }
@@ -249,6 +282,21 @@ NavigationPane {
                 onTriggered: {
                     driveController.createNewFolder();
                 }
+            },
+            ActionItem {
+                title: qsTr("Upload")
+                imageSource: "asset:///images/icon_upload.png"
+                onTriggered: {
+                    filePicker.open();
+                }
+            },
+            ActionItem {
+                title: qsTr("Audio")
+                imageSource: "asset:///images/icon_walkie.png"
+                ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    driveController.askName();
+                }   
             }
         ]
         
@@ -265,6 +313,8 @@ NavigationPane {
                 
                 onComplete: {
                     connectingActivity.stop();
+                    uploadingIndicator.visible = false;
+                    fileListView.requestFocus();
                 }
                 
                 onPushOpenLink: {
@@ -276,10 +326,35 @@ NavigationPane {
                     tpage.link     = link;
                     nav.push(tpage);
                 }
+                
+                onUploading: {
+                    uploadingIndicator.value = status;
+                }
+                
+                onStartRecording: {
+                    voiceRecording.visible = true;
+                    recorder.setOutputUrl(driveController.audioFile);
+                    recorder.record();
+                }
             },
             ComponentDefinition {
                 id: webEdior
                 source: "WebEditor.qml"
+            },
+            AudioRecorder {
+                id: recorder
+            },
+            FilePicker {
+                id:filePicker
+                type : FileType.Picture
+                title : "Select a File"
+                directories : ["/accounts/1000/shared/"]
+                onFileSelected : {
+                    if(selectedFiles.length > 0) {
+                        driveController.upload(selectedFiles[0]);
+                        uploadingIndicator.visible = true;
+                    }
+                }
             }
         ]
     }

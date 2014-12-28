@@ -20,6 +20,7 @@ class DriveItem;
 class DriveController : public QObject {
     Q_OBJECT;
 
+    Q_PROPERTY( QString audioFile   READ getAudioName)
 
 private:
     bb::cascades::ListView          *m_ListView;
@@ -27,6 +28,7 @@ private:
     QList<DriveItem *>               m_DriveItems;
     QReadWriteLock                   m_Mutex;
     QString                          m_SelectedItemForSharing;
+    QString                          m_AudioName;
 
 
 
@@ -41,6 +43,7 @@ public:
 public Q_SLOTS:
     inline void setListView             (QObject *listView)    {m_ListView = dynamic_cast<bb::cascades::ListView*>(listView); }
 
+    inline const QString &getAudioName  ()                     { return m_AudioName; }
 
     void getFileList                    ();
     void pop                            ();
@@ -53,8 +56,14 @@ public Q_SLOTS:
     void setHomeFolder                  (const QString &id);
     void openForSharing                 (const QString &id, const QString &type);
     void copyShareLink                  (const QString& id, const QString &link);
+    void upload                         (const QString &path);
+    void askName                        ();
+
+
+    void fowardUploading                (int);
 
     void onPromptFinishedCreateFolder(bb::system::SystemUiResult::Type);
+    void onPromptFinishedChooseName(bb::system::SystemUiResult::Type);
     void onPromptFinishedShareFile(bb::system::SystemUiResult::Type);
 
 
@@ -62,6 +71,8 @@ public Q_SLOTS:
 Q_SIGNALS:
     void complete                       ();
     void pushOpenLink                   (const QString &link);
+    void uploading                      (int status);
+    void startRecording                 ();
 
 
 };
