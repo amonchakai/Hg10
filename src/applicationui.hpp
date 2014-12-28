@@ -67,7 +67,7 @@ private slots:
     void onSystemLanguageChanged();
     void onInvoked(const bb::system::InvokeRequest& request);
     void closeCard();
-
+    void initReconnect();
 
 
 private:

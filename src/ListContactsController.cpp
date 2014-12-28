@@ -53,6 +53,7 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
     m_Presence  = settings.value("Presence", "").toString();
     m_Available = settings.value("Available", 0).toInt();
 
+
 }
 
 void ListContactsController::clear() {

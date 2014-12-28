@@ -75,6 +75,7 @@ const QList<Contact*>* XMPP::getContacts() {
 }
 
 
+
 void XMPP::connected() {
 
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
@@ -93,9 +94,9 @@ void XMPP::connected() {
 }
 
 void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
-    qDebug() << "Connection error to headless service: " << e << " restart in 2s...";
+    qDebug() << "Connection error to headless service: " << e << " restart in 1s...";
     if(e == QAbstractSocket::RemoteHostClosedError && m_NbFails < 2) {
-        QTimer::singleShot(2000, this, SLOT(connectToXMPPService()));
+        QTimer::singleShot(1000, this, SLOT(connectToXMPPService()));
         ++m_NbFails;
         return;
     }
@@ -111,7 +112,7 @@ void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
         dialog->setBody(tr("The connection to the headless service cannot be established.\n\nMaybe you did not allow it? \nMaybe it crashed...\n\nYou can check the permission, try to kill/restart the process, reinstall the app, reboot your device... \n\nDelete and forget this stupid app\'"));
         dialog->show();
     } else {
-        QTimer::singleShot(2000, this, SLOT(connectToXMPPService()));
+        QTimer::singleShot(1000, this, SLOT(connectToXMPPService()));
     }
 }
 

@@ -132,14 +132,6 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
     if(!m_HeadlessStart) {
 
-        // ------------------------------------------------------------
-        // disconnect the UI from the headless, when the app is minimized.
-
-        connect(m_app, SIGNAL(thumbnail()),  XMPP::get(), SLOT(disconnectToXMPPService()));
-        connect(m_app, SIGNAL(fullscreen()), XMPP::get(), SLOT(connectToXMPPService()));
-
-
-
         // Create scene document from main.qml asset, the parent is set
         // to ensure the document gets destroyed properly at shut down.
         QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
@@ -149,7 +141,17 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
         // Set created root object as the application scene
         Application::instance()->setScene(root);
+
+        // ------------------------------------------------------------
+        // disconnect the UI from the headless, when the app is minimized.
+        QTimer::singleShot(1000, this, SLOT(initReconnect()));
+
     }
+}
+
+void ApplicationUI::initReconnect() {
+    connect(m_app, SIGNAL(thumbnail()),  XMPP::get(), SLOT(disconnectToXMPPService()));
+    connect(m_app, SIGNAL(fullscreen()), XMPP::get(), SLOT(connectToXMPPService()));
 }
 
 void ApplicationUI::onSystemLanguageChanged()
