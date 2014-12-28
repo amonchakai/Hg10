@@ -114,7 +114,7 @@ NavigationPane {
                                 }
                                 horizontalAlignment: HorizontalAlignment.Fill
                                 verticalAlignment: VerticalAlignment.Center
-                                preferredHeight: 100
+                                preferredHeight: 110
                                 
                                 Container {
                                     preferredHeight: 50
@@ -129,7 +129,7 @@ NavigationPane {
                                     
                                     Container {
                                         preferredWidth: 15
-                                        preferredHeight: 100
+                                        preferredHeight: 110
                                     }
                                     
                                     ImageView {
@@ -162,7 +162,7 @@ NavigationPane {
                                         }
                                         horizontalAlignment: HorizontalAlignment.Fill
                                         verticalAlignment: VerticalAlignment.Center
-                                        preferredHeight: 100
+                                        preferredHeight: 110
                                         
                                         Label {
                                             text: ListItemData.title
