@@ -235,7 +235,7 @@ void XMPP::readyRead() {
 
                 code_str = m_ClientSocket->read(sizeof(int));
                 length = *reinterpret_cast<int*>(code_str.data());
-                QString body(m_ClientSocket->read(length));
+                QString body(QTextCodec::codecForName("UTF-8")->toUnicode(m_ClientSocket->read(length)));
 
                 ConversationManager::get()->receiveMessage(from, to, body);
 
@@ -505,9 +505,10 @@ void XMPP::sendMessageTo(const QString &to, const QString &message) {
         m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
         m_ClientSocket->write(to.toAscii(), length);
 
-        length = message.length();
+        QByteArray sentMess = message.toUtf8();
+        length = sentMess.size();
         m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
-        m_ClientSocket->write(message.toAscii(), length);
+        m_ClientSocket->write(sentMess.data(), length);
 
         m_ClientSocket->flush();
     }
