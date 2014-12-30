@@ -219,6 +219,15 @@ void XMPP::readyRead() {
                 code_str = m_ClientSocket->read(sizeof(int));
                 int code = *reinterpret_cast<int*>(code_str.data());
 
+                mutex.lockForWrite();
+                for(int i = 0 ; i < m_Datas->size() ; ++i) {
+                    if(m_Datas->at(i)->getID().toLower() == from.toLower()) {
+                        m_Datas->at(i)->setPresence(code);
+                        break;
+                    }
+                }
+                mutex.unlock();
+
                 emit presenceUpdated(from, code);
 
             }
@@ -390,7 +399,7 @@ void XMPP::requestPresence() {
         int code = XMPPServiceMessages::REQUEST_CONTACT_LIST_PRESENCE;
         m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
         m_ClientSocket->flush();
-        m_Datas->clear();
+        // m_Datas->clear(); ?
     }
     mutex.unlock();
 
