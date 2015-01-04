@@ -212,7 +212,12 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
          if(thread != NULL) {
              qml->setContextProperty("_app", this);
              thread->setProperty("name", item["name"].toString());
-             thread->setProperty("avatar", QDir::homePath() + QLatin1String("/vCards/") + addresse + ".png");
+
+             if(QFile::exists(QDir::homePath() + QLatin1String("/vCards/") + addresse + ".png"))
+                 thread->setProperty("avatar", QDir::homePath() + QLatin1String("/vCards/") + addresse + ".png");
+             else
+                 thread->setProperty("avatar", "asset:///images/avatar.png");
+
              thread->setProperty("room", false);
              thread->setProperty("id", addresse);
 

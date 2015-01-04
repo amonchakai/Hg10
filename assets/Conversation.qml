@@ -324,7 +324,7 @@ Page {
         ActionItem {
             title: qsTr("Reply")
             imageSource: "asset:///images/send.png"
-            ActionBar.placement: ActionBarPlacement.OnBar
+            ActionBar.placement: ActionBarPlacement.Signature
             onTriggered: {
                 conversationController.send(txtField.text);
                 txtField.text = "";            

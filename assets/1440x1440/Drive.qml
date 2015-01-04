@@ -293,7 +293,7 @@ NavigationPane {
             ActionItem {
                 title: qsTr("Audio")
                 imageSource: "asset:///images/icon_walkie.png"
-                ActionBar.placement: ActionBarPlacement.OnBar
+                ActionBar.placement: ActionBarPlacement.Signature
                 onTriggered: {
                     driveController.askName();
                 }   

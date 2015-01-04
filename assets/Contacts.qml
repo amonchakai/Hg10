@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 import bb.system 1.2
 import Network.ListContactsController 1.0
 import com.netimage 1.0
@@ -10,6 +10,7 @@ NavigationPane {
     property variant spage
     property int depth
         
+    
     Page {
         
         titleBar: TitleBar {
@@ -54,7 +55,10 @@ NavigationPane {
             }
         }
         
+        actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
+        
         Container {
+            
             layout: DockLayout { }
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
@@ -113,6 +117,7 @@ NavigationPane {
                     
                 }
                 ListView {
+                    scrollRole: ScrollRole.Main
                     verticalAlignment: VerticalAlignment.Fill
                     horizontalAlignment: HorizontalAlignment.Fill
                     signal refreshTriggered()

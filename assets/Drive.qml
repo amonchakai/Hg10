@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 import Network.DriveController 1.0
 import com.netimage 1.0
 import bb.cascades.pickers 1.0
@@ -40,6 +40,8 @@ NavigationPane {
             }
         }
         
+        actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
+        
         Container {
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
@@ -76,6 +78,7 @@ NavigationPane {
                 }
                 
                 ListView {
+                    scrollRole: ScrollRole.Main
                     id: fileListView
                     dataModel: GroupDataModel {
                         id: theModel
@@ -293,7 +296,7 @@ NavigationPane {
             ActionItem {
                 title: qsTr("Audio")
                 imageSource: "asset:///images/icon_walkie.png"
-                ActionBar.placement: ActionBarPlacement.OnBar
+                ActionBar.placement: ActionBarPlacement.Signature
                 onTriggered: {
                     driveController.askName();
                 }   
