@@ -54,7 +54,7 @@ NavigationPane {
                     id: label
                     text: "Hg10"
                     textStyle {
-                        color: Color.White
+                        color: Color.Black
                         base: SystemDefaults.TextStyles.PrimaryText
                     }
                 }
@@ -122,7 +122,7 @@ NavigationPane {
             attachedObjects: [
                 ImagePaintDefinition {
                     id: back
-                    repeatPattern: RepeatPattern.Fill
+                    repeatPattern: RepeatPattern.XY
                     
                     
                     imageSource: "asset:///images/wallpaper/wallpaper.jpg"
