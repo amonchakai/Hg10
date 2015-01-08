@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 import Network.DriveController 1.0
 import com.netimage 1.0
 import bb.cascades.pickers 1.0
@@ -40,6 +40,8 @@ NavigationPane {
             }
         }
         
+        actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
+        
         Container {
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
@@ -77,6 +79,7 @@ NavigationPane {
                 
                 ListView {
                     id: fileListView
+                    scrollRole: ScrollRole.Main
                     dataModel: GroupDataModel {
                         id: theModel
                         sortingKeys: ["type"]
