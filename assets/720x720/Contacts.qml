@@ -11,6 +11,8 @@ NavigationPane {
     property variant spage
         
     Page {
+        actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
+        actionBarVisibility: ChromeVisibility.Compact
         
         titleBar: TitleBar {
             kind: TitleBarKind.FreeForm

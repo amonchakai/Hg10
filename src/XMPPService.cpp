@@ -741,6 +741,7 @@ bool XMPP::tryRestartHeadless() {
 }
 
 void XMPP::closeCard() {
+    updateHub();
     emit closeCardRequest();
 }
 

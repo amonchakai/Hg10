@@ -33,7 +33,7 @@ Page {
                     id: label
                     text: "Hg10"
                     textStyle {
-                        color: Color.White
+                        color: Color.Black
                         base: SystemDefaults.TextStyles.PrimaryText
                     }
                 }
@@ -42,7 +42,7 @@ Page {
                     id: host
                     hintText: qsTr("Host (auto)")
                     textStyle {
-                        color: Color.White
+                        color: Color.Black
                     }
                     backgroundVisible: false
                 }
@@ -51,7 +51,7 @@ Page {
                     id: domain
                     hintText: qsTr("Domain (auto)")
                     textStyle {
-                        color: Color.White
+                        color: Color.Black
                     }
                     backgroundVisible: false
                 }
@@ -61,7 +61,7 @@ Page {
                     hintText: qsTr("Port (auto)")
                     inputMode: TextFieldInputMode.Pin
                     textStyle {
-                        color: Color.White
+                        color: Color.Black
                     }
                     backgroundVisible: false
                 }
@@ -70,7 +70,7 @@ Page {
                     id: login
                     hintText: qsTr("Login")
                     textStyle {
-                        color: Color.White
+                        color: Color.Black
                     }
                     backgroundVisible: false
                 }
@@ -81,7 +81,7 @@ Page {
                     inputMode: TextFieldInputMode.Password
                     backgroundVisible: false
                     textStyle {
-                        color: Color.White
+                        color: Color.Black
                     }
                 
                 }

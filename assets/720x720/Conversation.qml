@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 import com.netimage 1.0
 import bb.cascades.pickers 1.0
 import Network.ConversationController 1.0
@@ -14,6 +14,9 @@ Page {
     property variant smileyPage
     property string smileyToAdd
     property string filenameChat
+    
+    actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
+    actionBarVisibility: ChromeVisibility.Compact
     
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
@@ -170,6 +173,9 @@ Page {
                     }
                     background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
                     
+                    Container {
+                        preferredWidth: 100
+                    }
                     
                     ImageButton {
                         preferredHeight: 40
@@ -199,11 +205,12 @@ Page {
                         }   
                     }
                     
-                    TextField {
-                        preferredHeight: 30
+                    TextArea {
+                        preferredHeight: ui.sdu(12);
                         horizontalAlignment: HorizontalAlignment.Fill
                         id: txtField
-                        inputMode: TextFieldInputMode.Chat
+                        inputMode: TextAreaInputMode.Chat
+                        
                         
                         input {
                             submitKey: SubmitKey.Send
@@ -227,7 +234,7 @@ Page {
                         }
                     }
                     Container {
-                        preferredWidth: 10
+                        preferredWidth: 100
                         background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
                     }
                 }
@@ -297,9 +304,11 @@ Page {
     
     function toogleEmoji() {
         if(emoticonsPicker.preferredHeight == 0) {
-            emoticonsPicker.preferredHeight=200;
+            emoticonsPicker.preferredHeight=250;
+            txtField.preferredHeight=ui.sdu(40);
         } else {
             emoticonsPicker.preferredHeight=0;
+            txtField.preferredHeight=ui.sdu(12);
         }
     }
     
@@ -316,7 +325,7 @@ Page {
         ActionItem {
             title: qsTr("Attach")
             imageSource: "asset:///images/icon_attach.png"
-            ActionBar.placement: ActionBarPlacement.OnBar
+            ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: {
                 filePicker.open();
             }
@@ -324,7 +333,7 @@ Page {
         ActionItem {
             title: qsTr("Reply")
             imageSource: "asset:///images/send.png"
-            ActionBar.placement: ActionBarPlacement.Signature
+            ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: {
                 conversationController.send(txtField.text);
                 txtField.text = "";            
