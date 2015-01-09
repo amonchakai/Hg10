@@ -1,4 +1,4 @@
-import bb.cascades 1.3
+import bb.cascades 1.2
 import bb.system 1.2
 import Network.ListContactsController 1.0
 import com.netimage 1.0

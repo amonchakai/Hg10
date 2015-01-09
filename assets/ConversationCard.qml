@@ -1,4 +1,4 @@
-import bb.cascades 1.3
+import bb.cascades 1.2
 import com.netimage 1.0
 import bb.cascades.pickers 1.0
 import Network.ConversationController 1.0
@@ -207,11 +207,11 @@ NavigationPane {
                             }   
                         }
                         
-                        TextField {
-                            preferredHeight: 30
+                        TextArea {
+                            preferredHeight: 110
                             horizontalAlignment: HorizontalAlignment.Fill
                             id: txtField
-                            inputMode: TextFieldInputMode.Chat
+                            inputMode: TextAreaInputMode.Chat
                             
                             input {
                                 submitKey: SubmitKey.Send
@@ -306,8 +306,10 @@ NavigationPane {
         function toogleEmoji() {
             if(emoticonsPicker.preferredHeight == 0) {
                 emoticonsPicker.preferredHeight=500;
+                txtField.preferredHeight=50;
             } else {
                 emoticonsPicker.preferredHeight=0;
+                txtField.preferredHeight=110;
             }
         }
         

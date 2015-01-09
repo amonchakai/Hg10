@@ -199,11 +199,11 @@ Page {
                     }   
                 }
                 
-                TextField {
-                    preferredHeight: 30
+                TextArea {
+                    preferredHeight: 110
                     horizontalAlignment: HorizontalAlignment.Fill
                     id: txtField
-                    inputMode: TextFieldInputMode.Chat
+                    inputMode: TextAreaInputMode.Chat
                     
                     input {
                         submitKey: SubmitKey.Send
@@ -298,8 +298,10 @@ Page {
     function toogleEmoji() {
         if(emoticonsPicker.preferredHeight == 0) {
             emoticonsPicker.preferredHeight=500;
+            txtField.preferredHeight=50;
         } else {
             emoticonsPicker.preferredHeight=0;
+            txtField.preferredHeight=110;
         }
     }
     
