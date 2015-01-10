@@ -96,6 +96,10 @@
         <source>Add contact</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search contact</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Conversation</name>

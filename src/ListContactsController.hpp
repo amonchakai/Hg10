@@ -77,6 +77,7 @@ public Q_SLOTS:
     void filter                         (const QString &contacts);
     void setFilter                      (bool onlyFav);
     void updateConnectionStatus         (bool status);
+    void selectFirst                    ();
 
     void clear                          ();
     void deleteHistory                  (const QString &with);
@@ -97,6 +98,8 @@ Q_SIGNALS:
 
     void presenceChanged                ();
     void availableChanged               ();
+
+    void userSelected                   (const QString &id, const QString &name, const QString &avatar);
 
 
 };

@@ -259,6 +259,14 @@ void ListContactsController::markAllRead() {
 
 }
 
+void ListContactsController::selectFirst() {
+    if(m_Contacts.isEmpty())
+        return;
+
+    emit userSelected(m_Contacts.first()->getID(), m_Contacts.first()->getName(), m_Contacts.first()->getAvatar());
+}
+
+
 void ListContactsController::updateView() {
 
     m_PushStated = false;

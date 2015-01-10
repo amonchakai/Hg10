@@ -91,6 +91,19 @@ NavigationPane {
                             if(text.length == 0) {
                                 listContactsController.updateView();
                                 contactFilterGroup.visible = false;
+                                listContactView.requestFocus();
+                            }
+                        }
+                        
+                        input {
+                            submitKey: SubmitKey.Send
+                            onSubmitted: {
+                                if(contactFilter.text != "")
+                                    listContactsController.selectFirst();
+                                 else {
+                                     contactFilterGroup.visible = false;
+                                     listContactView.requestFocus();
+                                 }
                             }
                         }
                     }
@@ -140,7 +153,6 @@ NavigationPane {
                             scrollToPosition(ScrollPosition.Beginning, ScrollAnimation.None);
                         }
                     }
-                    
                     
                     onRefreshTriggered: {
                         contactFilterGroup.visible = true;
@@ -377,7 +389,7 @@ NavigationPane {
                         
                         nav.push(tpage);
                     }
-                
+                    
                 }
             }
             
@@ -475,6 +487,20 @@ NavigationPane {
                 onTriggered: {
                     listContactsController.addContact();
                 }
+            },
+            ActionItem {
+                title: qsTr("Search contact")
+                imageSource: "asset:///images/icon_search.png"
+                onTriggered: {
+                    contactFilterGroup.visible = true;
+                    contactFilter.requestFocus();
+                    
+                }
+                shortcuts: [
+                    Shortcut {
+                        key: "s"
+                    }
+                ]
             }
         ]
         
@@ -486,6 +512,21 @@ NavigationPane {
                     if(depth > 1)
                         nav.pop();
                 
+                }
+                
+                onUserSelected: {
+                    // Create the content page and push it on top to drill down to it.
+                    if(!tpage) {
+                        tpage = conversation.createObject();
+                    }
+                    
+                    // Set the url of the page to load and thread caption. 
+                    tpage.name     = name;
+                    tpage.avatar   = avatar;
+                    tpage.id       = id;
+                    tpage.room     = false;
+                    
+                    nav.push(tpage);
                 }
                 
             },
