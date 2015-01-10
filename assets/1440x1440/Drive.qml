@@ -211,6 +211,20 @@ NavigationPane {
                                                 overallContactContainer.ListItem.view.shareLink(ListItemData.id, ListItemData.openLink);
                                             }
                                         }
+                                        ActionItem {
+                                            title: qsTr("Rename")
+                                            imageSource: "asset:///images/icon_rename.png"
+                                            onTriggered: {
+                                                overallContactContainer.ListItem.view.rename(ListItemData.id, ListItemData.title);
+                                            }
+                                        }
+                                        ActionItem {
+                                            title: qsTr("Download")
+                                            imageSource: "asset:///images/icon_download.png"
+                                            onTriggered: {
+                                                overallContactContainer.ListItem.view.download(ListItemData.downloadLink, ListItemData.title);
+                                            }
+                                        }
                                     
                                     }
                                 ]
@@ -225,6 +239,14 @@ NavigationPane {
                     
                     function shareLink(id, link) {
                         driveController.copyShareLink(id, link);
+                    }
+                    
+                    function rename(id, title) {
+                        driveController.renameFile(id, title);
+                    }
+                    
+                    function download(fileUrl, title) {
+                        driveController.downloadFile(fileUrl, title);
                     }
                     
                     onTriggered: {

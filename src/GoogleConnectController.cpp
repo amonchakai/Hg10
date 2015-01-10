@@ -1011,6 +1011,8 @@ void GoogleConnectController::parseFileEntry(const QString &entry) {
     QRegExp lastEdit("\"modifiedDate\": \"([^\"]+)\",");
     QRegExp openLink("\"embedLink\": \"([^\"]+)\"");
 
+    QRegExp downloadLink("\"downloadUrl\": \"([^\"]+)\"");
+
     int pos = id.indexIn(entry);
     if(pos == -1) return;
     pos += id.matchedLength();
@@ -1037,6 +1039,28 @@ void GoogleConnectController::parseFileEntry(const QString &entry) {
     d->setIconLink(iconLink.cap(1));
     d->setTitle(title.cap(1));
     d->setType(type.cap(1));
+
+    int npos = downloadLink.indexIn(entry, pos);
+    if(npos != -1) {
+        d->setDownloadLink(downloadLink.cap(1));
+    } else {
+        QRegExp export1("\"application/vnd.openxmlformats-officedocument.wordprocessingml.document\": \"([^\"]+)\"");
+        npos = export1.indexIn(entry, pos);
+        if(npos != -1) {
+            d->setDownloadLink(export1.cap(1));
+        } else {
+            QRegExp export2("\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\": \"([^\"]+)\"");
+            npos = export2.indexIn(entry, pos);
+            if(npos != -1) {
+                d->setDownloadLink(export2.cap(1));
+            } else {
+                QRegExp export3("\"application/pdf\": \"([^\"]+)\"");
+                npos = export3.indexIn(entry, pos);
+                if(npos != -1)
+                    d->setDownloadLink(export3.cap(1));
+            }
+        }
+    }
 
     if(openLink.indexIn(entry) != -1) {
         QString link = openLink.cap(1);
@@ -1068,4 +1092,37 @@ void GoogleConnectController::setHomeFolder(const QString &id) {
 }
 
 
+void GoogleConnectController::setFileName(const QString &id, const QString &name) {
+    QByteArray datas;
+    datas += QString("{\r\n").toAscii();
+    datas += QString("\"title\": \"" + name + "\"\r\n").toAscii();
+    datas += QString("}\r\n\r\n").toAscii();
+
+    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files/") + id + "?key=" + GOOGLE_API_KEY));
+    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->put(request, datas);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkReplyRename()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+}
+
+void GoogleConnectController::checkReplyRename() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    QString response;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            const int available = reply->bytesAvailable();
+            if (available > 0) {
+                emit uploaded();
+            }
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+        }
+
+        reply->deleteLater();
+    }
+}
 

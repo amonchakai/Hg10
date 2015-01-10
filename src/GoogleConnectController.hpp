@@ -133,9 +133,11 @@ public Q_SLOTS:
     void uploading              (qint64 status, qint64 total);
     void checkCreateHomeReply   ();
     void checkReplyShare        ();
+    void checkReplyRename       ();
 
     void getFileList            (const QString &directory = "");
     void getFileListReply       ();
+    void setFileName            (const QString &id, const QString &name);
 
     // -------------------------------------------------------------------------
     // interface

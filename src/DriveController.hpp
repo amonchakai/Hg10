@@ -30,7 +30,7 @@ private:
     QString                          m_SelectedItemForSharing;
     QString                          m_AudioName;
 
-
+    QString                          m_DowloadLocation;
 
 
 public:
@@ -54,17 +54,23 @@ public Q_SLOTS:
     void notifyEmptyFolder              ();
     void createNewFolder                ();
     void setHomeFolder                  (const QString &id);
+    void renameFile                     (const QString &id, const QString &title);
     void openForSharing                 (const QString &id, const QString &type);
     void copyShareLink                  (const QString& id, const QString &link);
     void upload                         (const QString &path);
+    void downloadFile                   (const QString &fileUrl, const QString &title);
     void askName                        ();
 
 
     void fowardUploading                (int);
+    void checkDownload                  ();
 
     void onPromptFinishedCreateFolder(bb::system::SystemUiResult::Type);
     void onPromptFinishedChooseName(bb::system::SystemUiResult::Type);
     void onPromptFinishedShareFile(bb::system::SystemUiResult::Type);
+    void onPromptFinishedRenameFile(bb::system::SystemUiResult::Type);
+    void onPromptFinishedDownloadLocation(const QStringList &);
+    void onPromptFinishedDownloadLocationCanceled();
 
 
 

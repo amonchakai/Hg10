@@ -50,6 +50,7 @@ class DriveItem : public QObject {
     Q_PROPERTY( QString type        READ getType        WRITE setType        NOTIFY typeChanged)
     Q_PROPERTY( QString timestamp   READ getTimestamp   WRITE setTimestamp   NOTIFY timestampChanged)
     Q_PROPERTY( QString openLink    READ getOpenLink    WRITE setOpenLink    NOTIFY openLinkChanged)
+    Q_PROPERTY( QString downloadLink READ getDownloadLink WRITE setDownloadLink    NOTIFY downloadLinkChanged)
 
 private:
     QString         m_Id;
@@ -58,6 +59,7 @@ private:
     QString         m_Type;
     QString         m_Timestamp;
     QString         m_OpenLink;
+    QString         m_DownloadLink;
 
 public:
     DriveItem(QObject *parent)  : QObject(parent) {};
@@ -80,6 +82,9 @@ public:
     inline const QString &getOpenLink() const               { return m_OpenLink; }
     inline void           setOpenLink(const QString &c)     { m_OpenLink = c; emit openLinkChanged();}
 
+    inline const QString &getDownloadLink() const           { return m_DownloadLink; }
+    inline void           setDownloadLink(const QString &c) { m_DownloadLink = c; emit downloadLinkChanged();}
+
     // ----------------------------------------------------------------------------------------------
 Q_SIGNALS:
 
@@ -89,6 +94,7 @@ Q_SIGNALS:
     void typeChanged();
     void timestampChanged();
     void openLinkChanged();
+    void downloadLinkChanged();
 
 };
 

@@ -216,6 +216,14 @@
         <source>Audio</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DriveController</name>
@@ -241,6 +249,14 @@
     </message>
     <message>
         <source>Recording&apos;s name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download completed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

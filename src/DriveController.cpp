@@ -10,13 +10,17 @@
 #include "GoogleConnectController.hpp"
 #include "DataObjects.h"
 #include "Image/WebResourceManager.h"
+#include "Image/HFRNetworkAccessManager.hpp"
 
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/GroupDataModel>
+#include <bb/cascades/pickers/FilePicker>
 #include <bb/system/SystemToast>
 #include <bb/system/SystemPrompt>
 #include <bb/system/SystemDialog>
 #include <bb/system/Clipboard>
+
+#include <QFile>
 
 #include "ConversationManager.hpp"
 
@@ -341,6 +345,107 @@ void DriveController::copyShareLink(const QString& id, const QString &link) {
     toast->show();
 }
 
+void DriveController::renameFile(const QString &id, const QString &title) {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    SystemPrompt *prompt = new SystemPrompt();
+    prompt->setTitle(tr("Rename"));
+    prompt->setDismissAutomatically(true);
+    prompt->inputField()->setEmptyText(tr("name..."));
+    prompt->inputField()->setDefaultText(title);
+
+
+    bool success = QObject::connect(prompt,
+        SIGNAL(finished(bb::system::SystemUiResult::Type)),
+        this,
+        SLOT(onPromptFinishedRenameFile(bb::system::SystemUiResult::Type)));
+
+    if (success) {
+        m_SelectedItemForSharing = id;
+        prompt->show();
+     } else {
+        prompt->deleteLater();
+    }
+}
+
+void DriveController::downloadFile(const QString &fileUrl, const QString &title) {
+    using namespace bb::cascades;
+    using namespace bb::cascades::pickers;
+
+    m_SelectedItemForSharing = fileUrl;
+    FilePicker* filePicker = new FilePicker(FileType::Document, 0, QStringList(), QStringList(), QStringList(title));
+    filePicker->setMode(FilePickerMode::Saver);
+
+
+    bool success = QObject::connect(filePicker, SIGNAL(fileSelected(const QStringList &)), this, SLOT(onPromptFinishedDownloadLocation(const QStringList &)));
+    success = QObject::connect(filePicker, SIGNAL(canceled()), this, SLOT(onPromptFinishedDownloadLocationCanceled()));
+
+    if (success) {
+        filePicker->open();
+     } else {
+         filePicker->deleteLater();
+    }
+}
+
+void DriveController::onPromptFinishedDownloadLocation(const QStringList &location) {
+    using namespace bb::cascades;
+    using namespace bb::cascades::pickers;
+
+    if(location.isEmpty())
+        return;
+
+    m_DowloadLocation = location.first();
+
+
+    QNetworkRequest request(m_SelectedItemForSharing);
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkDownload()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+
+
+    FilePicker* picker = qobject_cast<FilePicker*>(sender());
+    picker->deleteLater();
+}
+
+void DriveController::onPromptFinishedDownloadLocationCanceled() {
+    using namespace bb::cascades;
+    using namespace bb::cascades::pickers;
+
+    FilePicker* picker = qobject_cast<FilePicker*>(sender());
+    picker->deleteLater();
+}
+
+void DriveController::checkDownload() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    QString response;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            const int available = reply->bytesAvailable();
+            if (available > 0) {
+                QFile file(m_DowloadLocation);
+                file.open(QIODevice::WriteOnly);
+                file.write(reply->readAll());
+                file.close();
+
+                bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+                toast->setBody(tr("Download completed"));
+                toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+                toast->show();
+
+            }
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+        }
+
+        reply->deleteLater();
+    }
+}
 
 void DriveController::upload(const QString &path) {
     m_Google->uploadFile(path, m_Google->getCurrentPath());
@@ -387,3 +492,19 @@ void DriveController::onPromptFinishedChooseName(bb::system::SystemUiResult::Typ
         }
     }
 }
+
+
+void DriveController::onPromptFinishedRenameFile(bb::system::SystemUiResult::Type result) {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    if(result == bb::system::SystemUiResult::ConfirmButtonSelection) {
+        SystemPrompt* prompt = qobject_cast<SystemPrompt*>(sender());
+        if(prompt != NULL) {
+            m_Google->setFileName(m_SelectedItemForSharing, prompt->inputFieldTextEntry());
+            prompt->deleteLater();
+        }
+    }
+}
+
+
