@@ -38,6 +38,7 @@ config_pri_assets {
     OTHER_FILES += \
         $$quote($$BASEDIR/assets/1440x1440/Contacts.qml) \
         $$quote($$BASEDIR/assets/1440x1440/Drive.qml) \
+        $$quote($$BASEDIR/assets/1440x1440/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/720x720/Contacts.qml) \
         $$quote($$BASEDIR/assets/720x720/Conversation.qml) \
         $$quote($$BASEDIR/assets/720x720/ConversationCard.qml) \

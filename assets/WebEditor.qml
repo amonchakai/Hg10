@@ -7,22 +7,20 @@ Page {
         verticalAlignment: VerticalAlignment.Fill
         horizontalAlignment: HorizontalAlignment.Fill
         
-        
         ScrollView {
-            verticalAlignment: VerticalAlignment.Fill
-            horizontalAlignment: HorizontalAlignment.Fill
             
             WebView {
-                preferredHeight: 2000
-                verticalAlignment: VerticalAlignment.Fill
-                horizontalAlignment: HorizontalAlignment.Fill
-                settings.textAutosizingEnabled: false
-                settings.zoomToFitEnabled: false
-                id: webview
-            }
-        }        
+                 preferredHeight: 200000
+                 verticalAlignment: VerticalAlignment.Fill
+                 horizontalAlignment: HorizontalAlignment.Fill
+                 settings.textAutosizingEnabled: false
+                 settings.zoomToFitEnabled: false
+                 id: webview
+                 
+             }
+        }         
     }
-    
+        
     onLinkChanged: {
         webview.url = link;
     }

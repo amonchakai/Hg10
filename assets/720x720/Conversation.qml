@@ -321,6 +321,11 @@ Page {
             onTriggered: {
                 conversationController.refreshHistory(id, avatar, name);
             }
+            shortcuts: [
+                Shortcut {
+                    key: "r"
+                }
+            ]
         }, 
         ActionItem {
             title: qsTr("Attach")
@@ -329,6 +334,11 @@ Page {
             onTriggered: {
                 filePicker.open();
             }
+            shortcuts: [
+                Shortcut {
+                    key: "a"
+                }
+            ]
         }, 
         ActionItem {
             title: qsTr("Reply")
@@ -346,6 +356,11 @@ Page {
             onTriggered: {
                 toogleEmoji();
             }
+            shortcuts: [
+                Shortcut {
+                    key: "e"
+                }
+            ]
         },
         ActionItem {
             title: qsTr("Stickers")
@@ -356,6 +371,11 @@ Page {
                     smileyPage = smileyPicker.createObject();
                 nav.push(smileyPage);
             }
+            shortcuts: [
+                Shortcut {
+                    key: "s"
+                }
+            ]
         },
         ActionItem {
             title: qsTr("To last message")
@@ -364,6 +384,11 @@ Page {
             onTriggered: {
                 messageView.evaluateJavaScript("scrollToEnd();")
             }
+            shortcuts: [
+                Shortcut {
+                    key: "b"
+                }
+            ]
         }
     ]
     
