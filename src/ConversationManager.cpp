@@ -214,6 +214,8 @@ void ConversationManager::saveHistory() {
 
     mutexConversation.lockForWrite();
 
+    qDebug() << "push history: " << m_CurrentDst;
+
     // if nothing to save, quit.
     if(m_History.m_History.size() == 0) {
         mutexConversation.unlock();

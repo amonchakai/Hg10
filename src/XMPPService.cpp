@@ -485,10 +485,15 @@ void XMPP::loadvCard(const QString &bareJid, bool push, int status) {
             contact->setAvatar("asset:///images/avatar.png");
     }
 
-    contact->setName(vCard.fullName());
+    if(!vCard.fullName().isEmpty())
+        contact->setName(vCard.fullName());
+    else {
+        if(!vCard.nickName().isEmpty())
+            contact->setName(vCard.nickName());
+    }
     contact->setTimestamp(0);
 
-    if(vCard.fullName().isEmpty()) {
+    if(vCard.fullName().isEmpty() && vCard.nickName().isEmpty()) {
         contact->deleteLater();
     } else {
         contact->setPresence(status);
@@ -497,7 +502,7 @@ void XMPP::loadvCard(const QString &bareJid, bool push, int status) {
 
     mutex.lockForWrite();
 
-    if(push && !vCard.fullName().isEmpty() && !delayPush) {
+    if(push && !(vCard.fullName().isEmpty() && vCard.nickName().isEmpty()) && !delayPush) {
         emit pushContact(contact);
     }
     mutex.unlock();

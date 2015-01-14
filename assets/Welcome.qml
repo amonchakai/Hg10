@@ -8,6 +8,7 @@ NavigationPane {
     property variant facebookPage
         
     Page {
+        id: welcomePage
         signal done ()        
         property bool wasAnError
             
@@ -140,7 +141,7 @@ NavigationPane {
                 }
                 
                 onConnectError: {
-                    wasAnError = true;
+                    welcomePage.wasAnError = true;
                     connectingActivity.stop();
                     
                 }
@@ -161,7 +162,7 @@ NavigationPane {
                 interval: 7000
                 
                 onTimeout: {
-                    if(!wasAnError)
+                    if(!welcomePage.wasAnError)
                         stillWaitingButton.visible = true;
                 }
             },
