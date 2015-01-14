@@ -305,7 +305,7 @@ Page {
     function toogleEmoji() {
         if(emoticonsPicker.preferredHeight == 0) {
             emoticonsPicker.preferredHeight=250;
-            txtField.preferredHeight=ui.sdu(40);
+            txtField.preferredHeight=ui.sdu(4);
         } else {
             emoticonsPicker.preferredHeight=0;
             txtField.preferredHeight=ui.sdu(12);

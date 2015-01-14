@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 import com.netimage 1.0
 import bb.cascades.pickers 1.0
 import Network.ConversationController 1.0
@@ -200,7 +200,7 @@ Page {
                 }
                 
                 TextArea {
-                    preferredHeight: 110
+                    preferredHeight: ui.du(10)
                     horizontalAlignment: HorizontalAlignment.Fill
                     id: txtField
                     inputMode: TextAreaInputMode.Chat
@@ -301,7 +301,7 @@ Page {
             txtField.preferredHeight=50;
         } else {
             emoticonsPicker.preferredHeight=0;
-            txtField.preferredHeight=110;
+            txtField.preferredHeight=ui.du(10);
         }
     }
     
