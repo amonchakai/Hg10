@@ -228,6 +228,10 @@
         <source>Download</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Synchronize</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DriveController</name>

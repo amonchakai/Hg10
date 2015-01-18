@@ -52,6 +52,8 @@ private:
     bool                                 m_CreatingRootDir;
     QString                              m_CurrentDir;
 
+    QMap<QString, QPair<QString, QString> >  m_OnlineTree;
+
 public:
      GoogleConnectController            (QObject *parent = 0);
      virtual ~GoogleConnectController   ()                      {};
@@ -87,10 +89,15 @@ public:
      void popFolder             ();
      void refresh               ();
      void setHomeFolder         (const QString &id);
+     void getOnlineTree         (const QString &id, bool flush = false);
 
      void parseFileList         (const QString &page);
      void parseFileEntry        (const QString &entry);
+     void parseTree             (const QString &parent, const QString &entry);
+     void parseTreeEntry        (const QString &parent, const QString &entry);
 
+
+     inline QString getAuthorizationCode  () const                { return  QString("Bearer ") + m_Settings->value("access_token").value<QString>(); } ;
 
 private:
      void checkOrder            (bool flush = false);
@@ -137,6 +144,7 @@ public Q_SLOTS:
 
     void getFileList            (const QString &directory = "");
     void getFileListReply       ();
+    void getBranchFileListReply ();
     void setFileName            (const QString &id, const QString &name);
 
     // -------------------------------------------------------------------------
@@ -155,6 +163,7 @@ Q_SIGNALS:
     void uploaded               ();
     void shared                 (const QString &url);
     void driveItemLoaded        (DriveItem *);
+    void onlineTreeLeaf         (QString, DriveItem *);
     void folderEmpty            ();
     void folderCreated          ();
 

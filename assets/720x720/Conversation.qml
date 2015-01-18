@@ -91,6 +91,8 @@ Page {
                 
                 focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
                 
+                property int positionInView;
+                
                 WebView {
                     id: messageView
                     
@@ -123,9 +125,7 @@ Page {
                             audioPlayer.sourceUrl = "file:///" + match[1];
                             audioPlayer.play();
                         }
-                        
-                        
-                        
+                                                
                         console.log(message.data)
                     }
                     

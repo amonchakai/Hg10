@@ -107,6 +107,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_search.svg) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/icon_share.png) \
+        $$quote($$BASEDIR/assets/images/icon_synchronize.png) \
         $$quote($$BASEDIR/assets/images/icon_top.png) \
         $$quote($$BASEDIR/assets/images/icon_top_black.png) \
         $$quote($$BASEDIR/assets/images/icon_upload.png) \

@@ -53,6 +53,10 @@ DriveController::DriveController(QObject *parent) : QObject(parent), m_ListView(
     check = QObject::connect(m_Google, SIGNAL(uploaded()), this, SLOT(updateView()));
     Q_ASSERT(check);
     Q_UNUSED(check);
+
+    check = QObject::connect(m_Google, SIGNAL(onlineTreeLeaf(QString , DriveItem *)), this, SLOT(diveSynchPushLeaf(QString , DriveItem *)));
+    Q_ASSERT(check);
+    Q_UNUSED(check);
 }
 
 
@@ -392,21 +396,17 @@ void DriveController::onPromptFinishedDownloadLocation(const QStringList &locati
     using namespace bb::cascades;
     using namespace bb::cascades::pickers;
 
-    if(location.isEmpty())
+    if(location.isEmpty()) {
+        FilePicker* picker = qobject_cast<FilePicker*>(sender());
+        picker->deleteLater();
         return;
+    }
 
-    m_DowloadLocation = location.first();
+    m_Mutex.lockForWrite();
+    m_Downloads.push_back(QPair<QString, QString>(m_SelectedItemForSharing, location.first()));
+    m_Mutex.unlock();
 
-
-    QNetworkRequest request(m_SelectedItemForSharing);
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkDownload()));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-
+    authentifiedDownload(m_SelectedItemForSharing);
 
     FilePicker* picker = qobject_cast<FilePicker*>(sender());
     picker->deleteLater();
@@ -428,10 +428,23 @@ void DriveController::checkDownload() {
         if (reply->error() == QNetworkReply::NoError) {
             const int available = reply->bytesAvailable();
             if (available > 0) {
-                QFile file(m_DowloadLocation);
+                m_Mutex.lockForWrite();
+                int selectedDownload;
+                for(int i = 0 ; i < m_Downloads.length() ; ++i) {
+                    if(m_Downloads.at(i).first == reply->url().toString()) {
+                        selectedDownload = i;
+                        break;
+                    }
+                }
+
+                QFile file(m_Downloads.at(selectedDownload).second);
                 file.open(QIODevice::WriteOnly);
                 file.write(reply->readAll());
                 file.close();
+
+                m_Downloads.removeAt(selectedDownload);
+
+                m_Mutex.unlock();
 
                 bb::system::SystemToast *toast = new bb::system::SystemToast(this);
                 toast->setBody(tr("Download completed"));
@@ -439,12 +452,35 @@ void DriveController::checkDownload() {
                 toast->show();
 
             }
+
         } else {
             qDebug() << "reply... " << reply->errorString();
+
+            // remove case of failure...
+            m_Mutex.lockForWrite();
+            int selectedDownload = 0;
+            for(int i = 0 ; i < m_Downloads.length() ; ++i) {
+                if(m_Downloads.at(i).first == reply->url().toString()) {
+                    selectedDownload = i;
+                    break;
+                }
+            }
+            if(m_Downloads.size() > 0)
+                m_Downloads.removeAt(selectedDownload);
+            m_Mutex.unlock();
         }
 
         reply->deleteLater();
     }
+
+
+    // download all the files in the stack
+    m_Mutex.lockForWrite();
+    if(m_Downloads.size() > 0) {
+        authentifiedDownload(m_Downloads.first().first);
+    }
+
+    m_Mutex.unlock();
 }
 
 void DriveController::upload(const QString &path) {
@@ -508,3 +544,146 @@ void DriveController::onPromptFinishedRenameFile(bb::system::SystemUiResult::Typ
 }
 
 
+void DriveController::synchronize(const QString &id, const QString &title) {
+    using namespace bb::cascades;
+    using namespace bb::cascades::pickers;
+
+    m_SelectedItemForSharing = id;
+    FilePicker* filePicker = new FilePicker(FileType::Document, 0, QStringList(), QStringList(), QStringList(title));
+    filePicker->setMode(FilePickerMode::Saver);
+
+
+    bool success = QObject::connect(filePicker, SIGNAL(fileSelected(const QStringList &)), this, SLOT(onPromptFinishedSynchLocation(const QStringList &)));
+    success = QObject::connect(filePicker, SIGNAL(canceled()), this, SLOT(onPromptFinishedDownloadLocationCanceled()));
+
+    if (success) {
+        filePicker->open();
+     } else {
+         filePicker->deleteLater();
+    }
+
+}
+
+void DriveController::onPromptFinishedSynchLocation(const QStringList &location) {
+    using namespace bb::cascades;
+    using namespace bb::cascades::pickers;
+
+    if(location.isEmpty()) {
+        FilePicker* picker = qobject_cast<FilePicker*>(sender());
+        picker->deleteLater();
+        return;
+    }
+
+    loadSynchMap();
+    m_SynchMap[m_SelectedItemForSharing] = location.first();
+    saveSynchMap();
+
+    FilePicker* picker = qobject_cast<FilePicker*>(sender());
+    picker->deleteLater();
+}
+
+
+void DriveController::saveSynchMap() {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData");
+    if (!QFile::exists(directory)) {
+        QDir dir;
+        dir.mkpath(directory);
+    }
+
+    QFile file(directory + "/SynchMap.txt");
+    if (file.open(QIODevice::WriteOnly)) {
+        QDataStream stream(&file);
+
+        for(QMap<QString, QString>::iterator it = m_SynchMap.begin(); it != m_SynchMap.end() ; ++it) {
+            stream << it.key() << it.value();
+        }
+
+        file.close();
+    }
+}
+
+void DriveController::loadSynchMap() {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData");
+    QFile file(directory + "/SynchMap.txt");
+    if (file.open(QIODevice::ReadOnly)) {
+        QDataStream stream(&file);
+
+        m_SynchMap.clear();
+
+        QString key, value;
+        stream >> key;
+        stream >> value;
+
+        while(!key.isEmpty() && !value.isEmpty()) {
+            m_SynchMap[key] = value;
+
+            stream >> key;
+            stream >> value;
+        }
+
+        file.close();
+    }
+}
+
+void DriveController::updateSynch() {
+    loadSynchMap();
+    if(m_SynchMap.begin() != m_SynchMap.end())
+        getOnlineTree(m_SynchMap.begin().key());
+}
+
+// should query only files created before the last synch. or folders...
+void DriveController::getOnlineTree(const QString &id) {
+    m_Google->getOnlineTree(id, true);
+}
+
+void DriveController::diveSynchPushLeaf(QString url, DriveItem *item) {
+    QString localFile = m_SynchMap.begin().value() + "/" + url;
+    QString directory = localFile.mid(0,localFile.lastIndexOf("/"));
+
+
+    if (!QFile::exists(directory)) {
+        QDir dir;
+        dir.mkpath(directory);
+        qDebug() << "create folder: " << directory;
+    }
+
+    if (!QFile::exists(localFile)) {
+
+        m_Mutex.lockForWrite();
+        m_Downloads.push_back(QPair<QString, QString>(item->getDownloadLink(), localFile));
+
+        if(m_Downloads.size() == 1) {
+            authentifiedDownload(m_Downloads.first().first);
+        }
+        m_Mutex.unlock();
+
+    } else {
+        QFileInfo info(localFile);
+
+        if(QDateTime::fromString(item->getTimestamp()) > info.lastModified()) {
+            m_Mutex.lockForWrite();
+            m_Downloads.push_back(QPair<QString, QString>(item->getDownloadLink(), localFile));
+            if(m_Downloads.size() == 1) {
+                authentifiedDownload(m_Downloads.first().first);
+            }
+            m_Mutex.unlock();
+        }
+
+    }
+
+    delete item;
+
+}
+
+
+void DriveController::authentifiedDownload(const QString &url) {
+    QNetworkRequest request(url);
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setRawHeader("Authorization", m_Google->getAuthorizationCode().toAscii());
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkDownload()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+}

@@ -225,6 +225,13 @@ NavigationPane {
                                                 overallContactContainer.ListItem.view.download(ListItemData.downloadLink, ListItemData.title);
                                             }
                                         }
+                                        ActionItem {
+                                            title: qsTr("Synchronize")
+                                            imageSource: "asset:///images/icon_synchronize.png"
+                                            onTriggered: {
+                                                overallContactContainer.ListItem.view.synchronize(ListItemData.id, ListItemData.title);
+                                            }
+                                        }
                                         
                                     }
                                 ]
@@ -247,6 +254,10 @@ NavigationPane {
                     
                     function download(fileUrl, title) {
                         driveController.downloadFile(fileUrl, title);
+                    }
+                    
+                    function synchronize(id, title) {
+                        driveController.synchronize(id, title);
                     }
                     
                     onTriggered: {
@@ -322,6 +333,13 @@ NavigationPane {
                 onTriggered: {
                     driveController.askName();
                 }   
+            },
+            ActionItem {
+                title: qsTr("Synchronize")
+                imageSource: "asset:///images/icon_synchronize.png"
+                onTriggered: {
+                    driveController.updateSynch();
+                }
             }
         ]
         

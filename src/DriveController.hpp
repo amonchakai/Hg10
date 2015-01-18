@@ -30,8 +30,16 @@ private:
     QString                          m_SelectedItemForSharing;
     QString                          m_AudioName;
 
-    QString                          m_DowloadLocation;
+    QList<QPair<QString, QString> >  m_Downloads;
 
+    QMap<QString, QString>           m_SynchMap;
+
+
+private:
+    void saveSynchMap          ();
+    void loadSynchMap          ();
+
+    void getOnlineTree         (const QString &id);
 
 public:
     DriveController            (QObject *parent = 0);
@@ -55,10 +63,13 @@ public Q_SLOTS:
     void createNewFolder                ();
     void setHomeFolder                  (const QString &id);
     void renameFile                     (const QString &id, const QString &title);
+    void synchronize                    (const QString &id, const QString &title);
+    void updateSynch                    ();
     void openForSharing                 (const QString &id, const QString &type);
     void copyShareLink                  (const QString& id, const QString &link);
     void upload                         (const QString &path);
     void downloadFile                   (const QString &fileUrl, const QString &title);
+    void authentifiedDownload           (const QString &url);
     void askName                        ();
 
 
@@ -71,7 +82,9 @@ public Q_SLOTS:
     void onPromptFinishedRenameFile(bb::system::SystemUiResult::Type);
     void onPromptFinishedDownloadLocation(const QStringList &);
     void onPromptFinishedDownloadLocationCanceled();
+    void onPromptFinishedSynchLocation(const QStringList &);
 
+    void diveSynchPushLeaf              (QString url, DriveItem *item);
 
 
 Q_SIGNALS:
