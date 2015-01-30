@@ -66,6 +66,8 @@ void GoogleConnectController::logInRequest() {
     QString scope = "https://www.googleapis.com/auth/googletalk ";
     if(m_GmailAccess)
         scope += "https://www.googleapis.com/auth/gmail.readonly ";
+    else
+        scope += "https://mail.google.com/ ";
 
     switch(m_DriveAccess) {
         case 1:

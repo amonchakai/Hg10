@@ -15,8 +15,10 @@ Page {
     }
     ScrollView {   
         WebView {
-            url: "http://amonchakai.github.io/Hg10/"
             
+            settings.userAgent: "Chrome/39.0.2171.65";
+            url: "http://amonchakai.github.io/Hg10/"
+            //url: "https://plus.google.com/hangouts/_/gxm2t35n73wndekfd7uxvya4lqa"
             onNavigationRequested: {
                 if(request.navigationType != WebNavigationType.Other) {
                     request.action = WebNavigationRequestAction.Ignore;
@@ -25,6 +27,8 @@ Page {
                     
                 }
             }
+            
+        
         }
     }
     
