@@ -69,11 +69,15 @@ Page {
         layout: DockLayout {
             
         }
+        
+        
 
     Container {
         layout: StackLayout {
             orientation: LayoutOrientation.TopToBottom
-        }
+        }        
+        
+        background: back.imagePaint
         
         ActivityIndicator {
             id: linkStatusActivity
@@ -90,6 +94,7 @@ Page {
             
             WebView {
                 id: messageView
+                
                 
                 settings.textAutosizingEnabled: false
                 settings.zoomToFitEnabled: false
@@ -371,6 +376,13 @@ Page {
             ]
         },
         ActionItem {
+            title: qsTr("Background")
+            imageSource: "asset:///images/icon_wallpaper.png"
+            onTriggered: {
+                conversationController.setWallpaper();
+            }
+        },
+        ActionItem {
             title: qsTr("To last message")
             imageSource: "asset:///images/icon_bottom.png"
             ActionBar.placement: ActionBarPlacement.InOverflow
@@ -430,8 +442,16 @@ Page {
             onComplete: {
                 scrollView.requestFocus();
                 
-                
             }
+            
+            onWallpaperChanged: {
+                messageView.settings.background = Color.Transparent;
+                back.imageSource = url;
+            }
+        },
+        ImagePaintDefinition {
+            id: back
+            repeatPattern: RepeatPattern.Fill
         },
         Invocation {
             id: linkInvocation

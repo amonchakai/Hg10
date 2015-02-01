@@ -44,6 +44,7 @@ public:
     inline const QString&  getUser      ()  const               { return m_User; };
     void                   setUser      (const QString &n) ;
     inline const QString&  getAvatar    ()  const               { return m_Avatar; };
+    inline const QString&  getAdressee  () const                { return m_CurrentDst; };
     inline bool            isAdressee   (const QString &who)    { return who.toLower() == m_CurrentDst.toLower(); }
 
     TimeEvent              getPreview   () const;

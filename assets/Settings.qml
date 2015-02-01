@@ -1,14 +1,16 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 import Network.LoginController 1.0
 import conf.SettingsController 1.0
 import com.netimage 1.0
 
 NavigationPane {
     id: navSettings
+    property int depth
     property variant tpage
     property variant googlePage
     property variant dropboxPage
     property variant logPage
+    property variant wallpaperPage
     signal done ()
     
 	Page {
@@ -178,6 +180,17 @@ NavigationPane {
                     
                 }
                 
+                Button {
+                    id: wallpaperButton
+                    text: qsTr("Wallpapers & themes")
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    onClicked: {
+                        if(!wallpaperPage)
+                            wallpaperPage = wallpaperSettings.createObject();
+                        navSettings.push(wallpaperPage);
+                    }
+                }
+                
     	        
     	        Divider { }
     	        
@@ -191,6 +204,7 @@ NavigationPane {
                         text: qsTr("Use dropbox to host files")
                         verticalAlignment: VerticalAlignment.Center
                         horizontalAlignment: HorizontalAlignment.Left
+                        margin.leftOffset: ui.du(1)
     	            }
     	            
     	            ToggleButton {
@@ -202,6 +216,7 @@ NavigationPane {
                         onCheckedChanged: {
                             settingsController.useDropbox = checked;
                         }
+                        margin.rightOffset: ui.du(1);
     	            }
     	            
     	        }
@@ -215,6 +230,7 @@ NavigationPane {
                             dropboxPage = dropboxConnect.createObject();
                         navSettings.push(dropboxPage);
                     }
+                    
                 }
                 
                 Divider { }
@@ -255,6 +271,7 @@ NavigationPane {
                         text: qsTr("Enable logs")
                         horizontalAlignment: HorizontalAlignment.Left
                         verticalAlignment: VerticalAlignment.Center
+                        margin.leftOffset: ui.du(1)
                     }
                 
                     ToggleButton {
@@ -266,7 +283,9 @@ NavigationPane {
                         onCheckedChanged: {
                             settingsController.enableLogs = checked;
                         }
+                        margin.rightOffset: ui.du(1)
                     }    
+                    
                 }
                 
                 Button {
@@ -278,6 +297,7 @@ NavigationPane {
                             logPage = applicationLog.createObject();
                         navSettings.push(logPage);
                     }
+                    
                 }
                 
                 Divider { }
@@ -307,6 +327,10 @@ NavigationPane {
                 ComponentDefinition {
                     id: applicationLog
                     source: "ApplicationLog.qml"
+                },
+                ComponentDefinition {
+                    id: wallpaperSettings
+                    source: "WallpaperSettings.qml"
                 }
             ]
     	    
@@ -319,13 +343,23 @@ NavigationPane {
 	
 	onCreationCompleted: {
         settingPage.userName =  settingsController.userName;
+        depth = 0;
     }
 	
 	onPopTransitionEnded: {
-	    
+	    --depth;
         userLabel.setText(qsTr("User: ") + settingsController.userName);
         loginButton.setVisible(!loginController.isLogged());
         logOutButton.setVisible(loginController.isLogged());
+        
+        if(depth == 1) {
+            wallpaperPage.destroy();
+            wallpaperPage = null;
+        }
     }
+	
+	onPushTransitionEnded: {
+	    ++depth;
+	}
 	
 }

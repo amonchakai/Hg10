@@ -12,6 +12,7 @@
 #include <QtCore/QObject>
 #include <bb/cascades/WebView>
 #include <bb/cascades/ActivityIndicator>
+#include <bb/system/SystemUiResult>
 #include "DataObjects.h"
 
 class FileTransfert;
@@ -34,6 +35,7 @@ private:
     FileTransfert            *m_FileTransfert;
     QList<AudioMessage>       m_AudioMessages;
 
+    QString                   m_NewWallpaper;
 
 
 
@@ -90,6 +92,16 @@ public Q_SLOTS:
     void shared                         (const QString &url);
     void fowardUploadingProcess         (int progress);
 
+
+    // -----------------------------------------------------
+    // aesthetic aspects.
+
+    void setWallpaper                   ();
+    void onWallpaperSelected            (const QStringList&);
+    void onWallpaperSelectCanceled      ();
+    void onPromptFinishedSetWallpaper   (bb::system::SystemUiResult::Type);
+
+
     // -----------------------------------------------------
     // messages with Hub
 
@@ -101,6 +113,7 @@ Q_SIGNALS:
     void receivedUrl                    (const QString &url);
 
     void roomChanged                    ();
+    void wallpaperChanged               (const QString &url);
 
 };
 

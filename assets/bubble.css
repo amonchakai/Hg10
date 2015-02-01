@@ -1,0 +1,78 @@
+/* ==================================
+== Bubble left
+** ================================== */
+
+.bubble-left {
+	position: relative;
+	width: 70%;
+	margin-left: 64px;
+	min-height: 100px;
+	padding: 0px;
+	background: #f0f0f0;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.bubble-left:after {
+	content: "";
+	position: absolute;
+	top: 0px;
+	left: -20px;
+	border-style: solid;
+	border-width: 0px 20px 20px 0;
+	border-color: transparent #f0f0f0;
+	display: block;
+	width: 0;
+	z-index: 1;
+}
+
+.bubble-left-avatar img {
+	position: absolute;
+	left: -64px;
+	top: 0px;
+	width: 64px;
+	height: auto;
+}
+
+/* ==================================
+== Bubble right
+** ================================== */
+
+.bubble-right {
+	position: relative;
+	margin-right: 64px;
+	margin-left: 30%;
+	width: 70%;
+	min-height: 100px;
+	padding: 0px;
+	background: #f0f0f0;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.bubble-right:after {
+	content: "";
+	position: absolute;
+	bottom: 0px;
+	right: -20px;
+	border-style: solid;
+	border-width: 20px 0px 0px 20px;
+	border-color: transparent #f0f0f0;
+	display: block;
+	width: 0;
+	z-index: 1;
+}
+
+.bubble-right-avatar img {
+	position: absolute;
+	right: -64px;
+	bottom: 0px;
+	width: 64px;
+	height: auto;
+}
+
+.bubble-right p {
+	text-align: right;
+}

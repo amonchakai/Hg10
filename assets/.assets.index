@@ -1,5 +1,5 @@
 1
-95
+104
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -8,6 +8,8 @@
 720x720/ConversationCard.qml
 AdvancedConection.qml
 ApplicationLog.qml
+bubble.css
+bubble_black.css
 Contacts.qml
 Conversation.qml
 ConversationCard.qml
@@ -49,6 +51,8 @@ images/icon_notification.png
 images/icon_quoted_white.png
 images/icon_refresh.png
 images/icon_rename.png
+images/icon_right.png
+images/icon_right_black.png
 images/icon_search.png
 images/icon_search.svg
 images/icon_settings.png
@@ -58,6 +62,8 @@ images/icon_top.png
 images/icon_top_black.png
 images/icon_upload.png
 images/icon_walkie.png
+images/icon_wallpaper.png
+images/icon_wallpaper.svg
 images/pinch_out.png
 images/pinch_out_black.png
 images/pull-to-refresh.png
@@ -76,6 +82,7 @@ images/Tutorial/splash_720x720.jpg
 images/walkie.png
 images/walkie_white.png
 images/wallpaper/wallpaper.jpg
+images/wallpaper/wallpaper_small.jpg
 images/whiteFace.png
 images/whiteFace2.png
 images/write.png
@@ -93,5 +100,7 @@ Status.qml
 template.html
 template_black.html
 template_end.html
+ThemeEditor.qml
+WallpaperSettings.qml
 WebEditor.qml
 Welcome.qml

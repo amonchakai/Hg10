@@ -202,6 +202,44 @@ public:
 
 };
 
+// ---------------------------------------------------------------------------------------------
+// Wallpapers
+
+class WallpaperItem : public QObject {
+    Q_OBJECT
+
+    Q_PROPERTY( QString userName       READ getUserName      WRITE setUserName       NOTIFY userNameChanged)
+    Q_PROPERTY( QString userId         READ getUserId        WRITE setUserId         NOTIFY userIdChanged)
+    Q_PROPERTY( QString wallpaper      READ getWallpaper     WRITE setWallpaper      NOTIFY wallpaperChanged)
+
+private:
+    QString m_UserName;
+    QString m_UserId;
+    QString m_Wallpaper;
+
+
+public:
+    WallpaperItem(QObject *parent = 0) : QObject(parent) {}
+    virtual ~WallpaperItem() {}
+
+    inline const QString &getUserName() const                   { return m_UserName; }
+    inline void           setUserName(const QString &s)         { m_UserName = s; emit userNameChanged(); }
+
+    inline const QString &getUserId() const                     { return m_UserId; }
+    inline void           setUserId(const QString &c)           { m_UserId = c; emit userIdChanged();}
+
+    inline const QString &getWallpaper() const                  { return m_Wallpaper; }
+    inline void           setWallpaper(const QString &c)        { m_Wallpaper = c; emit wallpaperChanged();}
+
+    // ----------------------------------------------------------------------------------------------
+    Q_SIGNALS:
+        void userNameChanged();
+        void userIdChanged();
+        void wallpaperChanged();
+
+};
+
+
 
 // ----------------------------------------------------------------------------------------------
 // Objects to handle group chat

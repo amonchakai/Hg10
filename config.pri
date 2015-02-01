@@ -62,8 +62,12 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/Status.qml) \
+        $$quote($$BASEDIR/assets/ThemeEditor.qml) \
+        $$quote($$BASEDIR/assets/WallpaperSettings.qml) \
         $$quote($$BASEDIR/assets/WebEditor.qml) \
         $$quote($$BASEDIR/assets/Welcome.qml) \
+        $$quote($$BASEDIR/assets/bubble.css) \
+        $$quote($$BASEDIR/assets/bubble_black.css) \
         $$quote($$BASEDIR/assets/data/emojies.xml) \
         $$quote($$BASEDIR/assets/images/Tutorial/accept.jpg) \
         $$quote($$BASEDIR/assets/images/Tutorial/chat.jpg) \
@@ -103,6 +107,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_quoted_white.png) \
         $$quote($$BASEDIR/assets/images/icon_refresh.png) \
         $$quote($$BASEDIR/assets/images/icon_rename.png) \
+        $$quote($$BASEDIR/assets/images/icon_right.png) \
+        $$quote($$BASEDIR/assets/images/icon_right_black.png) \
         $$quote($$BASEDIR/assets/images/icon_search.png) \
         $$quote($$BASEDIR/assets/images/icon_search.svg) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
@@ -112,6 +118,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_top_black.png) \
         $$quote($$BASEDIR/assets/images/icon_upload.png) \
         $$quote($$BASEDIR/assets/images/icon_walkie.png) \
+        $$quote($$BASEDIR/assets/images/icon_wallpaper.png) \
+        $$quote($$BASEDIR/assets/images/icon_wallpaper.svg) \
         $$quote($$BASEDIR/assets/images/pinch_out.png) \
         $$quote($$BASEDIR/assets/images/pinch_out_black.png) \
         $$quote($$BASEDIR/assets/images/pull-to-refresh.png) \
@@ -122,6 +130,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/walkie.png) \
         $$quote($$BASEDIR/assets/images/walkie_white.png) \
         $$quote($$BASEDIR/assets/images/wallpaper/wallpaper.jpg) \
+        $$quote($$BASEDIR/assets/images/wallpaper/wallpaper_small.jpg) \
         $$quote($$BASEDIR/assets/images/whiteFace.png) \
         $$quote($$BASEDIR/assets/images/whiteFace2.png) \
         $$quote($$BASEDIR/assets/images/write.png) \
@@ -138,6 +147,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ApplicationLogController.cpp) \
         $$quote($$BASEDIR/src/ConversationController.cpp) \
         $$quote($$BASEDIR/src/ConversationManager.cpp) \
+        $$quote($$BASEDIR/src/CustomizationController.cpp) \
         $$quote($$BASEDIR/src/DriveController.cpp) \
         $$quote($$BASEDIR/src/DropBoxConnectController.cpp) \
         $$quote($$BASEDIR/src/Facebook.cpp) \
@@ -152,6 +162,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/SettingsController.cpp) \
         $$quote($$BASEDIR/src/SmileyPickerController.cpp) \
         $$quote($$BASEDIR/src/SuggestContactController.cpp) \
+        $$quote($$BASEDIR/src/ThemeEditorController.cpp) \
         $$quote($$BASEDIR/src/XMPPService.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
         $$quote($$BASEDIR/src/base/QXmppArchiveIq.cpp) \
@@ -217,6 +228,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ApplicationLogController.hpp) \
         $$quote($$BASEDIR/src/ConversationController.hpp) \
         $$quote($$BASEDIR/src/ConversationManager.hpp) \
+        $$quote($$BASEDIR/src/CustomizationController.hpp) \
         $$quote($$BASEDIR/src/DataObjects.h) \
         $$quote($$BASEDIR/src/DriveController.hpp) \
         $$quote($$BASEDIR/src/DropBoxConnectController.hpp) \
@@ -235,6 +247,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/SettingsController.hpp) \
         $$quote($$BASEDIR/src/SmileyPickerController.hpp) \
         $$quote($$BASEDIR/src/SuggestContactController.hpp) \
+        $$quote($$BASEDIR/src/ThemeEditorController.hpp) \
         $$quote($$BASEDIR/src/XMPPService.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp) \
         $$quote($$BASEDIR/src/base/QXmppArchiveIq.h) \

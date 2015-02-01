@@ -38,6 +38,8 @@
 #include "Facebook.hpp"
 #include "ApplicationLogController.hpp"
 #include "DriveController.hpp"
+#include "CustomizationController.hpp"
+#include "ThemeEditorController.hpp"
 
 using namespace bb::cascades;
 
@@ -129,6 +131,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     qmlRegisterType<QTimer>("Lib.QTimer", 1, 0, "QTimer");
     qmlRegisterType<ApplicationLogController>("Lib.ApplicationLogController", 1, 0, "ApplicationLogController");
     qmlRegisterType<DriveController>("Network.DriveController", 1, 0, "DriveController");
+    qmlRegisterType<CustomizationController>("Network.CustomizationController", 1, 0, "CustomizationController");
+    qmlRegisterType<ThemeEditorController>("Network.ThemeEditorController", 1, 0, "ThemeEditorController");
 
     if(!m_HeadlessStart) {
 
@@ -207,6 +211,7 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
          m_root = qml->createRootObject<NavigationPane>();
 
          m_app->setScene(m_root);
+
 
          QObject *thread = m_root->findChild<QObject*>("conversationCard");
          if(thread != NULL) {

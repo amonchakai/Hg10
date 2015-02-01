@@ -127,6 +127,10 @@
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConversationCard</name>
@@ -154,6 +158,21 @@
         <source>To last message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConversationController</name>
+    <message>
+        <source>Wallpaper</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set the wallpaper for which contact?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateRoom</name>
@@ -175,6 +194,13 @@
     </message>
     <message>
         <source>Look for a contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CustomizationController</name>
+    <message>
+        <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -651,6 +677,10 @@
         <source>Use dropbox to host files</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Wallpapers &amp; themes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmileyPicker</name>
@@ -694,6 +724,56 @@
     </message>
     <message>
         <source>Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ThemeEditor</name>
+    <message>
+        <source>Edit theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WallpaperSettings</name>
+    <message>
+        <source>Wallpapers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Management</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings will be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can use the Background option in an opened converation to define a per-user wallpaper</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

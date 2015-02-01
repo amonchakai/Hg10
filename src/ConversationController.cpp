@@ -17,6 +17,8 @@
 #include <bb/cascades/ThemeSupport>
 #include <bb/cascades/ColorTheme>
 #include <bb/cascades/Theme>
+#include <bb/cascades/pickers/FilePicker>
+#include <bb/system/SystemDialog>
 
 ConversationController::ConversationController(QObject *parent) : QObject(parent),
             m_WebView(NULL),
@@ -102,13 +104,57 @@ void ConversationController::updateView() {
         ownAvatar = QDir::currentPath() + "/app/native/assets/" +  ownAvatar.mid(9);
 
 
+    // -----------------------------------------------------------------------------------------------
+    // customize template
     if (htmlTemplateFile.open(QIODevice::ReadOnly) && htmlEndTemplateFile.open(QIODevice::ReadOnly)) {
         QString htmlTemplate = htmlTemplateFile.readAll();
         QString endTemplate = htmlEndTemplateFile.readAll();
 
+       // -----------------------------------------------------------------------------------------------
+       // adjust font size
         if(settings.value("fontSize", 28).value<int>() != 28) {
             htmlTemplate.replace("font-size: 28px;", "font-size: " + QString::number(settings.value("fontSize").value<int>()) + "px;");
         }
+
+
+       // -----------------------------------------------------------------------------------------------
+       // choose background image
+        {
+            QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Customization");
+            QString filename;
+            if(QFile::exists(directory + "/" + ConversationManager::get()->getAdressee() + ".xml")) {
+                filename = directory + "/" + ConversationManager::get()->getAdressee() + ".xml";
+            } else {
+                if(QFile::exists(directory +"/default.xml")) {
+                    filename = directory + "/default.xml";
+                }
+            }
+
+            if(!filename.isEmpty()) {
+                QFile file(filename);
+                if (file.open(QIODevice::ReadOnly)) {
+                    QTextStream stream(&file);
+                    QString themeSettings = stream.readAll();
+
+                    QRegExp wallpaper("<wallpaper url=\"([^\"]+)\"");
+                    if(wallpaper.indexIn(themeSettings) != -1) {
+
+                        if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
+                            htmlTemplate.replace("html { background: #000000; height: 100%;", "html { height: 100%;");
+                        }
+
+
+                        emit wallpaperChanged("file://" + wallpaper.cap(1));
+
+                    }
+
+                    file.close();
+                }
+            }
+        }
+
+        // -----------------------------------------------------------------------------------------------
+        // preload history
 
         const History& history = ConversationManager::get()->getHistory();
         {
@@ -448,6 +494,101 @@ void ConversationController::fowardUploadingProcess(int status) {
     emit uploading(status);
 }
 
+
+
+void ConversationController::setWallpaper() {
+    using namespace bb::cascades;
+    using namespace bb::cascades::pickers;
+
+    FilePicker* filePicker = new FilePicker();
+    filePicker->setType(FileType::Picture);
+    filePicker->setTitle("Select Picture");
+    filePicker->setMode(FilePickerMode::Picker);
+    filePicker->open();
+
+    // Connect the fileSelected() signal with the slot.
+    QObject::connect(filePicker,
+        SIGNAL(fileSelected(const QStringList&)),
+        this,
+        SLOT(onWallpaperSelected(const QStringList&)));
+
+    // Connect the canceled() signal with the slot.
+    QObject::connect(filePicker,
+        SIGNAL(canceled()),
+        this,
+        SLOT(onWallpaperSelectCanceled()));
+}
+
+void ConversationController::onWallpaperSelected(const QStringList& list) {
+    sender()->deleteLater();
+
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    SystemDialog *dialog = new SystemDialog("All of them", "This one");
+
+    dialog->setTitle(tr("Wallpaper"));
+    dialog->setBody(tr("Set the wallpaper for which contact?"));
+
+    bool success = connect(dialog,
+         SIGNAL(finished(bb::system::SystemUiResult::Type)),
+         this,
+         SLOT(onPromptFinishedSetWallpaper(bb::system::SystemUiResult::Type)));
+
+    if (success) {
+        // Signal was successfully connected.
+        // Now show the dialog box in your UI.
+        m_NewWallpaper = list.first();
+        dialog->show();
+    } else {
+        // Failed to connect to signal.
+        // This is not normal in most cases and can be a critical
+        // situation for your app! Make sure you know exactly why
+        // this has happened. Add some code to recover from the
+        // lost connection below this line.
+        dialog->deleteLater();
+    }
+}
+
+void ConversationController::onPromptFinishedSetWallpaper(bb::system::SystemUiResult::Type type) {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Customization");
+    if (!QFile::exists(directory)) {
+        QDir dir;
+        dir.mkpath(directory);
+    }
+
+    // set the wallpaper on all chats
+    if(type == bb::system::SystemUiResult::ConfirmButtonSelection) {
+
+
+        QFile file(directory + "/default.xml");
+
+        if (file.open(QIODevice::WriteOnly)) {
+            QTextStream stream(&file);
+            stream << "<root>";
+            stream << QString("<wallpaper url=\"") + m_NewWallpaper + "\" />";
+            stream << "</root>";
+            file.close();
+        }
+
+    // set the wallpaper only for one user
+    } else if (type == bb::system::SystemUiResult::CancelButtonSelection) {
+        QFile file(directory + "/" + ConversationManager::get()->getAdressee() + ".xml" );
+
+        if (file.open(QIODevice::WriteOnly)) {
+            QTextStream stream(&file);
+            stream << "<root>";
+            stream << QString("<wallpaper url=\"") + m_NewWallpaper + "\" />";
+            stream << "</root>";
+            file.close();
+        }
+    }
+
+}
+
+void ConversationController::onWallpaperSelectCanceled() {
+    sender()->deleteLater();
+}
 
 void ConversationController::closeCard() {
     XMPP::get()->closeCard();
