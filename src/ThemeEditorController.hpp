@@ -15,18 +15,21 @@
 class ThemeEditorController : public QObject {
     Q_OBJECT;
 
+    Q_PROPERTY( QString userId     READ getUserId        WRITE setUserId       NOTIFY  userIdChanged)
 
 
 private:
     bb::cascades::WebView             *m_WebView;
     bb::cascades::TextArea            *m_TextEditor;
-
+    QString                            m_UserId;
 
 
 public:
     ThemeEditorController              (QObject *parent = 0);
     virtual ~ThemeEditorController     ()                      {};
 
+    inline const QString &getUserId    ()                       { return m_UserId; }
+    inline void setUserId              (const QString &v)       { m_UserId = v; }
 
 
 public Q_SLOTS:
@@ -34,9 +37,10 @@ public Q_SLOTS:
     inline void setEditor              (QObject *view)    {m_TextEditor = dynamic_cast<bb::cascades::TextArea*>(view); loadEditor();  }
     void updateView                    ();
     void loadEditor                    ();
+    void saveTheme                     ();
 
 Q_SIGNALS:
-
+    void userIdChanged();
 
 };
 

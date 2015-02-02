@@ -20,6 +20,7 @@ Page {
             onTriggered: {
                 // Emit the custom signal here to indicate that this page needs to be closed
                 // The signal would be handled by the page which invoked it
+                themeEditor.saveTheme();
                 navSettings.pop();
             }
         }
@@ -33,7 +34,7 @@ Page {
             
             WebView {
                 id: preview
-                preferredHeight: 250
+                preferredHeight: ui.du(25)
             }
             
             Divider { }
@@ -59,6 +60,11 @@ Page {
     
     onCreationCompleted: {
         themeEditor.setWebView(preview);
+        
+    }
+    
+    onUserIdChanged: {
+        themeEditor.userId = userId;
         themeEditor.setEditor(editor);
         themeEditor.updateView();
     }

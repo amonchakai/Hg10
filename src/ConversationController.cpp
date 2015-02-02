@@ -143,14 +143,32 @@ void ConversationController::updateView() {
                             htmlTemplate.replace("html { background: #000000; height: 100%;", "html { height: 100%;");
                         }
 
-
                         emit wallpaperChanged("file://" + wallpaper.cap(1));
-
                     }
 
                     file.close();
                 }
+            } else emit wallpaperChanged("");
+
+            if(QFile::exists(directory + "/" + ConversationManager::get()->getAdressee() + ".css")) {
+                QFile file(directory + "/" + ConversationManager::get()->getAdressee() + ".css");
+
+                if (file.open(QIODevice::ReadOnly)) {
+                    QTextStream stream(&file);
+                    QString themeSettings = stream.readAll();
+                    file.close();
+
+                    QString suffix;
+                    if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
+                        suffix = "_black";
+                    }
+
+                    htmlTemplate.replace("</style><link rel=\"stylesheet\" href=\"bubble" + suffix + ".css\">", themeSettings + "\n\r</style>");
+
+                }
+
             }
+
         }
 
         // -----------------------------------------------------------------------------------------------

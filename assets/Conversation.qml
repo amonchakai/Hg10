@@ -404,8 +404,9 @@ Page {
     }
     
     onIdChanged: {
-        if(id != "")
+        if(id != "") {
             conversationController.load(id, avatar, name);
+        }
     }
     
     onSmileyToAddChanged: {

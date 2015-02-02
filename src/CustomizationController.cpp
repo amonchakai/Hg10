@@ -118,4 +118,11 @@ void CustomizationController::deleteCustom(const QString &id) {
         QFile file(directory + "/" + id + ".xml");
         file.remove();
     }
+
+    {
+        QFile file(directory + "/" + id + ".css");
+        file.remove();
+    }
+
+
 }

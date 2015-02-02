@@ -97,17 +97,40 @@ void ThemeEditorController::loadEditor() {
     if(!m_TextEditor)
         return;
 
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Customization");
+        QFile file(directory + "/" + m_UserId + ".css" );
+
 
     QString suffix;
     if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
         suffix = "_black";
     }
 
-    QFile cssTemplateFile(QDir::currentPath() + "/app/native/assets/bubble" + suffix + ".css");
+    QFile cssTemplateFile;
+    if(QFile::exists(directory + "/" + m_UserId + ".css"))
+        cssTemplateFile.setFileName(directory + "/" + m_UserId + ".css");
+    else
+        cssTemplateFile.setFileName(QDir::currentPath() + "/app/native/assets/bubble" + suffix + ".css");
+
+
     if(cssTemplateFile.open(QIODevice::ReadOnly)) {
-
         m_TextEditor->setText(cssTemplateFile.readAll());
+    }
+}
 
+void ThemeEditorController::saveTheme() {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Customization");
+    QFile file(directory + "/" + m_UserId + ".css" );
+
+    qDebug() << directory + "/" + m_UserId + ".css";
+
+    QString settings;
+    if (file.open(QIODevice::WriteOnly)) {
+        QTextStream stream(&file);
+
+        stream << m_TextEditor->text();
+
+        file.close();
     }
 }
 
