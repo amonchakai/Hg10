@@ -241,7 +241,7 @@ bool ConversationController::isImage(const QString &url) {
 }
 
 QString ConversationController::renderMessage(const QString &message, bool showImg) {
-    QRegExp url(".*(http[s]*://[^ ]+).*");
+    QRegExp url("(http[s]*://[^ ]+)");
     //url.setMinimal(true);
     url.setCaseSensitivity(Qt::CaseInsensitive);
 

@@ -39,7 +39,7 @@ private:
     void saveSynchMap          ();
     void loadSynchMap          ();
 
-    void getOnlineTree         (const QString &id);
+    void getOnlineTree         (const QString &id, qint64 lastSynch = 0);
 
 public:
     DriveController            (QObject *parent = 0);

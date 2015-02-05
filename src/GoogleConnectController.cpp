@@ -1135,11 +1135,12 @@ void GoogleConnectController::checkReplyRename() {
 
 
 
-void GoogleConnectController::getOnlineTree(const QString &id, bool flush) {
+void GoogleConnectController::getOnlineTree(const QString &id, qint64 lastSynch, bool flush) {
 
     if(flush) {
         mutexGoogleConnect.lockForWrite();
         m_OnlineTree.clear();
+        m_LastSynch = lastSynch;
         mutexGoogleConnect.unlock();
 
     }
@@ -1149,6 +1150,12 @@ void GoogleConnectController::getOnlineTree(const QString &id, bool flush) {
         query = "\'root\' in parents";
     else {
         query = "\'" + id + "\' in parents";
+    }
+
+    if(lastSynch != 0) {
+        QDateTime time = QDateTime::fromMSecsSinceEpoch(lastSynch);
+
+        query += " and (modifiedDate > " + time.toString("YYYY-MM-ddThh:mm:ss") + " or mimeType = \'application/vnd.google-apps.folder\') ";
     }
 
     QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files?")
@@ -1257,7 +1264,7 @@ void GoogleConnectController::parseTreeEntry(const QString &parent, const QStrin
     pos += type.matchedLength();
 
     if(type.cap(1) == "application/vnd.google-apps.folder") {
-        getOnlineTree(id.cap(1));
+        getOnlineTree(id.cap(1), m_LastSynch);
         return;
     }
 

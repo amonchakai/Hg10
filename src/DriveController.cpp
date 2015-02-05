@@ -19,6 +19,7 @@
 #include <bb/system/SystemPrompt>
 #include <bb/system/SystemDialog>
 #include <bb/system/Clipboard>
+#include <QCryptographicHash>
 
 #include <QFile>
 
@@ -631,9 +632,8 @@ void DriveController::updateSynch() {
         getOnlineTree(m_SynchMap.begin().key());
 }
 
-// should query only files created before the last synch. or folders...
-void DriveController::getOnlineTree(const QString &id) {
-    m_Google->getOnlineTree(id, true);
+void DriveController::getOnlineTree(const QString &id, qint64 lastSynch) {
+    m_Google->getOnlineTree(id, lastSynch, true);
 }
 
 void DriveController::diveSynchPushLeaf(QString url, DriveItem *item) {
@@ -659,6 +659,29 @@ void DriveController::diveSynchPushLeaf(QString url, DriveItem *item) {
 
     } else {
         QFileInfo info(localFile);
+
+        bool needUpdate = false;
+        QFile file(localFile);
+        if (file.open(QIODevice::ReadOnly)) {
+            QDataStream stream(&file);
+
+            qint64 length = file.size();
+
+            char *temp = new char[length];
+            stream.readRawData (temp, length);
+
+
+
+            QCryptographicHash hasher(QCryptographicHash::Md5);
+            hasher.addData(temp);
+
+            QByteArray hash = hasher.result();
+            for(int i = 0 ; i < hash.size() & !needUpdate ; ++i) {
+                needUpdate = hash[i] == item->getHash().toLocal8Bit()[i];
+            }
+
+            delete[] temp;
+        }
 
         if(QDateTime::fromString(item->getTimestamp()) > info.lastModified()) {
             m_Mutex.lockForWrite();

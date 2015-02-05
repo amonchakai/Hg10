@@ -60,6 +60,7 @@ private:
     QString         m_Timestamp;
     QString         m_OpenLink;
     QString         m_DownloadLink;
+    QString         m_MD5;
 
 public:
     DriveItem(QObject *parent)  : QObject(parent) {};
@@ -84,6 +85,9 @@ public:
 
     inline const QString &getDownloadLink() const           { return m_DownloadLink; }
     inline void           setDownloadLink(const QString &c) { m_DownloadLink = c; emit downloadLinkChanged();}
+
+    inline const QString &getHash() const                   { return m_MD5; }
+    inline void           setHash(const QString &c)         { m_MD5 = c; }
 
     // ----------------------------------------------------------------------------------------------
 Q_SIGNALS:

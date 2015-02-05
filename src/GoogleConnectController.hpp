@@ -53,6 +53,7 @@ private:
     QString                              m_CurrentDir;
 
     QMap<QString, QPair<QString, QString> >  m_OnlineTree;
+    qint64                                   m_LastSynch;
 
 public:
      GoogleConnectController            (QObject *parent = 0);
@@ -89,7 +90,7 @@ public:
      void popFolder             ();
      void refresh               ();
      void setHomeFolder         (const QString &id);
-     void getOnlineTree         (const QString &id, bool flush = false);
+     void getOnlineTree         (const QString &id, qint64 lastSynch = 0, bool flush = false);
 
      void parseFileList         (const QString &page);
      void parseFileEntry        (const QString &entry);
