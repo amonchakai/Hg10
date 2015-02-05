@@ -225,6 +225,7 @@ NavigationPane {
                                                 overallContactContainer.ListItem.view.download(ListItemData.downloadLink, ListItemData.title);
                                             }
                                         }
+                                        /*
                                         ActionItem {
                                             title: qsTr("Synchronize")
                                             imageSource: "asset:///images/icon_synchronize.png"
@@ -232,6 +233,7 @@ NavigationPane {
                                                 overallContactContainer.ListItem.view.synchronize(ListItemData.id, ListItemData.title);
                                             }
                                         }
+                                        */
                                         
                                     }
                                 ]
