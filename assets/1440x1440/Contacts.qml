@@ -9,6 +9,7 @@ NavigationPane {
     property variant tpage
     property int depth
     property variant spage
+    property variant fpage
         
     Page {
         
@@ -508,6 +509,15 @@ NavigationPane {
                 onTriggered: {
                     listContactsController.refresh();
                 }
+            },
+            ActionItem {
+                title: qsTr("Filter contacts")
+                imageSource: "asset:///images/icon_filter.png"
+                onTriggered: {
+                    if(!fpage)
+                        fpage = filterSetter.createObject();
+                    nav.push(fpage);
+                }
             }
         ]
         
@@ -544,6 +554,10 @@ NavigationPane {
             ComponentDefinition {
                 id: statusSetter
                 source: "Status.qml"
+            },
+            ComponentDefinition {
+                id: filterSetter
+                source: "Filter.qml"
             },
             SystemToast {
                 id: deleteToast
