@@ -112,7 +112,7 @@ void XMPP::connectionToServiceFailed(QAbstractSocket::SocketError e) {
         dialog->setBody(tr("The connection to the headless service cannot be established.\n\nMaybe you did not allow it? \nMaybe it crashed...\n\nYou can check the permission, try to kill/restart the process, reinstall the app, reboot your device... \n\nDelete and forget this stupid app\'"));
         dialog->show();
     } else {
-        QTimer::singleShot(10000, this, SLOT(connectToXMPPService()));
+        QTimer::singleShot(3000, this, SLOT(connectToXMPPService()));
     }
 }
 

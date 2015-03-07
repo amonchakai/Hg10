@@ -104,6 +104,14 @@
         <source>Search contact</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Refresh list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Conversation</name>
@@ -329,6 +337,33 @@
     <message>
         <source>Close</source>
         <translation>Fermer</translation>
+    </message>
+</context>
+<context>
+    <name>Filter</name>
+    <message>
+        <source>Filter contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished">Valider</translation>
+    </message>
+    <message>
+        <source>Show only favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show only available contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show only connected contacts</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

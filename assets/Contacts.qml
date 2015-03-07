@@ -8,6 +8,7 @@ NavigationPane {
     id: nav
     property variant tpage
     property variant spage
+    property variant fpage
     property int depth
         
     
@@ -486,7 +487,24 @@ NavigationPane {
                 onTriggered: {
                     listContactsController.addContact();
                 }
+            },
+            ActionItem {
+                title: qsTr("Refresh list")
+                imageSource: "asset:///images/icon_refresh.png"
+                onTriggered: {
+                    listContactsController.refresh();
+                }
+            },
+            ActionItem {
+                title: qsTr("Filter contacts")
+                imageSource: "asset:///images/icon_filter.png"
+                onTriggered: {
+                    if(!fpage)
+                        fpage = filterSetter.createObject();
+                    nav.push(fpage);
+                }
             }
+            
         ]
         
         
@@ -509,6 +527,10 @@ NavigationPane {
             ComponentDefinition {
                 id: statusSetter
                 source: "Status.qml"
+            },
+            ComponentDefinition {
+                id: filterSetter
+                source: "Filter.qml"
             },
             SystemToast {
                 id: deleteToast

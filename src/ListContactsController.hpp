@@ -24,7 +24,8 @@ class ListContactsController : public QObject {
     Q_PROPERTY( QString avatar      READ getAvatar      WRITE setAvatar      NOTIFY avatarChanged)
     Q_PROPERTY( QString presence    READ getPresence    WRITE setPresence    NOTIFY presenceChanged)
     Q_PROPERTY( int     available   READ isAvailable    WRITE setAvailable   NOTIFY availableChanged)
-
+    Q_PROPERTY( bool    showOnlyFav READ isOnlyFav                           NOTIFY showOnlyFavChanged)
+    Q_PROPERTY( int     availabilityFilter READ getAvailabilityFilter        NOTIFY availabilityFilterChanged)
 
 private:
     bb::cascades::ListView          *m_ListView;
@@ -35,6 +36,7 @@ private:
     int                              m_Available;
     QList<Contact *>                 m_Contacts;
     bool                             m_OnlyFavorite;
+    int                              m_AvailabilityFilter;
     bool                             m_PushStated;
 
     bb::platform::Notification      *m_Notification;
@@ -58,6 +60,8 @@ public:
     inline bool           isAvailable   () const               { return m_Available; }
     inline void           setAvailable  (bool c)               { m_Available = c; emit availableChanged(); }
 
+    inline bool           isOnlyFav     () const               { return m_OnlyFavorite; }
+    inline int            getAvailabilityFilter() const        { return m_AvailabilityFilter; }
 
 
 public Q_SLOTS:
@@ -65,6 +69,7 @@ public Q_SLOTS:
     inline void setActivityIndicator    (QObject *activity)    {m_Activity = dynamic_cast<bb::cascades::ActivityIndicator*>(activity); m_Activity->start();}
     void updateView                     ();
     void pushContact                    (const Contact*);
+    void refresh                        ();
 
 
     void updatePresence                 (const QString &who, int status);
@@ -76,6 +81,7 @@ public Q_SLOTS:
 
     void filter                         (const QString &contacts);
     void setFilter                      (bool onlyFav);
+    void setAvailabilityFilter          (int level);
     void updateConnectionStatus         (bool status);
     void selectFirst                    ();
 
@@ -98,6 +104,8 @@ Q_SIGNALS:
 
     void presenceChanged                ();
     void availableChanged               ();
+    void showOnlyFavChanged             ();
+    void availabilityFilterChanged      ();
 
     void userSelected                   (const QString &id, const QString &name, const QString &avatar);
 

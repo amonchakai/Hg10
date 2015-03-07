@@ -52,6 +52,7 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
     m_OnlyFavorite = settings.value("FilterContacts", false).toBool();
     m_Presence  = settings.value("Presence", "").toString();
     m_Available = settings.value("Available", 0).toInt();
+    m_AvailabilityFilter = settings.value("AvailabilityFilter", -1).toInt();
 
 
 }
@@ -104,13 +105,18 @@ void ListContactsController::setPresence(const QString &text, int presence) {
 void ListContactsController::updatePresence(const QString &who, int status) {
     // lazy update to avoid refreshing completely the view.
     qDebug() << "update presence: " << who << status;
+    bool wasThere = false;
     for(int i = 0 ; i < m_Contacts.size() ; ++i) {
         if(m_Contacts.at(i)->getID().toLower() == who.toLower()) {
-
             m_Contacts.at(i)->setPresence(status);
-
+            wasThere = true;
             break;
         }
+
+    }
+
+    if(m_AvailabilityFilter != -1 && !wasThere) {
+        updateView();
     }
 
 }
@@ -156,6 +162,9 @@ void ListContactsController::onPromptFinishedAddContact(bb::system::SystemUiResu
     }
 }
 
+void ListContactsController::refresh() {
+    XMPP::get()->getContactList();
+}
 
 
 void ListContactsController::messageReceived(const QString &from, const QString &message) {
@@ -320,6 +329,12 @@ void ListContactsController::updateView() {
             if(m_OnlyFavorite && e.m_What.isEmpty())
                  continue;
 
+            if(m_AvailabilityFilter == 1 && contacts->at(i)->getPresence() != 0)
+                continue;
+
+            if((m_AvailabilityFilter/10) == 1 && contacts->at(i)->getPresence() == 1)
+                continue;
+
             bool skip = false;
             for(int k = 0 ; k < m_Contacts.size() ; ++k) {
                 if(contacts->at(i)->getID() == m_Contacts.at(k)->getID()) {
@@ -414,6 +429,12 @@ void ListContactsController::pushContact(const Contact* c) {
         TimeEvent e = ConversationManager::get()->getPreview(c->getID());
 
         if(m_OnlyFavorite && e.m_What.isEmpty())
+            return;
+
+        if(m_AvailabilityFilter == 1 && c->getPresence() != 0)
+            return;
+
+        if((m_AvailabilityFilter/10) == 1 && c->getPresence() == 1)
             return;
 
         Contact *nc = new Contact;
@@ -568,6 +589,22 @@ void ListContactsController::setFilter(bool onlyFav)  {
     settings.setValue("FilterContacts", m_OnlyFavorite);
 
     updateView();
+    emit showOnlyFavChanged();
+}
+
+void ListContactsController::setAvailabilityFilter(int level) {
+    if(m_AvailabilityFilter == level)
+        return;
+
+    qDebug() << "Set filter: " << level;
+
+    m_AvailabilityFilter = level;
+
+    QSettings settings("Amonchakai", "Hg10");
+    settings.setValue("AvailabilityFilter", m_AvailabilityFilter);
+
+    updateView();
+    emit availabilityFilterChanged();
 }
 
 QString ListContactsController::formatTime(qint64 msecs) {

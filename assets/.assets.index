@@ -1,5 +1,5 @@
 1
-104
+106
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -18,6 +18,7 @@ data/emojies.xml
 Drive.qml
 DropboxConnect.qml
 FacebookConnect.qml
+Filter.qml
 FurtherInformation.qml
 GoogleConnect.qml
 ImagePreview.qml
@@ -43,6 +44,7 @@ images/icon_check.png
 images/icon_download.png
 images/icon_drive.png
 images/icon_favorites.png
+images/icon_filter.png
 images/icon_folder.png
 images/icon_home.png
 images/icon_left.png

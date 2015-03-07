@@ -51,6 +51,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Drive.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \
         $$quote($$BASEDIR/assets/FacebookConnect.qml) \
+        $$quote($$BASEDIR/assets/Filter.qml) \
         $$quote($$BASEDIR/assets/FurtherInformation.qml) \
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
@@ -99,6 +100,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_download.png) \
         $$quote($$BASEDIR/assets/images/icon_drive.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
+        $$quote($$BASEDIR/assets/images/icon_filter.png) \
         $$quote($$BASEDIR/assets/images/icon_folder.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
         $$quote($$BASEDIR/assets/images/icon_left.png) \

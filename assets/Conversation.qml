@@ -29,10 +29,10 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Right
                     id: avatarOwnImg
                     scalingMethod: ScalingMethod.AspectFit
-                    minHeight: 90
-                    maxHeight: 90
-                    minWidth: 90
-                    maxWidth: 90
+                    minHeight: ui.du(9)
+                    maxHeight: ui.du(9)
+                    minWidth: ui.du(9)
+                    maxWidth: ui.du(9)
                     image: trackerOwn.image
                     
                     attachedObjects: [

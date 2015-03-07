@@ -501,6 +501,13 @@ NavigationPane {
                         key: "s"
                     }
                 ]
+            },
+            ActionItem {
+                title: qsTr("Refresh list")
+                imageSource: "asset:///images/icon_refresh.png"
+                onTriggered: {
+                    listContactsController.refresh();
+                }
             }
         ]
         
