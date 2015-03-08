@@ -273,7 +273,7 @@ NavigationPane {
                                             imageSource: "asset:///images/available.png"
                                             minHeight: ui.du(2)
                                             maxHeight: ui.du(2)
-                                            minWidth: ui.du(9)
+                                            minWidth: ui.du(2)
                                             maxWidth: ui.du(2)
                                             layoutProperties: AbsoluteLayoutProperties {
                                                 positionX: ui.du(7)
@@ -281,6 +281,34 @@ NavigationPane {
                                             }
                                             // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
                                             visible: ListItemData.presence == 0
+                                        }
+                                        
+                                        ImageView {
+                                            imageSource: "asset:///images/absent.png"
+                                            minHeight: ui.du(2)
+                                            maxHeight: ui.du(2)
+                                            minWidth: ui.du(2)
+                                            maxWidth: ui.du(2)
+                                            layoutProperties: AbsoluteLayoutProperties {
+                                                positionX: ui.du(7)
+                                                positionY: ui.du(7)
+                                            }
+                                            // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
+                                            visible: ListItemData.presence == 1 || ListItemData.presence == 2
+                                        }
+                                        
+                                        ImageView {
+                                            imageSource: "asset:///images/busy.png"
+                                            minHeight: ui.du(2)
+                                            maxHeight: ui.du(2)
+                                            minWidth: ui.du(2)
+                                            maxWidth: ui.du(2)
+                                            layoutProperties: AbsoluteLayoutProperties {
+                                                positionX: ui.du(7)
+                                                positionY: ui.du(7)
+                                            }
+                                            // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
+                                            visible: ListItemData.presence == 3
                                         }
                                     
                                     }

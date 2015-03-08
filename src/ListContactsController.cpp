@@ -334,7 +334,7 @@ void ListContactsController::updateView() {
             if(m_AvailabilityFilter == 1 && contacts->at(i)->getPresence() != 0)
                 continue;
 
-            if((m_AvailabilityFilter/10) == 1 && contacts->at(i)->getPresence() == 1)
+            if((m_AvailabilityFilter/10) == 1 && contacts->at(i)->getPresence() == -1)
                 continue;
 
             bool skip = false;
@@ -436,7 +436,7 @@ void ListContactsController::pushContact(const Contact* c) {
         if(m_AvailabilityFilter == 1 && c->getPresence() != 0)
             return;
 
-        if((m_AvailabilityFilter/10) == 1 && c->getPresence() == 1)
+        if((m_AvailabilityFilter/10) == 1 && c->getPresence() == -1)
             return;
 
         Contact *nc = new Contact;

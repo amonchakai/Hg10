@@ -1,5 +1,5 @@
 1
-108
+111
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -23,6 +23,7 @@ Filter.qml
 FurtherInformation.qml
 GoogleConnect.qml
 ImagePreview.qml
+images/absent.png
 images/available.png
 images/available.svg
 images/avatar.png
@@ -30,6 +31,7 @@ images/avatar.png.square.png
 images/avatar.square.svg
 images/avatar.svg
 images/blackFace.png
+images/busy.png
 images/chat_room.png
 images/chat_room.svg
 images/contact.png
@@ -59,6 +61,7 @@ images/icon_right_black.png
 images/icon_search.png
 images/icon_search.svg
 images/icon_settings.png
+images/icon_settings_black.png
 images/icon_share.png
 images/icon_synchronize.png
 images/icon_top.png

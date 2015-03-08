@@ -284,6 +284,34 @@ NavigationPane {
                                             // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
                                             visible: ListItemData.presence == 0
                                         }
+                                        
+                                        ImageView {
+                                            imageSource: "asset:///images/absent.png"
+                                            minHeight: 30
+                                            maxHeight: 30
+                                            minWidth: 30
+                                            maxWidth: 30
+                                            layoutProperties: AbsoluteLayoutProperties {
+                                                positionX: 110
+                                                positionY: 110
+                                            }
+                                            // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
+                                            visible: ListItemData.presence == 1 || ListItemData.presence == 2
+                                        }
+                                        
+                                        ImageView {
+                                            imageSource: "asset:///images/busy.png"
+                                            minHeight: 30
+                                            maxHeight: 30
+                                            minWidth: 30
+                                            maxWidth: 30
+                                            layoutProperties: AbsoluteLayoutProperties {
+                                                positionX: 110
+                                                positionY: 110
+                                            }
+                                            // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
+                                            visible: ListItemData.presence == 3
+                                        }
                                     
                                     }
                                     

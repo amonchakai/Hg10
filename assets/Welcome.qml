@@ -28,7 +28,7 @@ NavigationPane {
             
             ImageButton {
                 id: advancedSettingsButton
-                defaultImageSource: "asset:///images/icon_settings.png"
+                defaultImageSource: "asset:///images/icon_settings_black.png"
                 verticalAlignment: VerticalAlignment.Top
                 horizontalAlignment: HorizontalAlignment.Right
                 onClicked: {

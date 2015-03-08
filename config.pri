@@ -79,6 +79,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/Tutorial/logIn.jpg) \
         $$quote($$BASEDIR/assets/images/Tutorial/settings.jpg) \
         $$quote($$BASEDIR/assets/images/Tutorial/splash_720x720.jpg) \
+        $$quote($$BASEDIR/assets/images/absent.png) \
         $$quote($$BASEDIR/assets/images/available.png) \
         $$quote($$BASEDIR/assets/images/available.svg) \
         $$quote($$BASEDIR/assets/images/avatar.png) \
@@ -86,6 +87,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/avatar.square.svg) \
         $$quote($$BASEDIR/assets/images/avatar.svg) \
         $$quote($$BASEDIR/assets/images/blackFace.png) \
+        $$quote($$BASEDIR/assets/images/busy.png) \
         $$quote($$BASEDIR/assets/images/chat_room.png) \
         $$quote($$BASEDIR/assets/images/chat_room.svg) \
         $$quote($$BASEDIR/assets/images/contact.png) \
@@ -115,6 +117,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_search.png) \
         $$quote($$BASEDIR/assets/images/icon_search.svg) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
+        $$quote($$BASEDIR/assets/images/icon_settings_black.png) \
         $$quote($$BASEDIR/assets/images/icon_share.png) \
         $$quote($$BASEDIR/assets/images/icon_synchronize.png) \
         $$quote($$BASEDIR/assets/images/icon_top.png) \
