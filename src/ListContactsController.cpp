@@ -13,7 +13,8 @@
 #include <bb/platform/Notification>
 #include <bb/system/SystemPrompt>
 
-
+#include <QDir>
+#include <QFile>
 #include <QDebug>
 #include <QRegExp>
 #include <QSettings>
@@ -21,6 +22,7 @@
 #include "DataObjects.h"
 #include "XMPPService.hpp"
 #include "ConversationManager.hpp"
+#include "QXmppVCardIq.h"
 
 
 ListContactsController::ListContactsController(QObject *parent) : QObject(parent),
@@ -621,3 +623,54 @@ QString ListContactsController::formatTime(qint64 msecs) {
         return time.date().toString("dd.MM.yyyy");
     }
 }
+
+
+void ListContactsController::editContact(const QString &id, const QString &fullname) {
+    for(int i = 0 ; i < m_Contacts.size() ; ++i) {
+        if(m_Contacts.at(i)->getID().toLower() == id.toLower()) {
+            m_Contacts.at(i)->setName(fullname);
+            break;
+        }
+    }
+
+
+
+
+
+
+    // -------------------------------------------------------------
+    // edit the vcard...
+
+    QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
+
+    QDomDocument doc("vCard");
+
+    {
+        QFile file(vCardsDir + "/" + id + ".xml");
+        if (!file.open(QIODevice::ReadOnly))
+            return;
+        if (!doc.setContent(&file)) {
+            //file.close();
+            //return;
+            qWarning() << "Problem while reading vcard: " << id << " file not complete, some data may be missing.";
+
+        }
+        file.close();
+    }
+
+    QXmppVCardIq vCard;
+    vCard.parse(doc.documentElement());
+    vCard.setFullName(fullname);
+
+    {
+        QFile file(vCardsDir + "/" + id + ".xml");
+
+        if(file.open(QIODevice::ReadWrite)) {
+            QXmlStreamWriter stream(&file);
+            vCard.toXml(&stream);
+            file.close();
+        }
+    }
+
+}
+

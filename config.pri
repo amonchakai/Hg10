@@ -50,6 +50,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
         $$quote($$BASEDIR/assets/Drive.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \
+        $$quote($$BASEDIR/assets/EditContact.qml) \
         $$quote($$BASEDIR/assets/FacebookConnect.qml) \
         $$quote($$BASEDIR/assets/Filter.qml) \
         $$quote($$BASEDIR/assets/FurtherInformation.qml) \
@@ -122,6 +123,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_walkie.png) \
         $$quote($$BASEDIR/assets/images/icon_wallpaper.png) \
         $$quote($$BASEDIR/assets/images/icon_wallpaper.svg) \
+        $$quote($$BASEDIR/assets/images/icon_write_context.png) \
         $$quote($$BASEDIR/assets/images/pinch_out.png) \
         $$quote($$BASEDIR/assets/images/pinch_out_black.png) \
         $$quote($$BASEDIR/assets/images/pull-to-refresh.png) \

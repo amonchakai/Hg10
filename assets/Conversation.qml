@@ -218,7 +218,8 @@ Page {
                         }
                     }
                     content {
-                        flags: TextContentFlag.Emoticons
+                        flags: TextContentFlag.ActiveText | TextContentFlag.Emoticons
+                        
                     }
                 }
                 

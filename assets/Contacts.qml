@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 import bb.system 1.2
 import Network.ListContactsController 1.0
 import com.netimage 1.0
@@ -9,6 +9,7 @@ NavigationPane {
     property variant tpage
     property variant spage
     property variant fpage
+    property variant ecPage
     property int depth
         
     
@@ -29,10 +30,10 @@ NavigationPane {
                         //horizontalAlignment: HorizontalAlignment.Left
                         id: avatarOwnImg
                         scalingMethod: ScalingMethod.AspectFit
-                        minHeight: 90
-                        maxHeight: 90
-                        minWidth: 90
-                        maxWidth: 90
+                        minHeight: ui.du(9)
+                        maxHeight: ui.du(9)
+                        minWidth: ui.du(9)
+                        maxWidth: ui.du(9)
                         image: trackerOwn.image
                             
                         attachedObjects: [
@@ -221,7 +222,7 @@ NavigationPane {
                                 }
                                 
                                 Container {
-                                    preferredHeight: 100
+                                    preferredHeight: ui.du(10)
                                     
                                     id: titleContainer
                                     layout: StackLayout {
@@ -234,17 +235,17 @@ NavigationPane {
                                         id: selectionIndicator
                                         minWidth: 5
                                         maxWidth: 5
-                                        preferredHeight: 100
+                                        preferredHeight: ui.du(10)
                                     }
                                     
                                     
                                     
                                     Container {
                                         layout: AbsoluteLayout { }
-                                        minHeight: 90
-                                        maxHeight: 90
-                                        minWidth: 90
-                                        maxWidth: 90
+                                        minHeight: ui.du(9)
+                                        maxHeight: ui.du(9)
+                                        minWidth: ui.du(9)
+                                        maxWidth: ui.du(9)
                                         
                                         //  Avatar
                                         ImageView {
@@ -252,10 +253,10 @@ NavigationPane {
                                             //horizontalAlignment: HorizontalAlignment.Left
                                             id: avatarImg
                                             scalingMethod: ScalingMethod.AspectFit
-                                            minHeight: 90
-                                            maxHeight: 90
-                                            minWidth: 90
-                                            maxWidth: 90
+                                            minHeight: ui.du(9)
+                                            maxHeight: ui.du(9)
+                                            minWidth: ui.du(9)
+                                            maxWidth: ui.du(9)
                                             image: tracker.image
                                             
                                             attachedObjects: [
@@ -270,13 +271,13 @@ NavigationPane {
                                         
                                         ImageView {
                                             imageSource: "asset:///images/available.png"
-                                            minHeight: 20
-                                            maxHeight: 20
-                                            minWidth: 20
-                                            maxWidth: 20
+                                            minHeight: ui.du(2)
+                                            maxHeight: ui.du(2)
+                                            minWidth: ui.du(9)
+                                            maxWidth: ui.du(2)
                                             layoutProperties: AbsoluteLayoutProperties {
-                                                positionX: 70
-                                                positionY: 70
+                                                positionX: ui.du(7)
+                                                positionY: ui.du(7)
                                             }
                                             // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
                                             visible: ListItemData.presence == 0
@@ -285,15 +286,15 @@ NavigationPane {
                                     }
                                     
                                     Container {
-                                        minWidth: 30
-                                        maxWidth: 30
+                                        minWidth: ui.du(3)
+                                        maxWidth: ui.du(3)
                                         //horizontalAlignment: HorizontalAlignment.Left
                                     
                                     }
                                     
                                     Container {
                                         id: contactContainer
-                                        preferredWidth: 2000
+                                        preferredWidth: ui.du(200)
                                         layout: StackLayout {
                                             orientation: LayoutOrientation.TopToBottom
                                         }
@@ -349,6 +350,14 @@ NavigationPane {
                                     ActionSet {
                                         title: qsTr("Contact")
                                         
+                                        ActionItem {
+                                            title: qsTr("Edit contact")
+                                            imageSource: "asset:///images/icon_write_context.png"
+                                            onTriggered: {
+                                                overallContactContainer.ListItem.view.showEditContact(ListItemData.id, ListItemData.name);
+                                            }
+                                        }
+                                        
                                         DeleteActionItem {
                                             title: qsTr("Clear history")
                                             onTriggered: {
@@ -368,6 +377,18 @@ NavigationPane {
                         deleteToast.dismissed = false;
                         deleteToast.show();
                         timerDelete.start();
+                    }
+                    
+                    function showEditContact(id, fullname) {
+                        // Create the content page and push it on top to drill down to it.
+                        if(!ecPage) {
+                            ecPage = editContact.createObject();
+                        }
+                        
+                        ecPage.id       = id;
+                        ecPage.fullname = fullname;
+                        
+                        nav.push(ecPage);
                     }
                     
                     onTriggered: {
@@ -412,7 +433,7 @@ NavigationPane {
                         imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/pinch_out.png" : "asset:///images/pinch_out_black.png"
                         horizontalAlignment: HorizontalAlignment.Left
                         verticalAlignment: VerticalAlignment.Center
-                        preferredHeight: 100
+                        preferredHeight: ui.du(10)
                         scalingMethod: ScalingMethod.AspectFit
                     }
                     
@@ -438,7 +459,7 @@ NavigationPane {
                         imageSource: "asset:///images/pull-to-refresh.png"
                         horizontalAlignment: HorizontalAlignment.Left
                         verticalAlignment: VerticalAlignment.Center
-                        preferredHeight: 100
+                        preferredHeight: ui.du(10)
                         scalingMethod: ScalingMethod.AspectFit
                     }
                     
@@ -531,6 +552,10 @@ NavigationPane {
             ComponentDefinition {
                 id: filterSetter
                 source: "Filter.qml"
+            },
+            ComponentDefinition {
+                id: editContact
+                source: "EditContact.qml"
             },
             SystemToast {
                 id: deleteToast

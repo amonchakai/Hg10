@@ -112,6 +112,10 @@
         <source>Filter contacts</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit contact</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Conversation</name>
@@ -326,6 +330,29 @@
     <message>
         <source>Insert access code</source>
         <translation>Entrez votre code d&apos;access</translation>
+    </message>
+</context>
+<context>
+    <name>EditContact</name>
+    <message>
+        <source>Edit contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished">Valider</translation>
+    </message>
+    <message>
+        <source>Set user name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full name:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

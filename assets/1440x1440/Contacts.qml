@@ -7,9 +7,10 @@ import Lib.QTimer 1.0
 NavigationPane {
     id: nav
     property variant tpage
-    property int depth
     property variant spage
     property variant fpage
+    property variant ecPage
+    property int depth
         
     Page {
         
@@ -351,6 +352,14 @@ NavigationPane {
                                     ActionSet {
                                         title: qsTr("Contact")
                                         
+                                        ActionItem {
+                                            title: qsTr("Edit contact")
+                                            imageSource: "asset:///images/icon_write_context.png"
+                                            onTriggered: {
+                                                overallContactContainer.ListItem.view.showEditContact(ListItemData.id, ListItemData.name);
+                                            }
+                                        }
+                                        
                                         DeleteActionItem {
                                             title: qsTr("Clear history")
                                             onTriggered: {
@@ -371,6 +380,18 @@ NavigationPane {
                         deleteToast.dismissed = false;
                         deleteToast.show();
                         timerDelete.start();
+                    }
+                    
+                    function showEditContact(id, fullname) {
+                        // Create the content page and push it on top to drill down to it.
+                        if(!ecPage) {
+                            ecPage = editContact.createObject();
+                        }
+                        
+                        ecPage.id       = id;
+                        ecPage.fullname = fullname;
+                        
+                        nav.push(ecPage);
                     }
                     
                     onTriggered: {
@@ -558,6 +579,10 @@ NavigationPane {
             ComponentDefinition {
                 id: filterSetter
                 source: "Filter.qml"
+            },
+            ComponentDefinition {
+                id: editContact
+                source: "EditContact.qml"
             },
             SystemToast {
                 id: deleteToast
