@@ -290,6 +290,7 @@ NavigationPane {
                                 var chosenItem = dataModel.data(indexPath);
                                 txtField.text = txtField.text  + chosenItem.name;
                                 conversationCard.toogleEmoji();
+                                txtField.requestFocus();
                             }
                         }    
                     }

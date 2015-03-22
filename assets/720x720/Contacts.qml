@@ -285,8 +285,8 @@ NavigationPane {
                                             minWidth: ui.du(2)
                                             maxWidth: ui.du(2)
                                             layoutProperties: AbsoluteLayoutProperties {
-                                                positionX: ui.du(7)
-                                                positionY: ui.du(7)
+                                                positionX: ui.du(9)
+                                                positionY: ui.du(9)
                                             }
                                             // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
                                             visible: ListItemData.presence == 0
@@ -299,8 +299,8 @@ NavigationPane {
                                             minWidth: ui.du(2)
                                             maxWidth: ui.du(2)
                                             layoutProperties: AbsoluteLayoutProperties {
-                                                positionX: ui.du(7)
-                                                positionY: ui.du(7)
+                                                positionX: ui.du(9)
+                                                positionY: ui.du(9)
                                             }
                                             // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
                                             visible: ListItemData.presence == 1 || ListItemData.presence == 2
@@ -313,8 +313,8 @@ NavigationPane {
                                             minWidth: ui.du(2)
                                             maxWidth: ui.du(2)
                                             layoutProperties: AbsoluteLayoutProperties {
-                                                positionX: ui.du(7)
-                                                positionY: ui.du(7)
+                                                positionX: ui.du(9)
+                                                positionY: ui.du(9)
                                             }
                                             // 0 => online, 1 => away, 2 => away (long time), 3 => do not disturb, 4 => actively interested into chatting, 
                                             visible: ListItemData.presence == 3

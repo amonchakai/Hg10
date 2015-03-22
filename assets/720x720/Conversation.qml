@@ -283,6 +283,7 @@ Page {
                             var chosenItem = dataModel.data(indexPath);
                             txtField.text = txtField.text  + chosenItem.name;
                             toogleEmoji();
+                            txtField.requestFocus();
                         }
                     }    
                 }

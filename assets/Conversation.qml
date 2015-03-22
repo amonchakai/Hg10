@@ -497,6 +497,7 @@ Page {
                             
                         }
                         toogleEmoji();
+                        txtField.requestFocus();
                         
                     }
                 }    

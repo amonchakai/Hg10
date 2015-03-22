@@ -505,6 +505,7 @@ NavigationPane {
                                 
                                 }
                                 conversationCard.toogleEmoji();
+                                txtField.requestFocus();
                             
                             }
                             
