@@ -22,6 +22,7 @@
 #include <bb/cascades/LocaleHandler>
 #include <bb/system/CardDoneMessage>
 #include <bb/platform/Notification>
+#include <bb/device/DisplayInfo>
 #include <QTimer>
 
 #include "XMPPService.hpp"
@@ -140,6 +141,12 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         // to ensure the document gets destroyed properly at shut down.
         QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
 
+        bb::device::DisplayInfo display;
+        QDeclarativePropertyMap* displayDimensions = new QDeclarativePropertyMap;
+        displayDimensions->insert( "width", QVariant( display.pixelSize().width() ) );
+        displayDimensions->insert( "height", QVariant( display.pixelSize().height() ) );
+        qml->setContextProperty( "DisplayInfo", displayDimensions );
+
         // Create root object for the UI
         AbstractPane *root = qml->createRootObject<AbstractPane>();
 
@@ -216,6 +223,13 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
          QObject *thread = m_root->findChild<QObject*>("conversationCard");
          if(thread != NULL) {
              qml->setContextProperty("_app", this);
+
+             bb::device::DisplayInfo display;
+             QDeclarativePropertyMap* displayDimensions = new QDeclarativePropertyMap;
+             displayDimensions->insert( "width", QVariant( display.pixelSize().width() ) );
+             displayDimensions->insert( "height", QVariant( display.pixelSize().height() ) );
+             qml->setContextProperty( "DisplayInfo", displayDimensions );
+
              thread->setProperty("name", item["name"].toString());
 
              if(QFile::exists(QDir::homePath() + QLatin1String("/vCards/") + addresse + ".png"))

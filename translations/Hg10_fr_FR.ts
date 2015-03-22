@@ -147,6 +147,14 @@
         <source>Background</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Actions</source>
+        <translation type="unfinished">Actions</translation>
+    </message>
+    <message>
+        <source>Smileys</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConversationCard</name>
@@ -178,6 +186,14 @@
         <source>Background</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Actions</source>
+        <translation type="unfinished">Actions</translation>
+    </message>
+    <message>
+        <source>Smileys</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConversationController</name>
@@ -187,6 +203,14 @@
     </message>
     <message>
         <source>Set the wallpaper for which contact?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>/app/native/assets/data/action_list.xml</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>/app/native/assets/data/emojies_list.xml</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

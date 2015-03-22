@@ -13,15 +13,26 @@
 #include "FileTransfert.hpp"
 #include "XMPPService.hpp"
 
+#include "Image/HFRNetworkAccessManager.hpp"
+#include "ConversationManager.hpp"
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+
+
 #include <bb/cascades/Application>
 #include <bb/cascades/ThemeSupport>
 #include <bb/cascades/ColorTheme>
 #include <bb/cascades/Theme>
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/system/SystemDialog>
+#include <bb/cascades/AbstractPane>
+#include <bb/cascades/GroupDataModel>
+
 
 ConversationController::ConversationController(QObject *parent) : QObject(parent),
             m_WebView(NULL),
+            m_ListView(NULL),
             m_LinkActivity(NULL),
             m_HistoryCleared(false),
             m_IsRoom(false),
@@ -240,10 +251,56 @@ bool ConversationController::isImage(const QString &url) {
     return false;
 }
 
+
+void ConversationController::getContentBehindLink(const QString &message) {
+
+    return;
+
+    QSettings settings("Amonchakai", "Hg10");
+
+    QNetworkRequest request(QUrl(message.toAscii()));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+    request.setRawHeader("Authorization", ("Bearer " + settings.value("access_token").value<QString>()).toAscii());
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkReplyGetContent()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+}
+
+
+void ConversationController::checkReplyGetContent() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    QString response;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            const int available = reply->bytesAvailable();
+            if (available > 0) {
+                const QByteArray buffer(reply->readAll());
+                response = QString::fromUtf8(buffer);
+
+                qDebug() << response;
+            }
+
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+        }
+
+        reply->deleteLater();
+    }
+}
+
 QString ConversationController::renderMessage(const QString &message, bool showImg) {
     QRegExp url("(http[s]*://[^ ]+)");
     //url.setMinimal(true);
     url.setCaseSensitivity(Qt::CaseInsensitive);
+
+    if(message.indexOf("https://plus.google.com/photos/albums/") != -1) {
+        getContentBehindLink(message);
+    }
+
 
     int pos = 0;
     int lastPos = 0;
@@ -611,4 +668,82 @@ void ConversationController::onWallpaperSelectCanceled() {
 void ConversationController::closeCard() {
     XMPP::get()->closeCard();
 }
+
+
+
+
+
+
+void ConversationController::loadActionMenu(int id) {
+    using namespace bb::cascades;
+
+    if(m_ListView == NULL)
+        return;
+
+
+    GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
+    if (dataModel) {
+        dataModel->clear();
+    } else {
+        qDebug() << "create new model";
+        dataModel = new GroupDataModel(
+                QStringList() << "image"
+                              << "category"
+                              << "caption"
+                              << "action"
+                 );
+        m_ListView->setDataModel(dataModel);
+    }
+
+
+
+    // ----------------------------------------------------------------------------------------------
+    // push data to the view
+
+    QString filename =  tr("/app/native/assets/data/action_list.xml");
+    if(id == 1)
+        filename =  tr("/app/native/assets/data/emojies_list.xml");
+
+
+
+    QFile actionFile(QDir::currentPath() + filename);
+
+
+    QRegExp caption("title=\"([^\"]+)\"");
+    QRegExp category("category=\"([^\"]+)\"");
+    QRegExp image("url=\"([^\"]*)\"");
+    QRegExp actionReg("action=\"([0-9]+)\"");
+
+    if (actionFile.open(QIODevice::ReadOnly)) {
+        QString actionList = actionFile.readAll();
+
+        int pos = 0;
+        while(pos != -1) {
+            ActionComposerItem *action = NULL;
+            pos = caption.indexIn(actionList, pos);
+            if(pos != -1) {
+                action = new ActionComposerItem(this);
+                action->setCaption(caption.cap(1));
+                pos += caption.matchedLength();
+            } else break;
+
+            pos = category.indexIn(actionList, pos);
+            pos += category.matchedLength();
+            action->setCategory(category.cap(1));
+
+            pos = image.indexIn(actionList, pos);
+            pos += image.matchedLength();
+            action->setImage(image.cap(1));
+
+            pos = actionReg.indexIn(actionList, pos);
+            pos += actionReg.matchedLength();
+            action->setAction(actionReg.cap(1).toInt());
+
+            dataModel->insert(action);
+
+        }
+    }
+
+}
+
 

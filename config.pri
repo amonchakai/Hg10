@@ -70,7 +70,10 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/bubble.css) \
         $$quote($$BASEDIR/assets/bubble_black.css) \
+        $$quote($$BASEDIR/assets/data/action_list.xml) \
+        $$quote($$BASEDIR/assets/data/action_list_fr.xml) \
         $$quote($$BASEDIR/assets/data/emojies.xml) \
+        $$quote($$BASEDIR/assets/data/emojies_list.xml) \
         $$quote($$BASEDIR/assets/images/Tutorial/accept.jpg) \
         $$quote($$BASEDIR/assets/images/Tutorial/chat.jpg) \
         $$quote($$BASEDIR/assets/images/Tutorial/closeIcon.png) \
@@ -90,6 +93,20 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/busy.png) \
         $$quote($$BASEDIR/assets/images/chat_room.png) \
         $$quote($$BASEDIR/assets/images/chat_room.svg) \
+        $$quote($$BASEDIR/assets/images/color/Attach.png) \
+        $$quote($$BASEDIR/assets/images/color/Clean.png) \
+        $$quote($$BASEDIR/assets/images/color/Emoticon.png) \
+        $$quote($$BASEDIR/assets/images/color/First.png) \
+        $$quote($$BASEDIR/assets/images/color/Last.png) \
+        $$quote($$BASEDIR/assets/images/color/Next.png) \
+        $$quote($$BASEDIR/assets/images/color/Prev.png) \
+        $$quote($$BASEDIR/assets/images/color/Refresh.png) \
+        $$quote($$BASEDIR/assets/images/color/Reply.png) \
+        $$quote($$BASEDIR/assets/images/color/Survey.png) \
+        $$quote($$BASEDIR/assets/images/color/Voice.png) \
+        $$quote($$BASEDIR/assets/images/color/Wallpaper.png) \
+        $$quote($$BASEDIR/assets/images/color/to_Bottom.png) \
+        $$quote($$BASEDIR/assets/images/color/to_Top.png) \
         $$quote($$BASEDIR/assets/images/contact.png) \
         $$quote($$BASEDIR/assets/images/contact.svg) \
         $$quote($$BASEDIR/assets/images/document.png) \
@@ -103,13 +120,21 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_download.png) \
         $$quote($$BASEDIR/assets/images/icon_drive.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \
+        $$quote($$BASEDIR/assets/images/icon_feed.png) \
+        $$quote($$BASEDIR/assets/images/icon_feed_black.png) \
         $$quote($$BASEDIR/assets/images/icon_filter.png) \
         $$quote($$BASEDIR/assets/images/icon_folder.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
         $$quote($$BASEDIR/assets/images/icon_left.png) \
         $$quote($$BASEDIR/assets/images/icon_left_black.png) \
+        $$quote($$BASEDIR/assets/images/icon_left_blue.png) \
+        $$quote($$BASEDIR/assets/images/icon_left_blue_black.png) \
         $$quote($$BASEDIR/assets/images/icon_notification.png) \
         $$quote($$BASEDIR/assets/images/icon_quoted_white.png) \
+        $$quote($$BASEDIR/assets/images/icon_redface_rounded.png) \
+        $$quote($$BASEDIR/assets/images/icon_redface_rounded.svg) \
+        $$quote($$BASEDIR/assets/images/icon_redface_rounded_black.png) \
+        $$quote($$BASEDIR/assets/images/icon_redface_rounded_black.svg) \
         $$quote($$BASEDIR/assets/images/icon_refresh.png) \
         $$quote($$BASEDIR/assets/images/icon_rename.png) \
         $$quote($$BASEDIR/assets/images/icon_right.png) \
@@ -127,6 +152,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_wallpaper.png) \
         $$quote($$BASEDIR/assets/images/icon_wallpaper.svg) \
         $$quote($$BASEDIR/assets/images/icon_write_context.png) \
+        $$quote($$BASEDIR/assets/images/icon_write_rounded.png) \
+        $$quote($$BASEDIR/assets/images/icon_write_rounded_black.png) \
         $$quote($$BASEDIR/assets/images/pinch_out.png) \
         $$quote($$BASEDIR/assets/images/pinch_out_black.png) \
         $$quote($$BASEDIR/assets/images/pull-to-refresh.png) \
@@ -366,6 +393,9 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/images/Tutorial/*.qml) \
         $$quote($$BASEDIR/../assets/images/Tutorial/*.js) \
         $$quote($$BASEDIR/../assets/images/Tutorial/*.qs) \
+        $$quote($$BASEDIR/../assets/images/color/*.qml) \
+        $$quote($$BASEDIR/../assets/images/color/*.js) \
+        $$quote($$BASEDIR/../assets/images/color/*.qs) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.qml) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.js) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.qs)

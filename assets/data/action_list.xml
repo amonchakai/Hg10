@@ -1,0 +1,10 @@
+<root>
+	<item title="Wallpaper" category="General" url="asset:///images/color/Wallpaper.png" action="7" />	
+	<item title="To Bottom" category="General" url="asset:///images/color/to_Bottom.png" action="1" />
+	<item title="Stickers" category="Actions" url="asset:///images/document.png" action="6" />		
+	<item title="Reply" category="Actions" url="asset:///images/color/Reply.png" action="4" />
+	<item title="Attach" category="Actions" url="asset:///images/color/Attach.png" action="3" />	
+	<item title="Refresh" category="Actions" url="asset:///images/color/Refresh.png" action="2" />	
+	<item title="Emoticons" category="Actions" url="asset:///images/color/Emoticon.png" action="5" />	
+	<item title="Voice message" category="Actions" url="asset:///images/color/Voice.png" action="8" />	
+</root>

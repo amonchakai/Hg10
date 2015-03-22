@@ -11,6 +11,7 @@
 
 #include <QtCore/QObject>
 #include <bb/cascades/WebView>
+#include <bb/cascades/ListView>
 #include <bb/cascades/ActivityIndicator>
 #include <bb/system/SystemUiResult>
 #include "DataObjects.h"
@@ -26,6 +27,7 @@ class ConversationController : public QObject {
 
 private:
     bb::cascades::WebView    *m_WebView;
+    bb::cascades::ListView          *m_ListView;
     bb::cascades::ActivityIndicator *m_LinkActivity;
     QString                   m_DstAvatar;
     bool                      m_HistoryCleared;
@@ -54,14 +56,19 @@ private:
     void initDropbox                    ();
     void initGoogleDrive                ();
 
+    void getContentBehindLink           (const QString &message);
 
 
 public Q_SLOTS:
     inline void setWebView              (QObject *webView)                          {m_WebView = dynamic_cast<bb::cascades::WebView*>(webView); }
     inline void setLinkActivity         (QObject *activity)                         {m_LinkActivity = dynamic_cast<bb::cascades::ActivityIndicator*>(activity);};
+    inline void setActionListView       (QObject *list)                             {m_ListView = dynamic_cast<bb::cascades::ListView*>(list); } ;
+
     void updateView                     ();
     void load                           (const QString &id, const QString &avatar, const QString &name);
     void refreshHistory                 (const QString &id, const QString &avatar, const QString &name);
+
+    void loadActionMenu                 (int id);
 
     void linkEstablished                ();
     void waitingLink                    ();
@@ -77,7 +84,7 @@ public Q_SLOTS:
 
 
     void chatStateUpdate                (int status);
-
+    void checkReplyGetContent           ();
 
     // -----------------------------------------------------
     // audio messages
@@ -94,7 +101,7 @@ public Q_SLOTS:
 
 
     // -----------------------------------------------------
-    // aesthetic aspects.
+    // Esthetic aspects.
 
     void setWallpaper                   ();
     void onWallpaperSelected            (const QStringList&);

@@ -395,4 +395,53 @@ inline QDataStream &operator>>(QDataStream& stream, AudioMessage& event) {
 }
 
 
+
+
+
+// ---------------------------------------------------------------------------------------------
+// ActionComposer
+
+class ActionComposerItem : public QObject {
+    Q_OBJECT
+
+    Q_PROPERTY( QString image           READ getImage      WRITE setImage        NOTIFY imageChanged)
+    Q_PROPERTY( QString category        READ getCategory   WRITE setCategory     NOTIFY categoryChanged)
+    Q_PROPERTY( QString caption         READ getCaption    WRITE setCaption      NOTIFY captionChanged)
+    Q_PROPERTY( int action              READ getAction     WRITE setAction       NOTIFY actionChanged)
+
+private:
+    QString m_Image;
+    QString m_Category;
+    QString m_Caption;
+    int m_Action;
+
+
+public:
+    ActionComposerItem(QObject *parent = 0) : QObject(parent), m_Action(0) {}
+    virtual ~ActionComposerItem() {}
+
+    inline const QString &getImage() const                      { return m_Image; }
+    inline void           setImage(const QString &s)            { m_Image = s; emit imageChanged(); }
+
+    inline const QString &getCategory() const                   { return m_Category; }
+    inline void           setCategory(const QString &s)         { m_Category = s; emit categoryChanged(); }
+
+    inline const QString &getCaption() const                    { return m_Caption; }
+    inline void           setCaption(const QString &c)          { m_Caption = c; emit captionChanged();}
+
+    inline int            getAction() const                     { return m_Action; }
+    inline void           setAction(int c)                      { m_Action = c; emit actionChanged();}
+
+    // ----------------------------------------------------------------------------------------------
+    Q_SIGNALS:
+        void imageChanged();
+        void categoryChanged();
+        void captionChanged();
+        void actionChanged();
+
+};
+
+
+
+
 #endif /* DATAOBJECTS_H_ */

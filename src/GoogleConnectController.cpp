@@ -99,11 +99,19 @@ void GoogleConnectController::setWebView(QObject *webView) {
 }
 
 void GoogleConnectController::webviewTitleChanged(const QString &title) {
+
+    qDebug() << "Success code: " << title;
+
     QRegExp success("Success code=(.*)");
     if(success.indexIn(title) != -1) {
-        qDebug() << "Success: " << success.cap(1);
         save(success.cap(1));
         emit closeConnect();
+    } else {
+        QRegExp success("code=(.*)");
+        if(success.indexIn(title) != -1) {
+            save(success.cap(1));
+            emit closeConnect();
+        }
     }
 
     if(title == "Denied error=access_denied") {

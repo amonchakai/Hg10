@@ -1,0 +1,12 @@
+<root>
+	<item title="Bas" category="Navigation" url="asset:///images/color/to_Bottom.png" action="2" />
+	<item title="Haut" category="Navigation" url="asset:///images/color/to_Top.png" action="1" />	
+	<item title="Page suiv." category="Navigation" url="asset:///images/color/Next.png" action="3" />	
+	<item title="Page prec." category="Navigation" url="asset:///images/color/Prev.png" action="4" />	
+	<item title="Dern. page" category="Navigation" url="asset:///images/color/Last.png" action="5" />	
+	<item title="Prem. page" category="Navigation" url="asset:///images/color/First.png" action="6" />	
+	<item title="Vider cache" category="Action" url="asset:///images/color/Clean.png" action="10" />
+	<item title="Sondage" category="Action" url="asset:///images/color/Survey.png" action="9" />	
+	<item title="Rafraichir" category="Action" url="asset:///images/color/Refresh.png" action="7" />	
+	<item title="Repondre" category="Action" url="asset:///images/color/Reply.png" action="8" />	
+</root>

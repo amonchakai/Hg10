@@ -15,6 +15,8 @@ Page {
     property string smileyToAdd
     property string filenameChat
     
+    property int nbIcons
+    
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
         kindProperties: FreeFormTitleBarKindProperties {
@@ -64,6 +66,9 @@ Page {
             }
         }
     }
+    
+    actionBarVisibility: ChromeVisibility.Hidden
+
     
     Container {
         layout: DockLayout {
@@ -175,7 +180,7 @@ Page {
                 }
                 background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
                 
-                
+                /*
                 ImageButton {
                     preferredHeight: 60
                     defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/sound_white.png" : "asset:///images/sound.png"
@@ -203,7 +208,7 @@ Page {
                         }
                     }   
                 }
-                
+                */
                 TextArea {
                     preferredHeight: ui.du(10)
                     horizontalAlignment: HorizontalAlignment.Fill
@@ -223,18 +228,119 @@ Page {
                     }
                 }
                 
-                ImageButton {
-                    verticalAlignment: VerticalAlignment.Center
-                    defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/whiteFace.png" : "asset:///images/blackFace.png"
-                    preferredHeight: 60
-                    preferredWidth: 60
-                    onClicked: {
-                        toogleEmoji();
-                    }
-                }
+                
                 Container {
                     preferredWidth: 10
                     background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
+                }
+            }
+            
+            Container {
+                preferredHeight: ui.du(12)
+                horizontalAlignment: HorizontalAlignment.Fill
+                
+                background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#262626") : Color.create("#f0f0f0")
+                layout: DockLayout {
+                
+                }
+                
+                Container {
+                    horizontalAlignment: HorizontalAlignment.Left
+                    verticalAlignment: VerticalAlignment.Center
+                    
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    
+                    Container {
+                        preferredWidth: ui.du(2)
+                        preferredHeight: ui.du(2)
+                    }
+                    
+                    ImageButton {
+                        verticalAlignment: VerticalAlignment.Center
+                        
+                        preferredHeight: ui.du(10)
+                        preferredWidth: ui.du(10)
+                        
+                        defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_left_blue_black.png" : "asset:///images/icon_left_blue.png"
+                        
+                        onClicked: {
+                            nav.pop();
+                        }
+                    
+                    }
+                    
+                    ImageButton {
+                        id: actionButton
+                        verticalAlignment: VerticalAlignment.Center
+                        
+                        preferredHeight: ui.du(8)
+                        preferredWidth: ui.du(8)
+                        
+                        defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_feed.png" : "asset:///images/icon_feed_black.png"
+                        
+                        onClicked: {
+                            actionSelector.selectedOption = option1;
+                            toogleEmoji();
+                        }
+                    }
+                    
+                    Label {
+                        id: labelAction
+                        verticalAlignment: VerticalAlignment.Center
+                        text: qsTr("Actions")
+                        textStyle.fontSize: FontSize.Small
+                    }
+                
+                }  
+                
+                Container {
+                    horizontalAlignment: HorizontalAlignment.Right
+                    verticalAlignment: VerticalAlignment.Center
+                    
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    
+                    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    // Action bar actions
+                    
+                    
+                    ImageButton {
+                        verticalAlignment: VerticalAlignment.Center
+                        id: composeNewActionBar
+                        
+                        preferredHeight: ui.du(8)
+                        preferredWidth: ui.du(8)
+                        
+                        defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_write_rounded.png" : "asset:///images/icon_write_rounded_black.png"
+                        
+                        onClicked: {
+                            conversationController.send(txtField.text);
+                            txtField.text = ""; 
+                        }
+                    }
+                    
+                    ImageButton {
+                        verticalAlignment: VerticalAlignment.Center
+                        id: smileyNewActionBar
+                        
+                        preferredHeight: ui.du(8)
+                        preferredWidth: ui.du(8)
+                        
+                        defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_redface_rounded.png" : "asset:///images/icon_redface_rounded_black.png"
+                        
+                        onClicked: {
+                            actionSelector.selectedOption = option2;
+                            toogleEmoji();
+                        }
+                    }
+                    
+                    Container {
+                        preferredWidth: ui.du(2)
+                        preferredHeight: ui.du(2)
+                    }
                 }
             }
             
@@ -244,6 +350,7 @@ Page {
                 layout: StackLayout {
                     orientation: LayoutOrientation.TopToBottom
                 }
+                visible: false
                 
                 attachedObjects: [
                     ImplicitAnimationController {
@@ -251,35 +358,146 @@ Page {
                         propertyName: "preferredHeight"
                     }
                 ]
+                                
+                SegmentedControl {
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    id: actionSelector
+                    
+                    Option {
+                        id: option1
+                        text: qsTr("Actions")
+                        value: 0
+                    }
+                    Option {
+                        id: option2
+                        text: qsTr("Smileys")
+                        value: 1
+                    }
+                    
+                    onSelectedOptionChanged: {
+                        conversationController.loadActionMenu(selectedOption.value);
+                    }
+
+                }
                 
                 
                 ListView {
+                    id: actionComposerListView
+                    
                     layout: GridListLayout {
-                        columnCount: 9
+                        columnCount: actionSelector.selectedOption.value == 0 ? nbIcons : 9
+                        headerMode: ListHeaderMode.Sticky
                     }
-                    dataModel: XmlDataModel {
-                        source: "asset:///data/emojies.xml"
+                    
+                    dataModel: GroupDataModel {
+                        id: theModel
+                        grouping: ItemGrouping.ByFullValue
+                        sortingKeys: ["category"]
+                        sortedAscending: false
+                    
                     }
+                    
+                    
                     
                     listItemComponents: [
                         ListItemComponent {
                             type: "item"
                             
                             Container {
+                                horizontalAlignment: HorizontalAlignment.Center
+                                verticalAlignment: VerticalAlignment.Center
+                                layout: StackLayout {
+                                    orientation: LayoutOrientation.TopToBottom
+                                }
+                                
+                                Container {
+                                    preferredHeight: ui.du(2)
+                                }
+                                
+                                ImageView {
+                                    visible: ListItemData.image != ""
+                                    verticalAlignment: VerticalAlignment.Center
+                                    horizontalAlignment: HorizontalAlignment.Center
+                                    id: avatarImg
+                                    scalingMethod: ScalingMethod.AspectFit
+                                    image: tracker.image
+                                    minHeight: ui.du(6)
+                                    maxHeight: ui.du(6)
+                                    minWidth: ui.du(6)
+                                    maxWidth: ui.du(6)
+                                    
+                                    attachedObjects: [
+                                        NetImageTracker {
+                                            id: tracker
+                                            source: ListItemData.image                                    
+                                        } 
+                                    ]
+                                }
                                 
                                 Label {
+                                    text: ListItemData.caption
+                                    horizontalAlignment: HorizontalAlignment.Center
+                                    verticalAlignment: VerticalAlignment.Center
                                     content.flags: TextContentFlag.Emoticons
-                                    text: ListItemData.name
-                                    textStyle.fontSize: FontSize.XLarge
-                                }                        
+                                    textStyle.fontSize: ListItemData.image != "" ? FontSize.XSmall : FontSize.XLarge
+                                }
+                            
                             }
                         }
                     ]
                     
                     onTriggered: {
+                        
                         var chosenItem = dataModel.data(indexPath);
-                        txtField.text = txtField.text  + chosenItem.name;
+                        if(chosenItem.image == "") {
+                            txtField.text = txtField.text  + chosenItem.caption;
+                        } else {
+                            switch (chosenItem.action) {
+                                case 1:
+                                    messageView.evaluateJavaScript("scrollToEnd();");
+                                    break;
+                                
+                                case 2:
+                                    conversationController.refreshHistory(id, avatar, name);
+                                    break;
+                                
+                                case 3:
+                                    filePicker.open();
+                                    break;
+                                
+                                case 4:
+                                    conversationController.send(txtField.text);
+                                    txtField.text = "";
+                                    break;
+                                
+                                case 5:
+                                    actionSelector.selectedOption = option2;
+                                    return;
+                                    
+                                case 6:
+                                    if(!smileyPage)
+                                        smileyPage = smileyPicker.createObject();
+                                    nav.push(smileyPage);
+                                    break;
+                                
+                                case 7:
+                                    conversationController.setWallpaper();
+                                    break;
+                                
+                                 case 8:
+                                     voiceRecording.visible = true;
+                                     if(!conversationController.fileReady) {
+                                         filenameChat = conversationController.nextAudioFile;
+                                         recorder.setOutputUrl(filenameChat);
+                                     }
+                                     
+                                     recorder.record();
+                                     break;
+                            }
+                            
+                        }
                         toogleEmoji();
+                        
                     }
                 }    
             }
@@ -303,11 +521,16 @@ Page {
     
     function toogleEmoji() {
         if(emoticonsPicker.preferredHeight == 0) {
-            emoticonsPicker.preferredHeight=500;
+            emoticonsPicker.visible = true;
+            actionSelector.visible = true;
+            emoticonsPicker.preferredHeight = DisplayInfo.height > 1000 ? 700 : 500;
             txtField.preferredHeight=50;
+            
         } else {
             emoticonsPicker.preferredHeight=0;
             txtField.preferredHeight=ui.du(10);
+            actionSelector.visible = false;
+            emoticonsPicker.visible = false;
         }
     }
     
@@ -401,11 +624,19 @@ Page {
     onCreationCompleted: {
         conversationController.setWebView(messageView);
         conversationController.setLinkActivity(linkStatusActivity);
+        conversationController.setActionListView(actionComposerListView);
+        
+        conversationController.loadActionMenu(0);
+        
         timer.start();
+        actionSelector.visible = false;
+        nbIcons = DisplayInfo.height > 1000 ? 6 : 4;
+        
     }
     
     onIdChanged: {
         if(id != "") {
+            actionSelector.visible = false;
             conversationController.load(id, avatar, name);
         }
     }
