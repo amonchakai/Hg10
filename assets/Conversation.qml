@@ -524,7 +524,7 @@ Page {
         if(emoticonsPicker.preferredHeight == 0) {
             emoticonsPicker.visible = true;
             actionSelector.visible = true;
-            emoticonsPicker.preferredHeight = DisplayInfo.height > 1000 ? 700 : 500;
+            emoticonsPicker.preferredHeight = DisplayInfo.width > 1000 ? 700 : 500;
             txtField.preferredHeight=50;
             
         } else {
@@ -631,7 +631,7 @@ Page {
         
         timer.start();
         actionSelector.visible = false;
-        nbIcons = DisplayInfo.height > 1000 ? 6 : 4;
+        nbIcons = DisplayInfo.width > 1000 ? 6 : 4;
         
     }
     
