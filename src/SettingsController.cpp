@@ -10,6 +10,10 @@
 #include "ConversationMAnager.hpp"
 #include <QRegExp>
 #include "XMPPService.hpp"
+#include <bb/platform/Notification>
+#include <bb/system/SystemPrompt>
+#include <bb/system/SystemToast>
+#include "PrivateAPIKeys.h"
 
 bool SettingsController::m_LogEnabled = false;
 
@@ -65,4 +69,58 @@ void SettingsController::save() {
 
     XMPP::get()->notifySettingChange();
 }
+
+void SettingsController::requestHubRemoval() {
+    using namespace bb::system;
+
+    SystemPrompt *prompt = new SystemPrompt();
+    prompt->setTitle(tr("This feature is password protected"));
+    prompt->setDismissAutomatically(true);
+    prompt->inputField()->setEmptyText(tr("password"));
+
+
+    bool success = QObject::connect(prompt,
+        SIGNAL(finished(bb::system::SystemUiResult::Type)),
+        this,
+        SLOT(onPromptFinishedPassword(bb::system::SystemUiResult::Type)));
+
+    if (success) {
+        prompt->show();
+     } else {
+        prompt->deleteLater();
+    }
+}
+
+void SettingsController::onPromptFinishedPassword(bb::system::SystemUiResult::Type result) {
+    using namespace bb::system;
+
+    if(result == bb::system::SystemUiResult::ConfirmButtonSelection) {
+        qDebug()<< "onPromptFinishedAddContact: " << result;
+
+        SystemPrompt* prompt = qobject_cast<SystemPrompt*>(sender());
+        if(prompt != NULL) {
+
+            if(prompt->inputFieldTextEntry() == APPLICATION_PASSWORD) {
+
+                bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+                toast->setBody(tr("Accounts deleted..."));
+                toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+                toast->show();
+
+                XMPP::get()->requestHubRemoval();
+            } else {
+                bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+                toast->setBody(tr("Wrong password."));
+                toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+                toast->show();
+            }
+
+            prompt->deleteLater();
+        }
+    }
+}
+
+
 

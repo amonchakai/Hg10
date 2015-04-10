@@ -113,6 +113,7 @@ public Q_SLOTS:
     // Hub interface
 
     void updateHub              ();
+    void requestHubRemoval      ();
 
 
     // ------------------------------------------------------------

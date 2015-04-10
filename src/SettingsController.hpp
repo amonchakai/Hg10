@@ -10,6 +10,7 @@
 
 #include <QtCore/QObject>
 #include <QSettings>
+#include <bb/system/SystemUiResult>
 
 class SettingsController : public QObject {
     Q_OBJECT;
@@ -67,6 +68,9 @@ public:
 public Q_SLOTS:
     void updateAvatar();
     void save();
+
+    void requestHubRemoval();
+    void onPromptFinishedPassword(bb::system::SystemUiResult::Type result);
 
 Q_SIGNALS:
 

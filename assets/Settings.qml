@@ -302,6 +302,16 @@ NavigationPane {
                 
                 Divider { }
                 
+                Button {
+                    id: removeHub
+                    visible: false
+                    text: qsTr("Remove Hub")
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    onClicked: {
+                        settingsController.requestHubRemoval();
+                    }
+                }
+                
     	    }
     	    
     	    

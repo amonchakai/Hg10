@@ -701,6 +701,17 @@ void XMPP::updateHub() {
     mutex.unlock();
 }
 
+void XMPP::requestHubRemoval() {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::REMOVE_HUB;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
 
 
 

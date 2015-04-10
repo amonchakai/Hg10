@@ -779,6 +779,29 @@
         <source>Wallpapers &amp; themes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remove Hub</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SettingsController</name>
+    <message>
+        <source>This feature is password protected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accounts deleted...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wrong password.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmileyPicker</name>

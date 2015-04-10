@@ -35,7 +35,8 @@ struct XMPPServiceMessages {
         SET_STATUS_TEXT,
         SET_PRESENCE                = 20,
         ADD_CONTACT,
-        UPDATE_HUB
+        UPDATE_HUB,
+        REMOVE_HUB
     };
 
 };
