@@ -41,6 +41,7 @@
 #include "DriveController.hpp"
 #include "CustomizationController.hpp"
 #include "ThemeEditorController.hpp"
+#include "BugReportController.hpp"
 
 using namespace bb::cascades;
 
@@ -134,6 +135,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     qmlRegisterType<DriveController>("Network.DriveController", 1, 0, "DriveController");
     qmlRegisterType<CustomizationController>("Network.CustomizationController", 1, 0, "CustomizationController");
     qmlRegisterType<ThemeEditorController>("Network.ThemeEditorController", 1, 0, "ThemeEditorController");
+    qmlRegisterType<BugReportController>("Lib.BugReport", 1, 0, "BugReport");
 
     if(!m_HeadlessStart) {
 

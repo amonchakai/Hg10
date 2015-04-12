@@ -24,6 +24,13 @@ TabbedPane {
                 }
             },
             ActionItem {
+                title: qsTr("Report")
+                imageSource: "asset:///images/BugReport_white.png"
+                onTriggered: {
+                    bugReport.open();
+                }
+            },
+            ActionItem {
                 title: loginController.notif ? " [ON]" : " [OFF]"
                 imageSource: "asset:///images/icon_notification.png"
                 onTriggered: {
@@ -111,6 +118,14 @@ TabbedPane {
             Policy {
                 onDone: {
                     about.close();
+                }
+            }
+        },
+        Sheet {
+            id: bugReport
+            BugReport {
+                onDone : {
+                    bugReport.close();
                 }
             }
         },

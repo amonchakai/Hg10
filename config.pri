@@ -44,6 +44,9 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/720x720/ConversationCard.qml) \
         $$quote($$BASEDIR/assets/AdvancedConection.qml) \
         $$quote($$BASEDIR/assets/ApplicationLog.qml) \
+        $$quote($$BASEDIR/assets/BugReport.qml) \
+        $$quote($$BASEDIR/assets/ComposeComment.qml) \
+        $$quote($$BASEDIR/assets/ComposeIssue.qml) \
         $$quote($$BASEDIR/assets/Contacts.qml) \
         $$quote($$BASEDIR/assets/Conversation.qml) \
         $$quote($$BASEDIR/assets/ConversationCard.qml) \
@@ -56,6 +59,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/FurtherInformation.qml) \
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
+        $$quote($$BASEDIR/assets/IssueViewer.qml) \
+        $$quote($$BASEDIR/assets/ListIssues.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
         $$quote($$BASEDIR/assets/Manual.qml) \
         $$quote($$BASEDIR/assets/Policy.qml) \
@@ -70,10 +75,22 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/bubble.css) \
         $$quote($$BASEDIR/assets/bubble_black.css) \
+        $$quote($$BASEDIR/assets/bug_template.html) \
+        $$quote($$BASEDIR/assets/bug_template_black.html) \
+        $$quote($$BASEDIR/assets/bug_template_end.html) \
         $$quote($$BASEDIR/assets/data/action_list.xml) \
         $$quote($$BASEDIR/assets/data/action_list_fr.xml) \
         $$quote($$BASEDIR/assets/data/emojies.xml) \
         $$quote($$BASEDIR/assets/data/emojies_list.xml) \
+        $$quote($$BASEDIR/assets/images/BlablaRequest.png) \
+        $$quote($$BASEDIR/assets/images/BlablaRequest_white.png) \
+        $$quote($$BASEDIR/assets/images/BugReport.png) \
+        $$quote($$BASEDIR/assets/images/BugReport_white.png) \
+        $$quote($$BASEDIR/assets/images/BugReport_white_large.png) \
+        $$quote($$BASEDIR/assets/images/EnhancementRequest.png) \
+        $$quote($$BASEDIR/assets/images/EnhancementRequest_white.png) \
+        $$quote($$BASEDIR/assets/images/HelpRequest.png) \
+        $$quote($$BASEDIR/assets/images/HelpRequest_white.png) \
         $$quote($$BASEDIR/assets/images/Tutorial/accept.jpg) \
         $$quote($$BASEDIR/assets/images/Tutorial/chat.jpg) \
         $$quote($$BASEDIR/assets/images/Tutorial/closeIcon.png) \
@@ -90,6 +107,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/avatar.square.svg) \
         $$quote($$BASEDIR/assets/images/avatar.svg) \
         $$quote($$BASEDIR/assets/images/blackFace.png) \
+        $$quote($$BASEDIR/assets/images/bug.png) \
         $$quote($$BASEDIR/assets/images/busy.png) \
         $$quote($$BASEDIR/assets/images/chat_room.png) \
         $$quote($$BASEDIR/assets/images/chat_room.svg) \
@@ -130,6 +148,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_left_blue.png) \
         $$quote($$BASEDIR/assets/images/icon_left_blue_black.png) \
         $$quote($$BASEDIR/assets/images/icon_notification.png) \
+        $$quote($$BASEDIR/assets/images/icon_pen.png) \
+        $$quote($$BASEDIR/assets/images/icon_quoted.png) \
         $$quote($$BASEDIR/assets/images/icon_quoted_white.png) \
         $$quote($$BASEDIR/assets/images/icon_redface_rounded.png) \
         $$quote($$BASEDIR/assets/images/icon_redface_rounded.svg) \
@@ -179,6 +199,7 @@ config_pri_assets {
 config_pri_source_group1 {
     SOURCES += \
         $$quote($$BASEDIR/src/ApplicationLogController.cpp) \
+        $$quote($$BASEDIR/src/BugReportController.cpp) \
         $$quote($$BASEDIR/src/ConversationController.cpp) \
         $$quote($$BASEDIR/src/ConversationManager.cpp) \
         $$quote($$BASEDIR/src/CustomizationController.cpp) \
@@ -260,6 +281,9 @@ config_pri_source_group1 {
 
     HEADERS += \
         $$quote($$BASEDIR/src/ApplicationLogController.hpp) \
+        $$quote($$BASEDIR/src/BugDataObject.h) \
+        $$quote($$BASEDIR/src/BugReportController.hpp) \
+        $$quote($$BASEDIR/src/BugReportSettings.hpp) \
         $$quote($$BASEDIR/src/ConversationController.hpp) \
         $$quote($$BASEDIR/src/ConversationManager.hpp) \
         $$quote($$BASEDIR/src/CustomizationController.hpp) \

@@ -55,6 +55,106 @@
     </message>
 </context>
 <context>
+    <name>BugReport</name>
+    <message>
+        <source>Bug report center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bug</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enhancement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Need Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hg10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Questions</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BugReportController</name>
+    <message>
+        <source>A title is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new issue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to submit this issue? Please make sure that the content of the message is anonymous.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A comment should not be empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to submit this comment? Please make sure that the content of the message is anonymous.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ComposeComment</name>
+    <message>
+        <source>Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is on your mind?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ComposeIssue</name>
+    <message>
+        <source>Compose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Contacts</name>
     <message>
         <source>Contact</source>
@@ -519,6 +619,13 @@
     </message>
 </context>
 <context>
+    <name>IssueViewer</name>
+    <message>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListContactsController</name>
     <message>
         <source>Add a new contact</source>
@@ -526,6 +633,21 @@
     </message>
     <message>
         <source>email address...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ListIssues</name>
+    <message>
+        <source>Loading, please wait.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No issues in this category.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -943,6 +1065,10 @@ Delete and forget this stupid app&apos;</source>
     </message>
     <message>
         <source>Drive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

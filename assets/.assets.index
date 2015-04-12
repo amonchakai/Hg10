@@ -1,5 +1,5 @@
 1
-138
+158
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -10,6 +10,12 @@ AdvancedConection.qml
 ApplicationLog.qml
 bubble.css
 bubble_black.css
+bug_template.html
+bug_template_black.html
+bug_template_end.html
+BugReport.qml
+ComposeComment.qml
+ComposeIssue.qml
 Contacts.qml
 Conversation.qml
 ConversationCard.qml
@@ -33,7 +39,13 @@ images/avatar.png
 images/avatar.png.square.png
 images/avatar.square.svg
 images/avatar.svg
+images/BlablaRequest.png
+images/BlablaRequest_white.png
 images/blackFace.png
+images/bug.png
+images/BugReport.png
+images/BugReport_white.png
+images/BugReport_white_large.png
 images/busy.png
 images/chat_room.png
 images/chat_room.svg
@@ -54,6 +66,10 @@ images/color/Wallpaper.png
 images/contact.png
 images/contact.svg
 images/document.png
+images/EnhancementRequest.png
+images/EnhancementRequest_white.png
+images/HelpRequest.png
+images/HelpRequest_white.png
 images/icon_about.png
 images/icon_add_contact.png
 images/icon_add_contact.svg
@@ -74,6 +90,8 @@ images/icon_left_black.png
 images/icon_left_blue.png
 images/icon_left_blue_black.png
 images/icon_notification.png
+images/icon_pen.png
+images/icon_quoted.png
 images/icon_quoted_white.png
 images/icon_redface_rounded.png
 images/icon_redface_rounded.svg
@@ -122,6 +140,8 @@ images/whiteFace2.png
 images/write.png
 images/write.svg
 images/write_white.png
+IssueViewer.qml
+ListIssues.qml
 LoginForm.qml
 main.qml
 Manual.qml

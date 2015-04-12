@@ -1,0 +1,193 @@
+
+    </div>
+        <script type="text/javascript">
+
+        // ----------------------
+        // adjust context menu height
+
+        var container 	= document.getElementById("container");
+        //var contextMenu = document.getElementById("context");
+        //var topic 		= document.getElementById("topic"); 
+
+        container.style.width = window.innerWidth-10;
+
+
+        var CurrentItem = 0;
+        var SelectionList = new Array();
+        var multipleSelectionInProgress = false;
+
+
+        function sendURL(url) { navigator.cascades.postMessage(url); }
+
+        
+		function selectItem(itemNumber, selected) {
+			var post = document.getElementById( "postHeader" + itemNumber);
+			if(selected)
+				post.style.borderBottomColor = '#B00000';
+			else
+				post.style.borderBottomColor = '#00a8df';
+		}
+
+		function toggleSelectItem(itemNumber) {
+			if(CurrentItem != 0)
+				selectItem(CurrentItem, false);
+			selectItem(itemNumber, true);
+
+			CurrentItem = itemNumber;
+
+		}
+
+		var touchThread;
+		var itemTouched;
+		var itemUsername;
+		function itemTapped(itemNumber, username) {
+			if(touchThread !=0) {
+				clearInterval(touchThread);
+				touchThread = 0;
+			}
+			touchThread = setInterval(itemHold, 750);
+			itemTouched = itemNumber;
+			itemUsername = username;
+		}
+
+		function itemHold() {
+			sendURL('SHOW_CONTEXT:' + itemTouched + ',' + itemUsername);
+			clearInterval(touchThread);
+			toggleSelectItem(itemTouched);
+
+			touchThread = 0;
+
+			showPane();
+		}
+
+		function itemReleased() {
+			if(touchThread !=0) {
+				clearInterval(touchThread);
+				addItemTapped(itemTouched);
+				touchThread = 0;
+			}
+		}
+
+
+		function clickAnyWhere(e) {
+			sendURL('RANDOM_TAP'); 
+			if(!multipleSelectionInProgress)
+				unselectAll();
+		}
+
+		function unselectAll() {
+			selectItem(itemTouched, false);
+			selectItem(CurrentItem, false);
+
+			if(SelectionList.length > 0) {
+				for(var i = 0 ; i < SelectionList.length ; ++i)
+					selectItem(SelectionList[i], false);
+				SelectionList = new Array();
+			}
+
+			multipleSelectionInProgress = false;
+		}
+
+		function startMultiselect() {
+			multipleSelectionInProgress = true;
+			addItemTapped(CurrentItem);
+		}
+
+
+		function retrieveMultiselect() {
+			var listPosts = "";
+			for(var i = 0 ; i < SelectionList.length ; ++i) {
+				listPosts += SelectionList[i] + ", ";
+			}
+			sendURL('QUOTE_MULTIPLES:' + listPosts);
+		}
+
+
+		function addItemTapped(itemNumber) {
+			if(multipleSelectionInProgress) {
+
+				for(var i = 0 ; i < SelectionList.length ; ++i) {
+					if(SelectionList[i] == itemNumber) {
+						selectItem(itemNumber, false);
+						SelectionList.splice(i,1);
+						return;
+					}
+				}
+
+				SelectionList.push(itemNumber);
+				selectItem(itemNumber, true);
+
+			}
+		}
+
+		// --------------------------------------------------------------------
+		// handle device rotation
+		var rotateThread = 0;
+		function orientationChanged(newWidth) {
+			if(rotateThread != 0) {
+				clearInterval(rotateThread);
+				rotateThread = 0;
+			}
+			rotateThread = setInterval(adjustLayout, 500);
+
+		}
+
+
+		function adjustLayout() {
+			clearInterval(rotateThread);
+			container.style.width = window.innerWidth-10;
+		}
+
+
+
+		// --------------------------------------------------------------------
+		// navigation in page
+
+		function scrollToElement(messageID) {
+			//document.getElementById(messageID).scrollIntoView();
+			if(window.innerWidth > 1000)
+				sendURL("SCROLLTO:"+GetScreenCordinates(document.getElementById(messageID)).y*1.395);
+			else
+				sendURL("SCROLLTO:"+GetScreenCordinates(document.getElementById(messageID)).y);
+
+		}
+
+		function GetScreenCordinates(obj) {
+        var p = {};
+        p.x = obj.offsetLeft;
+        p.y = obj.offsetTop;
+        while (obj.offsetParent) {
+            p.x = p.x + obj.offsetParent.offsetLeft;
+            p.y = p.y + obj.offsetParent.offsetTop;
+            if (obj == document.getElementsByTagName("body")[0]) {
+                break;
+            }
+            else {
+                obj = obj.offsetParent;
+            }
+        }
+        return p;
+    }
+
+		function scrollToEndPage() {
+			window.scrollTo(0,document.body.scrollHeight);
+		}
+
+		function scrollToTop() {
+			window.scrollTo(0,0);
+		}
+
+		document.getElementsByTagName("html")[0].ontouchstart = clickAnyWhere;
+
+
+		window.onscroll = function(event) {
+			if(touchThread !=0) {
+				clearInterval(touchThread);
+				touchThread = 0;
+			}
+		}
+
+        </script>
+
+    </body>
+</html>
