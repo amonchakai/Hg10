@@ -38,6 +38,7 @@ private:
     QList<AudioMessage>       m_AudioMessages;
 
     QString                   m_NewWallpaper;
+    int                       m_CurrentActionTab;
 
 
 

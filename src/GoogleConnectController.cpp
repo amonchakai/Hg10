@@ -17,6 +17,7 @@
 #include <QFile>
 #include <limits>
 #include <QReadWriteLock>
+#include <bb/cascades/WebStorage>
 
 #include "DataObjects.h"
 

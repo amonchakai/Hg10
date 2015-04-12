@@ -52,6 +52,11 @@ Page {
         }
     }
     
+    id: pageListIssues
+    
+    function isPassort() {
+        return DisplayInfo.width == 1440 && DisplayInfo.height == 1440;
+    }
     
     Container {
         verticalAlignment: VerticalAlignment.Fill
@@ -116,12 +121,13 @@ Page {
                     
                         
                         Container {
+                            id: listItemContainer
                             horizontalAlignment: HorizontalAlignment.Fill
                             verticalAlignment: VerticalAlignment.Center
                             layout: StackLayout {
                                 orientation: LayoutOrientation.LeftToRight
                             }
-                            preferredHeight: ui.du(11)
+                            preferredHeight: listItemContainer.ListItem.view.containerHeight();
                              
                             Container {
                                 preferredWidth: ui.du(0.6)
@@ -132,7 +138,7 @@ Page {
                                 layout: DockLayout {}
                                 horizontalAlignment: HorizontalAlignment.Fill
                                 verticalAlignment: VerticalAlignment.Center
-                                preferredHeight: ui.du(9)
+                                preferredHeight: listItemContainer.ListItem.view.containerSpacing();
                                  
                                 Label {
                                     text: ListItemData.title
@@ -185,6 +191,14 @@ Page {
                          }
                      }
                 ]
+                
+                function containerHeight() {
+                    return pageListIssues.isPassort() ? ui.du(14) : ui.du(11);
+                }
+                
+                function containerSpacing() {
+                    return pageListIssues.isPassort() ? ui.du(11) : ui.du(9);
+                }
                 
                 onTriggered: {
                     var chosenItem = dataModel.data(indexPath);

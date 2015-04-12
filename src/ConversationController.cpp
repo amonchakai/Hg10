@@ -37,7 +37,8 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
             m_HistoryCleared(false),
             m_IsRoom(false),
             m_UploadingAudio(false),
-            m_FileTransfert(NULL) {
+            m_FileTransfert(NULL),
+            m_CurrentActionTab(-1) {
 
     bool check = connect(ConversationManager::get(), SIGNAL(historyLoaded()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -679,6 +680,11 @@ void ConversationController::loadActionMenu(int id) {
 
     if(m_ListView == NULL)
         return;
+
+    if(m_CurrentActionTab == id)
+        return;
+
+    m_CurrentActionTab = id;
 
 
     GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
