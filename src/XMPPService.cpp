@@ -411,8 +411,8 @@ void XMPP::clear() {
 void XMPP::loadvCard(const QString &bareJid, bool push, int status) {
     m_PictureRecovery = false;
 
-    if(bareJid.isEmpty())
-        return;
+    //if(bareJid.isEmpty())
+    //    return;
 
 
     // -------------------------------------------------------------
@@ -444,10 +444,66 @@ void XMPP::loadvCard(const QString &bareJid, bool push, int status) {
 
     QString photoName = bareJid;
 
+
+
+    if(!QFile::exists(vCardsDir + "/" + photoName + ".png")) {
+
+        // ----------------------------------------------------------------------------------
+        //  get the photo from the vCard, and write an image.
+
+
+        QString name(vCardsDir + "/" + bareJid + ".png");
+
+        QByteArray photo = vCard.photo();
+        QImage qImage;
+        qImage.loadFromData(vCard.photo());
+
+
+        if(!qImage.isNull() && qImage.size().height() > qImage.size().width()) {
+            QImage nqImage = qImage.scaled(qImage.size().height(), qImage.size().height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+            qImage = nqImage;
+        }
+
+        if(!qImage.isNull() && qImage.size().height() < 64 && qImage.size().width()) {
+            //QPixmap pixMap = QPixmap::fromImage(qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied)); /*
+            QImage nqImage = qImage.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            qImage = nqImage;
+        }
+
+
+        uchar *bits = qImage.bits();
+        int radius = std::min(qImage.size().width(), qImage.size().height())/2; radius = radius*radius;
+        int center_x = qImage.size().width() / 2;
+        int center_y = qImage.size().height() / 2;
+        int depth = qImage.depth() / 8;
+
+        // save two representation of the picture: a square for the post, and a disk for the user list
+        if(!photo.isEmpty()) {
+            qImage.save(name + ".square.png", "PNG");
+        }
+
+
+        for(int i = 0 ; i < qImage.size().width() ; ++i) {
+            for(int j = 0 ; j < qImage.size().height() ; ++j) {
+                int dstCenter = (center_x - i)*(center_x - i) + (center_y - j)*(center_y - j);
+                if(dstCenter > radius) {
+                    for(int c = 0 ; c < depth ; ++c) {
+                        bits[(j*qImage.size().width()+i)*depth+c] = 255*(c != 3);
+                    }
+                }
+            }
+        }
+
+        qImage.convertToFormat(QImage::Format_ARGB4444_Premultiplied).save(name, "PNG");
+    }
+
+
     if(QFile::exists(vCardsDir + "/" + photoName + ".png"))
         contact->setAvatar(vCardsDir + "/" + photoName + ".png");
     else
         contact->setAvatar("asset:///images/avatar.png");
+
+
 
 
     if(!vCard.fullName().isEmpty())
@@ -455,21 +511,18 @@ void XMPP::loadvCard(const QString &bareJid, bool push, int status) {
     else {
         if(!vCard.nickName().isEmpty())
             contact->setName(vCard.nickName());
+        else
+            contact->setName(bareJid);
     }
     contact->setTimestamp(0);
+    contact->setPresence(status);
+    m_Datas->push_back(contact);
 
-    if(vCard.fullName().isEmpty() && vCard.nickName().isEmpty()) {
-        contact->deleteLater();
-    } else {
-        contact->setPresence(status);
-        m_Datas->push_back(contact);
-    }
 
     mutex.lockForWrite();
-
-    if(push && !(vCard.fullName().isEmpty() && vCard.nickName().isEmpty()) && !delayPush) {
+    //if(push && !(vCard.fullName().isEmpty() && vCard.nickName().isEmpty()) && !delayPush) {
         emit pushContact(contact);
-    }
+    //}
     mutex.unlock();
 
 }

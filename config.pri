@@ -192,7 +192,13 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/main.qml) \
         $$quote($$BASEDIR/assets/template.html) \
         $$quote($$BASEDIR/assets/template_black.html) \
-        $$quote($$BASEDIR/assets/template_end.html)
+        $$quote($$BASEDIR/assets/template_end.html) \
+        $$quote($$BASEDIR/hubassets/images/Hg10Hub.png) \
+        $$quote($$BASEDIR/hubassets/images/icon_MarkRead.png) \
+        $$quote($$BASEDIR/hubassets/images/icon_MarkUnread.png) \
+        $$quote($$BASEDIR/hubassets/images/icon_write.png) \
+        $$quote($$BASEDIR/hubassets/images/itemRead.png) \
+        $$quote($$BASEDIR/hubassets/images/itemUnread.png)
 }
 
 config_pri_source_group1 {
@@ -290,6 +296,9 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../src/base/*.cc) \
         $$quote($$BASEDIR/../src/base/*.cpp) \
         $$quote($$BASEDIR/../src/base/*.cxx) \
+        $$quote($$BASEDIR/..//*.qml) \
+        $$quote($$BASEDIR/..//*.js) \
+        $$quote($$BASEDIR/..//*.qs) \
         $$quote($$BASEDIR/../assets/*.qml) \
         $$quote($$BASEDIR/../assets/*.js) \
         $$quote($$BASEDIR/../assets/*.qs) \
@@ -313,7 +322,13 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/images/color/*.qs) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.qml) \
         $$quote($$BASEDIR/../assets/images/wallpaper/*.js) \
-        $$quote($$BASEDIR/../assets/images/wallpaper/*.qs)
+        $$quote($$BASEDIR/../assets/images/wallpaper/*.qs) \
+        $$quote($$BASEDIR/../hubassets/*.qml) \
+        $$quote($$BASEDIR/../hubassets/*.js) \
+        $$quote($$BASEDIR/../hubassets/*.qs) \
+        $$quote($$BASEDIR/../hubassets/images/*.qml) \
+        $$quote($$BASEDIR/../hubassets/images/*.js) \
+        $$quote($$BASEDIR/../hubassets/images/*.qs)
 
     HEADERS += \
         $$quote($$BASEDIR/../src/*.h) \

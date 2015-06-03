@@ -13,7 +13,6 @@
 #include "FileTransfert.hpp"
 #include "XMPPService.hpp"
 
-#include "Image/HFRNetworkAccessManager.hpp"
 #include "ConversationManager.hpp"
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -253,24 +252,6 @@ bool ConversationController::isImage(const QString &url) {
 }
 
 
-void ConversationController::getContentBehindLink(const QString &message) {
-
-    return;
-
-    QSettings settings("Amonchakai", "Hg10");
-
-    QNetworkRequest request(QUrl(message.toAscii()));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-    request.setRawHeader("Authorization", ("Bearer " + settings.value("access_token").value<QString>()).toAscii());
-
-    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkReplyGetContent()));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-}
-
-
 void ConversationController::checkReplyGetContent() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
@@ -295,12 +276,7 @@ void ConversationController::checkReplyGetContent() {
 
 QString ConversationController::renderMessage(const QString &message, bool showImg) {
     QRegExp url("(http[s]*://[^ ]+)");
-    //url.setMinimal(true);
     url.setCaseSensitivity(Qt::CaseInsensitive);
-
-    if(message.indexOf("https://plus.google.com/photos/albums/") != -1) {
-        getContentBehindLink(message);
-    }
 
 
     int pos = 0;

@@ -181,7 +181,6 @@ Page {
                 id: googleConnect
                 
                 onCloseConnect: {
-                    connectionMethod.visible = false;
                     submitButton.visible = false;
                     navSettings.pop();
                     connectingActivity.start();

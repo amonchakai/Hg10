@@ -57,8 +57,6 @@ private:
     void initDropbox                    ();
     void initGoogleDrive                ();
 
-    void getContentBehindLink           (const QString &message);
-
 
 public Q_SLOTS:
     inline void setWebView              (QObject *webView)                          {m_WebView = dynamic_cast<bb::cascades::WebView*>(webView); }

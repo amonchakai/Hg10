@@ -409,11 +409,10 @@ void ListContactsController::updateView() {
 
 void ListContactsController::pushContact(const Contact* c) {
 
-    if(c->getID().isEmpty())
-        return;
-
     if(m_Activity != NULL)
         m_Activity->stop();
+
+    qDebug() << "contact : " << c->getID();
 
     using namespace bb::cascades;
 

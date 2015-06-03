@@ -1,5 +1,5 @@
 1
-158
+157
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -27,7 +27,6 @@ data/emojies_list.xml
 Drive.qml
 DropboxConnect.qml
 EditContact.qml
-FacebookConnect.qml
 Filter.qml
 FurtherInformation.qml
 GoogleConnect.qml
