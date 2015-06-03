@@ -24,7 +24,7 @@
 
 #include "DataObjects.h"
 #include "ConversationManager.hpp"
-#include "Facebook.hpp"
+
 
 QReadWriteLock  mutex;
 QReadWriteLock  mutexLoadLocal;
@@ -35,7 +35,6 @@ XMPP::XMPP(QObject *parent) : QObject(parent),
         m_Datas(new QList<Contact*>()),
         m_PushStack(NULL),
         m_Connected(false),
-        m_Facebook(NULL),
         m_PictureRecovery(false),
         m_ClientSocket(new QTcpSocket(this)), m_ScheduleContactListRequest(false),
         m_NbFails(0) {
@@ -365,7 +364,6 @@ void XMPP::loadLocal() {
     qDebug() << "Load local data";
     mutexLoadLocal.lockForWrite();
 
-    QRegExp isFacebook("(.*)@chat.facebook.com");
     bool delayPush = false;
 
     QString directory = QDir::homePath() + QLatin1String("/vCards");
@@ -374,9 +372,6 @@ void XMPP::loadLocal() {
         dir.setNameFilters(QStringList() << "*.xml");
         dir.setFilter(QDir::Files);
         foreach(QString dirFile, dir.entryList()) {
-
-            if(isFacebook.indexIn(dirFile.mid(0,dirFile.length()-4)) != -1)
-                delayPush = true;
 
             //dir.remove(dirFile);
             //qDebug() << dirFile;
@@ -448,42 +443,12 @@ void XMPP::loadvCard(const QString &bareJid, bool push, int status) {
     bool delayPush = false;
 
     QString photoName = bareJid;
-    QRegExp isFacebook("(.*)@chat.facebook.com");
-    if(isFacebook.indexIn(photoName) != -1) {
-        photoName = isFacebook.cap(1);
-        QString prefix;
-        if(photoName[0] == '-') {
-            photoName = photoName.mid(1);
-            prefix = "-";
-        }
 
+    if(QFile::exists(vCardsDir + "/" + photoName + ".png"))
+        contact->setAvatar(vCardsDir + "/" + photoName + ".png");
+    else
+        contact->setAvatar("asset:///images/avatar.png");
 
-
-        push = true;
-
-        if(m_Facebook == NULL)
-            initFacebook();
-
-        if(!QFile::exists(vCardsDir + "/" + prefix + photoName + "@chat.facebook.com.png")) {
-            m_Facebook->getAvatar(photoName);
-            delayPush = true;
-            mutex.lockForWrite();
-            if(m_PushStack == NULL) {
-                m_PushStack = new QMap<QString, Contact*>();
-            }
-            m_PushStack->insert(photoName, contact);
-            mutex.unlock();
-        }
-
-        contact->setAvatar(vCardsDir + "/" + prefix + photoName + "@chat.facebook.com.png");
-
-    } else {
-
-        if(QFile::exists(vCardsDir + "/" + photoName + ".png"))
-            contact->setAvatar(vCardsDir + "/" + photoName + ".png");
-        else
-            contact->setAvatar("asset:///images/avatar.png");
-    }
 
     if(!vCard.fullName().isEmpty())
         contact->setName(vCard.fullName());
@@ -665,26 +630,6 @@ void XMPP::addParticipant(const QString &participant) {
 }
 
 
-// -------------------------------------------------------------
-// aside API
-
-void XMPP::initFacebook() {
-    m_Facebook = new Facebook(this);
-
-    bool check = connect(m_Facebook, SIGNAL(imagesRetrieved(const QString&)), this, SLOT(facebookImagesRetrieved(const QString&)));
-    Q_ASSERT(check);
-}
-
-void XMPP::facebookImagesRetrieved(const QString &who) {
-    if(m_PictureRecovery)
-        return;
-
-    mutex.lockForWrite();
-    Contact *c = m_PushStack->value(who);
-    emit pushContact(c);
-    mutex.unlock();
-}
-
 
 // ------------------------------------------------------------
 // Hub interface
@@ -718,25 +663,6 @@ void XMPP::requestHubRemoval() {
 // ------------------------------------------------------------
 // failure area
 
-
-void XMPP::checkMissingPictures() {
-
-    for(int i = 0 ; i < m_Datas->size() ; ++i) {
-        if(!QFile::exists(m_Datas->at(i)->getAvatar())) {
-            qDebug() << m_Datas->at(i)->getAvatar();
-
-            m_PictureRecovery = true;
-
-            QRegExp id("([0-9]+)@chat.facebook.com");
-            if(id.indexIn(m_Datas->at(i)->getAvatar()) != -1) {
-                qDebug() << "request: " << id.cap(1);
-                if(m_Facebook != NULL)
-                    m_Facebook->getAvatar(id.cap(1));
-            }
-        }
-    }
-
-}
 
 bool XMPP::tryRestartHeadless() {
     qDebug() << "need restart";

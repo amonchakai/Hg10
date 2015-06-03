@@ -331,10 +331,6 @@ NavigationPane {
                     source: "DropboxConnect.qml"
                 },
                 ComponentDefinition {
-                    id: facebookConnect
-                    source: "FacebookConnect.qml"
-                },
-                ComponentDefinition {
                     id: applicationLog
                     source: "ApplicationLog.qml"
                 },

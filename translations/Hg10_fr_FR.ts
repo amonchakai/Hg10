@@ -482,12 +482,8 @@
 <context>
     <name>FacebookConnect</name>
     <message>
-        <source>Facebook</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
 </context>
 <context>
@@ -715,70 +711,7 @@
     <name>QDnsLookup</name>
     <message>
         <source>Operation cancelled</source>
-        <translation>Opération annulée</translation>
-    </message>
-</context>
-<context>
-    <name>QDnsLookupRunnable</name>
-    <message>
-        <source>Invalid domain name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server could not process query</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server failure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Non existent domain</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server refused to answer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid reply received</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Could not expand domain name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid IPv4 address record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid IPv6 address record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid canonical name record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid name server record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid pointer record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid mail exchange record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid service record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid text record</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Opération annulée</translation>
     </message>
 </context>
 <context>
@@ -1031,16 +964,12 @@
         <translation>Toujours en train d&apos;attendre? :(</translation>
     </message>
     <message>
-        <source>Google (Secure)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Other</source>
-        <translation>Autre</translation>
+        <translation type="obsolete">Autre</translation>
     </message>
     <message>
         <source>Connection method</source>
-        <translation>Méthode de connection</translation>
+        <translation type="obsolete">Méthode de connection</translation>
     </message>
     <message>
         <source>Connect</source>

@@ -36,7 +36,6 @@
 #include "RoomController.hpp"
 #include "SuggestContactController.hpp"
 #include "SmileyPickerController.hpp"
-#include "Facebook.hpp"
 #include "ApplicationLogController.hpp"
 #include "DriveController.hpp"
 #include "CustomizationController.hpp"
@@ -129,7 +128,6 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     qmlRegisterType<RoomController>("Network.RoomController", 1, 0, "RoomController");
     qmlRegisterType<SuggestContactController>("Network.SuggestContactController", 1, 0, "SuggestContactController");
     qmlRegisterType<SmileyPickerController>("Network.SmileyPickerController", 1, 0, "SmileyPickerController");
-    qmlRegisterType<Facebook>("Network.FacebookController", 1, 0, "FacebookController");
     qmlRegisterType<QTimer>("Lib.QTimer", 1, 0, "QTimer");
     qmlRegisterType<ApplicationLogController>("Lib.ApplicationLogController", 1, 0, "ApplicationLogController");
     qmlRegisterType<DriveController>("Network.DriveController", 1, 0, "DriveController");

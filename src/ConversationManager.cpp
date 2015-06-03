@@ -17,7 +17,6 @@
 
 #include "XMPPService.hpp"
 #include "GoogleConnectController.hpp"
-#include "Facebook.hpp"
 #include "OnlineHistory.hpp"
 #include "FileTransfert.hpp"
 
@@ -62,9 +61,6 @@ void ConversationManager::initOnlineHistory() {
         GoogleConnectController *google = new GoogleConnectController();
         m_OnlineHistory = google;
         m_FileTransfert = google;
-    } else {
-        Facebook *facebook = new Facebook();
-        m_OnlineHistory = facebook;
     }
 }
 

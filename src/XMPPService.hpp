@@ -11,7 +11,7 @@
 #include <QtNetwork/QTcpSocket>
 
 class Contact;
-class Facebook;
+
 
 class XMPP : public QObject {
     Q_OBJECT;
@@ -32,7 +32,6 @@ public:
     void                           oauth2Login            (const QString &user);
 
     void                           disconnectFromServer();
-    void                           checkMissingPictures();
     void                           askConnectionStatus();
     void                           closeCard();
 
@@ -41,7 +40,6 @@ private:
     QList<Contact*>          *m_Datas;
     QMap<QString, Contact*>  *m_PushStack;
     bool                      m_Connected;
-    Facebook                 *m_Facebook;
     bool                      m_PictureRecovery;
     // ------------------------------------------------------------
     // connection to headless XMPP service.
@@ -97,15 +95,6 @@ public Q_SLOTS:
 
     void createRoom             (const QString &roomName);
     void addParticipant         (const QString &participant);
-
-
-
-    // -------------------------------------------------------------
-    // aside API
-
-    void initFacebook           ();
-    void facebookImagesRetrieved(const QString &who);
-
 
 
 

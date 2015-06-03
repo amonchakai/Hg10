@@ -5,7 +5,6 @@ import Lib.QTimer 1.0
 NavigationPane {
     id: navSettings
     property variant googlePage
-    property variant facebookPage
         
     Page {
         id: welcomePage
@@ -59,29 +58,7 @@ NavigationPane {
                         base: SystemDefaults.TextStyles.PrimaryText
                     }
                 }
-                
-                DropDown {
-                    id: connectionMethod
-                    visible: false
-                    options: [
-                        Option {
-                            text: qsTr("Google (Secure)")
-                            value: 0
-                        },/*
-                        Option {
-                            text: qsTr("Facebook (Secure)")
-                            value: 2
-                        },*/
-                        Option {
-                            text: qsTr("Other")
-                            value: 1
-                        }
-                    ]
-                    title: qsTr("Connection method")
-                    selectedIndex: 0
                     
-                }
-    
                 
                 Container {
                     preferredHeight: 60
@@ -92,19 +69,10 @@ NavigationPane {
                     text: qsTr("Connect")
                     horizontalAlignment: HorizontalAlignment.Center
                     onClicked: {
-                        if(connectionMethod.selectedValue == 0) {
-                            if(!googlePage)
-                                googlePage = googleConnect.createObject();
-                            
-                            navSettings.push(googlePage);
-                        }
-                        
-                        if(connectionMethod.selectedValue == 2) { 
-                            if(!facebookPage)
-                                facebookPage = facebookConnect.createObject();
-                            navSettings.push(facebookPage);
-                        }
-                        
+                         if(!googlePage)
+                             googlePage = googleConnect.createObject();
+                         
+                         navSettings.push(googlePage);                                                
                     }
                 }
                                
@@ -203,16 +171,7 @@ NavigationPane {
             ComponentDefinition {
                id: googleConnect
                source: "GoogleConnect.qml"
-            },
-            
-            
-            ComponentDefinition {
-                id: facebookConnect
-                source: "FacebookConnect.qml"
             }
-            
-            
-            
             
         ]
     }
