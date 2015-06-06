@@ -85,6 +85,8 @@ public Q_SLOTS:
     void chatStateUpdate                (int status);
     void checkReplyGetContent           ();
 
+    void scrollToBottom                 ();
+
     // -----------------------------------------------------
     // audio messages
 

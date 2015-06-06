@@ -35,7 +35,6 @@ private:
     QStringList                          m_ThreadsID;
     QStringList                          m_Messages;
     QList<int>                           m_HistoryID;
-    QList<int>                           m_IdxMessageToPush;
     QStringList                          m_Froms;
 
     QString                              m_LastThread;
@@ -101,7 +100,6 @@ public:
      inline QString getAuthorizationCode  () const                { return  QString("Bearer ") + m_Settings->value("access_token").value<QString>(); } ;
 
 private:
-     void checkOrder            (bool flush = false);
      void cleanupMessage        (QString &message);
      QString getContentTypeByExtension(const QString &extension);
 
@@ -124,7 +122,6 @@ public Q_SLOTS:
 
 
     virtual void getMessages            (const QString &with, int nbMessages);
-    virtual void getRemainingMessages   (QString lastMessageId);
 
     void getMessageList         ();
     void getMessageReply        ();

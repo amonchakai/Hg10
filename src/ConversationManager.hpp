@@ -91,6 +91,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void cleared                        ();
+    void synchDone                      ();
     void historyLoaded                  ();
     void historyMessage                 (const QString &from, const QString &message);
     void messageReceived                (const QString &from, const QString &message);

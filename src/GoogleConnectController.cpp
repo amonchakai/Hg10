@@ -400,7 +400,6 @@ void GoogleConnectController::getMessageList() {
     m_Messages.clear();
     m_HistoryID.clear();
     m_Froms.clear();
-    m_IdxMessageToPush.clear();
 
     if (reply) {
         if (reply->error() == QNetworkReply::NoError) {
@@ -461,7 +460,7 @@ void GoogleConnectController::getMessageList() {
 
     QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
                                     + "me"
-                                    + "/messages/" + m_MessagesID[0]
+                                    + "/threads/" + m_ThreadsID[0]
                                     + "?access_token=" + m_Settings->value("access_token").value<QString>()
                                )
                             );
@@ -508,8 +507,14 @@ void GoogleConnectController::getMessageReply() {
         if (reply->error() == QNetworkReply::NoError) {
              const int available = reply->bytesAvailable();
              if (available > 0) {
+
+
                  const QByteArray buffer(reply->readAll());
                  response = QString::fromUtf8(buffer);
+
+                 m_Messages.clear();
+                 m_HistoryID.clear();
+                 m_Froms.clear();
 
                  QRegExp snippet("\"snippet\"[: ]+\"([^\"]+)\"");
                  QRegExp content("\"data\"[: ]+\"([^\"]+)\"");
@@ -517,35 +522,38 @@ void GoogleConnectController::getMessageReply() {
                  QRegExp from("\"value\".+\\u003c(.*)\\u003e\"");
                  from.setMinimal(true);
 
+                 int pos = 0;
 
-                 snippet.indexIn(response);
-                 int pos = content.indexIn(response);
-                 if(pos != -1) {
-                     if((pos = histID.indexIn(response, 0)) != -1)
-                         if(from.indexIn(response)) {
+                 while(pos != -1) {
+                     pos = snippet.indexIn(response, pos);
+                     if(pos != -1) {
+                         pos += snippet.matchedLength();
+                         pos = histID.indexIn(response, pos);
+                         pos += histID.matchedLength();
 
-                             if(snippet.cap(1).length() < 200)
-                                 m_Messages.push_back(snippet.cap(1));
-                             else
-                                 m_Messages.push_back(base64_decode(content.cap(1)));
+                         pos =from.indexIn(response, pos);
+                         pos += from.matchedLength();
 
+                         pos =content.indexIn(response, pos);
+                         pos += content.matchedLength();
 
-                             m_Messages.last().replace(andAmp,"&");
-                             m_Messages.last().replace(quote,"\"");
-                             m_Messages.last().replace(quote2,"\"");
-                             m_Messages.last().replace(euro, "e");
-                             m_Messages.last().replace(inf, "<");
-                             m_Messages.last().replace(sup, ">");
+                         if(snippet.cap(1).length() < 200)
+                              m_Messages.push_back(snippet.cap(1));
+                          else
+                              m_Messages.push_back(base64_decode(content.cap(1)));
 
+                         m_Messages.last().replace(andAmp,"&");
+                         m_Messages.last().replace(quote,"\"");
+                         m_Messages.last().replace(quote2,"\"");
+                         m_Messages.last().replace(euro, "e");
+                         m_Messages.last().replace(inf, "<");
+                         m_Messages.last().replace(sup, ">");
 
-                             m_Froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
-                             m_HistoryID.push_back(histID.cap(1).toInt());
-                             m_IdxMessageToPush.push_front(m_HistoryID.size()-1);
-
-                             checkOrder();
-
-                         }
+                         m_HistoryID.push_back(histID.cap(1).toInt());
+                         m_Froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
+                     }
                  }
+
              }
         } else {
             qDebug() << "reply... " << reply->errorString();
@@ -554,72 +562,62 @@ void GoogleConnectController::getMessageReply() {
        reply->deleteLater();
     }
 
-    // -----------------------------------------------
-    // for now, show only the last thread...
+    // --------------------------------------------
+    // count the number of participants in the chat
 
-    ++m_HistoryIndex;
-    if(   (m_ThreadsID.size() <= m_HistoryIndex)
-       || (m_HistoryIndex >= m_NBMessageExpected)
-       || ((m_LastThread != m_ThreadsID[m_HistoryIndex]) && (m_HistoryIndex >= 10))
-       || (m_HistoryIndex < m_MessagesID.size() && (m_LastSynchId == m_MessagesID[m_HistoryIndex]))) {
-
-        checkOrder(true);
-
-        ConversationManager::get()->saveHistory();
-        return;
-    }
-
-
-    // recursive call to get the next messages...
-    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
-                                        + "me"
-                                        + "/messages/" + m_MessagesID[m_HistoryIndex]
-                                        + "?access_token=" + m_Settings->value("access_token").value<QString>()
-                                   )
-                                );
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-    reply = HFRNetworkAccessManager::get()->get(request);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageReply()));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-}
-
-
-void GoogleConnectController::checkOrder(bool flush) {
-    // -------------
-    // bubble sort on timestamp
-    bool changedOrder = true;
-    while(changedOrder) {
-        changedOrder = false;
-
-        for(int n = 1 ; n < m_IdxMessageToPush.size() ; ++n) {
-            for(int i = 0 ; i < m_IdxMessageToPush.size()-n ; ++i) {
-                if(m_HistoryID[m_IdxMessageToPush[i]] > m_HistoryID[m_IdxMessageToPush[i+1]]) {
-                    std::swap(m_IdxMessageToPush[i], m_IdxMessageToPush[i+1]);
-                    changedOrder = true;
+    {
+        bool stop = false;
+        QString participant1, participant2;
+        for(int i = 0 ; i < m_Froms.size() && !stop ; ++i) {
+            if(participant1.isEmpty()) {
+                participant1 = m_Froms[i];
+                continue;
+            } else {
+                if(participant1 != m_Froms[i]) {
+                    if(participant2.isEmpty()) {
+                        participant2 = m_Froms[i];
+                    } else {
+                        if(participant2 != m_Froms[i])
+                            stop = true;
+                    }
                 }
             }
         }
 
-    }
+        if(stop) {
+            m_HistoryIndex++;
+            if(m_ThreadsID.size() <= m_HistoryIndex) return;
 
-    if(m_IdxMessageToPush.size() > 5) {
-        cleanupMessage(m_Messages[m_IdxMessageToPush.last()]);
-        ConversationManager::get()->onlineMessage(m_Froms[m_IdxMessageToPush.last()], m_Messages[m_IdxMessageToPush.last()], m_MessagesID[m_IdxMessageToPush.last()]);
-        m_IdxMessageToPush.pop_back();
-    }
+            QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
+                                            + "me"
+                                            + "/threads/" + m_ThreadsID[m_HistoryIndex]
+                                            + "?access_token=" + m_Settings->value("access_token").value<QString>()
+                                       )
+                                    );
 
-    if(flush) {
-        for(int i = m_IdxMessageToPush.size()-1 ; i >= 0 ; --i) {
-            //qDebug() << m_IdxMessageToPush.at(i) << m_Froms.size() << m_Messages.size() << m_MessagesID.size();
-            cleanupMessage(m_Messages[m_IdxMessageToPush.at(i)]);
-            ConversationManager::get()->onlineMessage(m_Froms[m_IdxMessageToPush.at(i)], m_Messages[m_IdxMessageToPush.at(i)], m_MessagesID[m_IdxMessageToPush.at(i)]);
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+            reply = HFRNetworkAccessManager::get()->get(request);
+            bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageReply()));
+            Q_ASSERT(ok);
+            Q_UNUSED(ok);
+
+            return;
         }
     }
 
+
+
+    for(int i = m_Messages.size()-1 ; i >= 0  ; --i) {
+        cleanupMessage(m_Messages[i]);
+        ConversationManager::get()->onlineMessage(m_Froms[i], m_Messages[i], m_MessagesID[i]);
+    }
+
+    ConversationManager::get()->saveHistory();
+
 }
+
+
 
 // remove some HTML extra-stuff. <a></a>
 void GoogleConnectController::cleanupMessage(QString& message) {
@@ -641,47 +639,7 @@ void GoogleConnectController::cleanupMessage(QString& message) {
 
 }
 
-void GoogleConnectController::getRemainingMessages(QString lastMessageId) {
-    m_NBMessageExpected = std::numeric_limits<int>::max();
-    m_LastSynchId = lastMessageId;
 
-    // remove the last item which was used to detect synch requirements (already in the view)
-    if(m_IdxMessageToPush.size() > 0)
-        m_IdxMessageToPush.pop_back();
-
-    qDebug() << "[GOOGLECONNECT] entering";
-
-
-    if(    (m_ThreadsID.size() <= m_HistoryIndex)
-        || (m_HistoryIndex < m_MessagesID.size() && (m_LastSynchId == m_MessagesID[m_HistoryIndex]))) {
-        //qDebug() << m_ThreadsID.size() << m_HistoryIndex; // << m_LastSynchId << m_MessagesID[m_HistoryIndex];
-
-        checkOrder(true);
-
-        //ConversationManager::get()->saveHistory();
-        return;
-    }
-
-    qDebug() << "[GOOGLECONNECT] getRemainingMessages";
-
-
-    // recursive call to get the next messages...
-    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
-                                        + "me"
-                                        + "/messages/" + m_MessagesID[m_HistoryIndex]
-                                        + "?access_token=" + m_Settings->value("access_token").value<QString>()
-                                   )
-                                );
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-    QNetworkReply *reply = HFRNetworkAccessManager::get()->get(request);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageReply()));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-
-    qDebug() << "[GOOGLECONNECT] leave getRemainingMessages";
-}
 
 // -----------------------------------------------------------------------------------------------------------
 

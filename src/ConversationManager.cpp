@@ -160,7 +160,7 @@ void ConversationManager::load(const QString &from, const QString &name) {
 
 
 void ConversationManager::reload() {
-    m_OnlineHistory->getRemainingMessages("");
+    m_OnlineHistory->getMessages(m_CurrentDst);
 }
 
 TimeEvent ConversationManager::getPreview() const {
@@ -255,6 +255,8 @@ void ConversationManager::saveHistory() {
     }
 
     mutexConversation.unlock();
+
+    emit synchDone();
 }
 
 
@@ -270,38 +272,12 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
                 qDebug() << "History up to date!";
                 return;
             }
-
-            QString lastSynch;
-            for(int i = m_History.m_History.size()-1 ; i >= 0 ; --i) {
-                if(!m_History.m_History.at(i).m_MessageID.isEmpty()) {
-                    lastSynch = m_History.m_History.at(i).m_MessageID;
-                    break;
-                }
-            }
-
-            m_SynchStatus = PUSH;
-            qDebug() << "complete history!";
-
-            // cleanup history...
-            // delete local messages and replace them by data from Google.
-            while(m_History.m_History.size() > 0 && m_History.m_History.last().m_Read < 2)
-                m_History.m_History.pop_back();
-
-            m_SynchPushLoc = m_History.m_History.size();
-
-            // get messages up to the last full synch
-            mutexConversation.unlock();
-            m_OnlineHistory->getRemainingMessages(lastSynch);
-
-        } else {
-            // history was empty, just push data from Google.
-            m_SynchStatus = FLUSH;
-            m_SynchPushLoc = 0;
-            qDebug() << "Start from no history!";
-
-            mutexConversation.unlock();
-            m_OnlineHistory->getRemainingMessages("");
         }
+
+        m_SynchStatus = FLUSH;
+
+        mutexConversation.unlock();
+        //m_OnlineHistory->getMessages(m_CurrentDst);
 
     }
 
@@ -317,7 +293,6 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
 
     mutexConversation.unlock();
 
-    qDebug() << "push message: " << from << message << messageId;
     emit historyMessage(from, message);
 }
 

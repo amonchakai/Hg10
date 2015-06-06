@@ -52,6 +52,9 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     check = connect(ConversationManager::get(), SIGNAL(historyMessage(QString, QString)), this, SLOT(pushHistory(QString, QString)));
     Q_ASSERT(check);
 
+    check = connect(ConversationManager::get(), SIGNAL(synchDone()), this, SLOT(scrollToBottom()));
+    Q_ASSERT(check);
+
     check = connect(XMPP::get(), SIGNAL(connectedXMPP()), this, SLOT(linkEstablished()));
     Q_ASSERT(check);
 
@@ -59,6 +62,12 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     Q_ASSERT(check);
 
 
+}
+
+void ConversationController::scrollToBottom() {
+    if(m_WebView == NULL) return;
+
+    m_WebView->evaluateJavaScript("scrollToEnd()");
 }
 
 bool ConversationController::isOwnMessage(const QString &from) {
