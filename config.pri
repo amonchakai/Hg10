@@ -62,6 +62,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/ListIssues.qml) \
         $$quote($$BASEDIR/assets/LoginForm.qml) \
         $$quote($$BASEDIR/assets/Manual.qml) \
+        $$quote($$BASEDIR/assets/Payment.qml) \
         $$quote($$BASEDIR/assets/Policy.qml) \
         $$quote($$BASEDIR/assets/RefreshHeader.qml) \
         $$quote($$BASEDIR/assets/Rooms.qml) \
@@ -105,6 +106,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/avatar.png.square.png) \
         $$quote($$BASEDIR/assets/images/avatar.square.svg) \
         $$quote($$BASEDIR/assets/images/avatar.svg) \
+        $$quote($$BASEDIR/assets/images/avatar_black.png) \
+        $$quote($$BASEDIR/assets/images/avatar_white.png) \
         $$quote($$BASEDIR/assets/images/blackFace.png) \
         $$quote($$BASEDIR/assets/images/bug.png) \
         $$quote($$BASEDIR/assets/images/busy.png) \
@@ -134,6 +137,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
         $$quote($$BASEDIR/assets/images/icon_chat.png) \
         $$quote($$BASEDIR/assets/images/icon_check.png) \
+        $$quote($$BASEDIR/assets/images/icon_credit.png) \
         $$quote($$BASEDIR/assets/images/icon_download.png) \
         $$quote($$BASEDIR/assets/images/icon_drive.png) \
         $$quote($$BASEDIR/assets/images/icon_favorites.png) \

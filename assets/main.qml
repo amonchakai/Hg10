@@ -37,6 +37,13 @@ TabbedPane {
                     loginController.notif = !loginController.notif;
                 }
             
+            },
+            ActionItem {
+                title: qsTr("Donate")
+                imageSource: "asset:///images/icon_credit.png"
+                onTriggered: {
+                    payment.open();
+                }
             }
         ]
     }  
@@ -131,6 +138,22 @@ TabbedPane {
         },
         LoginController {
             id: loginController
+       },
+       Delegate {
+           id: paymentDelegate
+           source: "Payment.qml"
+       
+       },
+       Sheet {
+           id: payment
+           content: paymentDelegate.object
+           onOpenedChanged: {
+               if (opened)
+                   paymentDelegate.active = true;
+           }
+           onClosed: {
+               paymentDelegate.active = false;
+           }
        }
     ]
     

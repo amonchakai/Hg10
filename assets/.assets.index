@@ -1,5 +1,5 @@
 1
-157
+161
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -38,6 +38,8 @@ images/avatar.png
 images/avatar.png.square.png
 images/avatar.square.svg
 images/avatar.svg
+images/avatar_black.png
+images/avatar_white.png
 images/BlablaRequest.png
 images/BlablaRequest_white.png
 images/blackFace.png
@@ -76,6 +78,7 @@ images/icon_attach.png
 images/icon_bottom.png
 images/icon_chat.png
 images/icon_check.png
+images/icon_credit.png
 images/icon_download.png
 images/icon_drive.png
 images/icon_favorites.png
@@ -144,6 +147,7 @@ ListIssues.qml
 LoginForm.qml
 main.qml
 Manual.qml
+Payment.qml
 Policy.qml
 RefreshHeader.qml
 Rooms.qml

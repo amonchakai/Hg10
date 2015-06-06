@@ -690,6 +690,29 @@
     </message>
 </context>
 <context>
+    <name>Payment</name>
+    <message>
+        <source>Donation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Donate ~1$</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>http://amonchakai.github.io/Hg10/donate_en.html</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thank you for your support!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Policy</name>
     <message>
         <source>Policy</source>
@@ -814,6 +837,26 @@
     </message>
     <message>
         <source>Remove Hub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File hosting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache management</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -980,6 +1023,10 @@ Delete and forget this stupid app&apos;</source>
     </message>
     <message>
         <source>Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Donate</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -61,68 +61,110 @@ NavigationPane {
     	        
                 // --------------------------------------------------------------------------
                 // Login settings
+                Container {
+                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                    
+                    Label {
+                        text: qsTr("Profile")
+                        textStyle.fontSize: FontSize.Large
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Bottom
+                    }
+                
+                }
+                Divider { }
                 
                 Container {
-                    minHeight: 100
-                    maxHeight: 100
-                }
-                
-                ImageView {
-                    verticalAlignment: VerticalAlignment.Center
-                    horizontalAlignment: HorizontalAlignment.Center
-                    id: avatarOwnImg
-                    scalingMethod: ScalingMethod.AspectFit
-                    minHeight: 200
-                    maxHeight: 200
-                    minWidth: 200
-                    maxWidth: 200
-                    image: trackerOwn.image
+                    layout: DockLayout { }
+                    background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#131313") : Color.create("#fafafaff")
+                    Container {
+                        layout: StackLayout {
+                            orientation: LayoutOrientation.LeftToRight
+                        }
+                        verticalAlignment: VerticalAlignment.Center
+                        horizontalAlignment: HorizontalAlignment.Left
+                        
+                        Container {
+                            preferredWidth: ui.du(.1)
+                        }
+                        
+                        
+                        ImageView {
+                            imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/avatar_white.png" : "asset:///images/avatar_black.png"
+                            preferredHeight: ui.du(3)
+                            preferredWidth: ui.du(3)
+                            verticalAlignment: VerticalAlignment.Center
+                            scalingMethod: ScalingMethod.AspectFit
+                        
+                        }
+                        
+                        TextField {
+                            enabled: false
+                            id: userLabel
+                            text: settingsController.userName
+                            verticalAlignment: VerticalAlignment.Center
+                        
+                        }
                     
-                    attachedObjects: [
-                        NetImageTracker {
-                            id: trackerOwn
-                            
-                            source: settingsController.avatar                                    
-                        } 
-                    ]
+                    }
+                    
+                    
+                    
+                    // Commit button
+                    Button {
+                        text: qsTr("Connect")
+                        horizontalAlignment: HorizontalAlignment.Right
+                        verticalAlignment: VerticalAlignment.Center
+                        preferredWidth: ui.du(30)
+                        id: loginButton
+                        onClicked: {
+                            welcome.open();
+                        }
+                        visible: (settingsController.userName == "")
+                    }
+                    
+                    
+                    Button {
+                        id: logOutButton
+                        text: qsTr("log out");
+                        preferredWidth: ui.du(30)
+                        horizontalAlignment: HorizontalAlignment.Right
+                        verticalAlignment: VerticalAlignment.Center
+                        
+                        onClicked: {
+                            loginController.logOut();
+                            loginButton.setVisible(true);
+                            logOutButton.setVisible(false);
+                            userLabel.setText(qsTr("User: "));
+                        }
+                        visible: (settingsController.userName != "")
+                    }
+                
                 }
                 
-    	        Label {
-    	            id: userLabel
-                    text: qsTr("User: ") + settingsController.userName
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
-    
-    	        
-    	        // Commit button
-    	        Button {
-    	            id: loginButton
-    	            text: qsTr("Connect")
-    	            horizontalAlignment: HorizontalAlignment.Fill
-    	            onClicked: {
-                        welcome.open();
-    	            }
-                    visible: (settingsController.userName == "")
-    	        }
-    	        
-    	        
-    	        Button {
-    	            id: logOutButton
-    	            text: qsTr("log out");
-    	            horizontalAlignment: HorizontalAlignment.Fill
-    	            onClicked: {
-    	                loginController.logOut();
-    	                loginButton.setVisible(true);
-    	                logOutButton.setVisible(false);
-                        userLabel.setText(qsTr("User: "));
-    	            }
-                    visible: (settingsController.userName != "")
-    	        }
-    	        
-    	        Divider { }
-    	        
                 // --------------------------------------------------------------------------
                 // Theme setting
+                
+
+                Container {
+                    preferredHeight: ui.du(4)
+                }
+
+                Container {
+                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                    
+                    Label {
+                        text: qsTr("Visual appearance")
+                        textStyle.fontSize: FontSize.Large
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Bottom
+                    }
+                
+                }
+                Divider { }
+                
+                
+                
                 DropDown {
                     id: theme
                     title: qsTr("Visual Theme")
@@ -192,7 +234,24 @@ NavigationPane {
                 }
                 
     	        
-    	        Divider { }
+                Container {
+                    preferredHeight: ui.du(4)
+                }
+                
+                Container {
+                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                    
+                    Label {
+                        text: qsTr("File hosting")
+                        textStyle.fontSize: FontSize.Large
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Bottom
+                    }
+                
+                }
+                Divider { }
+                
+                
     	        
     	        Container {
     	            layout: DockLayout {
@@ -233,6 +292,21 @@ NavigationPane {
                     
                 }
                 
+                Container {
+                    preferredHeight: ui.du(4)
+                }
+                
+                Container {
+                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                    
+                    Label {
+                        text: qsTr("Cache management")
+                        textStyle.fontSize: FontSize.Large
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Bottom
+                    }
+                
+                }
                 Divider { }
     	        
                 Button {
@@ -262,7 +336,26 @@ NavigationPane {
                     }
                 }
                 
+                
+                
+                Container {
+                    preferredHeight: ui.du(4)
+                }
+                
+                Container {
+                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                    
+                    Label {
+                        text: qsTr("Logs")
+                        textStyle.fontSize: FontSize.Large
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Bottom
+                    }
+                
+                }
                 Divider { }
+                
+                
                 Container {
                     layout: DockLayout { }
                     horizontalAlignment: HorizontalAlignment.Fill
