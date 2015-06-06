@@ -31,6 +31,10 @@
         <source>Encryption</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Internal Server (Workspace)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ApplicationLog</name>

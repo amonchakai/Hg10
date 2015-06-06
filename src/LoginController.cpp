@@ -56,7 +56,7 @@ void LoginController::login(const QString& login, const QString &password) {
     XMPP::get()->connectToServer(m_User, password);
 }
 
-void LoginController::advancedLogin(const QString& host, const QString &domain, int port, const QString &login, const QString &password, int encryption) {
+void LoginController::advancedLogin(const QString& host, const QString &domain, int port, const QString &login, const QString &password, int encryption, int proxy) {
     m_User = login;
     m_Password = password;
 
@@ -69,7 +69,7 @@ void LoginController::advancedLogin(const QString& host, const QString &domain, 
     check = QObject::connect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(connectionFailed()));
     Q_ASSERT(check);
 
-    XMPP::get()->advancedConnectToServer(host, domain, port, m_User, password, encryption);
+    XMPP::get()->advancedConnectToServer(host, domain, port, m_User, password, encryption, proxy);
 }
 
 void LoginController::oauth2Login() {

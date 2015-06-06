@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 
 Page {
     signal done();
@@ -107,6 +107,22 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 
+                Container {
+                    preferredHeight: ui.du(1)
+                }
+                
+                CheckBox {
+                    margin.leftOffset: ui.du(1)
+                    margin.rightOffset: ui.du(1)
+                    id: proxy
+                    text: qsTr("Internal Server (Workspace)")
+                    
+                }
+                
+                Container {
+                    preferredHeight: ui.du(1)
+                }
+                                
                 Button {
                     text: qsTr("Submit")
                     horizontalAlignment: HorizontalAlignment.Center
@@ -118,7 +134,7 @@ Page {
                             timer.start();
                         } else {
                             if(login.text != "") {
-                                loginController.advancedLogin(host.text, domain.text, port.text, login.text,password.text, encryption.selectedValue);
+                                loginController.advancedLogin(host.text, domain.text, port.text, login.text,password.text, encryption.selectedValue, proxy.checked);
                                 connectingActivity.start();
                             }
                         }

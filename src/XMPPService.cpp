@@ -286,7 +286,8 @@ void XMPP::advancedConnectToServer( const QString& host,
                                     int port,
                                     const QString &login,
                                     const QString &password,
-                                    int encryption) {
+                                    int encryption,
+                                    int proxy) {
     mutex.lockForWrite();
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
         int code = XMPPServiceMessages::ADVANCED_LOGIN;
@@ -311,6 +312,7 @@ void XMPP::advancedConnectToServer( const QString& host,
         m_ClientSocket->write(password.toAscii());
 
         m_ClientSocket->write(reinterpret_cast<char*>(&encryption), sizeof(int));
+        m_ClientSocket->write(reinterpret_cast<char*>(&proxy),      sizeof(int));
 
         m_ClientSocket->flush();
     }

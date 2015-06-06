@@ -28,7 +28,8 @@ public:
                                                            int port,
                                                            const QString &login,
                                                            const QString &password,
-                                                           int encryption);
+                                                           int encryption,
+                                                           int proxy);
     void                           oauth2Login            (const QString &user);
 
     void                           disconnectFromServer();
