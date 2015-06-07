@@ -19,24 +19,34 @@
         var container 	= document.getElementById("container");
         //var contextMenu = document.getElementById("context");
         //var topic 		= document.getElementById("topic"); 
+        var counter = 0;
+        var prev_user = -1;
 
-        container.style.width = window.innerWidth-64;
+        container.style.width = window.innerWidth-20;
 
         function sendURL(url) { navigator.cascades.postMessage(url); }
 
         function pushMessage(who, what, avatar) {
             sendURL('JS CALLED');
             
-            var message = "";
+            if(prev_user != who) {
+                var message = "";
 
-            if(who == 0) {
-                message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /></div><p>" + what + "</p></div>";
-                
+                if(who == 1) {
+                    message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>";
+                    
+                } else {
+                    message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>";
+                }
+
+                container.innerHTML = container.innerHTML + message;
+                prev_user = who,
+                counter++;
+
             } else {
-                message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /></div><p>" + what + "</p></div>";
+                list = document.getElementById("ul"+(counter-1));
+                list.innerHTML = list.innerHTML + "<li><p>" + what + "</p></li>";
             }
-
-            container.innerHTML = container.innerHTML + message;
 
             scrollToEnd();
         }
@@ -44,20 +54,30 @@
         function pushHistory(where, who, what, avatar) {
             var message = container.innerHTML;
             
-            if(who == 0) {
-                message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /></div><p>" + what + "</p></div>" + message;
-               
-            } else {
-                message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /></div><p>" + what + "</p></div>" + message;
-            }
+            if(prev_user != who) {
+                if(who == 1) {
+                    message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>" + message;
+                   
+                } else {
+                    message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>" + message;
+                }
 
-            container.innerHTML = message;
+                container.innerHTML = message;
+                prev_user = who,
+                counter++;
+
+            } else {
+                list = document.getElementById("ul"+(counter-1));
+                list.innerHTML = "<li><p>" + what + "</p></li>" + list.innerHTML;
+            }
 
             //scrollToEnd();
         }
 
         function clearHistory() {
             container.innerHTML = "";
+            counter = 0;
+            prev_user = -1;
         }
 
         // --------------------------
@@ -107,6 +127,10 @@
         var get_scroll = function(){
 		    return window.pageYOffset;
 		};
+
+        function newThreads() {
+            prev_user = -1;
+        }
 
 
 

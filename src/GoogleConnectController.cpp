@@ -35,8 +35,6 @@
  */
 
 
-QReadWriteLock  mutexGoogleConnect;
-
 GoogleConnectController::GoogleConnectController(QObject *parent) : OnlineHistory(parent),
         m_GmailAccess(true),
         m_DriveAccess(1),
@@ -44,8 +42,10 @@ GoogleConnectController::GoogleConnectController(QObject *parent) : OnlineHistor
         m_Settings(NULL),
         m_HistoryIndex(0),
         m_NBMessageExpected(0),
+        m_KeepPushing(false),
         m_StopListing(false),
-        m_CreatingRootDir(false) {
+        m_CreatingRootDir(false),
+        m_LastSynch(0) {
 
     m_Settings = new QSettings("Amonchakai", "Hg10");
 }
@@ -68,7 +68,7 @@ void GoogleConnectController::logInRequest() {
     if(m_GmailAccess)
         scope += "https://www.googleapis.com/auth/gmail.readonly ";
     else
-        scope += "https://mail.google.com/ ";
+        scope += "https://mail.google.com/ "; // just to be able to get user email address which is required for oauth authentification
 
     switch(m_DriveAccess) {
         case 1:
@@ -395,11 +395,13 @@ void GoogleConnectController::getMessageList() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
     QString response;
-    m_MessagesID.clear();
-    m_ThreadsID.clear();
-    m_Messages.clear();
-    m_HistoryID.clear();
-    m_Froms.clear();
+    if(!m_KeepPushing) {
+        m_MessagesID.clear();
+        m_ThreadsID.clear();
+        m_Messages.clear();
+        m_HistoryID.clear();
+        m_Froms.clear();
+    }
 
     if (reply) {
         if (reply->error() == QNetworkReply::NoError) {
@@ -443,18 +445,6 @@ void GoogleConnectController::getMessageList() {
     if(m_ThreadsID.size() == 0)
         return;
 
-    QStringList messagesId;
-    QStringList threadsId;
-    threadsId.push_back(m_ThreadsID[0]);
-    messagesId.push_back(m_MessagesID[0]);
-    for(int i = 1 ; i < m_ThreadsID.size() ; ++i) {
-        if(m_ThreadsID.at(i) == m_ThreadsID[0]) {
-            messagesId.push_back(m_MessagesID.at(i));
-            threadsId.push_back(m_ThreadsID.at(i));
-        }
-    }
-    m_ThreadsID  = threadsId;
-    m_MessagesID = messagesId;
 
     m_LastThread = m_ThreadsID[0];
 
@@ -502,6 +492,8 @@ void GoogleConnectController::getMessageReply() {
     QRegExp sup("&gt;");
     QRegExp quote2("&quot;");
 
+    QList<QString> local_messages, local_froms, local_histId;
+
     QString response;
     if (reply) {
         if (reply->error() == QNetworkReply::NoError) {
@@ -511,10 +503,6 @@ void GoogleConnectController::getMessageReply() {
 
                  const QByteArray buffer(reply->readAll());
                  response = QString::fromUtf8(buffer);
-
-                 m_Messages.clear();
-                 m_HistoryID.clear();
-                 m_Froms.clear();
 
                  QRegExp snippet("\"snippet\"[: ]+\"([^\"]+)\"");
                  QRegExp content("\"data\"[: ]+\"([^\"]+)\"");
@@ -538,19 +526,21 @@ void GoogleConnectController::getMessageReply() {
                          pos += content.matchedLength();
 
                          if(snippet.cap(1).length() < 200)
-                              m_Messages.push_back(snippet.cap(1));
+                             local_messages.push_back(snippet.cap(1));
                           else
-                              m_Messages.push_back(base64_decode(content.cap(1)));
+                              local_messages.push_back(base64_decode(content.cap(1)));
 
-                         m_Messages.last().replace(andAmp,"&");
-                         m_Messages.last().replace(quote,"\"");
-                         m_Messages.last().replace(quote2,"\"");
-                         m_Messages.last().replace(euro, "e");
-                         m_Messages.last().replace(inf, "<");
-                         m_Messages.last().replace(sup, ">");
+                         local_messages.last().replace(andAmp,"&");
+                         local_messages.last().replace(quote,"\"");
+                         local_messages.last().replace(quote2,"\"");
+                         local_messages.last().replace(euro, "e");
+                         local_messages.last().replace(inf, "<");
+                         local_messages.last().replace(sup, ">");
 
-                         m_HistoryID.push_back(histID.cap(1).toInt());
-                         m_Froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
+                         local_histId.push_back(histID.cap(1));
+                         local_froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
+
+                         qDebug() << ">> " << local_froms.last() << local_messages.last();
                      }
                  }
 
@@ -564,28 +554,35 @@ void GoogleConnectController::getMessageReply() {
 
     // --------------------------------------------
     // count the number of participants in the chat
+    qDebug() << "Check double : ";
 
     {
         bool stop = false;
         QString participant1, participant2;
-        for(int i = 0 ; i < m_Froms.size() && !stop ; ++i) {
+        for(int i = 0 ; i < local_froms.size() && !stop ; ++i) {
             if(participant1.isEmpty()) {
-                participant1 = m_Froms[i];
+                participant1 = local_froms[i];
                 continue;
             } else {
-                if(participant1 != m_Froms[i]) {
+                if(participant1 != local_froms[i]) {
                     if(participant2.isEmpty()) {
-                        participant2 = m_Froms[i];
+                        participant2 = local_froms[i];
                     } else {
-                        if(participant2 != m_Froms[i])
+                        if(participant2 != local_froms[i]) {
                             stop = true;
+                            qDebug() << "At least 3 participants: " << participant1 << participant2 << local_froms[i];
+                        }
                     }
                 }
             }
         }
 
         if(stop) {
+            qDebug() << "Check another thread";
+
             m_HistoryIndex++;
+            while(m_ThreadsID.size() > m_HistoryIndex && m_ThreadsID[m_HistoryIndex] == m_ThreadsID[m_HistoryIndex-1]) m_HistoryIndex++;
+
             if(m_ThreadsID.size() <= m_HistoryIndex) return;
 
             QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
@@ -606,10 +603,53 @@ void GoogleConnectController::getMessageReply() {
         }
     }
 
+    qDebug() << "Kepp pushing : " << m_KeepPushing;
+    if(m_KeepPushing) {
+        local_messages.append(m_Messages);
+        local_histId.append(m_MessagesID);
+        local_froms.append(m_Froms);
 
+        m_Messages = local_messages;
+        m_MessagesID = local_histId;
+        m_Froms = local_froms;
+    } else {
+        m_Messages = local_messages;
+        m_MessagesID = local_histId;
+        m_Froms = local_froms;
+    }
+
+    if(m_Messages.size() < m_NBMessageExpected) {
+        m_KeepPushing = true;
+
+        m_HistoryIndex++;
+        while(m_ThreadsID.size() > m_HistoryIndex && m_ThreadsID[m_HistoryIndex] == m_ThreadsID[m_HistoryIndex-1]) m_HistoryIndex++;
+
+        if(m_ThreadsID.size() > m_HistoryIndex) {
+
+            QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
+                                            + "me"
+                                            + "/threads/" + m_ThreadsID[m_HistoryIndex]
+                                            + "?access_token=" + m_Settings->value("access_token").value<QString>()
+                                       )
+                                    );
+
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+            reply = HFRNetworkAccessManager::get()->get(request);
+            bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageReply()));
+            Q_ASSERT(ok);
+            Q_UNUSED(ok);
+
+            return;
+        }
+
+    } else {
+        m_KeepPushing = false;
+    }
 
     for(int i = m_Messages.size()-1 ; i >= 0  ; --i) {
         cleanupMessage(m_Messages[i]);
+        qDebug() << m_Froms[i] << m_Messages[i];
         ConversationManager::get()->onlineMessage(m_Froms[i], m_Messages[i], m_MessagesID[i]);
     }
 
@@ -640,670 +680,3 @@ void GoogleConnectController::cleanupMessage(QString& message) {
 }
 
 
-
-// -----------------------------------------------------------------------------------------------------------
-
-void GoogleConnectController::putFile(const QString &path) {
-    uploadFile(path);
-}
-
-void GoogleConnectController::uploadFile(const QString &path, const QString &folder) {
-    QFile file(path);
-
-    if (!file.exists())
-        return;
-
-    if (!file.open(QIODevice::ReadOnly))
-        return;
-
-    if(!m_Settings->contains("DriveHomeFolderID")) {
-        m_LastUploadedFile = path;
-        m_CreatingRootDir = true;
-        createFolder();
-        return;
-    }
-
-    QString name = path.mid(path.lastIndexOf("/")+1);
-    QString extension = getContentTypeByExtension(path.mid(path.lastIndexOf(".")+1));
-
-
-    QString boundary = "---------------------------193971182219750";
-    QByteArray datas(QString("\r\n\r\n--" + boundary + "\r\n").toAscii());
-    datas += QString("Content-Type: application/json; charset=UTF-8\r\n\r\n").toAscii();
-    datas += QString("{\r\n").toAscii();
-    datas += QString("\"title\": \"" + name + "\",\r\n").toAscii();
-    datas += QString("\"mimeType\": \"" + extension + "\",\r\n").toAscii();
-    if(folder.isEmpty())
-        datas += (QString("\"parents\": [{\r\n")
-                         +  "\"kind\": \"drive#fileLink\",\r\n"
-                         +  "\"id\": \"" + m_Settings->value("DriveHomeFolderID").toString() + "\"\r\n"
-                   + "}]\r\n").toAscii();
-    else
-        datas += (QString("\"parents\": [{\r\n")
-                         +  "\"kind\": \"drive#fileLink\",\r\n"
-                         +  "\"id\": \"" + folder + "\"\r\n"
-                   + "}]\r\n").toAscii();
-
-    datas += QString("}\r\n\r\n").toAscii();
-
-    datas += QString("--" + boundary + "\r\n").toAscii();
-    datas += QString("Content-Type:" + extension + "\r\n\r\n").toAscii();
-
-    datas += file.readAll();
-    datas += QString("\r\n").toAscii();
-    datas += QString("--" + boundary + "--").toAscii();
-
-    QNetworkRequest request(QUrl("https://www.googleapis.com/upload/drive/v2/files?uploadType=multipart"));
-    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "multipart/related; boundary=\"" + boundary + "\"");
-    request.setHeader(QNetworkRequest::ContentLengthHeader, QString::number(datas.length()).toAscii());
-    file.close();
-
-    QNetworkReply* reply = HFRNetworkAccessManager::get()->post(request, datas);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkUploadReply()));
-    connect(reply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(uploading(qint64, qint64)));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-
-
-}
-
-void GoogleConnectController::createFolder(const QString &name, const QString &root) {
-    QByteArray datas;
-    datas += QString("{\r\n").toAscii();
-    datas += QString("\"title\": \"" + name + "\",\r\n").toAscii();
-    datas += QString("\"mimeType\": \"application/vnd.google-apps.folder\"\r\n").toAscii();
-    if(!root.isEmpty())
-        datas += QString(",\"parents\": [{\"id\":\"" + root + "\"}]");
-    else
-        if(!m_CurrentDir.isEmpty())
-            datas += QString(",\"parents\": [{\"id\":\"" + m_CurrentDir + "\"}]");
-    datas += QString("}\r\n\r\n").toAscii();
-
-    QNetworkRequest request(QUrl("https://www.googleapis.com/drive/v2/files"));
-    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    QNetworkReply* reply = HFRNetworkAccessManager::get()->post(request, datas);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkCreateHomeReply()));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-}
-
-void GoogleConnectController::checkCreateHomeReply() {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-
-    QString response;
-    if (reply) {
-        if (reply->error() == QNetworkReply::NoError) {
-            const int available = reply->bytesAvailable();
-            if (available > 0) {
-                const QByteArray buffer(reply->readAll());
-                response = QString::fromUtf8(buffer);
-
-                QRegExp homeFolderId("\"id\": \"([^\"]+)\",");
-                if(homeFolderId.indexIn(response) != -1) {
-                    if(m_CreatingRootDir) {
-                        setHomeFolder(homeFolderId.cap(1));
-                        putFile(m_LastUploadedFile);
-                    } else {
-                        emit folderCreated();
-                    }
-                }
-
-            }
-        } else {
-            qDebug() << "reply... " << reply->errorString();
-        }
-
-        reply->deleteLater();
-    }
-}
-
-void GoogleConnectController::checkUploadReply() {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-
-    QString response;
-    if (reply) {
-        if (reply->error() == QNetworkReply::NoError) {
-            const int available = reply->bytesAvailable();
-            if (available > 0) {
-                const QByteArray buffer(reply->readAll());
-                response = QString::fromUtf8(buffer);
-
-                QRegExp fileID("\"id\": \"([^\"]+)\",");
-                if(fileID.indexIn(response) != -1) {
-                    m_LastUploadedFile = fileID.cap(1);
-                }
-
-                QRegExp distUrl("\"alternateLink\": \"([^\"]+)\",");
-                if(distUrl.indexIn(response) != -1) {
-                    m_DistUrl = distUrl.cap(1);
-                }
-
-
-                emit uploaded();
-            }
-        } else {
-            qDebug() << "reply... " << reply->errorString();
-        }
-
-        reply->deleteLater();
-    }
-}
-
-void GoogleConnectController::uploading(qint64 status, qint64 total) {
-    emit uploading(100 * status / total);
-}
-
-QString GoogleConnectController::getContentTypeByExtension(const QString &extension) {
-    QString contentType;
-
-    if(extension == "doc" || extension == "docx") contentType = "application/msword";
-    if(extension == "xls") contentType = "application/vnd.ms-excel";
-    if(extension == "ppt" || extension == "pptx") contentType = "application/vnd.ms-powerpoint";
-    if(extension == "pdf") contentType = "application/pdf";
-    if(extension == "exe") contentType = "application/x-msdos-program";
-    if(extension == "rar") contentType = "application/rar";
-    if(extension == "png") contentType = "image/png";
-    if(extension == "png") contentType = "application/rtf";
-    if(extension == "tar") contentType = "application/x-tar";
-    if(extension == "zip") contentType = "application/zip";
-    if(extension == "") contentType = "";
-    if(extension == "jpeg" || extension == "jpg" || extension == "jpe") contentType = "image/jpeg";
-    if(extension == "gif") contentType = "image/gif";
-    if(extension == "wav") contentType = "application/x-wav";
-    if(extension == "tiff" || extension == "tif") contentType = "image/tiff";
-    if(extension == "txt" || extension == "cpp" || extension == "h" || extension == "c") contentType = "text/plain";
-    if(extension == "mpeg" || extension == "mpg" || extension == "mpe" ) contentType = "video/mpeg";
-    if(extension == "qt" || extension == "mov") contentType = "video/quicktime";
-    if(extension == "qvi") contentType = "video/x-msvideo";
-    if(extension == "video/x-sgi-movie") contentType = "movie";
-    if(extension == "exe") contentType = "application/x-msdos-program";
-
-    return contentType;
-}
-
-void GoogleConnectController::shareId(const QString &id, const QString &path) {
-    qDebug() << "share request!";
-
-    if(!path.isEmpty())
-        m_DistUrl = path;
-
-    QByteArray datas;
-    datas += QString("{\r\n").toAscii();
-    datas += QString("\"role\": \"reader\",\r\n").toAscii();
-    datas += QString("\"type\": \"anyone\",\r\n").toAscii();
-    datas += QString("\"withLink\": true\r\n").toAscii();
-    datas += QString("}\r\n\r\n").toAscii();
-
-    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files/") + id + "/permissions"));
-    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    QNetworkReply* reply = HFRNetworkAccessManager::get()->post(request, datas);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkReplyShare()));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-}
-
-void GoogleConnectController::share() {
-    shareId(m_LastUploadedFile);
-}
-
-
-
-
-void GoogleConnectController::checkReplyShare() {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-
-    QString response;
-    if (reply) {
-        if (reply->error() == QNetworkReply::NoError) {
-            const int available = reply->bytesAvailable();
-            if (available > 0) {
-                const QByteArray buffer(reply->readAll());
-                response = QString::fromUtf8(buffer);
-
-                qDebug() << m_DistUrl;
-
-                QRegExp check("anyoneWithLink");
-                if(check.indexIn(response) != -1)
-                    emit shared(m_DistUrl);
-
-
-            }
-        } else {
-            qDebug() << "reply... " << reply->errorString();
-        }
-
-        reply->deleteLater();
-    }
-}
-
-//------------------------------------------------------------------------------
-// google drive stuff
-
-void GoogleConnectController::refresh() {
-    getFileList(m_CurrentDir);
-}
-
-void GoogleConnectController::getFileList(const QString &directory) {
-
-    QString query;
-    if(directory.isEmpty())
-        query = "\'root\' in parents";
-    else {
-        query = "\'" + directory + "\' in parents";
-        m_CurrentDir = directory;
-    }
-
-    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files?")
-                                    + "q=" + query
-                                    + "&key=" + GOOGLE_API_KEY
-                                    + "&trashed=false"
-                               )
-                            );
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
-
-    m_WithButNoKey = "DIRECTORY_REQUEST:" + directory;
-
-    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getFileListReply()));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-}
-
-void GoogleConnectController::popFolder() {
-    getFileList(m_ParentID);
-}
-
-void GoogleConnectController::getFileListReply() {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-
-    QString response;
-    if (reply) {
-        if (reply->error() == QNetworkReply::NoError) {
-            const int available = reply->bytesAvailable();
-            if (available > 0) {
-                const QByteArray buffer(reply->readAll());
-                response = QString::fromUtf8(buffer);
-
-                parseFileList(response);
-            }
-
-            QRegExp parent("\"selfLink\": \"https://www.googleapis.com/drive/v2/files?q=\'([^\']+)\'");
-            if(parent.indexIn(response) != -1) {
-                m_ParentID = parent.cap(1);
-            } else {
-                m_ParentID = "root";
-            }
-
-        } else {
-            qDebug() << "reply... " << reply->errorString();
-            renewToken();
-        }
-
-        reply->deleteLater();
-    }
-}
-
-
-
-void GoogleConnectController::parseFileList(const QString &page) {
-    QRegExp regexp("\"kind\": \"drive#file\",");
-    int pos = 0;
-    int lastPos = regexp.indexIn(page, pos);
-
-
-    if(lastPos == -1) {
-        qDebug()<< "empty";
-        emit folderEmpty();
-        return;
-    }
-
-    while((pos = regexp.indexIn(page, lastPos)) != -1) {
-        pos += regexp.matchedLength();
-
-        // parse each file individually
-        parseFileEntry(page.mid(lastPos, pos-lastPos));
-
-        lastPos = pos;
-    }
-    parseFileEntry(page.mid(lastPos, pos-lastPos));
-
-}
-
-
-void GoogleConnectController::parseFileEntry(const QString &entry) {
-    QRegExp id("\"id\": \"([^\"]+)\"");
-    QRegExp iconLink("\"iconLink\": \"([^\"]+)\",");
-    QRegExp title("\"title\": \"([^\"]+)\",");
-    QRegExp type ("\"mimeType\": \"([^\"]+)\",");
-    QRegExp lastEdit("\"modifiedDate\": \"([^\"]+)\",");
-    QRegExp openLink("\"embedLink\": \"([^\"]+)\"");
-
-    QRegExp downloadLink("\"downloadUrl\": \"([^\"]+)\"");
-
-    int pos = id.indexIn(entry);
-    if(pos == -1) return;
-    pos += id.matchedLength();
-
-    pos = iconLink.indexIn(entry, pos);
-    if(pos == -1) return;
-    pos += iconLink.matchedLength();
-
-    pos = title.indexIn(entry, pos);
-    if(pos == -1) return;
-    pos += title.matchedLength();
-
-    pos = type.indexIn(entry, pos);
-    if(pos == -1) return;
-    pos += type.matchedLength();
-
-    pos = lastEdit.indexIn(entry, pos);
-    if(pos == -1) return;
-    pos += lastEdit.matchedLength();
-
-
-    DriveItem *d = new DriveItem(this);
-    d->setID(id.cap(1));
-    d->setIconLink(iconLink.cap(1));
-    d->setTitle(title.cap(1));
-    d->setType(type.cap(1));
-
-    int npos = downloadLink.indexIn(entry, pos);
-    if(npos != -1) {
-        d->setDownloadLink(downloadLink.cap(1));
-    } else {
-        QRegExp export1("\"application/vnd.openxmlformats-officedocument.wordprocessingml.document\": \"([^\"]+)\"");
-        npos = export1.indexIn(entry, pos);
-        if(npos != -1) {
-            d->setDownloadLink(export1.cap(1));
-        } else {
-            QRegExp export2("\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\": \"([^\"]+)\"");
-            npos = export2.indexIn(entry, pos);
-            if(npos != -1) {
-                d->setDownloadLink(export2.cap(1));
-            } else {
-                QRegExp export3("\"application/pdf\": \"([^\"]+)\"");
-                npos = export3.indexIn(entry, pos);
-                if(npos != -1)
-                    d->setDownloadLink(export3.cap(1));
-            }
-        }
-    }
-
-    if(openLink.indexIn(entry) != -1) {
-        QString link = openLink.cap(1);
-        d->setOpenLink(link);
-    } else {
-        QRegExp alternateLink("\"alternateLink\": \"([^\"]+)\"");
-        if(alternateLink.indexIn(entry) != -1) {
-            QString link = alternateLink.cap(1);
-            d->setOpenLink(link);
-        }
-    }
-
-
-    QDateTime date = QDateTime::fromString(lastEdit.cap(1).mid(0,lastEdit.cap(1).length()-1), "yyyy-MM-ddThh:mm:ss.zzz");
-    if(QDateTime::currentDateTime().date() == date.date()) {
-        d->setTimestamp(tr("last edit: ") + date.time().toString("hh:mm:ss"));
-    } else {
-        d->setTimestamp(tr("last edit: ") + date.date().toString());
-    }
-
-
-
-    emit driveItemLoaded(d);
-
-}
-
-void GoogleConnectController::setHomeFolder(const QString &id) {
-    m_Settings->setValue("DriveHomeFolderID", id);
-}
-
-
-void GoogleConnectController::setFileName(const QString &id, const QString &name) {
-    QByteArray datas;
-    datas += QString("{\r\n").toAscii();
-    datas += QString("\"title\": \"" + name + "\"\r\n").toAscii();
-    datas += QString("}\r\n\r\n").toAscii();
-
-    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files/") + id + "?key=" + GOOGLE_API_KEY));
-    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    QNetworkReply* reply = HFRNetworkAccessManager::get()->put(request, datas);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(checkReplyRename()));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-}
-
-void GoogleConnectController::checkReplyRename() {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-
-    QString response;
-    if (reply) {
-        if (reply->error() == QNetworkReply::NoError) {
-            const int available = reply->bytesAvailable();
-            if (available > 0) {
-                emit uploaded();
-            }
-        } else {
-            qDebug() << "reply... " << reply->errorString();
-        }
-
-        reply->deleteLater();
-    }
-}
-
-
-
-void GoogleConnectController::getOnlineTree(const QString &id, qint64 lastSynch, bool flush) {
-
-    if(flush) {
-        mutexGoogleConnect.lockForWrite();
-        m_OnlineTree.clear();
-        m_LastSynch = lastSynch;
-        mutexGoogleConnect.unlock();
-
-    }
-
-    QString query;
-    if(id.isEmpty())
-        query = "\'root\' in parents";
-    else {
-        query = "\'" + id + "\' in parents";
-    }
-
-    if(lastSynch != 0) {
-        QDateTime time = QDateTime::fromMSecsSinceEpoch(lastSynch);
-
-        query += " and (modifiedDate > " + time.toString("YYYY-MM-ddThh:mm:ss") + " or mimeType = \'application/vnd.google-apps.folder\') ";
-    }
-
-    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files?")
-                                    + "q=" + query
-                                    + "&key=" + GOOGLE_API_KEY
-                                    + "&trashed=false"
-                               )
-                            );
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
-
-    m_WithButNoKey = "TREE_REQUEST:" + id;
-
-    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
-    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getBranchFileListReply()));
-    Q_ASSERT(ok);
-    Q_UNUSED(ok);
-}
-
-void GoogleConnectController::getBranchFileListReply() {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-
-    QString response;
-    if (reply) {
-        if (reply->error() == QNetworkReply::NoError) {
-            const int available = reply->bytesAvailable();
-            if (available > 0) {
-                const QByteArray buffer(reply->readAll());
-                response = QString::fromUtf8(buffer);
-
-                QString parentId;
-                //qDebug() << response;
-                QRegExp parent("\"https://www.googleapis.com/drive/v2/files.q=\'([^\']+)\'");
-                if(parent.indexIn(response) != -1) {
-                    parentId = parent.cap(1);
-                } else {
-                    parentId = "";
-                }
-
-                parseTree(parentId, response);
-            }
-
-        } else {
-            qDebug() << "reply... " << reply->errorString();
-            renewToken();
-        }
-
-        reply->deleteLater();
-    }
-}
-
-void GoogleConnectController::parseTree(const QString &parent, const QString &page) {
-    QRegExp regexp("\"kind\": \"drive#file\",");
-    int pos = 0;
-    int lastPos = regexp.indexIn(page, pos);
-
-
-    if(lastPos == -1) {
-        //qDebug()<< "empty";
-        return;
-    }
-
-    while((pos = regexp.indexIn(page, lastPos)) != -1) {
-        pos += regexp.matchedLength();
-
-        // parse each file individually
-        parseTreeEntry(parent, page.mid(lastPos, pos-lastPos));
-
-        lastPos = pos;
-    }
-    parseTreeEntry(parent, page.mid(lastPos, pos-lastPos));
-
-}
-
-
-void GoogleConnectController::parseTreeEntry(const QString &parent, const QString &entry) {
-    QRegExp id("\"id\": \"([^\"]+)\"");
-    QRegExp iconLink("\"iconLink\": \"([^\"]+)\",");
-    QRegExp title("\"title\": \"([^\"]+)\",");
-    QRegExp type ("\"mimeType\": \"([^\"]+)\",");
-    QRegExp lastEdit("\"modifiedDate\": \"([^\"]+)\",");
-    QRegExp openLink("\"embedLink\": \"([^\"]+)\"");
-
-    QRegExp downloadLink("\"downloadUrl\": \"([^\"]+)\"");
-
-
-    int pos = id.indexIn(entry);
-    if(pos == -1) return;
-    pos += id.matchedLength();
-
-    pos = iconLink.indexIn(entry, pos);
-    if(pos == -1) return;
-    pos += iconLink.matchedLength();
-
-    pos = title.indexIn(entry, pos);
-    if(pos == -1) return;
-    pos += title.matchedLength();
-
-    mutexGoogleConnect.lockForWrite();
-    m_OnlineTree[id.cap(1)] = QPair<QString, QString>(parent, title.cap(1));
-    mutexGoogleConnect.unlock();
-
-    pos = type.indexIn(entry, pos);
-    if(pos == -1) return;
-    pos += type.matchedLength();
-
-    if(type.cap(1) == "application/vnd.google-apps.folder") {
-        getOnlineTree(id.cap(1), m_LastSynch);
-        return;
-    }
-
-    pos = lastEdit.indexIn(entry, pos);
-    if(pos == -1) return;
-    pos += lastEdit.matchedLength();
-
-
-    DriveItem *d = new DriveItem(this);
-    d->setID(id.cap(1));
-    d->setIconLink(iconLink.cap(1));
-    d->setTitle(title.cap(1));
-    d->setType(type.cap(1));
-
-    int npos = downloadLink.indexIn(entry, pos);
-    if(npos != -1) {
-        d->setDownloadLink(downloadLink.cap(1));
-    } else {
-        QRegExp export1("\"application/vnd.openxmlformats-officedocument.wordprocessingml.document\": \"([^\"]+)\"");
-        npos = export1.indexIn(entry, pos);
-        if(npos != -1) {
-            d->setDownloadLink(export1.cap(1));
-        } else {
-            QRegExp export2("\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\": \"([^\"]+)\"");
-            npos = export2.indexIn(entry, pos);
-            if(npos != -1) {
-                d->setDownloadLink(export2.cap(1));
-            } else {
-                QRegExp export3("\"application/pdf\": \"([^\"]+)\"");
-                npos = export3.indexIn(entry, pos);
-                if(npos != -1)
-                    d->setDownloadLink(export3.cap(1));
-            }
-        }
-    }
-
-    if(openLink.indexIn(entry) != -1) {
-        QString link = openLink.cap(1);
-        d->setOpenLink(link);
-    } else {
-        QRegExp alternateLink("\"alternateLink\": \"([^\"]+)\"");
-        if(alternateLink.indexIn(entry) != -1) {
-            QString link = alternateLink.cap(1);
-            d->setOpenLink(link);
-        }
-    }
-
-
-    QDateTime date = QDateTime::fromString(lastEdit.cap(1).mid(0,lastEdit.cap(1).length()-1), "yyyy-MM-ddThh:mm:ss.zzz");
-    d->setTimestamp(date.toString());
-
-
-    QString humanUrl;
-
-    mutexGoogleConnect.lockForWrite();
-    humanUrl = "";
-
-    QMap<QString, QPair<QString, QString> >::iterator it = m_OnlineTree.find(id.cap(1));
-
-    if(it != m_OnlineTree.end()) {
-        humanUrl = it.value().second;
-        it = m_OnlineTree.find(it.value().first);
-    }
-
-    while(!(it == m_OnlineTree.end())) {
-        humanUrl = it.value().second + "/" + humanUrl;
-        it = m_OnlineTree.find(it.value().first);
-    }
-
-    qDebug() << humanUrl;
-    emit onlineTreeLeaf(humanUrl, d);
-
-    mutexGoogleConnect.unlock();
-
-}

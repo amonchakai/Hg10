@@ -15,11 +15,6 @@
 class OnlineHistory;
 class GoogleConnectController;
 
-enum GoogleSynchStatus {
-    NONE  = 0,
-    PUSH  = 1,
-    FLUSH = 2
-};
 
 class ConversationManager : public QObject {
     Q_OBJECT;
@@ -77,7 +72,6 @@ private:
     // History from Google
     OnlineHistory                  *m_OnlineHistory;
     GoogleConnectController        *m_FileTransfert;
-    GoogleSynchStatus               m_SynchStatus;
     int                             m_SynchPushLoc;
 
 

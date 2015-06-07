@@ -67,7 +67,8 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
 void ConversationController::scrollToBottom() {
     if(m_WebView == NULL) return;
 
-    m_WebView->evaluateJavaScript("scrollToEnd()");
+    m_WebView->evaluateJavaScript("scrollToEnd();");
+    m_WebView->evaluateJavaScript("newThreads();");
 }
 
 bool ConversationController::isOwnMessage(const QString &from) {
@@ -213,20 +214,30 @@ void ConversationController::updateView() {
             }
         }
 
+        bool fistInsertDone = false;
         QString body;
         for(int i = std::max(0, history.m_History.size()-10) ; i < history.m_History.size() ; ++i) {
             const TimeEvent &e = history.m_History.at(i);
 
-            if(isOwnMessage(e.m_Who)) {
-                body +=  QString("<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"file:///" + ownAvatar + ".square.png" + "\" /></div>")
-                                   + "<p>" + renderMessage(e.m_What) + "</p>"
-                               + "</div>";
-
+            if(i > 0 && history.m_History.at(i-1).m_Who == history.m_History.at(i).m_Who && fistInsertDone) {
+                body += "<li><p>" + renderMessage(e.m_What) + "</p></li>";
             } else {
-                body +=  QString("<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"file:///" + m_DstAvatar + ".square.png" + "\" /></div>")
-                                   + "<p>" + renderMessage(e.m_What) + "</p>"
-                               + "</div>";
+                fistInsertDone = true;
+                if(i > 0)
+                    body += "</ul></div><br/>";
+
+                if(isOwnMessage(e.m_Who)) {
+                    body +=  QString("<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"file:///" + ownAvatar + ".square.png" + "\" /></div><br/><br/><br/>")
+                                       + "<ul><li><p>" + renderMessage(e.m_What) + "</p></li>";
+
+                } else {
+                    body +=  QString("<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"file:///" + m_DstAvatar + ".square.png" + "\" /></div><br/><br/><br/>")
+                                       + "<ul><li><p>" + renderMessage(e.m_What) + "</p></li>";
+                }
             }
+        }
+        if(!history.m_History.empty()) {
+            body += "</ul></div><br/>";
         }
 
 

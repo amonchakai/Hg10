@@ -11,7 +11,7 @@ public:
     virtual ~OnlineHistory() {}
 
 
-    virtual void getMessages            (const QString &from, int nbMessages = 1) = 0;
+    virtual void getMessages            (const QString &from, int nbMessages = 12) = 0;
 
 };
 

@@ -27,7 +27,7 @@ ConversationManager* ConversationManager::m_This = NULL;
 // Singleton
 
 
-ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_OnlineHistory(NULL), m_FileTransfert(NULL), m_SynchStatus(NONE), m_SynchPushLoc(0) {
+ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_OnlineHistory(NULL), m_FileTransfert(NULL), m_SynchPushLoc(0) {
 
 
     loadUserName();
@@ -138,20 +138,14 @@ void ConversationManager::load(const QString &from, const QString &name) {
     }
 
     if(m_OnlineHistory != NULL) {
-        QRegExp isFacebook("@chat.facebook.com");
-        if(isFacebook.indexIn(from) != -1)
-            m_OnlineHistory->getMessages(from, 1);  // for facebook we need to use the user ID
-        else {
-            QRegExp publicTalk("@public.talk.google.com");
-            if(publicTalk.indexIn(from) != -1) {
-                qDebug() << "m_OnlineHistory->getMessages(\" from:(" + name + ") OR to:(" + name + ") \", 1);";
-                m_OnlineHistory->getMessages(" from:(" + name + ") OR to:(" + name +")", 1);  // for google, user id is better, but not always available. If not, use name.
-            } else {
-                qDebug() << "m_OnlineHistory->getMessages(\"" + from + "\", 1);";
-                m_OnlineHistory->getMessages(from, 1);
-            }
+        QRegExp publicTalk("@public.talk.google.com");
+        if(publicTalk.indexIn(from) != -1) {
+            qDebug() << "m_OnlineHistory->getMessages(\" from:(" + name + ") OR to:(" + name + ") \", 12);";
+            m_OnlineHistory->getMessages(" from:(" + name + ") OR to:(" + name +")", 12);  // for google, user id is better, but not always available. If not, use name.
+        } else {
+            qDebug() << "m_OnlineHistory->getMessages(\"" + from + "\", 12);";
+            m_OnlineHistory->getMessages(from, 12);
         }
-        m_SynchStatus = NONE;
     }
 
     emit historyLoaded();
@@ -264,24 +258,16 @@ void ConversationManager::saveHistory() {
 // from Google...
 void ConversationManager::onlineMessage(const QString &from, const QString &message, const QString &messageId) {
 
-    if(m_SynchStatus == NONE) {
-        mutexConversation.lockForWrite();
-        if(m_History.m_History.size() > 0) {
-            if(m_History.m_History.last().m_What == message && !message.isEmpty()) {
-                mutexConversation.unlock();
-                qDebug() << "History up to date!";
-                return;
-            }
+    mutexConversation.lockForWrite();
+    if(m_History.m_History.size() > 0) {
+        if(m_History.m_History.last().m_What == message && !message.isEmpty()) {
+            mutexConversation.unlock();
+            emit historyMessage(from, message);
+            qDebug() << "History up to date!";
+            return;
         }
-
-        m_SynchStatus = FLUSH;
-
-        mutexConversation.unlock();
-        //m_OnlineHistory->getMessages(m_CurrentDst);
-
     }
 
-    mutexConversation.lockForWrite();
 
         TimeEvent e;
         e.m_Read = 1;

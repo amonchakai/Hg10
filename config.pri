@@ -209,6 +209,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/DriveController.cpp) \
         $$quote($$BASEDIR/src/DropBoxConnectController.cpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.cpp) \
+        $$quote($$BASEDIR/src/GoogleConnectDrive.cpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.cpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.cpp) \
         $$quote($$BASEDIR/src/Image/NetImageTracker.cpp) \

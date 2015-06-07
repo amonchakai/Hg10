@@ -40,7 +40,7 @@ private:
     QString                              m_LastThread;
     int                                  m_HistoryIndex;
     int                                  m_NBMessageExpected;
-    QString                              m_LastSynchId;
+    bool                                 m_KeepPushing;
 
     bool                                 m_StopListing;
 
@@ -53,6 +53,9 @@ private:
 
     QMap<QString, QPair<QString, QString> >  m_OnlineTree;
     qint64                                   m_LastSynch;
+
+
+    QReadWriteLock                      mutexGoogleConnect;
 
 public:
      GoogleConnectController            (QObject *parent = 0);

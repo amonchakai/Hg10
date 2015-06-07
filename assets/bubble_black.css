@@ -2,81 +2,58 @@
 == Bubble left
 ** =================================== */
 
-  .bubble-left {
-  	position: relative;
-  	width: 70%;
-  	margin-left: 64px;
-  	min-height: 100px;
-  	padding: 0px;
-  	background: #282828;
-  	-webkit-border-radius: 5px;
-  	-moz-border-radius: 5px;
-  	border-radius: 5px;
-  }
+.bubble-left {
+  position: relative;
+  width: 90%;
+  margin-left: 5px;
+  min-height: 100px;
+  padding: 0px;
+  background: #282828;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border-bottom-style: solid;
+  border-bottom-color: #3d49a8;
+}
 
-  .bubble-left:after {
-  	content: "";
-  	position: absolute;
-  	top: 0px;
-  	left: -20px;
-  	border-style: solid;
-  	border-width: 0px 20px 20px 0;
-  	border-color: transparent #282828;
-  	display: block;
-  	width: 0;
-  	z-index: 1;
-  }
-
-  .bubble-left-avatar img {
-  	 position: absolute;
-  	 left: -64px;
-  	 top: 0px;
-  	 width: 64px;
-  	 height: auto;
-  }
+.bubble-left-avatar img {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 48px;
+  height: auto;
+}
 
 /* ===================================
 == Bubble right
 ** =================================== */
 
-  .bubble-right {
-  	position: relative;
-  	margin-right: 64px;
-  	margin-left: 30%;
-  	width: 70%;
-  	min-height: 100px;
-  	padding: 0px;
-  	background: #282828;
-  	-webkit-border-radius: 5px;
-  	-moz-border-radius: 5px;
-  	border-radius: 5px;
-  }
+.bubble-right {
+  position: relative;
+  margin-right: 5px;
+  margin-left: 10%;
+  width: 90%;
+  min-height: 100px;
+  padding: 0px;
+  background: #282828;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border-bottom-style: solid;
+  border-bottom-color: #cc3333;
+}
 
-  .bubble-right:after {
-  	content: "";
-  	position: absolute;
-  	bottom: 0px;
-  	right: -20px;
-  	border-style: solid;
-  	border-width: 20px 0px 0px 20px;
-  	border-color: transparent #282828;
-  	display: block;
-  	width: 0;
-  	z-index: 1;
-  }
+.bubble-right-avatar img {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 48px;
+  height: auto;
+}
 
-  .bubble-right-avatar img {
-  	 position: absolute;
-  	 right: -64px;
-	 bottom: 0px;
-  	 width: 64px;
-  	 height: auto;
-  }
+.bubble-right p {
 
-  .bubble-right p {
-  	text-align: right;
-  }
-
+}
 
 /* ===================================
 == Link
