@@ -540,7 +540,6 @@ void GoogleConnectController::getMessageReply() {
                          local_histId.push_back(histID.cap(1));
                          local_froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
 
-                         qDebug() << ">> " << local_froms.last() << local_messages.last();
                      }
                  }
 
@@ -554,7 +553,6 @@ void GoogleConnectController::getMessageReply() {
 
     // --------------------------------------------
     // count the number of participants in the chat
-    qDebug() << "Check double : ";
 
     {
         bool stop = false;
@@ -647,9 +645,11 @@ void GoogleConnectController::getMessageReply() {
         m_KeepPushing = false;
     }
 
+
+    ConversationManager::get()->flushHistory();
     for(int i = m_Messages.size()-1 ; i >= 0  ; --i) {
         cleanupMessage(m_Messages[i]);
-        qDebug() << m_Froms[i] << m_Messages[i];
+        qDebug() << ">> " << m_Froms[i] << m_Messages[i];
         ConversationManager::get()->onlineMessage(m_Froms[i], m_Messages[i], m_MessagesID[i]);
     }
 

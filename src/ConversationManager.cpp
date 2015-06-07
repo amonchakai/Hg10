@@ -200,6 +200,14 @@ TimeEvent ConversationManager::getPreview(const QString &from) const {
     return e;
 }
 
+void ConversationManager::flushHistory() {
+    mutexConversation.lockForWrite();
+    m_History.m_History.clear();
+    mutexConversation.unlock();
+
+    emit historyLoaded();
+}
+
 void ConversationManager::saveHistory() {
 
     mutexConversation.lockForWrite();
@@ -262,7 +270,6 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
     if(m_History.m_History.size() > 0) {
         if(m_History.m_History.last().m_What == message && !message.isEmpty()) {
             mutexConversation.unlock();
-            emit historyMessage(from, message);
             qDebug() << "History up to date!";
             return;
         }

@@ -60,6 +60,15 @@ public:
 
     inline GoogleConnectController  *getFileTransfert()         { return m_FileTransfert; }
 
+
+
+
+    void onlineMessage                  (const QString &from, const QString &message, const QString &messageId);
+    void flushHistory                   ();
+    void saveHistory                    ();
+
+
+
 private:
     static ConversationManager     *m_This;
 
@@ -79,9 +88,6 @@ private:
 
     ConversationManager                 (QObject *parent = 0);
 
-public Q_SLOTS:
-    void onlineMessage                  (const QString &from, const QString &message, const QString &messageId);
-    void saveHistory                    ();
 
 Q_SIGNALS:
     void cleared                        ();
