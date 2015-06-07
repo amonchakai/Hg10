@@ -24,6 +24,23 @@
   height: auto;
 }
 
+.author-left p {
+  font-weight: bold;
+  position: absolute;
+  left: 60px;
+  top: 7px;
+  font-size: 130%;
+}
+
+.time-left p {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #a0a0a0;
+  font-size: 100%;
+}
+
+
 /* ===================================
 == Bubble right
 ** =================================== */
@@ -53,6 +70,28 @@
 
 .bubble-right p {
 
+}
+
+.author-right p {
+  font-weight: bold;
+  position: absolute;
+  right: 60px;
+  top: 7px;
+  font-size: 130%;
+}
+
+.time-right p {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: #a0a0a0;
+  font-size: 100%;
+}
+
+
+
+li {
+  color: white;
 }
 
 /* ===================================

@@ -103,6 +103,7 @@ void ConversationController::load(const QString &id, const QString &avatar, cons
     XMPP::get()->askConnectionStatus();
 
     m_HistoryCleared = false;
+    m_DstName = name;
     ConversationManager::get()->load(id, name);
 }
 
@@ -227,11 +228,11 @@ void ConversationController::updateView() {
                     body += "</ul></div><br/>";
 
                 if(isOwnMessage(e.m_Who)) {
-                    body +=  QString("<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"file:///" + ownAvatar + ".square.png" + "\" /></div><br/><br/><br/>")
+                    body +=  QString("<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"file:///" + ownAvatar + ".square.png" + "\" /><div class=\"author-left\"><p>" + tr("Me") +"</p></div><div class=\"time-left\"><p>" + QDateTime::fromMSecsSinceEpoch(e.m_When).toString(Qt::SystemLocaleShortDate) + "</p></div></div><br/><br/><br/>")
                                        + "<ul><li><p>" + renderMessage(e.m_What) + "</p></li>";
 
                 } else {
-                    body +=  QString("<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"file:///" + m_DstAvatar + ".square.png" + "\" /></div><br/><br/><br/>")
+                    body +=  QString("<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"file:///" + m_DstAvatar + ".square.png" + "\" /><div class=\"author-right\"><p>" + m_DstName +"</p></div><div class=\"time-right\"><p>" + QDateTime::fromMSecsSinceEpoch(e.m_When).toString(Qt::SystemLocaleShortDate) + "</p></div></div><br/><br/><br/>")
                                        + "<ul><li><p>" + renderMessage(e.m_What) + "</p></li>";
                 }
             }
@@ -360,11 +361,13 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
     QString lmessage = renderMessage(message, true);
     lmessage.replace("\"","\\\"");
 
+    QDateTime::currentDateTime().time().toString();
+
     if(ownMessage)
-        m_WebView->evaluateJavaScript("pushMessage(1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+        m_WebView->evaluateJavaScript("pushMessage(1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png\", \"" + tr("Me") + "\", \"" + QDateTime::currentDateTime().time().toString("hh:mm:ss") + "\");");
     else {
         if(ConversationManager::get()->isAdressee(from))
-            m_WebView->evaluateJavaScript("pushMessage(0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\");");
+            m_WebView->evaluateJavaScript("pushMessage(0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\", \"" + m_DstName + "\", \"" + QDateTime::currentDateTime().time().toString("hh:mm:ss") + "\");");
     }
 }
 
@@ -391,9 +394,9 @@ void ConversationController::pushHistory(const QString &from, const QString &mes
     lmessage.replace("\"","\\\"");
 
     if(ownMessage)
-        m_WebView->evaluateJavaScript("pushHistory(0, 1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+        m_WebView->evaluateJavaScript("pushHistory(0, 1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png\", \"" + tr("Me") + "\", \"\");");
     else
-        m_WebView->evaluateJavaScript("pushHistory(0, 0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\");");
+        m_WebView->evaluateJavaScript("pushHistory(0, 0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\", \"" + m_DstName + "\", \"\");");
 }
 
 void ConversationController::send(const QString& message) {
@@ -415,7 +418,7 @@ void ConversationController::send(const QString& message) {
     QString lmessage = renderMessage(message, true);
     lmessage.replace("\"","\\\"");
 
-    m_WebView->evaluateJavaScript("pushMessage(1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png" + "\");");
+    m_WebView->evaluateJavaScript("pushMessage(1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png\", \"" + tr("Me") + "\", \"" + QDateTime::currentDateTime().time().toString("hh:mm:ss") + "\");");
 }
 
 

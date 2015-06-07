@@ -317,6 +317,10 @@
         <source>/app/native/assets/data/emojies_list.xml</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Me</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateRoom</name>

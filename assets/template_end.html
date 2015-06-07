@@ -26,17 +26,17 @@
 
         function sendURL(url) { navigator.cascades.postMessage(url); }
 
-        function pushMessage(who, what, avatar) {
+        function pushMessage(who, what, avatar, name, time) {
             sendURL('JS CALLED');
             
             if(prev_user != who) {
                 var message = "";
 
                 if(who == 1) {
-                    message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>";
+                    message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /><div class=\"author-left\"><p>" + name +"</p></div><div class=\"time-left\"><p>" + time + "</p></div></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>";
                     
                 } else {
-                    message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>";
+                    message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /><div class=\"author-right\"><p>" + name +"</p></div><div class=\"time-right\"><p>" + time + "</p></div></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>";
                 }
 
                 container.innerHTML = container.innerHTML + message;
@@ -51,15 +51,15 @@
             scrollToEnd();
         }
 
-        function pushHistory(where, who, what, avatar) {
+        function pushHistory(where, who, what, avatar, name, time) {
             var message = container.innerHTML;
             
             if(prev_user != who) {
                 if(who == 1) {
-                    message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>" + message;
+                    message = "<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"" + avatar + "\" /><div class=\"author-left\"><p>" + name +"</p></div><div class=\"time-left\"><p>" + time + "</p></div></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>" + message;
                    
                 } else {
-                    message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>" + message;
+                    message = "<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"" + avatar + "\" /><div class=\"author-right\"><p>" + name +"</p></div><div class=\"time-right\"><p>" + time + "</p></div></div><br/><br/><br/><ul id=\"ul" + counter + "\"><li><p>" + what + "</p></li></ul></div><br/>" + message;
                 }
 
                 container.innerHTML = message;

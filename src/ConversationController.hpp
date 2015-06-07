@@ -30,6 +30,7 @@ private:
     bb::cascades::ListView          *m_ListView;
     bb::cascades::ActivityIndicator *m_LinkActivity;
     QString                   m_DstAvatar;
+    QString                   m_DstName;
     bool                      m_HistoryCleared;
     bool                      m_IsRoom;
     bool                      m_UploadingAudio;

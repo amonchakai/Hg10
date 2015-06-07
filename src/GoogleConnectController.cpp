@@ -365,6 +365,8 @@ void GoogleConnectController::replyGetUserInfo() {
 
 
 void GoogleConnectController::getMessages(const QString &with, int nbMessages) {
+
+
     m_NBMessageExpected = nbMessages;
     m_WithButNoKey = "HISTORY_REQUEST:" + with;
 
