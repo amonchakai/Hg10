@@ -16,7 +16,21 @@
 #include <bb/system/SystemUiResult>
 #include "DataObjects.h"
 
+
 class FileTransfert;
+
+namespace bb
+{
+    namespace multimedia
+    {
+        class AudioRecorder;
+        class MediaPlayer;
+    }
+
+    namespace system {
+        class InvokeManager;
+    }
+}
 
 class ConversationController : public QObject {
     Q_OBJECT;
@@ -29,6 +43,10 @@ private:
     bb::cascades::WebView    *m_WebView;
     bb::cascades::ListView          *m_ListView;
     bb::cascades::ActivityIndicator *m_LinkActivity;
+    bb::multimedia::AudioRecorder   *m_AudioRecorder;
+    bb::multimedia::MediaPlayer     *m_MediaPlayer;
+    bb::system::InvokeManager       *m_InvokeManager;
+
     QString                   m_DstAvatar;
     QString                   m_DstName;
     bool                      m_HistoryCleared;
@@ -89,13 +107,27 @@ public Q_SLOTS:
     void scrollToBottom                 ();
 
     // -----------------------------------------------------
+
+    void invokeBrowser                  (const QString& url);
+
+    // -----------------------------------------------------
     // audio messages
 
 
     QString getNextAudioName            ();
+    void startRecordAudio               ();
+    void stopRecordAudio                ();
+    void playAudio                      (const QString &file);
+
 
     // -----------------------------------------------------
     // messages with dropbox
+
+
+    void pickFile                       ();
+    void canceledFilePicker             ();
+    void fileSelected                   (const QStringList&);
+
 
     void uploaded                       ();
     void shared                         (const QString &url);

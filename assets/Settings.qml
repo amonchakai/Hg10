@@ -24,14 +24,14 @@ NavigationPane {
                 onTriggered: {
                     // Emit the custom signal here to indicate that this page needs to be closed
                     // The signal would be handled by the page which invoked it
-                    navSettings.done();
+                    settings.close();
                 }
             }
             acceptAction: ActionItem {
                 title: qsTr("Save")
                 onTriggered: {
                     settingsController.save(); 
-                    navSettings.done();
+                    settings.close();
                 }
             }
         }

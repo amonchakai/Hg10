@@ -6,4 +6,4 @@ INCLUDEPATH += src/base
 
 include(config.pri)
 
-LIBS += -lsocket -lbbplatform -lbbsystem -lbbpim -lbb -lbbdata -lbbcascadespickers -lbbdevice
+LIBS += -lsocket -lbbplatform -lbbsystem -lbbpim -lbb -lbbdata -lbbcascadespickers -lbbdevice -lbbmultimedia

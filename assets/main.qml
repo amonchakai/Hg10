@@ -112,20 +112,33 @@ TabbedPane {
                 welcomeDelegate.active = false;
             }
         },
-        Sheet {
-            id: settings
-            Settings {
-                onDone: {
-                    settings.close();
-                }
-            }
+        Delegate {
+            id: settingsDelegate
+            source: "Settings.qml"
         },
         Sheet {
+            id: settings
+            content: settingsDelegate.object
+            onOpenedChanged: {
+                if(opened)
+                    settingsDelegate.active = true;
+            }
+            onClosed: {
+                settingsDelegate.active = false;
+            }
+        },
+        Delegate {
+            id: aboutDelegate
+            source: "Policy.qml"
+        }, 
+        Sheet {
             id: about
-            Policy {
-                onDone: {
-                    about.close();
-                }
+            content: aboutDelegate.object
+            onOpenedChanged: {
+                aboutDelegate.active = true;
+            }
+            onClosed: {
+                aboutDelegate.active = false;
             }
         },
         Sheet {

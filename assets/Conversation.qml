@@ -1,9 +1,6 @@
 import bb.cascades 1.3
 import com.netimage 1.0
-import bb.cascades.pickers 1.0
 import Network.ConversationController 1.0
-import bb.multimedia 1.2
-import Lib.QTimer 1.0
 
 Page {
     property string name
@@ -127,8 +124,7 @@ Page {
                     var isOpenSound = RegExp("PLAY_SOUND:([^\']+)")
                     match = message.data.match(isOpenSound);
                     if(match) {
-                        audioPlayer.sourceUrl = "file:///" + match[1];
-                        audioPlayer.play();
+                        conversationController.playAudio("file:///" + match[1]);
                     }
                     
                     
@@ -147,7 +143,7 @@ Page {
                         if(urlImg.test(request.url.toString()) || urlImgPng.test(request.url.toString()) || urlImgGif.test(request.url.toString()))
                             showPictureViewer(request.url);
                         else
-                            linkInvocation.query.uri = request.url;
+                            conversationController.invokeBrowser(request.url.toString());
                     
                     } else { 
                         request.action = WebNavigationRequestAction.Accept;
@@ -180,35 +176,6 @@ Page {
                 }
                 background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
                 
-                /*
-                ImageButton {
-                    preferredHeight: 60
-                    defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/sound_white.png" : "asset:///images/sound.png"
-                    verticalAlignment: VerticalAlignment.Center
-                    
-                    onTouch: {
-                        if(event.isUp()) {
-                            console.log("stop record");
-                            voiceRecording.visible = false;
-                            if(recorder.mediaState != MediaState.Unprepared) {
-                                recorder.reset();
-                                conversationController.sendAudioData(filenameChat);
-                            }
-                            
-                        }
-                        if(event.isDown()) {
-                            console.log("record");
-                            voiceRecording.visible = true;
-                            if(!conversationController.fileReady) {
-                                filenameChat = conversationController.nextAudioFile;
-                                recorder.setOutputUrl(filenameChat);
-                            }
-                            
-                            recorder.record();
-                        }
-                    }   
-                }
-                */
                 TextArea {
                     preferredHeight: ui.du(10)
                     horizontalAlignment: HorizontalAlignment.Fill
@@ -462,7 +429,7 @@ Page {
                                     break;
                                 
                                 case 3:
-                                    filePicker.open();
+                                    conversationController.pickFile();
                                     break;
                                 
                                 case 4:
@@ -486,12 +453,7 @@ Page {
                                 
                                  case 8:
                                      voiceRecording.visible = true;
-                                     if(!conversationController.fileReady) {
-                                         filenameChat = conversationController.nextAudioFile;
-                                         recorder.setOutputUrl(filenameChat);
-                                     }
-                                     
-                                     recorder.record();
+                                     conversationController.startRecordAudio();
                                      break;
                             }
                             
@@ -510,11 +472,16 @@ Page {
         visible: false
         horizontalAlignment: HorizontalAlignment.Center
         verticalAlignment: VerticalAlignment.Center
-        ImageView {
+        ImageButton {
             preferredHeight: 200
             preferredWidth: 200
-            imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/walkie_white.png" : "asset:///images/walkie.png"
+            defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/walkie_white.png" : "asset:///images/walkie.png"
             verticalAlignment: VerticalAlignment.Center
+            
+            onClicked: {
+                conversationController.stopRecordAudio();
+                voiceRecording.visible = false;
+            }
         }
     }
     
@@ -555,7 +522,7 @@ Page {
             imageSource: "asset:///images/icon_attach.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
-                filePicker.open();
+                conversationController.pickFile();
             }
             shortcuts: [
                 Shortcut {
@@ -686,53 +653,6 @@ Page {
         ImagePaintDefinition {
             id: back
             repeatPattern: RepeatPattern.Fill
-        },
-        Invocation {
-            id: linkInvocation
-                    
-            query.invokeTargetId: "sys.browser";
-            query.invokeActionId: "bb.action.OPEN"
-                    
-                    
-            query {
-                   onUriChanged: {
-                        linkInvocation.query.updateQuery();
-                }
-            }
-                    
-            onArmed: {
-                        
-                  trigger("bb.action.OPEN");
-            }
-        },
-        FilePicker {
-            id:filePicker
-            type : FileType.Picture
-            title : "Select Picture"
-            directories : ["/accounts/1000/shared/"]
-            onFileSelected : {
-                if(selectedFiles.length > 0) {
-                    conversationController.sendData(selectedFiles[0]);
-                }
-            }
-        },
-        AudioRecorder {
-            id: recorder
-        },
-        MediaPlayer {
-            id: audioPlayer
-        },
-        QTimer {
-            id: timer
-            
-            singleShot: true
-            interval: 1500
-            
-            onTimeout: {
-                filenameChat = conversationController.nextAudioFile;
-                recorder.setOutputUrl(filenameChat);
-                recorder.prepare();
-            }
         },
         ComponentDefinition {
             id: imagePreview

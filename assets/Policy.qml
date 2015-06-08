@@ -8,7 +8,7 @@ Page {
             ActionItem {
                 title: qsTr("Close")
                 onTriggered: {
-                    done();
+                    about.close();
                 }
             }
         ]

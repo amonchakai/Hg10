@@ -554,6 +554,17 @@ void GoogleConnectController::getMessageReply() {
     }
 
     // --------------------------------------------
+    // check if same as history
+
+    {
+        const History &hist = ConversationManager::get()->getHistory();
+        if(!hist.m_History.isEmpty() && !local_messages.isEmpty()) {
+            if(hist.m_History.last().m_What == local_messages.last())
+                return;
+        }
+    }
+
+    // --------------------------------------------
     // count the number of participants in the chat
 
     {
@@ -603,7 +614,8 @@ void GoogleConnectController::getMessageReply() {
         }
     }
 
-    qDebug() << "Kepp pushing : " << m_KeepPushing;
+
+
     if(m_KeepPushing) {
         local_messages.append(m_Messages);
         local_histId.append(m_MessagesID);
@@ -651,7 +663,7 @@ void GoogleConnectController::getMessageReply() {
     ConversationManager::get()->flushHistory();
     for(int i = m_Messages.size()-1 ; i >= 0  ; --i) {
         cleanupMessage(m_Messages[i]);
-        qDebug() << ">> " << m_Froms[i] << m_Messages[i];
+//        qDebug() << ">> " << m_Froms[i] << m_Messages[i];
         ConversationManager::get()->onlineMessage(m_Froms[i], m_Messages[i], m_MessagesID[i]);
     }
 

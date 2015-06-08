@@ -27,12 +27,20 @@
 #include <bb/system/SystemDialog>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/GroupDataModel>
+#include <bb/multimedia/AudioRecorder>
+#include <bb/multimedia/MediaPlayer>
+#include <bb/system/InvokeManager>
+#include <bb/system/InvokeRequest>
+#include <bb/system/InvokeTargetReply>
 
 
 ConversationController::ConversationController(QObject *parent) : QObject(parent),
             m_WebView(NULL),
             m_ListView(NULL),
             m_LinkActivity(NULL),
+            m_AudioRecorder(NULL),
+            m_MediaPlayer(NULL),
+            m_InvokeManager(NULL),
             m_HistoryCleared(false),
             m_IsRoom(false),
             m_UploadingAudio(false),
@@ -224,7 +232,7 @@ void ConversationController::updateView() {
                 body += "<li><p>" + renderMessage(e.m_What) + "</p></li>";
             } else {
                 fistInsertDone = true;
-                if(i > 0)
+                if(i != std::max(0, history.m_History.size()-10))
                     body += "</ul></div><br/>";
 
                 if(isOwnMessage(e.m_Who)) {
@@ -240,6 +248,8 @@ void ConversationController::updateView() {
         if(!history.m_History.empty()) {
             body += "</ul></div><br/>";
         }
+
+        qDebug() << body;
 
 
         m_WebView->setHtml(htmlTemplate + body  + endTemplate, "file:///" + QDir::homePath() + "/../app/native/assets/");
@@ -399,6 +409,8 @@ void ConversationController::pushHistory(const QString &from, const QString &mes
         m_WebView->evaluateJavaScript("pushHistory(0, 0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\", \"" + m_DstName + "\", \"\");");
 }
 
+
+
 void ConversationController::send(const QString& message) {
     qDebug() << "CALL!";
     if(message.isEmpty())
@@ -425,6 +437,40 @@ void ConversationController::send(const QString& message) {
 void ConversationController::sendAudioData(const QString &message) {
     m_UploadingAudio = true;
     sendData(message);
+}
+
+
+void ConversationController::pickFile() {
+    using namespace bb::cascades::pickers;
+
+    FilePicker* filePicker = new FilePicker();
+    filePicker->setType(FileType::Other);
+    filePicker->setTitle(tr("Select File"));
+    filePicker->setMode(FilePickerMode::Picker);
+    filePicker->open();
+
+    // Connect the fileSelected() signal with the slot.
+    QObject::connect(filePicker,
+        SIGNAL(fileSelected(const QStringList&)),
+        this,
+        SLOT(exportFileSelected(const QStringList&)));
+
+    // Connect the canceled() signal with the slot.
+    QObject::connect(filePicker,
+        SIGNAL(canceled()),
+        this,
+        SLOT(canceledFilePicker()));
+
+    QObject::connect(filePicker, SIGNAL(pickerClosed()), filePicker, SLOT(deleteLater()));
+}
+
+void ConversationController::canceledFilePicker() {
+}
+
+void ConversationController::fileSelected(const QStringList& files) {
+
+    if(!files.isEmpty())
+        sendData(files[0]);
 }
 
 void ConversationController::sendData(const QString &file) {
@@ -456,6 +502,20 @@ void ConversationController::chatStateUpdate(int state) {
 }
 
 
+void ConversationController::invokeBrowser(const QString& url) {
+    if(m_InvokeManager == NULL) {
+        m_InvokeManager = new bb::system::InvokeManager(this);
+    }
+
+    bb::system::InvokeRequest request;
+    request.setTarget("sys.browser");
+    request.setAction("bb.action.OPEN");
+    request.setUri(url);
+
+    m_InvokeManager->invoke(request);
+
+}
+
 QString ConversationController::getNextAudioName() {
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/AudioMessages/");
     QString name;
@@ -479,6 +539,33 @@ QString ConversationController::getNextAudioName() {
     m_AudioFileName = directory + name;
 
     return m_AudioFileName;
+}
+
+
+void ConversationController::startRecordAudio() {
+    if(m_AudioRecorder == NULL) {
+        m_AudioRecorder = new bb::multimedia::AudioRecorder(this);
+    }
+
+    m_AudioRecorder->setOutputUrl(getNextAudioName());
+    m_AudioRecorder->record();
+}
+
+void ConversationController::stopRecordAudio() {
+    if(m_AudioRecorder == NULL)
+        return;
+
+    if(m_AudioRecorder->reset() == bb::multimedia::MediaError::None)
+        sendData(m_AudioFileName);
+}
+
+void ConversationController::playAudio(const QString &file) {
+    if(m_MediaPlayer == NULL) {
+        m_MediaPlayer = new bb::multimedia::MediaPlayer(this);
+    }
+
+    m_MediaPlayer->setSourceUrl(file);
+    m_MediaPlayer->play();
 }
 
 
