@@ -40,8 +40,6 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/1440x1440/Drive.qml) \
         $$quote($$BASEDIR/assets/1440x1440/SmileyPicker.qml) \
         $$quote($$BASEDIR/assets/720x720/Contacts.qml) \
-        $$quote($$BASEDIR/assets/720x720/Conversation.qml) \
-        $$quote($$BASEDIR/assets/720x720/ConversationCard.qml) \
         $$quote($$BASEDIR/assets/AdvancedConection.qml) \
         $$quote($$BASEDIR/assets/ApplicationLog.qml) \
         $$quote($$BASEDIR/assets/BugReport.qml) \
@@ -49,7 +47,9 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/ComposeIssue.qml) \
         $$quote($$BASEDIR/assets/Contacts.qml) \
         $$quote($$BASEDIR/assets/Conversation.qml) \
+        $$quote($$BASEDIR/assets/ConversationBBM.qml) \
         $$quote($$BASEDIR/assets/ConversationCard.qml) \
+        $$quote($$BASEDIR/assets/ConversationCardBBM.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
         $$quote($$BASEDIR/assets/Drive.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \
@@ -137,6 +137,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
         $$quote($$BASEDIR/assets/images/icon_chat.png) \
         $$quote($$BASEDIR/assets/images/icon_check.png) \
+        $$quote($$BASEDIR/assets/images/icon_clip.png) \
+        $$quote($$BASEDIR/assets/images/icon_clip.svg) \
         $$quote($$BASEDIR/assets/images/icon_credit.png) \
         $$quote($$BASEDIR/assets/images/icon_download.png) \
         $$quote($$BASEDIR/assets/images/icon_drive.png) \
@@ -167,6 +169,10 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/icon_settings_black.png) \
         $$quote($$BASEDIR/assets/images/icon_share.png) \
+        $$quote($$BASEDIR/assets/images/icon_smile.png) \
+        $$quote($$BASEDIR/assets/images/icon_smile.svg) \
+        $$quote($$BASEDIR/assets/images/icon_smile_white.png) \
+        $$quote($$BASEDIR/assets/images/icon_smile_white.svg) \
         $$quote($$BASEDIR/assets/images/icon_synchronize.png) \
         $$quote($$BASEDIR/assets/images/icon_top.png) \
         $$quote($$BASEDIR/assets/images/icon_top_black.png) \

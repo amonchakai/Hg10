@@ -27,6 +27,8 @@ class ListContactsController : public QObject {
     Q_PROPERTY( bool    showOnlyFav READ isOnlyFav                           NOTIFY showOnlyFavChanged)
     Q_PROPERTY( int     availabilityFilter READ getAvailabilityFilter        NOTIFY availabilityFilterChanged)
 
+    Q_PROPERTY( int     conversTheme READ getConversTheme                    NOTIFY  conversThemeChanged)
+
 private:
     bb::cascades::ListView          *m_ListView;
     bb::cascades::ActivityIndicator *m_Activity;
@@ -38,6 +40,7 @@ private:
     bool                             m_OnlyFavorite;
     int                              m_AvailabilityFilter;
     bool                             m_PushStated;
+    int                              m_ConversTheme;
 
     bb::platform::Notification      *m_Notification;
 
@@ -62,6 +65,8 @@ public:
 
     inline bool           isOnlyFav     () const               { return m_OnlyFavorite; }
     inline int            getAvailabilityFilter() const        { return m_AvailabilityFilter; }
+
+    inline int            getConversTheme() const           { return m_ConversTheme; }
 
 
 public Q_SLOTS:
@@ -103,6 +108,7 @@ Q_SIGNALS:
 
     void userNameChanged                ();
     void avatarChanged                  ();
+    void conversThemeChanged            ();
 
     void presenceChanged                ();
     void availableChanged               ();

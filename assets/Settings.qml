@@ -233,6 +233,26 @@ NavigationPane {
                     }
                 }
                 
+                DropDown {
+                    id: convers
+                    title: qsTr("Chat interface")
+                    options: [
+                        Option {
+                            text: qsTr("BBM")
+                            value: 0
+                        },
+                        Option {
+                            text: qsTr("Custom")
+                            value: 1
+                        } 
+                    ]
+                    selectedIndex: settingsController.conversTheme
+                    onSelectedOptionChanged: {
+                        settingsController.conversTheme = convers.selectedOption.value;
+                    }
+                
+                } 
+                
     	        
                 Container {
                     preferredHeight: ui.du(4)

@@ -55,7 +55,7 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
     m_Presence  = settings.value("Presence", "").toString();
     m_Available = settings.value("Available", 0).toInt();
     m_AvailabilityFilter = settings.value("AvailabilityFilter", -1).toInt();
-
+    m_ConversTheme = settings.value("ConversationTheme", 0).toInt();
 
 }
 

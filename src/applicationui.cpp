@@ -141,17 +141,17 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         // to ensure the document gets destroyed properly at shut down.
         QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
 
-        bb::device::DisplayInfo display;
-        QDeclarativePropertyMap* displayDimensions = new QDeclarativePropertyMap;
-        displayDimensions->insert( "width", QVariant( display.pixelSize().width() ) );
-        displayDimensions->insert( "height", QVariant( display.pixelSize().height() ) );
-        qml->setContextProperty( "DisplayInfo", displayDimensions );
-
         // Create root object for the UI
         AbstractPane *root = qml->createRootObject<AbstractPane>();
 
         // Set created root object as the application scene
         Application::instance()->setScene(root);
+
+        bb::device::DisplayInfo display;
+        QDeclarativePropertyMap* displayDimensions = new QDeclarativePropertyMap;
+        displayDimensions->insert( "width", QVariant( display.pixelSize().width() ) );
+        displayDimensions->insert( "height", QVariant( display.pixelSize().height() ) );
+        qml->setContextProperty( "DisplayInfo", displayDimensions );
 
         // ------------------------------------------------------------
         // disconnect the UI from the headless, when the app is minimized.
@@ -212,8 +212,15 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
               }
          }
 
-         QmlDocument *qml = QmlDocument::create("asset:///ConversationCard.qml")
+         QmlDocument *qml = NULL;
+
+         QSettings settings("Amonchakai", "Hg10");
+         if(settings.value("ConversationTheme", 0) == 0)
+             qml = QmlDocument::create("asset:///ConversationCardBBM.qml")
                                                           .parent(this);
+         else
+             qml = QmlDocument::create("asset:///ConversationCard.qml")
+                                                           .parent(this);
 
          m_root = qml->createRootObject<NavigationPane>();
 

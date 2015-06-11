@@ -249,8 +249,6 @@ void ConversationController::updateView() {
             body += "</ul></div><br/>";
         }
 
-        qDebug() << body;
-
 
         m_WebView->setHtml(htmlTemplate + body  + endTemplate, "file:///" + QDir::homePath() + "/../app/native/assets/");
         emit complete();

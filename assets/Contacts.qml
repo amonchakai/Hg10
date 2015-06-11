@@ -425,7 +425,10 @@ NavigationPane {
                         
                         // Create the content page and push it on top to drill down to it.
                         if(!tpage) {
-                            tpage = conversation.createObject();
+                            if(listContactsController.conversTheme == 1)
+                                tpage = conversation.createObject();
+                            else 
+                                tpage = conversationBBM.createObject();
                         }
                         
                         // Set the url of the page to load and thread caption. 
@@ -568,10 +571,32 @@ NavigationPane {
                 
                 }
                 
+                onUserSelected: {
+                    // Create the content page and push it on top to drill down to it.
+                    if(!tpage) {
+                        if(listContactsController.conversTheme == 1)
+                            tpage = conversation.createObject();
+                        else 
+                            tpage = conversationBBM.createObject();
+                    }
+                    
+                    // Set the url of the page to load and thread caption. 
+                    tpage.name     = name;
+                    tpage.avatar   = avatar;
+                    tpage.id       = id;
+                    tpage.room     = false;
+                    
+                    nav.push(tpage);
+                }
+                
             },
             ComponentDefinition {
                 id: conversation
                 source: "Conversation.qml"
+            },
+            ComponentDefinition {
+                id: conversationBBM
+                source: "ConversationBBM.qml"
             },
             ComponentDefinition {
                 id: statusSetter

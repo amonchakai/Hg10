@@ -10,11 +10,10 @@
 	min-height: 100px;
 	padding: 0px;
 	background: #f0f0f0;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
 	border-bottom-style: solid;
 	border-bottom-color: #3d49a8;
+	background-color: #ffffff;
+	border-width: 2px;
 }
 
 .bubble-left-avatar img {
@@ -30,7 +29,6 @@
   position: absolute;
   left: 60px;
   top: 7px;
-  font-size: 130%;
 }
 
 .time-left p {
@@ -38,7 +36,6 @@
   right: 10px;
   top: 10px;
   color: #616161;
-  font-size: 100%;
 }
 
 
@@ -54,11 +51,10 @@
 	min-height: 100px;
 	padding: 0px;
 	background: #f0f0f0;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
 	border-bottom-style: solid;
 	border-bottom-color: #cc3333;
+	background-color: #ffffff;
+	border-width: 2px;
 }
 
 .bubble-right-avatar img {
@@ -79,7 +75,6 @@
   position: absolute;
   right: 60px;
   top: 7px;
-  font-size: 130%;
 }
 
 .time-right p {
@@ -87,5 +82,6 @@
   left: 10px;
   top: 10px;
   color: #616161;
-  font-size: 100%;
 }
+
+

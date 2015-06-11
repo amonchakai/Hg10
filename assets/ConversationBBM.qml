@@ -1,11 +1,9 @@
 import bb.cascades 1.3
 import com.netimage 1.0
-import bb.cascades.pickers 1.0
 import Network.ConversationController 1.0
-import bb.multimedia 1.2
-import Lib.QTimer 1.0
 
 Page {
+    id: pageBBM
     property string name
     property string avatar
     property string id
@@ -25,7 +23,7 @@ Page {
                 leftPadding: 10
                 rightPadding: 10
                 background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#282828") : Color.create("#f0f0f0");
-                                
+                
                 ImageView {
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Right
@@ -66,159 +64,127 @@ Page {
             }
         }
     }
-    
-    actionBarVisibility: ChromeVisibility.Hidden
-
+        
     
     Container {
         layout: DockLayout {
-            
+        
         }
         
         
-
-    Container {
-        layout: StackLayout {
-            orientation: LayoutOrientation.TopToBottom
-        }        
-        
-        background: back.imagePaint
-        
-        ActivityIndicator {
-            id: linkStatusActivity
-            preferredHeight: 50
-            horizontalAlignment: HorizontalAlignment.Center
-        }
-        
-        ScrollView {
-            verticalAlignment: VerticalAlignment.Fill
-            horizontalAlignment: HorizontalAlignment.Fill
-            id: scrollView
-            
-            focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
-            
-            WebView {
-                id: messageView
-                
-                
-                settings.textAutosizingEnabled: false
-                settings.zoomToFitEnabled: false
-                
-                html: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "<!DOCTYPE html><html><head><style>body { background-color: #000000; } </style></head><body></body></html>" : "" ;
-                
-                onLoadingChanged: {
-                    if (loadRequest.status == WebLoadStatus.Succeeded) {
-                        messageView.evaluateJavaScript("scrollToEnd();");
-                        scrollView.requestFocus();
-                    }
-                }
-                
-                onMessageReceived: {
-                    var isScroll = RegExp("SCROLLTO:([0-9]+)")
-                    var match = message.data.match(isScroll);
-                    if(match)
-                        scrollView.scrollToPoint(0, match[1], ScrollAnimation.None);
-                        
-                    var isOpenImg = RegExp("OPEN_IMAGE:([^\']+)")
-                    match = message.data.match(isOpenImg);
-                    if(match)
-                        showPictureViewer(match[1]);
-                    
-                    var isOpenSound = RegExp("PLAY_SOUND:([^\']+)")
-                    match = message.data.match(isOpenSound);
-                    if(match) {
-                        audioPlayer.sourceUrl = "file:///" + match[1];
-                        audioPlayer.play();
-                    }
-                    
-                    
-                    
-                    console.log(message.data)
-                }
-                
-                onNavigationRequested: {
-                    if(request.navigationType != WebNavigationType.Other) {
-                        request.action = WebNavigationRequestAction.Ignore;
-                        
-                        console.log("on nav requested")
-                        var urlImg = RegExp(".jpg");
-                        var urlImgPng = RegExp(".png");
-                        var urlImgGif = RegExp(".gif");
-                        if(urlImg.test(request.url.toString()) || urlImgPng.test(request.url.toString()) || urlImgGif.test(request.url.toString()))
-                            showPictureViewer(request.url);
-                        else
-                            linkInvocation.query.uri = request.url;
-                    
-                    } else { 
-                        request.action = WebNavigationRequestAction.Accept;
-                    }
-                }
-            }
-        }
         
         Container {
-            id: inputContainer
-            verticalAlignment: VerticalAlignment.Bottom
-            horizontalAlignment: HorizontalAlignment.Fill
-            
-            
+            id: wallpaperContainer
             layout: StackLayout {
                 orientation: LayoutOrientation.TopToBottom
+            }        
+            
+            background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#000000") : Color.create("#c7dfe4")
+            
+            ActivityIndicator {
+                id: linkStatusActivity
+                preferredHeight: 50
+                horizontalAlignment: HorizontalAlignment.Center
             }
             
-            ProgressIndicator {
+            ScrollView {
+                verticalAlignment: VerticalAlignment.Fill
                 horizontalAlignment: HorizontalAlignment.Fill
-                id: uploadingIndicator
-                fromValue: 0
-                toValue: 100
-                visible: false
+                id: scrollView
+                
+                focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
+                
+                WebView {
+                    id: messageView
+                    
+                    
+                    settings.textAutosizingEnabled: false
+                    settings.zoomToFitEnabled: false
+                    
+                    html: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "<!DOCTYPE html><html><head><style>body { background-color: #000000; } </style></head><body></body></html>" : "" ;
+                    
+                    onLoadingChanged: {
+                        if (loadRequest.status == WebLoadStatus.Succeeded) {
+                            messageView.evaluateJavaScript("scrollToEnd();");
+                            txtField.requestFocus();
+                        }
+                    }
+                    
+                    onMessageReceived: {
+                        var isScroll = RegExp("SCROLLTO:([0-9]+)")
+                        var match = message.data.match(isScroll);
+                        if(match)
+                            scrollView.scrollToPoint(0, match[1], ScrollAnimation.None);
+                        
+                        var isOpenImg = RegExp("OPEN_IMAGE:([^\']+)")
+                        match = message.data.match(isOpenImg);
+                        if(match)
+                            showPictureViewer(match[1]);
+                        
+                        var isOpenSound = RegExp("PLAY_SOUND:([^\']+)")
+                        match = message.data.match(isOpenSound);
+                        if(match) {
+                            conversationController.playAudio("file:///" + match[1]);
+                        }
+                        
+                        
+                        
+                        console.log(message.data)
+                    }
+                    
+                    onNavigationRequested: {
+                        if(request.navigationType != WebNavigationType.Other) {
+                            request.action = WebNavigationRequestAction.Ignore;
+                            
+                            console.log("on nav requested")
+                            var urlImg = RegExp(".jpg");
+                            var urlImgPng = RegExp(".png");
+                            var urlImgGif = RegExp(".gif");
+                            if(urlImg.test(request.url.toString()) || urlImgPng.test(request.url.toString()) || urlImgGif.test(request.url.toString()))
+                                showPictureViewer(request.url);
+                            else
+                                conversationController.invokeBrowser(request.url.toString());
+                        
+                        } else { 
+                            request.action = WebNavigationRequestAction.Accept;
+                        }
+                    }
+                    
+                    onTouch: {
+                        if(emoticonsPicker.preferredHeight > 0)
+                            toogleEmoji();
+                    }
+                }
             }
-            
             
             Container {
-                preferredHeight: ui.du(12)
+                id: inputContainer
+                verticalAlignment: VerticalAlignment.Bottom
                 horizontalAlignment: HorizontalAlignment.Fill
                 
-                background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#262626") : Color.create("#f0f0f0")
-                layout: DockLayout {
                 
+                layout: StackLayout {
+                    orientation: LayoutOrientation.TopToBottom
+                }
+                
+                ProgressIndicator {
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    id: uploadingIndicator
+                    fromValue: 0
+                    toValue: 100
+                    visible: false
                 }
                 
                 Container {
-                    horizontalAlignment: HorizontalAlignment.Left
-                    verticalAlignment: VerticalAlignment.Center
-                    
                     layout: StackLayout {
                         orientation: LayoutOrientation.LeftToRight
                     }
-                    
-                    Container {
-                        preferredWidth: ui.du(2)
-                        preferredHeight: ui.du(2)
-                    }
+                    background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
                     
                     ImageButton {
-                        verticalAlignment: VerticalAlignment.Center
-                        
                         preferredHeight: ui.du(10)
                         preferredWidth: ui.du(10)
-                        
-                        defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_left_blue_black.png" : "asset:///images/icon_left_blue.png"
-                        
-                        onClicked: {
-                            nav.pop();
-                        }
-                    
-                    }
-                    
-                    ImageButton {
-                        id: actionButton
-                        verticalAlignment: VerticalAlignment.Center
-                        
-                        preferredHeight: ui.du(8)
-                        preferredWidth: ui.du(8)
-                        
-                        defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_feed.png" : "asset:///images/icon_feed_black.png"
+                        defaultImageSource: "asset:///images/icon_clip.png"
                         
                         onClicked: {
                             actionSelector.selectedOption = option1;
@@ -230,7 +196,6 @@ Page {
                         preferredHeight: ui.du(10)
                         horizontalAlignment: HorizontalAlignment.Fill
                         id: txtField
-                        inputMode: TextAreaInputMode.Chat
                         
                         input {
                             submitKey: SubmitKey.Send
@@ -239,33 +204,29 @@ Page {
                                 txtField.text = "";  
                             }
                         }
-                        content {
-                            flags: TextContentFlag.ActiveText | TextContentFlag.Emoticons
-                        
-                        }
                     }
                     
-                    Container {
-                        preferredWidth: ui.du(.1)
-                    }
-                
-                }  
+                    ImageButton {
+                        preferredHeight: ui.du(10)
+                        preferredWidth: ui.du(10)
+                        defaultImageSource: "asset:///images/icon_smile.png"
+                        onClicked: {
+                            actionSelector.selectedOption = option2;
+                            toogleEmoji();
+                        }
+                    }                    
+               }
             }
             
             Container {
                 id: emoticonsPicker
+                background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.Black : Color.White
+                
                 preferredHeight: 0
                 layout: StackLayout {
                     orientation: LayoutOrientation.TopToBottom
                 }
                 visible: false
-                
-                attachedObjects: [
-                    ImplicitAnimationController {
-                        id: animList
-                        propertyName: "preferredHeight"
-                    }
-                ]
                                 
                 SegmentedControl {
                     horizontalAlignment: HorizontalAlignment.Fill
@@ -285,15 +246,23 @@ Page {
                     onSelectedOptionChanged: {
                         conversationController.loadActionMenu(selectedOption.value);
                     }
-
+                
+                }
+                
+                function numberOfButton() {
+                    if(actionSelector.selectedOption.value == 0) {
+                        return DisplayInfo.width > 1000 ? 6 : 4;
+                    } else return  9;
+                
                 }
                 
                 
                 ListView {
                     id: actionComposerListView
                     
+                    
                     layout: GridListLayout {
-                        columnCount: actionSelector.selectedOption.value == 0 ? nbIcons : 9
+                        columnCount: emoticonsPicker.numberOfButton();
                         headerMode: ListHeaderMode.Sticky
                     }
                     
@@ -370,7 +339,7 @@ Page {
                                     break;
                                 
                                 case 3:
-                                    filePicker.open();
+                                    conversationController.pickFile();
                                     break;
                                 
                                 case 4:
@@ -381,7 +350,7 @@ Page {
                                 case 5:
                                     actionSelector.selectedOption = option2;
                                     return;
-                                    
+                                
                                 case 6:
                                     if(!smileyPage)
                                         smileyPage = smileyPicker.createObject();
@@ -392,57 +361,58 @@ Page {
                                     conversationController.setWallpaper();
                                     break;
                                 
-                                 case 8:
-                                     voiceRecording.visible = true;
-                                     if(!conversationController.fileReady) {
-                                         filenameChat = conversationController.nextAudioFile;
-                                         recorder.setOutputUrl(filenameChat);
-                                     }
-                                     
-                                     recorder.record();
-                                     break;
+                                case 8:
+                                    voiceRecording.visible = true;
+                                    conversationController.startRecordAudio();
+                                    break;
                             }
-                            
+                        
                         }
                         toogleEmoji();
                         txtField.requestFocus();
-                        
+                    
                     }
                 }    
             }
         }
-    }
-    
-    Container {
-        id: voiceRecording
-        visible: false
-        horizontalAlignment: HorizontalAlignment.Center
-        verticalAlignment: VerticalAlignment.Center
-        ImageView {
-            preferredHeight: 200
-            preferredWidth: 200
-            imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/walkie_white.png" : "asset:///images/walkie.png"
+                
+
+        Container {
+            id: voiceRecording
+            visible: false
+            horizontalAlignment: HorizontalAlignment.Center
             verticalAlignment: VerticalAlignment.Center
+            ImageButton {
+                preferredHeight: 200
+                preferredWidth: 200
+                defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/walkie_white.png" : "asset:///images/walkie.png"
+                verticalAlignment: VerticalAlignment.Center
+                
+                onClicked: {
+                    conversationController.stopRecordAudio();
+                    voiceRecording.visible = false;
+                }
+            }
         }
     }
-    
-    }
-    
+
     function toogleEmoji() {
         if(emoticonsPicker.preferredHeight == 0) {
             emoticonsPicker.visible = true;
             actionSelector.visible = true;
             emoticonsPicker.preferredHeight = DisplayInfo.width > 1000 ? 700 : 500;
-            txtField.preferredHeight=ui.du(10);
-            
+            txtField.preferredHeight=50;
+            pageBBM.actionBarVisibility = ChromeVisibility.Hidden;
+        
         } else {
             emoticonsPicker.preferredHeight=0;
             txtField.preferredHeight=ui.du(10);
             actionSelector.visible = false;
             emoticonsPicker.visible = false;
+            pageBBM.actionBarVisibility = ChromeVisibility.Visible;
         }
     }
-    
+
     
     actions: [
         ActionItem {
@@ -461,9 +431,9 @@ Page {
         ActionItem {
             title: qsTr("Attach")
             imageSource: "asset:///images/icon_attach.png"
-            ActionBar.placement: ActionBarPlacement.OnBar
+            ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: {
-                filePicker.open();
+                conversationController.pickFile();
             }
             shortcuts: [
                 Shortcut {
@@ -474,24 +444,11 @@ Page {
         ActionItem {
             title: qsTr("Reply")
             imageSource: "asset:///images/send.png"
-            ActionBar.placement: ActionBarPlacement.Signature
+            ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
                 conversationController.send(txtField.text);
                 txtField.text = "";            
             }
-        },
-        ActionItem {
-            title: qsTr("Emoticons")
-            imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/whiteFace.png" : "asset:///images/whiteFace2.png"
-            ActionBar.placement: ActionBarPlacement.InOverflow
-            onTriggered: {
-                toogleEmoji();
-            }
-            shortcuts: [
-                Shortcut {
-                    key: "e"
-                }
-            ]
         },
         ActionItem {
             title: qsTr("Stickers")
@@ -507,13 +464,6 @@ Page {
                     key: "s"
                 }
             ]
-        },
-        ActionItem {
-            title: qsTr("Background")
-            imageSource: "asset:///images/icon_wallpaper.png"
-            onTriggered: {
-                conversationController.setWallpaper();
-            }
         },
         ActionItem {
             title: qsTr("To last message")
@@ -537,10 +487,9 @@ Page {
         
         conversationController.loadActionMenu(0);
         
-        timer.start();
         actionSelector.visible = false;
         nbIcons = DisplayInfo.width > 1000 ? 6 : 4;
-        
+    
     }
     
     onIdChanged: {
@@ -582,8 +531,8 @@ Page {
             }
             
             onComplete: {
-                scrollView.requestFocus();
-                
+                txtField.requestFocus();
+            
             }
             
             onWallpaperChanged: {
@@ -594,52 +543,12 @@ Page {
         ImagePaintDefinition {
             id: back
             repeatPattern: RepeatPattern.Fill
-        },
-        Invocation {
-            id: linkInvocation
-                    
-            query.invokeTargetId: "sys.browser";
-            query.invokeActionId: "bb.action.OPEN"
-                    
-                    
-            query {
-                   onUriChanged: {
-                        linkInvocation.query.updateQuery();
-                }
-            }
-                    
-            onArmed: {
-                        
-                  trigger("bb.action.OPEN");
-            }
-        },
-        FilePicker {
-            id:filePicker
-            type : FileType.Picture
-            title : "Select Picture"
-            directories : ["/accounts/1000/shared/"]
-            onFileSelected : {
-                if(selectedFiles.length > 0) {
-                    conversationController.sendData(selectedFiles[0]);
-                }
-            }
-        },
-        AudioRecorder {
-            id: recorder
-        },
-        MediaPlayer {
-            id: audioPlayer
-        },
-        QTimer {
-            id: timer
             
-            singleShot: true
-            interval: 1500
-            
-            onTimeout: {
-                filenameChat = conversationController.nextAudioFile;
-                recorder.setOutputUrl(filenameChat);
-                recorder.prepare();
+            onImagePaintChanged: {
+                if(imageSource != "")
+                    wallpaperContainer.background = back.imagePaint
+                else 
+                    wallpaperContainer.background = Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#000000") : Color.create("#c7dfe4");
             }
         },
         ComponentDefinition {

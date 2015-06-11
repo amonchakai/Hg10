@@ -75,11 +75,12 @@ Page {
         
 
     Container {
+        id: wallpaperContainer
         layout: StackLayout {
             orientation: LayoutOrientation.TopToBottom
         }        
         
-        background: back.imagePaint
+        background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#000000") : Color.create("#c7dfe4")
         
         ActivityIndicator {
             id: linkStatusActivity
@@ -106,7 +107,7 @@ Page {
                 onLoadingChanged: {
                     if (loadRequest.status == WebLoadStatus.Succeeded) {
                         messageView.evaluateJavaScript("scrollToEnd();");
-                        scrollView.requestFocus();
+                        txtField.requestFocus();
                     }
                 }
                 
@@ -149,6 +150,11 @@ Page {
                         request.action = WebNavigationRequestAction.Accept;
                     }
                 }
+                
+                onTouch: {
+                    if(emoticonsPicker.preferredHeight > 0)
+                        toogleEmoji();
+                }
             }
         }
         
@@ -180,7 +186,6 @@ Page {
                     preferredHeight: ui.du(10)
                     horizontalAlignment: HorizontalAlignment.Fill
                     id: txtField
-                    inputMode: TextAreaInputMode.Chat
                     
                     input {
                         submitKey: SubmitKey.Send
@@ -188,10 +193,6 @@ Page {
                             conversationController.send(txtField.text);
                             txtField.text = "";  
                         }
-                    }
-                    content {
-                        flags: TextContentFlag.ActiveText | TextContentFlag.Emoticons
-                        
                     }
                 }
                 
@@ -313,6 +314,8 @@ Page {
             
             Container {
                 id: emoticonsPicker
+                background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.Black : Color.White
+                
                 preferredHeight: 0
                 layout: StackLayout {
                     orientation: LayoutOrientation.TopToBottom
@@ -347,12 +350,20 @@ Page {
 
                 }
                 
+                function numberOfButton() {
+                    if(actionSelector.selectedOption.value == 0) {
+                        return DisplayInfo.width > 1000 ? 6 : 4;
+                    } else return  9;
+                
+                }
+                
                 
                 ListView {
                     id: actionComposerListView
                     
+                    
                     layout: GridListLayout {
-                        columnCount: actionSelector.selectedOption.value == 0 ? nbIcons : 9
+                        columnCount: emoticonsPicker.numberOfButton();
                         headerMode: ListHeaderMode.Sticky
                     }
                     
@@ -641,7 +652,7 @@ Page {
             }
             
             onComplete: {
-                scrollView.requestFocus();
+                txtField.requestFocus();
                 
             }
             
@@ -653,6 +664,13 @@ Page {
         ImagePaintDefinition {
             id: back
             repeatPattern: RepeatPattern.Fill
+            
+            onImagePaintChanged: {
+                if(imageSource != "")
+                   wallpaperContainer.background = back.imagePaint
+                else 
+                    wallpaperContainer.background = Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#000000") : Color.create("#c7dfe4");
+            }
         },
         ComponentDefinition {
             id: imagePreview

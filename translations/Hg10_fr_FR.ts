@@ -20,15 +20,15 @@
         <translation>Valider</translation>
     </message>
     <message>
+        <source>Port (auto)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Host (auto)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Domain (auto)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Port (auto)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -44,11 +44,11 @@
     <name>ApplicationLog</name>
     <message>
         <source>Clear logs</source>
-        <translation>Effacer logs</translation>
+        <translation>Effacer les journaux</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation>Rafraichir</translation>
+        <translation>Rafraîchir</translation>
     </message>
     <message>
         <source>To Bottom</source>
@@ -59,72 +59,72 @@
     <name>ApplicationUI</name>
     <message>
         <source>Success!</source>
-        <translation>Réussi!</translation>
+        <translation>Réussi !</translation>
     </message>
 </context>
 <context>
     <name>BugReport</name>
     <message>
         <source>Bug report center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rapport d&apos;anomalies</translation>
     </message>
     <message>
         <source>Bug</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Anomalie</translation>
     </message>
     <message>
         <source>Enhancement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Amélioration</translation>
     </message>
     <message>
         <source>Need Help</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Besoin d&apos;aide ?</translation>
     </message>
     <message>
         <source>Comments</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Commentaires</translation>
     </message>
     <message>
         <source>Hg10</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hg10</translation>
     </message>
     <message>
         <source>Questions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Questions</translation>
     </message>
 </context>
 <context>
     <name>BugReportController</name>
     <message>
         <source>A title is required.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Un titre est nécessaire.</translation>
     </message>
     <message>
         <source>Create a new issue</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Créer une nouvelle demande</translation>
     </message>
     <message>
         <source>Do you want to submit this issue? Please make sure that the content of the message is anonymous.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Voulez-vous soumettre cette demande ? Assurez-vous que son contenu est anonyme.</translation>
     </message>
     <message>
         <source>A comment should not be empty.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Un commentaire ne devrait pas être vide.</translation>
     </message>
     <message>
         <source>Create a new comment</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Créer un nouveau comentaire</translation>
     </message>
     <message>
         <source>Do you want to submit this comment? Please make sure that the content of the message is anonymous.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Voulez-vous soumettre ce commentaire ? Assurez-vous que son contenu est anonyme.</translation>
     </message>
 </context>
 <context>
     <name>ComposeComment</name>
     <message>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Commenatire</translation>
     </message>
     <message>
         <source>Close</source>
@@ -132,18 +132,18 @@
     </message>
     <message>
         <source>Post</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Envoyer</translation>
     </message>
     <message>
         <source>What is on your mind?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Que voulez-vous nous dire ?</translation>
     </message>
 </context>
 <context>
     <name>ComposeIssue</name>
     <message>
         <source>Compose</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Composer</translation>
     </message>
     <message>
         <source>Close</source>
@@ -151,15 +151,15 @@
     </message>
     <message>
         <source>Post</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Envoyer</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Titre</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Description</translation>
     </message>
 </context>
 <context>
@@ -174,7 +174,7 @@
     </message>
     <message>
         <source>Clear history</source>
-        <translation>Supprimer historique</translation>
+        <translation>Supprimer l&apos;historique</translation>
     </message>
     <message>
         <source>Pinch out to stop filtering</source>
@@ -194,7 +194,7 @@
     </message>
     <message>
         <source>History will be deleted</source>
-        <translation>Historique va être supprimé</translation>
+        <translation>L&apos;historique va être supprimé</translation>
     </message>
     <message>
         <source>Undo</source>
@@ -206,19 +206,19 @@
     </message>
     <message>
         <source>Search contact</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rechercher un contact</translation>
     </message>
     <message>
         <source>Refresh list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rafraîchir la liste</translation>
     </message>
     <message>
         <source>Filter contacts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Filtrer les contacts</translation>
     </message>
     <message>
         <source>Edit contact</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Modifier un contact</translation>
     </message>
 </context>
 <context>
@@ -233,7 +233,7 @@
     </message>
     <message>
         <source>Emoticons</source>
-        <translation>Emoticons</translation>
+        <translation>Émoticônes</translation>
     </message>
     <message>
         <source>Attach</source>
@@ -245,11 +245,11 @@
     </message>
     <message>
         <source>Refresh</source>
-        <translation>Rafraichir</translation>
+        <translation>Rafraîchir</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Arrière-plan</translation>
     </message>
     <message>
         <source>Actions</source>
@@ -257,14 +257,53 @@
     </message>
     <message>
         <source>Smileys</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Souriards</translation>
+    </message>
+</context>
+<context>
+    <name>ConversationBBM</name>
+    <message>
+        <source>Actions</source>
+        <translation type="unfinished">Actions</translation>
+    </message>
+    <message>
+        <source>Smileys</source>
+        <translation type="unfinished">Souriards</translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Rafraîchir</translation>
+    </message>
+    <message>
+        <source>Attach</source>
+        <translation type="unfinished">Joindre</translation>
+    </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished">Répondre</translation>
+    </message>
+    <message>
+        <source>Emoticons</source>
+        <translation type="obsolete">Émoticônes</translation>
+    </message>
+    <message>
+        <source>Stickers</source>
+        <translation type="unfinished">Stickers</translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="obsolete">Arrière-plan</translation>
+    </message>
+    <message>
+        <source>To last message</source>
+        <translation type="unfinished">Aller au dernier message</translation>
     </message>
 </context>
 <context>
     <name>ConversationCard</name>
     <message>
         <source>Refresh</source>
-        <translation>Rafraichir</translation>
+        <translation>Rafraîchir</translation>
     </message>
     <message>
         <source>Attach</source>
@@ -276,7 +315,7 @@
     </message>
     <message>
         <source>Emoticons</source>
-        <translation>Emoticons</translation>
+        <translation>Émoticônes</translation>
     </message>
     <message>
         <source>Stickers</source>
@@ -288,7 +327,7 @@
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Arrière-plan</translation>
     </message>
     <message>
         <source>Actions</source>
@@ -296,18 +335,49 @@
     </message>
     <message>
         <source>Smileys</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Souriards</translation>
+    </message>
+</context>
+<context>
+    <name>ConversationCardBBM</name>
+    <message>
+        <source>Actions</source>
+        <translation type="unfinished">Actions</translation>
+    </message>
+    <message>
+        <source>Smileys</source>
+        <translation type="unfinished">Souriards</translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Rafraîchir</translation>
+    </message>
+    <message>
+        <source>Attach</source>
+        <translation type="unfinished">Joindre</translation>
+    </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished">Répondre</translation>
+    </message>
+    <message>
+        <source>Stickers</source>
+        <translation type="unfinished">Stickers</translation>
+    </message>
+    <message>
+        <source>To last message</source>
+        <translation type="unfinished">Aller au dernier message</translation>
     </message>
 </context>
 <context>
     <name>ConversationController</name>
     <message>
         <source>Wallpaper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Papier peint</translation>
     </message>
     <message>
         <source>Set the wallpaper for which contact?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Affecter le papier peint à quel contact ?</translation>
     </message>
     <message>
         <source>/app/native/assets/data/action_list.xml</source>
@@ -353,7 +423,7 @@
     <name>CustomizationController</name>
     <message>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Défaut</translation>
     </message>
 </context>
 <context>
@@ -372,7 +442,7 @@
     </message>
     <message>
         <source>Refresh</source>
-        <translation>Rafraichir</translation>
+        <translation>Rafraîchir</translation>
     </message>
     <message>
         <source>Actions</source>
@@ -388,23 +458,23 @@
     </message>
     <message>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Téléverser</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Audio</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Renommer</translation>
     </message>
     <message>
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Télécharger</translation>
     </message>
     <message>
         <source>Synchronize</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Synchroniser</translation>
     </message>
 </context>
 <context>
@@ -423,7 +493,7 @@
     </message>
     <message>
         <source>Link copied to clipboard</source>
-        <translation>Lien copié dans le presse papier</translation>
+        <translation>Lien copié dans le presse-papier</translation>
     </message>
     <message>
         <source>Home folder set!</source>
@@ -431,15 +501,15 @@
     </message>
     <message>
         <source>Recording&apos;s name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enregistrement du nom</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Renommer</translation>
     </message>
     <message>
         <source>Download completed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Téléchargment terminé</translation>
     </message>
 </context>
 <context>
@@ -453,7 +523,7 @@
     <name>DropboxConnect</name>
     <message>
         <source>Dropbox</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dropbox</translation>
     </message>
     <message>
         <source>Close</source>
@@ -465,14 +535,14 @@
     </message>
     <message>
         <source>Insert access code</source>
-        <translation>Entrez votre code d&apos;access</translation>
+        <translation>Entrez votre code d&apos;accès</translation>
     </message>
 </context>
 <context>
     <name>EditContact</name>
     <message>
         <source>Edit contact</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Modifier un contact</translation>
     </message>
     <message>
         <source>Close</source>
@@ -484,11 +554,11 @@
     </message>
     <message>
         <source>Set user name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Définir le nom d&apos;utilisateur</translation>
     </message>
     <message>
         <source>Full name:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plein écran</translation>
     </message>
 </context>
 <context>
@@ -502,7 +572,7 @@
     <name>Filter</name>
     <message>
         <source>Filter contacts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Filtrer les contacts</translation>
     </message>
     <message>
         <source>Close</source>
@@ -514,15 +584,15 @@
     </message>
     <message>
         <source>Show only favorite</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ne montrer que les favoris</translation>
     </message>
     <message>
         <source>Show only available contacts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ne montrer que les contacts disponibles</translation>
     </message>
     <message>
         <source>Show only connected contacts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ne montrer que les contacts connectés</translation>
     </message>
 </context>
 <context>
@@ -537,11 +607,11 @@
     </message>
     <message>
         <source>Problem:</source>
-        <translation>Problème:</translation>
+        <translation>Problème :</translation>
     </message>
     <message>
         <source>Solution:</source>
-        <translation>Solution:</translation>
+        <translation>Solution :</translation>
     </message>
     <message>
         <source>Google have a documentation on how to help you to use this application (and other application) when you are having difficulites.</source>
@@ -549,26 +619,26 @@
     </message>
     <message>
         <source>Open Google&apos;s manual</source>
-        <translation>Ouvrir mode d&apos;emploi</translation>
+        <translation>Ouvrir le mode d&apos;emploi de Google</translation>
     </message>
     <message>
         <source>Still stuck?</source>
-        <translation>Toujours bloqué?</translation>
+        <translation>Toujours bloqué ?</translation>
     </message>
     <message>
         <source>Apparently you are having some difficulties to connect to your account. If you are trying to connect to Google, it may be Google which for safety reason is blocking the application to access to your account. Indeed, it only expect an official hangout client or Gmail.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nous avons des difficultés de connexion à votre compte. Si vous essayez d&apos;accéder à Google, il est possible qu&apos;ils empêchent l&apos;application de s&apos;y connecter. En effet, ils attendent un client hangout officiel ou Gmail. </translation>
     </message>
     <message>
         <source>You can have different ways to contact me: either on Github, or by email. Please check the contact information on the BlackBerry© World page.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Il y a plusieurs moyens d&apos;entrer en contact avec moi : Github ou par email. Regardez les informations de contact disponibles sur la page du BlackBerry© World</translation>
     </message>
 </context>
 <context>
     <name>GoogleConnect</name>
     <message>
         <source>Google</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Google</translation>
     </message>
     <message>
         <source>Close</source>
@@ -576,7 +646,7 @@
     </message>
     <message>
         <source>Google Drive</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Google Drive</translation>
     </message>
     <message>
         <source>Restricted access. Hg10 can only list and access to the files it has created. </source>
@@ -584,11 +654,11 @@
     </message>
     <message>
         <source>Deny access. Hg10 cannot access to Google Drive. </source>
-        <translation>Refuser l&apos;access. Hg10 ne peut accéder a Google Drive.</translation>
+        <translation>Refuser l&apos;accès. Hg10 ne peut accéder à Google Drive.</translation>
     </message>
     <message>
         <source>Permissions</source>
-        <translation>Permisssions</translation>
+        <translation>Autorisations</translation>
     </message>
     <message>
         <source>Full access. This enable you to see all your files, open them within Hg10, and share them with your friends.</source>
@@ -612,7 +682,7 @@
     </message>
     <message>
         <source>Request permissions</source>
-        <translation>Demander les authorisations</translation>
+        <translation>Demander les autorisations</translation>
     </message>
     <message>
         <source>Instant messaging service: Connect to Google Hangout</source>
@@ -620,21 +690,21 @@
     </message>
     <message>
         <source>Gmail: Retrieve history, enabling synchronization between devices</source>
-        <translation>Gmail: Recupérer l&apos;historique des précédentes conversations.</translation>
+        <translation>Gmail: Récupérer l&apos;historique des précédentes conversations.</translation>
     </message>
 </context>
 <context>
     <name>GoogleConnectController</name>
     <message>
         <source>last edit: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dernière modification :</translation>
     </message>
 </context>
 <context>
     <name>IssueViewer</name>
     <message>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nouveau</translation>
     </message>
 </context>
 <context>
@@ -656,18 +726,18 @@
     </message>
     <message>
         <source>No issues in this category.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aucune demande dans cette catégorie</translation>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nouveau</translation>
     </message>
 </context>
 <context>
     <name>LoginController</name>
     <message>
         <source>Login failed, please check if your user name and password are correct</source>
-        <translation>L&apos;authentification a échoué. Vérfiez votre identifiant et mot de passe.</translation>
+        <translation>L&apos;authentification a échoué. Vérifiez votre identifiant et mot de passe.</translation>
     </message>
 </context>
 <context>
@@ -682,7 +752,7 @@
     </message>
     <message>
         <source>Google (Secure)</source>
-        <translation></translation>
+        <translation>Google</translation>
     </message>
     <message>
         <source>Other</source>
@@ -698,7 +768,7 @@
     </message>
     <message>
         <source>Still waiting? :(</source>
-        <translation>Toujours en train d&apos;attendre? :(</translation>
+        <translation>Toujours en train d&apos;attendre ? :(</translation>
     </message>
 </context>
 <context>
@@ -712,7 +782,7 @@
     <name>Payment</name>
     <message>
         <source>Donation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Donation</translation>
     </message>
     <message>
         <source>Close</source>
@@ -720,7 +790,7 @@
     </message>
     <message>
         <source>Donate ~1$</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Donner ~1$</translation>
     </message>
     <message>
         <source>http://amonchakai.github.io/Hg10/donate_en.html</source>
@@ -728,7 +798,7 @@
     </message>
     <message>
         <source>Thank you for your support!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Merci de votre soutien ! </translation>
     </message>
 </context>
 <context>
@@ -753,30 +823,30 @@
     <name>RefreshHeader</name>
     <message>
         <source>%L1y ago</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Il y a %L1 an(s)</translation>
     </message>
     <message>
         <source>%L1m ago</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Il y a %L1 mois</translation>
     </message>
     <message>
         <source>%L1d ago</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Il y a %L1 jour(s)</translation>
     </message>
     <message>
         <source>%L1h ago</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Il y a %L1 heure(s)</translation>
     </message>
     <message>
         <source>just now</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">À l&apos;instant</translation>
     </message>
 </context>
 <context>
     <name>Rooms</name>
     <message>
         <source>Rooms</source>
-        <translation>Salle</translation>
+        <translation>Salles</translation>
     </message>
     <message>
         <source>Contact</source>
@@ -784,7 +854,7 @@
     </message>
     <message>
         <source>Clear history</source>
-        <translation>Supprimer historique</translation>
+        <translation>Supprimer l&apos;historique</translation>
     </message>
 </context>
 <context>
@@ -803,19 +873,19 @@
     </message>
     <message>
         <source>User: </source>
-        <translation>Utilisateur: </translation>
+        <translation>Utilisateur : </translation>
     </message>
     <message>
         <source>Connect</source>
-        <translation>Connection</translation>
+        <translation>Connexion</translation>
     </message>
     <message>
         <source>log out</source>
-        <translation>Deconnection</translation>
+        <translation>Deconnexion</translation>
     </message>
     <message>
         <source>Clear history</source>
-        <translation>Supprimer historique</translation>
+        <translation>Supprimer l&apos;historique</translation>
     </message>
     <message>
         <source>Visual Theme</source>
@@ -831,7 +901,7 @@
     </message>
     <message>
         <source>Synch with Google</source>
-        <translation type="obsolete">Synch avec Google</translation>
+        <translation type="obsolete">Synchroniser avec Google</translation>
     </message>
     <message>
         <source>Font size</source>
@@ -839,7 +909,7 @@
     </message>
     <message>
         <source>Clear stored contact information</source>
-        <translation>Vider cache des contacts</translation>
+        <translation>Vider le cache des contacts</translation>
     </message>
     <message>
         <source>Use dropbox to host files</source>
@@ -847,7 +917,7 @@
     </message>
     <message>
         <source>Synch with Facebook</source>
-        <translation type="obsolete">Synch avec Facebook</translation>
+        <translation type="obsolete">Synchroniser avec Facebook</translation>
     </message>
     <message>
         <source>Clear audio messages</source>
@@ -855,42 +925,54 @@
     </message>
     <message>
         <source>Application Logs</source>
-        <translation>Logs de l&apos;application</translation>
+        <translation>Journaux de l&apos;application</translation>
     </message>
     <message>
         <source>Enable logs</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Activer les journaux</translation>
     </message>
     <message>
         <source>Log to dropbox</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Se connecter à dropbox</translation>
     </message>
     <message>
         <source>Wallpapers &amp; themes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Papiers peints et thèmes</translation>
     </message>
     <message>
         <source>Remove Hub</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enlever l&apos;intégration au hub</translation>
     </message>
     <message>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Profil</translation>
     </message>
     <message>
         <source>Visual appearance</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Apparence</translation>
     </message>
     <message>
         <source>File hosting</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hébergement de fichiers</translation>
     </message>
     <message>
         <source>Cache management</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gestion du cache</translation>
     </message>
     <message>
         <source>Logs</source>
+        <translation type="unfinished">Journaux</translation>
+    </message>
+    <message>
+        <source>Chat interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BBM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -898,33 +980,33 @@
     <name>SettingsController</name>
     <message>
         <source>This feature is password protected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cette fonctionnalité est protégée par mot de passe</translation>
     </message>
     <message>
         <source>password</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mot de passe</translation>
     </message>
     <message>
         <source>Accounts deleted...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Comptes supprimés</translation>
     </message>
     <message>
         <source>Wrong password.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mot de passe incorrect</translation>
     </message>
 </context>
 <context>
     <name>SmileyPicker</name>
     <message>
         <source>Refresh</source>
-        <translation>Rafraichir</translation>
+        <translation>Rafraîchir</translation>
     </message>
 </context>
 <context>
     <name>SmileyPickerController</name>
     <message>
         <source>Error: %1 status: %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Erreur : %1 statut : %2</translation>
     </message>
 </context>
 <context>
@@ -955,14 +1037,14 @@
     </message>
     <message>
         <source>What is your mood?</source>
-        <translation>Quel est votre humeur?</translation>
+        <translation>Quelle est votre humeur ?</translation>
     </message>
 </context>
 <context>
     <name>ThemeEditor</name>
     <message>
         <source>Edit theme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Modifier le thème</translation>
     </message>
     <message>
         <source>Close</source>
@@ -974,14 +1056,14 @@
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pré-visualisation</translation>
     </message>
 </context>
 <context>
     <name>WallpaperSettings</name>
     <message>
         <source>Wallpapers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Papiers peints</translation>
     </message>
     <message>
         <source>Close</source>
@@ -989,15 +1071,15 @@
     </message>
     <message>
         <source>Management</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gestion</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Suppression</translation>
     </message>
     <message>
         <source>History will be deleted</source>
-        <translation type="obsolete">Historique va être supprimé</translation>
+        <translation type="obsolete">L&apos;historique va être supprimé</translation>
     </message>
     <message>
         <source>Undo</source>
@@ -1005,11 +1087,11 @@
     </message>
     <message>
         <source>Settings will be deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Les paramètres seront effacés</translation>
     </message>
     <message>
         <source>You can use the Background option in an opened converation to define a per-user wallpaper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vous pouvez utiliser l&apos;option d&apos;arrière-plan pour définir un papier peint pour chaque utilisateur</translation>
     </message>
 </context>
 <context>
@@ -1024,11 +1106,11 @@
     </message>
     <message>
         <source>Connection method</source>
-        <translation type="obsolete">Méthode de connection</translation>
+        <translation type="obsolete">Méthode de connexion</translation>
     </message>
     <message>
         <source>Connect</source>
-        <translation>Connection</translation>
+        <translation>Connexion</translation>
     </message>
 </context>
 <context>
@@ -1076,11 +1158,11 @@ Supprimer et oublier cette stupide application.</translation>
     </message>
     <message>
         <source>Report</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rapport</translation>
     </message>
     <message>
         <source>Donate</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Donation</translation>
     </message>
 </context>
 </TS>

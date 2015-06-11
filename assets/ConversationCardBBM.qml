@@ -9,7 +9,7 @@ NavigationPane {
     Page {
         id: conversationCard
         objectName: "conversationCard"
-        
+                
         property string name
         property string avatar
         property string id
@@ -18,7 +18,9 @@ NavigationPane {
         property variant smileyPage
         property string smileyToAdd
         property string filenameChat
-                
+        
+        property int nbIcons
+        
         titleBar: TitleBar {
             kind: TitleBarKind.FreeForm
             kindProperties: FreeFormTitleBarKindProperties {
@@ -49,7 +51,6 @@ NavigationPane {
                     }
                     
                     Label {
-                        id: userName
                         text: conversationCard.name
                         textStyle {
                             color: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.White : Color.Black
@@ -70,19 +71,19 @@ NavigationPane {
             }
         }
         
-        actionBarVisibility: ChromeVisibility.Hidden
         
         Container {
-        
             layout: DockLayout {
             
             }
+            
+            
             
             Container {
                 id: wallpaperContainer
                 layout: StackLayout {
                     orientation: LayoutOrientation.TopToBottom
-                }
+                }        
                 
                 background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#000000") : Color.create("#c7dfe4")
                 
@@ -101,6 +102,7 @@ NavigationPane {
                     
                     WebView {
                         id: messageView
+                        
                         
                         settings.textAutosizingEnabled: false
                         settings.zoomToFitEnabled: false
@@ -185,12 +187,21 @@ NavigationPane {
                         }
                         background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
                         
+                        ImageButton {
+                            preferredHeight: ui.du(10)
+                            preferredWidth: ui.du(10)
+                            defaultImageSource: "asset:///images/icon_clip.png"
+                            
+                            onClicked: {
+                                actionSelector.selectedOption = option1;
+                                conversationCard.toogleEmoji();
+                            }
+                        }
                         
                         TextArea {
                             preferredHeight: ui.du(10)
                             horizontalAlignment: HorizontalAlignment.Fill
                             id: txtField
-                            inputMode: TextAreaInputMode.Chat
                             
                             input {
                                 submitKey: SubmitKey.Send
@@ -199,290 +210,178 @@ NavigationPane {
                                     txtField.text = "";  
                                 }
                             }
-                            content {
-                                flags: TextContentFlag.Emoticons
-                            }
                         }
                         
-                        Container {
-                            preferredWidth: 10
-                            background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#202020") : Color.create("#f5f5f5")
-                        }
-                    }
-
-                    Container {
-                        preferredHeight: ui.du(12)
-                        horizontalAlignment: HorizontalAlignment.Fill
-                        
-                        background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#262626") : Color.create("#f0f0f0")
-                        layout: DockLayout {
-                        
-                        }
-                        
-                        Container {
-                            horizontalAlignment: HorizontalAlignment.Left
-                            verticalAlignment: VerticalAlignment.Center
-                            
-                            layout: StackLayout {
-                                orientation: LayoutOrientation.LeftToRight
-                            }
-                            
-                            Container {
-                                preferredWidth: ui.du(2)
-                                preferredHeight: ui.du(2)
-                            }
-                            
-                            ImageButton {
-                                verticalAlignment: VerticalAlignment.Center
-                                
-                                preferredHeight: ui.du(10)
-                                preferredWidth: ui.du(10)
-                                
-                                defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_left_blue_black.png" : "asset:///images/icon_left_blue.png"
-                                
-                                onClicked: {
-                                    conversationController.closeCard();
-                                }
-                            
-                            }
-                            
-                            ImageButton {
-                                id: actionButton
-                                verticalAlignment: VerticalAlignment.Center
-                                
-                                preferredHeight: ui.du(8)
-                                preferredWidth: ui.du(8)
-                                
-                                defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_feed.png" : "asset:///images/icon_feed_black.png"
-                                
-                                onClicked: {
-                                    actionSelector.selectedOption = option1;
-                                    conversationCard.toogleEmoji();
-                                }
-                            }
-                            
-                            Label {
-                                id: labelAction
-                                verticalAlignment: VerticalAlignment.Center
-                                text: qsTr("Actions")
-                                textStyle.fontSize: FontSize.Small
-                            }
-                        
-                        }  
-                        
-                        Container {
-                            horizontalAlignment: HorizontalAlignment.Right
-                            verticalAlignment: VerticalAlignment.Center
-                            
-                            layout: StackLayout {
-                                orientation: LayoutOrientation.LeftToRight
-                            }
-                            
-                            // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                            // Action bar actions
-                            
-                            
-                            ImageButton {
-                                verticalAlignment: VerticalAlignment.Center
-                                id: composeNewActionBar
-                                
-                                preferredHeight: ui.du(8)
-                                preferredWidth: ui.du(8)
-                                
-                                defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_write_rounded.png" : "asset:///images/icon_write_rounded_black.png"
-                                
-                                onClicked: {
-                                    conversationController.send(txtField.text);
-                                    txtField.text = ""; 
-                                }
-                            }
-                            
-                            ImageButton {
-                                verticalAlignment: VerticalAlignment.Center
-                                id: smileyNewActionBar
-                                
-                                preferredHeight: ui.du(8)
-                                preferredWidth: ui.du(8)
-                                
-                                defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_redface_rounded.png" : "asset:///images/icon_redface_rounded_black.png"
-                                
-                                onClicked: {
-                                    actionSelector.selectedOption = option2;
-                                    conversationCard.toogleEmoji();
-                                }
-                            }
-                            
-                            Container {
-                                preferredWidth: ui.du(2)
-                                preferredHeight: ui.du(2)
-                            }
-                        }
-                    }
-                    
-                    Container {                
-                        id: emoticonsPicker
-                        background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.Black : Color.White
-                        
-                        preferredHeight: 0
-                        layout: StackLayout {
-                            orientation: LayoutOrientation.TopToBottom
-                        }
-                        visible: false
-                        
-                        attachedObjects: [
-                            ImplicitAnimationController {
-                                id: animList
-                                propertyName: "preferredHeight"
-                            }
-                        ]
-                        
-                        SegmentedControl {
-                            horizontalAlignment: HorizontalAlignment.Fill
-                            id: actionSelector
-                            
-                            Option {
-                                id: option1
-                                text: qsTr("Actions")
-                                value: 0
-                            }
-                            Option {
-                                id: option2
-                                text: qsTr("Smileys")
-                                value: 1
-                            }
-                            
-                            onSelectedOptionChanged: {
-                                conversationController.loadActionMenu(selectedOption.value);
-                            }
-                        
-                        }
-                        
-                        function numberOfButton() {
-                            if(actionSelector.selectedOption.value == 0) {
-                                return DisplayInfo.width > 1000 ? 6 : 4;
-                            } else return  9;
-                            
-                        }
-                        
-                        ListView {
-                            id: actionComposerListView
-                            layout: GridListLayout {
-                                columnCount: emoticonsPicker.numberOfButton();
-                                headerMode: ListHeaderMode.Sticky
-                            }
-                            
-                            dataModel: GroupDataModel {
-                                id: theModel
-                                grouping: ItemGrouping.ByFullValue
-                                sortingKeys: ["category"]
-                                sortedAscending: false
-                            
-                            }
-                            
-                            
-                            
-                            listItemComponents: [
-                                ListItemComponent {
-                                    type: "item"
-                                    
-                                    Container {
-                                        horizontalAlignment: HorizontalAlignment.Center
-                                        verticalAlignment: VerticalAlignment.Center
-                                        layout: StackLayout {
-                                            orientation: LayoutOrientation.TopToBottom
-                                        }
-                                        
-                                        Container {
-                                            preferredHeight: ui.du(2)
-                                        }
-                                        
-                                        ImageView {
-                                            visible: ListItemData.image != ""
-                                            verticalAlignment: VerticalAlignment.Center
-                                            horizontalAlignment: HorizontalAlignment.Center
-                                            id: avatarImg
-                                            scalingMethod: ScalingMethod.AspectFit
-                                            image: tracker.image
-                                            minHeight: ui.du(6)
-                                            maxHeight: ui.du(6)
-                                            minWidth: ui.du(6)
-                                            maxWidth: ui.du(6)
-                                            
-                                            attachedObjects: [
-                                                NetImageTracker {
-                                                    id: tracker
-                                                    source: ListItemData.image                                    
-                                                } 
-                                            ]
-                                        }
-                                        
-                                        Label {
-                                            text: ListItemData.caption
-                                            horizontalAlignment: HorizontalAlignment.Center
-                                            verticalAlignment: VerticalAlignment.Center
-                                            content.flags: TextContentFlag.Emoticons
-                                            textStyle.fontSize: ListItemData.image != "" ? FontSize.XSmall : FontSize.XLarge
-                                        }
-                                    
-                                    }
-                                }
-                            ]
-                            
-                            onTriggered: {
-                                
-                                var chosenItem = dataModel.data(indexPath);
-                                if(chosenItem.image == "") {
-                                    txtField.text = txtField.text  + chosenItem.caption;
-                                } else {
-                                    switch (chosenItem.action) {
-                                        case 1:
-                                            messageView.evaluateJavaScript("scrollToEnd();");
-                                            break;
-                                        
-                                        case 2:
-                                            conversationController.refreshHistory(conversationCard.id, conversationCard.avatar, conversationCard.name);
-                                            break;
-                                        
-                                        case 3:
-                                            conversationController.pickFile();
-                                            break;
-                                        
-                                        case 4:
-                                            conversationController.send(txtField.text);
-                                            txtField.text = "";
-                                            break;
-                                        
-                                        case 5:
-                                            actionSelector.selectedOption = option2;
-                                            return;
-                                        
-                                        case 6:
-                                            if(!conversationCard.smileyPage)
-                                                conversationCard.smileyPage = smileyPicker.createObject();
-                                            nav.push(conversationCard.smileyPage);
-                                            break;
-                                        
-                                        case 7:
-                                            conversationController.setWallpaper();
-                                            break;
-                                        
-                                        case 8:
-                                            voiceRecording.visible = true;
-                                            conversationController.startRecordAudio();
-                                            break;
-                                    }
-                                
-                                }
+                        ImageButton {
+                            preferredHeight: ui.du(10)
+                            preferredWidth: ui.du(10)
+                            defaultImageSource: "asset:///images/icon_smile.png"
+                            onClicked: {
+                                actionSelector.selectedOption = option2;
                                 conversationCard.toogleEmoji();
-                                txtField.requestFocus();
-                            
                             }
-                            
-                        }    
+                        }                    
                     }
                 }
                 
+                Container {
+                    id: emoticonsPicker
+                    background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.Black : Color.White
+                    
+                    preferredHeight: 0
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.TopToBottom
+                    }
+                    visible: false
+                    
+                    SegmentedControl {
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        id: actionSelector
+                        
+                        Option {
+                            id: option1
+                            text: qsTr("Actions")
+                            value: 0
+                        }
+                        Option {
+                            id: option2
+                            text: qsTr("Smileys")
+                            value: 1
+                        }
+                        
+                        onSelectedOptionChanged: {
+                            conversationController.loadActionMenu(selectedOption.value);
+                        }
+                    
+                    }
+                    
+                    function numberOfButton() {
+                        if(actionSelector.selectedOption.value == 0) {
+                            return DisplayInfo.width > 1000 ? 6 : 4;
+                        } else return  9;
+                    
+                    }
+                    
+                    
+                    ListView {
+                        id: actionComposerListView
+                        
+                        
+                        layout: GridListLayout {
+                            columnCount: emoticonsPicker.numberOfButton();
+                            headerMode: ListHeaderMode.Sticky
+                        }
+                        
+                        dataModel: GroupDataModel {
+                            id: theModel
+                            grouping: ItemGrouping.ByFullValue
+                            sortingKeys: ["category"]
+                            sortedAscending: false
+                        
+                        }
+                        
+                        
+                        
+                        listItemComponents: [
+                            ListItemComponent {
+                                type: "item"
+                                
+                                Container {
+                                    horizontalAlignment: HorizontalAlignment.Center
+                                    verticalAlignment: VerticalAlignment.Center
+                                    layout: StackLayout {
+                                        orientation: LayoutOrientation.TopToBottom
+                                    }
+                                    
+                                    Container {
+                                        preferredHeight: ui.du(2)
+                                    }
+                                    
+                                    ImageView {
+                                        visible: ListItemData.image != ""
+                                        verticalAlignment: VerticalAlignment.Center
+                                        horizontalAlignment: HorizontalAlignment.Center
+                                        id: avatarImg
+                                        scalingMethod: ScalingMethod.AspectFit
+                                        image: tracker.image
+                                        minHeight: ui.du(6)
+                                        maxHeight: ui.du(6)
+                                        minWidth: ui.du(6)
+                                        maxWidth: ui.du(6)
+                                        
+                                        attachedObjects: [
+                                            NetImageTracker {
+                                                id: tracker
+                                                source: ListItemData.image                                    
+                                            } 
+                                        ]
+                                    }
+                                    
+                                    Label {
+                                        text: ListItemData.caption
+                                        horizontalAlignment: HorizontalAlignment.Center
+                                        verticalAlignment: VerticalAlignment.Center
+                                        content.flags: TextContentFlag.Emoticons
+                                        textStyle.fontSize: ListItemData.image != "" ? FontSize.XSmall : FontSize.XLarge
+                                    }
+                                
+                                }
+                            }
+                        ]
+                        
+                        onTriggered: {
+                            
+                            var chosenItem = dataModel.data(indexPath);
+                            if(chosenItem.image == "") {
+                                txtField.text = txtField.text  + chosenItem.caption;
+                            } else {
+                                switch (chosenItem.action) {
+                                    case 1:
+                                        messageView.evaluateJavaScript("scrollToEnd();");
+                                        break;
+                                    
+                                    case 2:
+                                        conversationController.refreshHistory(conversationCard.id, conversationCard.avatar, conversationCard.name);
+                                        break;
+                                    
+                                    case 3:
+                                        conversationController.pickFile();
+                                        break;
+                                    
+                                    case 4:
+                                        conversationController.send(txtField.text);
+                                        txtField.text = "";
+                                        break;
+                                    
+                                    case 5:
+                                        actionSelector.selectedOption = option2;
+                                        return;
+                                    
+                                    case 6:
+                                        if(!conversationCard.smileyPage)
+                                            conversationCard.smileyPage = smileyPicker.createObject();
+                                        nav.push(conversationCard.smileyPage);
+                                        break;
+                                    
+                                    case 7:
+                                        conversationController.setWallpaper();
+                                        break;
+                                    
+                                    case 8:
+                                        voiceRecording.visible = true;
+                                        conversationController.startRecordAudio();
+                                        break;
+                                }
+                            
+                            }
+                            conversationCard.toogleEmoji();
+                            txtField.requestFocus();
+                        
+                        }
+                    }    
+                }
             }
+            
             
             Container {
                 id: voiceRecording
@@ -500,21 +399,23 @@ NavigationPane {
                         voiceRecording.visible = false;
                     }
                 }
-            }        
+            }
         }
         
         function toogleEmoji() {
             if(emoticonsPicker.preferredHeight == 0) {
                 emoticonsPicker.visible = true;
                 actionSelector.visible = true;
-                emoticonsPicker.preferredHeight=DisplayInfo.width > 1000 ? 700 : 500;
+                emoticonsPicker.preferredHeight = DisplayInfo.width > 1000 ? 700 : 500;
                 txtField.preferredHeight=50;
+                conversationCard.actionBarVisibility = ChromeVisibility.Hidden;
             
             } else {
                 emoticonsPicker.preferredHeight=0;
                 txtField.preferredHeight=ui.du(10);
                 actionSelector.visible = false;
                 emoticonsPicker.visible = false;
+                conversationCard.actionBarVisibility = ChromeVisibility.Visible;
             }
         }
         
@@ -536,7 +437,7 @@ NavigationPane {
             ActionItem {
                 title: qsTr("Attach")
                 imageSource: "asset:///images/icon_attach.png"
-                ActionBar.placement: ActionBarPlacement.OnBar
+                ActionBar.placement: ActionBarPlacement.InOverflow
                 onTriggered: {
                     conversationController.pickFile();
                 }
@@ -549,24 +450,11 @@ NavigationPane {
             ActionItem {
                 title: qsTr("Reply")
                 imageSource: "asset:///images/send.png"
-                ActionBar.placement:  ActionBarPlacement.Signature;
+                ActionBar.placement: ActionBarPlacement.OnBar
                 onTriggered: {
                     conversationController.send(txtField.text);
                     txtField.text = "";            
                 }
-            },
-            ActionItem {
-                title: qsTr("Emoticons")
-                imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/whiteFace.png" : "asset:///images/whiteFace2.png"
-                ActionBar.placement: ActionBarPlacement.InOverflow
-                onTriggered: {
-                    conversationCard.toogleEmoji();
-                }
-                shortcuts: [
-                    Shortcut {
-                        key: "e"
-                    }
-                ]
             },
             ActionItem {
                 title: qsTr("Stickers")
@@ -584,13 +472,6 @@ NavigationPane {
                 ]
             },
             ActionItem {
-                title: qsTr("Background")
-                imageSource: "asset:///images/icon_wallpaper.png"
-                onTriggered: {
-                    conversationController.setWallpaper();
-                }
-            },
-            ActionItem {
                 title: qsTr("To last message")
                 imageSource: "asset:///images/icon_bottom.png"
                 ActionBar.placement: ActionBarPlacement.InOverflow
@@ -603,25 +484,25 @@ NavigationPane {
                     }
                 ]
             }
-            
         ]
         
         onCreationCompleted: {
-            depth = 0;
-            
             conversationController.setWebView(messageView);
             conversationController.setLinkActivity(linkStatusActivity);
             conversationController.setActionListView(actionComposerListView);
             
             conversationController.loadActionMenu(0);
             
-            timer.start();
             actionSelector.visible = false;
+            conversationCard.nbIcons = DisplayInfo.width > 1000 ? 6 : 4;
+        
         }
         
         onIdChanged: {
-            if(id != "")
+            if(id != "") {
+                actionSelector.visible = false;
                 conversationController.load(id, avatar, name);
+            }
         }
         
         onSmileyToAddChanged: {
@@ -657,7 +538,9 @@ NavigationPane {
                 
                 onComplete: {
                     txtField.requestFocus();
+                
                 }
+                
                 onWallpaperChanged: {
                     messageView.settings.background = Color.Transparent;
                     back.imageSource = url;
@@ -673,7 +556,6 @@ NavigationPane {
                     else 
                         wallpaperContainer.background = Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#000000") : Color.create("#c7dfe4");
                 }
-                
             },
             ComponentDefinition {
                 id: imagePreview
@@ -685,14 +567,5 @@ NavigationPane {
             }
         ]
         
-    }
-    
-    onPopTransitionEnded: {
-        --depth;
-        
-    }
-    
-    onPushTransitionEnded: {
-        ++depth;
     }
 }
