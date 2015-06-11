@@ -36,7 +36,7 @@ void GoogleConnectController::putFile(const QString &path) {
 }
 
 void GoogleConnectController::uploadFile(const QString &path, const QString &folder) {
-    QFile file(path);
+    QFile file( path);
 
     if (!file.exists())
         return;

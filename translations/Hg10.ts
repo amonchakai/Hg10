@@ -368,19 +368,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/app/native/assets/data/action_list.xml</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>/app/native/assets/data/emojies_list.xml</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Me</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>/app/native/assets/data/action_list.xml</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>/app/native/assets/data/emojies_list.xml</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -934,11 +934,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>BBM</source>
+        <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom</source>
+        <source>Native</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1022,6 +1022,17 @@
     </message>
     <message>
         <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ThemeEditorController</name>
+    <message>
+        <source>Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

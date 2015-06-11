@@ -184,7 +184,7 @@ Page {
                     ImageButton {
                         preferredHeight: ui.du(10)
                         preferredWidth: ui.du(10)
-                        defaultImageSource: "asset:///images/icon_clip.png"
+                        defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_clip_white.png" : "asset:///images/icon_clip.png"
                         
                         onClicked: {
                             actionSelector.selectedOption = option1;
@@ -209,7 +209,7 @@ Page {
                     ImageButton {
                         preferredHeight: ui.du(10)
                         preferredWidth: ui.du(10)
-                        defaultImageSource: "asset:///images/icon_smile.png"
+                        defaultImageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_smile_white.png" : "asset:///images/icon_smile.png"
                         onClicked: {
                             actionSelector.selectedOption = option2;
                             toogleEmoji();
@@ -226,28 +226,33 @@ Page {
                 layout: StackLayout {
                     orientation: LayoutOrientation.TopToBottom
                 }
-                visible: false
-                                
-                SegmentedControl {
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    id: actionSelector
-                    
-                    Option {
-                        id: option1
-                        text: qsTr("Actions")
-                        value: 0
-                    }
-                    Option {
-                        id: option2
-                        text: qsTr("Smileys")
-                        value: 1
-                    }
-                    
-                    onSelectedOptionChanged: {
-                        conversationController.loadActionMenu(selectedOption.value);
-                    }
                 
-                }
+                Container {
+                    visible: false
+                    id: segmentedControlContainer
+                    SegmentedControl {
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        id: actionSelector
+                        
+                        
+                        Option {
+                            id: option1
+                            text: qsTr("Actions")
+                            value: 0
+                        }
+                        Option {
+                            id: option2
+                            text: qsTr("Smileys")
+                            value: 1
+                        }
+                        
+                        onSelectedOptionChanged: {
+                            conversationController.loadActionMenu(selectedOption.value);
+                        }
+                    
+                    }
+                }       
+
                 
                 function numberOfButton() {
                     if(actionSelector.selectedOption.value == 0) {
@@ -398,7 +403,7 @@ Page {
 
     function toogleEmoji() {
         if(emoticonsPicker.preferredHeight == 0) {
-            emoticonsPicker.visible = true;
+            segmentedControlContainer.visible = true;
             actionSelector.visible = true;
             emoticonsPicker.preferredHeight = DisplayInfo.width > 1000 ? 700 : 500;
             txtField.preferredHeight=50;
@@ -408,7 +413,7 @@ Page {
             emoticonsPicker.preferredHeight=0;
             txtField.preferredHeight=ui.du(10);
             actionSelector.visible = false;
-            emoticonsPicker.visible = false;
+            segmentedControlContainer.visible = false;
             pageBBM.actionBarVisibility = ChromeVisibility.Visible;
         }
     }

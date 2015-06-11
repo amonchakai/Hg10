@@ -327,34 +327,32 @@ NavigationPane {
                         layout: StackLayout {
                             orientation: LayoutOrientation.TopToBottom
                         }
-                        visible: false
                         
-                        attachedObjects: [
-                            ImplicitAnimationController {
-                                id: animList
-                                propertyName: "preferredHeight"
-                            }
-                        ]
                         
-                        SegmentedControl {
-                            horizontalAlignment: HorizontalAlignment.Fill
-                            id: actionSelector
+                        Container {
+                            visible: false
+                            id: segmentedControlContainer
                             
-                            Option {
-                                id: option1
-                                text: qsTr("Actions")
-                                value: 0
-                            }
-                            Option {
-                                id: option2
-                                text: qsTr("Smileys")
-                                value: 1
-                            }
+                            SegmentedControl {
+                                horizontalAlignment: HorizontalAlignment.Fill
+                                id: actionSelector
+                                
+                                Option {
+                                    id: option1
+                                    text: qsTr("Actions")
+                                    value: 0
+                                }
+                                Option {
+                                    id: option2
+                                    text: qsTr("Smileys")
+                                    value: 1
+                                }
+                                
+                                onSelectedOptionChanged: {
+                                    conversationController.loadActionMenu(selectedOption.value);
+                                }
                             
-                            onSelectedOptionChanged: {
-                                conversationController.loadActionMenu(selectedOption.value);
                             }
-                        
                         }
                         
                         function numberOfButton() {
@@ -505,16 +503,16 @@ NavigationPane {
         
         function toogleEmoji() {
             if(emoticonsPicker.preferredHeight == 0) {
-                emoticonsPicker.visible = true;
+                segmentedControlContainer.visible = true;
                 actionSelector.visible = true;
-                emoticonsPicker.preferredHeight=DisplayInfo.width > 1000 ? 700 : 500;
+                emoticonsPicker.preferredHeight = DisplayInfo.width > 1000 ? 700 : 500;
                 txtField.preferredHeight=50;
             
             } else {
                 emoticonsPicker.preferredHeight=0;
                 txtField.preferredHeight=ui.du(10);
                 actionSelector.visible = false;
-                emoticonsPicker.visible = false;
+                segmentedControlContainer.visible = false;
             }
         }
         

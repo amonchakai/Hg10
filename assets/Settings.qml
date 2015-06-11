@@ -238,7 +238,7 @@ NavigationPane {
                     title: qsTr("Chat interface")
                     options: [
                         Option {
-                            text: qsTr("BBM")
+                            text: qsTr("Native")
                             value: 0
                         },
                         Option {

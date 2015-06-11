@@ -139,6 +139,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_check.png) \
         $$quote($$BASEDIR/assets/images/icon_clip.png) \
         $$quote($$BASEDIR/assets/images/icon_clip.svg) \
+        $$quote($$BASEDIR/assets/images/icon_clip_white.png) \
         $$quote($$BASEDIR/assets/images/icon_credit.png) \
         $$quote($$BASEDIR/assets/images/icon_download.png) \
         $$quote($$BASEDIR/assets/images/icon_drive.png) \

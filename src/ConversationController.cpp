@@ -451,7 +451,7 @@ void ConversationController::pickFile() {
     QObject::connect(filePicker,
         SIGNAL(fileSelected(const QStringList&)),
         this,
-        SLOT(exportFileSelected(const QStringList&)));
+        SLOT(fileSelected(const QStringList&)));
 
     // Connect the canceled() signal with the slot.
     QObject::connect(filePicker,
@@ -474,6 +474,8 @@ void ConversationController::fileSelected(const QStringList& files) {
 void ConversationController::sendData(const QString &file) {
     // send data via XMPP
     //ConversationManager::get()->sendData(file);
+
+    qDebug() << file;
 
     if(file.isEmpty())
         return;
@@ -600,8 +602,6 @@ void ConversationController::initGoogleDrive() {
 
     check = connect(transfert, SIGNAL(uploading(int)), this, SLOT(fowardUploadingProcess(int)));
     Q_ASSERT(check);
-
-
 
     m_FileTransfert = dynamic_cast<FileTransfert*>(transfert);
 }
@@ -765,6 +765,8 @@ void ConversationController::loadActionMenu(int id) {
     if(m_ListView == NULL)
         return;
 
+    qDebug() <<  m_CurrentActionTab << id;
+
     if(m_CurrentActionTab == id)
         return;
 
@@ -785,7 +787,16 @@ void ConversationController::loadActionMenu(int id) {
         m_ListView->setDataModel(dataModel);
     }
 
-
+    /*
+    ActionComposerItem *action = new ActionComposerItem(this); action->setCaption("Wallpaper");     action->setCategory("General"); action->setImage("asset:///images/color/Wallpaper.png"); action->setAction(7); dataModel->insert(action);
+    action = new ActionComposerItem(this); action->setCaption("To Bottom");     action->setCategory("General"); action->setImage("asset:///images/color/to_Bottom.png"); action->setAction(1); dataModel->insert(action);
+    action = new ActionComposerItem(this); action->setCaption("Stickers");      action->setCategory("Actions"); action->setImage("asset:///images/document.png"); action->setAction(6); dataModel->insert(action);
+    action = new ActionComposerItem(this); action->setCaption("Reply");         action->setCategory("Actions"); action->setImage("asset:///images/color/Reply.png"); action->setAction(4); dataModel->insert(action);
+    action = new ActionComposerItem(this); action->setCaption("Attach");        action->setCategory("Actions"); action->setImage("asset:///images/color/Attach.png"); action->setAction(3); dataModel->insert(action);
+    action = new ActionComposerItem(this); action->setCaption("Refresh");       action->setCategory("Actions"); action->setImage("asset:///images/color/Refresh.png"); action->setAction(2); dataModel->insert(action);
+    action = new ActionComposerItem(this); action->setCaption("Emoticons");     action->setCategory("Actions"); action->setImage("asset:///images/color/Emoticon.png"); action->setAction(5); dataModel->insert(action);
+    action = new ActionComposerItem(this); action->setCaption("Voice message"); action->setCategory("Actions"); action->setImage("asset:///images/color/Voice.png"); action->setAction(8); dataModel->insert(action);
+*/
 
     // ----------------------------------------------------------------------------------------------
     // push data to the view

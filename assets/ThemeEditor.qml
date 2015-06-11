@@ -34,7 +34,7 @@ Page {
             
             WebView {
                 id: preview
-                preferredHeight: ui.du(25)
+                preferredHeight: ui.du(40)
             }
             
             Divider { }

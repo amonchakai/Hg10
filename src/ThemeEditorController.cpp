@@ -80,13 +80,12 @@ void ThemeEditorController::updateView() {
         // preload history
 
         QString body;
-        body +=  QString("<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"images/avatar.png.square.png\" /></div>")
-                           + "<p>Hello</p>"
-                       + "</div>";
+        body +=  QString("<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"images/avatar.png.square.png\" /><div class=\"author-left\"><p>" + tr("Me") +"</p></div><div class=\"time-left\"><p>10:34</p></div></div><br/><br/><br/>")
+                                       + "<ul><li><p>Hello</p></li></ul></div><br/>";
 
-        body +=  QString("<div class=\"bubble-left\"><div class=\"bubble-left-avatar\"><img src=\"images/avatar.png.square.png\" /></div>")
-                           + "<p>Hello</p>"
-                       + "</div>";
+
+        body +=  QString("<div class=\"bubble-right\"><div class=\"bubble-right-avatar\"><img src=\"images/avatar.png.square.png\" /><div class=\"author-right\"><p>" + tr("Contact") +"</p></div><div class=\"time-right\"><p>10:36</p></div></div><br/><br/><br/>")
+                                               + "<ul><li><p>hi!</p></li></ul></div><br/>";
 
 
         m_WebView->setHtml(htmlTemplate + body  + endTemplate, "file:///" + QDir::homePath() + "/../app/native/assets/");

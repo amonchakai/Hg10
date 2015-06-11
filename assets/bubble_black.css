@@ -28,7 +28,6 @@
   position: absolute;
   left: 60px;
   top: 7px;
-  font-size: 130%;
 }
 
 .time-left p {
@@ -36,7 +35,6 @@
   right: 10px;
   top: 10px;
   color: #a0a0a0;
-  font-size: 100%;
 }
 
 
@@ -74,7 +72,6 @@
   position: absolute;
   right: 60px;
   top: 7px;
-  font-size: 130%;
 }
 
 .time-right p {
@@ -82,7 +79,6 @@
   left: 10px;
   top: 10px;
   color: #a0a0a0;
-  font-size: 100%;
 }
 
 

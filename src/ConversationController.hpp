@@ -30,6 +30,7 @@ namespace bb
     namespace system {
         class InvokeManager;
     }
+
 }
 
 class ConversationController : public QObject {
@@ -58,6 +59,7 @@ private:
 
     QString                   m_NewWallpaper;
     int                       m_CurrentActionTab;
+
 
 
 
