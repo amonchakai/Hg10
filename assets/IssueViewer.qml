@@ -18,9 +18,16 @@ Page {
         ScrollView {
             WebView {
                 id: issueWebView
+                focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
                 
                 settings.textAutosizingEnabled: false
                 settings.zoomToFitEnabled: false
+                
+                onLoadingChanged: {
+                    if (loadRequest.status == WebLoadStatus.Succeeded) {
+                        issueWebView.requestFocus();
+                    }
+                }
             }            
         }
         

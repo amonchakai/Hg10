@@ -91,6 +91,7 @@ Page {
             
             ListView {
                 id: currentIssuesList
+                focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
                 
                 dataModel: GroupDataModel {
                     id: theModel
@@ -249,6 +250,7 @@ Page {
             
             onCompleted: {
                 connectingActivity.stop();
+                currentIssuesList.requestFocus();
             }
             
             onInsertSuccess: {
@@ -259,6 +261,7 @@ Page {
             onInsertCommentSuccess: {
                 navBug.pop();
             }
+            
         },
         ComponentDefinition {
             id: issueViewer

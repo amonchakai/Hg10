@@ -22,174 +22,186 @@ Page {
     Container {
         layout: DockLayout { }
     
-    Container {
-        layout: StackLayout {
-            orientation: LayoutOrientation.TopToBottom
-        }
-        
-
-        ListView {
-            id: listCustomization
-            dataModel: GroupDataModel {
-                id: theModel
-                sortingKeys: ["userName"]
-                sortedAscending: false
-                grouping: ItemGrouping.None
-                
-                property bool empty: true
-                
-                
-                onItemAdded: {
-                    listCustomization.scroll(-1);
-                    empty = isEmpty();
-                }
-                onItemRemoved: {
-                    empty = isEmpty();
-                }  
-                onItemUpdated: empty = isEmpty()  
-                
-                // You might see an 'unknown signal' error  
-                // in the QML-editor, guess it's a SDK bug.  
-                onItemsChanged: empty = isEmpty()
-            
+        Container {
+            layout: StackLayout {
+                orientation: LayoutOrientation.TopToBottom
             }
-
-
-            listItemComponents: [
-                ListItemComponent {
-                    type: "header"
-                    Header {
-                        title: ListItemData
+            
+    
+            ListView {
+                id: listCustomization
+                dataModel: GroupDataModel {
+                    id: theModel
+                    sortingKeys: ["userName"]
+                    sortedAscending: false
+                    grouping: ItemGrouping.None
+                    
+                    property bool empty: true
+                    
+                    
+                    onItemAdded: {
+                        listCustomization.scroll(-1);
+                        empty = isEmpty();
                     }
-                },
-                ListItemComponent {
-                    type: "item"
+                    onItemRemoved: {
+                        empty = isEmpty();
+                    }  
+                    onItemUpdated: empty = isEmpty()  
+                    
+                    // You might see an 'unknown signal' error  
+                    // in the QML-editor, guess it's a SDK bug.  
+                    onItemsChanged: empty = isEmpty()
                 
-                    Container {
-                        id: overallContactContainer
-                        
-                        layout: StackLayout {
-                            orientation: LayoutOrientation.TopToBottom
+                }
+    
+    
+                listItemComponents: [
+                    ListItemComponent {
+                        type: "header"
+                        Header {
+                            title: ListItemData
                         }
-                        
+                    },
+                    ListItemComponent {
+                        type: "item"
+                    
                         Container {
-                            preferredHeight: ui.du(1)
-                        }
-                        
-                        Container {
-                            preferredWidth: 2000
+                            id: overallContactContainer
                             
-                            
-                            layout: DockLayout { }
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.TopToBottom
+                            }
                             
                             Container {
-                                layout: StackLayout {
-                                    orientation: LayoutOrientation.LeftToRight
-                                }
-                                verticalAlignment: VerticalAlignment.Center
-                                horizontalAlignment: HorizontalAlignment.Left
-                                
-                                ImageView {
-                                    horizontalAlignment: HorizontalAlignment.Right
-                                    verticalAlignment: VerticalAlignment.Center
-                                    imageSource: ListItemData.wallpaper
-                                    preferredHeight: ui.du(10)
-                                    preferredWidth: ui.du(10)
-                                    margin.leftOffset: ui.du(1)
-                                }
-                                
-                                
-                                Label {
-                                    text: ListItemData.userName
-                                    horizontalAlignment: HorizontalAlignment.Left
-                                    verticalAlignment: VerticalAlignment.Center
-                                }
+                                preferredHeight: ui.du(1)
                             }
                             
+                            Container {
+                                preferredWidth: 2000
                                 
-                             ImageView {
-                                 
-                                 imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_right.png" : "asset:///images/icon_right_black.png"
-                                 preferredHeight: ui.du(5)
-                                 preferredWidth: ui.du(5)
-                                 verticalAlignment: VerticalAlignment.Center
-                                 horizontalAlignment: HorizontalAlignment.Right
-                                 margin.rightOffset: ui.du(1)
-                             }
-                            
-                        }
-                        
-                        Divider { }
-                        
-                        contextActions: [
-                            ActionSet {
-                                title: qsTr("Management")
                                 
-                                DeleteActionItem {
-                                    title: qsTr("Delete")
-                                    onTriggered: {
-                                        overallContactContainer.ListItem.view.deleteSettings(ListItemData.userId, overallContactContainer.ListItem.indexPath);
+                                layout: DockLayout { }
+                                
+                                Container {
+                                    layout: StackLayout {
+                                        orientation: LayoutOrientation.LeftToRight
+                                    }
+                                    verticalAlignment: VerticalAlignment.Center
+                                    horizontalAlignment: HorizontalAlignment.Left
+                                    
+                                    ImageView {
+                                        horizontalAlignment: HorizontalAlignment.Right
+                                        verticalAlignment: VerticalAlignment.Center
+                                        imageSource: ListItemData.wallpaper
+                                        preferredHeight: ui.du(10)
+                                        preferredWidth: ui.du(10)
+                                        margin.leftOffset: ui.du(1)
+                                    }
+                                    
+                                    
+                                    Label {
+                                        text: ListItemData.userName
+                                        horizontalAlignment: HorizontalAlignment.Left
+                                        verticalAlignment: VerticalAlignment.Center
                                     }
                                 }
+                                
+                                    
+                                 ImageView {
+                                     
+                                     imageSource: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? "asset:///images/icon_right.png" : "asset:///images/icon_right_black.png"
+                                     preferredHeight: ui.du(5)
+                                     preferredWidth: ui.du(5)
+                                     verticalAlignment: VerticalAlignment.Center
+                                     horizontalAlignment: HorizontalAlignment.Right
+                                     margin.rightOffset: ui.du(1)
+                                 }
+                                
                             }
-                        ]
-                                                
+                            
+                            Divider { }
+                            
+                            contextActions: [
+                                ActionSet {
+                                    title: qsTr("Management")
+                                    
+                                    DeleteActionItem {
+                                        title: qsTr("Delete")
+                                        onTriggered: {
+                                            overallContactContainer.ListItem.view.deleteSettings(ListItemData.userId, overallContactContainer.ListItem.indexPath);
+                                        }
+                                    }
+                                }
+                            ]
+                                                    
+                        }
                     }
-                }
-            ]
-            
-            function deleteSettings(id, path) {
-                deleteToast.who = id;
-                deleteToast.path = path;
+                ]
                 
-                deleteToast.dismissed = false;
-                deleteToast.show();
-                timerDelete.start();
+                function deleteSettings(id, path) {
+                    deleteToast.who = id;
+                    deleteToast.path = path;
+                    
+                    deleteToast.dismissed = false;
+                    deleteToast.show();
+                    timerDelete.start();
+                }
+                
+                onTriggered: {
+                    var chosenItem = dataModel.data(indexPath);
+                    
+                    if(!editorPage)
+                        editorPage = themeEditor.createObject();
+                    
+                    editorPage.userId = chosenItem.userId;
+                    
+                    navSettings.push(editorPage);
+                }
+                
             }
+        }
+        
+        
+        Container {  
+            id: dataEmptyLabel
+            visible: theModel.empty //model.isEmpty() will not work  
+            horizontalAlignment: HorizontalAlignment.Center  
+            verticalAlignment: VerticalAlignment.Center  
+            
+            layout: StackLayout {
+                orientation: LayoutOrientation.TopToBottom
+            }
+            
+            Label {
+                text: qsTr("You can use the Background option in an opened converation to define a per-user wallpaper")
+                horizontalAlignment: HorizontalAlignment.Center
+                textStyle.textAlign: TextAlign.Center
+                multiline: true
+            }
+            
+            ImageView {
+                imageSource: "asset:///images/icon_wallpaper.png"
+                preferredHeight: ui.du(10)
+                preferredWidth: ui.du(10)
+                horizontalAlignment: HorizontalAlignment.Center
+            }
+            
+            
+            
+        }
+    }
+    
+    actions: [
+        ActionItem {
+            title: qsTr("Create")
+            ActionBar.placement: ActionBarPlacement.Signature
+            imageSource: "asset:///images/icon_add.png"
             
             onTriggered: {
-                var chosenItem = dataModel.data(indexPath);
-                
-                if(!editorPage)
-                    editorPage = themeEditor.createObject();
-                
-                editorPage.userId = chosenItem.userId;
-                
-                navSettings.push(editorPage);
+                customController.createDefault();
             }
-            
         }
-    }
-    
-    
-    Container {  
-        id: dataEmptyLabel
-        visible: theModel.empty //model.isEmpty() will not work  
-        horizontalAlignment: HorizontalAlignment.Center  
-        verticalAlignment: VerticalAlignment.Center  
-        
-        layout: StackLayout {
-            orientation: LayoutOrientation.TopToBottom
-        }
-        
-        Label {
-            text: qsTr("You can use the Background option in an opened converation to define a per-user wallpaper")
-            horizontalAlignment: HorizontalAlignment.Center
-            textStyle.textAlign: TextAlign.Center
-            multiline: true
-        }
-        
-        ImageView {
-            imageSource: "asset:///images/icon_wallpaper.png"
-            preferredHeight: ui.du(10)
-            preferredWidth: ui.du(10)
-            horizontalAlignment: HorizontalAlignment.Center
-        }
-        
-        
-        
-    }
-    }
+    ]
     
     onCreationCompleted: {
         customController.setListView(listCustomization);

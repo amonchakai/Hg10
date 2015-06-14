@@ -10,6 +10,7 @@
 
 #include <QtCore/QObject>
 #include <bb/cascades/ListView>
+#include <bb/system/SystemUiResult>
 
 class CustomizationController : public QObject {
     Q_OBJECT;
@@ -32,6 +33,8 @@ public Q_SLOTS:
     void updateView                     ();
     void deleteCustom                   (const QString &id);
 
+    void createDefault                  ();
+    void onPromptFinishedCreateTheme    (bb::system::SystemUiResult::Type);
 
 Q_SIGNALS:
 

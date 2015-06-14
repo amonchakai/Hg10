@@ -425,6 +425,26 @@
         <source>Default</source>
         <translation type="unfinished">Défaut</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Create new theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This will create a new default theme. A per-user theme can be defined using the wallpaper option in the chat view.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A default theme already exists. Please edit this one or delete it.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Drive</name>
@@ -937,7 +957,7 @@
     </message>
     <message>
         <source>Wallpapers &amp; themes</source>
-        <translation type="unfinished">Papiers peints et thèmes</translation>
+        <translation type="obsolete">Papiers peints et thèmes</translation>
     </message>
     <message>
         <source>Remove Hub</source>
@@ -973,6 +993,10 @@
     </message>
     <message>
         <source>Native</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Themes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1058,6 +1082,14 @@
         <source>Preview</source>
         <translation type="unfinished">Pré-visualisation</translation>
     </message>
+    <message>
+        <source>Background color:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Presets</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ThemeEditorController</name>
@@ -1068,6 +1100,14 @@
     <message>
         <source>Contact</source>
         <translation type="unfinished">Contacts</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
     </message>
 </context>
 <context>
@@ -1103,6 +1143,10 @@
     <message>
         <source>You can use the Background option in an opened converation to define a per-user wallpaper</source>
         <translation type="unfinished">Vous pouvez utiliser l&apos;option d&apos;arrière-plan pour définir un papier peint pour chaque utilisateur</translation>
+    </message>
+    <message>
+        <source>Create</source>
+        <translation type="unfinished">Créer</translation>
     </message>
 </context>
 <context>

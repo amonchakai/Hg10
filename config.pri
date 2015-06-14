@@ -75,6 +75,10 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/Welcome.qml) \
         $$quote($$BASEDIR/assets/bubble.css) \
         $$quote($$BASEDIR/assets/bubble_black.css) \
+        $$quote($$BASEDIR/assets/bubble_hangouts.css) \
+        $$quote($$BASEDIR/assets/bubble_hangouts_black.css) \
+        $$quote($$BASEDIR/assets/bubble_simple.css) \
+        $$quote($$BASEDIR/assets/bubble_simple_black.css) \
         $$quote($$BASEDIR/assets/bug_template.html) \
         $$quote($$BASEDIR/assets/bug_template_black.html) \
         $$quote($$BASEDIR/assets/bug_template_end.html) \
@@ -131,6 +135,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/contact.svg) \
         $$quote($$BASEDIR/assets/images/document.png) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \
+        $$quote($$BASEDIR/assets/images/icon_add.png) \
+        $$quote($$BASEDIR/assets/images/icon_add.svg) \
         $$quote($$BASEDIR/assets/images/icon_add_contact.png) \
         $$quote($$BASEDIR/assets/images/icon_add_contact.svg) \
         $$quote($$BASEDIR/assets/images/icon_attach.png) \
@@ -175,6 +181,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_smile_white.png) \
         $$quote($$BASEDIR/assets/images/icon_smile_white.svg) \
         $$quote($$BASEDIR/assets/images/icon_synchronize.png) \
+        $$quote($$BASEDIR/assets/images/icon_theme.png) \
         $$quote($$BASEDIR/assets/images/icon_top.png) \
         $$quote($$BASEDIR/assets/images/icon_top_black.png) \
         $$quote($$BASEDIR/assets/images/icon_upload.png) \

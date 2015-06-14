@@ -1,5 +1,5 @@
 1
-168
+175
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -8,6 +8,10 @@ AdvancedConection.qml
 ApplicationLog.qml
 bubble.css
 bubble_black.css
+bubble_hangouts.css
+bubble_hangouts_black.css
+bubble_simple.css
+bubble_simple_black.css
 bug_template.html
 bug_template_black.html
 bug_template_end.html
@@ -72,6 +76,8 @@ images/EnhancementRequest_white.png
 images/HelpRequest.png
 images/HelpRequest_white.png
 images/icon_about.png
+images/icon_add.png
+images/icon_add.svg
 images/icon_add_contact.png
 images/icon_add_contact.svg
 images/icon_attach.png
@@ -116,6 +122,7 @@ images/icon_smile.svg
 images/icon_smile_white.png
 images/icon_smile_white.svg
 images/icon_synchronize.png
+images/icon_theme.png
 images/icon_top.png
 images/icon_top_black.png
 images/icon_upload.png

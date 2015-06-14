@@ -174,14 +174,33 @@ void ConversationController::updateView() {
                         }
 
                         emit wallpaperChanged("file://" + wallpaper.cap(1));
+
+
+                    } else {
+                        emit wallpaperChanged("");
+
+                        QRegExp color("<color value=\"([^\"]+)\"");
+
+                        if(color.indexIn(themeSettings) != -1) {
+                            emit colorSet(color.cap(1));
+                        } else {
+                            if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
+                                emit colorSet("#000000");
+                            } else {
+                                emit colorSet("#c7dfe4");
+                            }
+                        }
+
                     }
 
                     file.close();
                 }
             } else emit wallpaperChanged("");
 
-            if(QFile::exists(directory + "/" + ConversationManager::get()->getAdressee() + ".css")) {
-                QFile file(directory + "/" + ConversationManager::get()->getAdressee() + ".css");
+
+            filename.replace(".xml", ".css");
+            if(QFile::exists(filename)) {
+                QFile file(filename);
 
                 if (file.open(QIODevice::ReadOnly)) {
                     QTextStream stream(&file);

@@ -20,6 +20,7 @@ class SettingsController : public QObject {
     Q_PROPERTY( QString avatar       READ getAvatar          WRITE setAvatar         NOTIFY  avatarChanged)
     Q_PROPERTY( int     theme        READ getTheme           WRITE setTheme          NOTIFY  themeChanged)
     Q_PROPERTY( int     conversTheme READ getConversTheme    WRITE setConversTheme   NOTIFY  conversThemeChanged)
+    Q_PROPERTY( int     space        READ getSpace           WRITE setSpace          NOTIFY  spaceChanged)
     Q_PROPERTY( int     fontSize     READ getFontSize        WRITE setFontSize       NOTIFY  fontSizeChanged)
     Q_PROPERTY( bool    enableGoogle READ getEnableGoogle    WRITE setEnableGoogle   NOTIFY  enableGoogleChanged)
     Q_PROPERTY( bool    googleLogged READ getGoogleLogged)
@@ -31,6 +32,7 @@ private:
      QString            m_User;
      QString            m_Avatar;
      int                m_Theme;
+     int                m_Space;
      int                m_ConversTheme;
      int                m_FontSize;
      bool               m_IsGoogleEnabled;
@@ -51,6 +53,9 @@ public:
 
     inline int            getTheme() const                  { return m_Theme; }
     inline void           setTheme(int c)                   { m_Theme = c; emit themeChanged(); }
+
+    inline int            getSpace() const                  { return m_Space; }
+    inline void           setSpace(int c)                   { if(m_Space != c) { m_Space = c; emit spaceChanged();} }
 
     inline int            getConversTheme() const           { return m_ConversTheme; }
     inline void           setConversTheme(int c)            { if(c != m_ConversTheme) {m_ConversTheme = c; emit conversThemeChanged();} }
@@ -84,6 +89,7 @@ Q_SIGNALS:
     void themeChanged();
     void conversThemeChanged();
     void fontSizeChanged();
+    void spaceChanged();
     void enableGoogleChanged();
     void logEnabledChanged();
     void dropboxEnabledChanged();

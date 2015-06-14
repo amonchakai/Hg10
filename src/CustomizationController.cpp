@@ -11,6 +11,8 @@
 #include <QList>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/GroupDataModel>
+#include <bb/system/SystemDialog>
+#include <bb/system/SystemToast>
 
 #include "DataObjects.h"
 #include "QXmppVCardIq.h"
@@ -108,6 +110,64 @@ void CustomizationController::updateView() {
 
 }
 
+void CustomizationController::createDefault() {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    SystemDialog *dialog = new SystemDialog(tr("OK"), tr("Cancel"));
+
+    dialog->setTitle(tr("Create new theme"));
+    dialog->setBody(tr("This will create a new default theme. A per-user theme can be defined using the wallpaper option in the chat view."));
+
+    bool success = connect(dialog,
+         SIGNAL(finished(bb::system::SystemUiResult::Type)),
+         this,
+         SLOT(onPromptFinishedCreateTheme(bb::system::SystemUiResult::Type)));
+
+    if (success) {
+        dialog->show();
+    } else {
+        dialog->deleteLater();
+    }
+}
+
+
+void CustomizationController::onPromptFinishedCreateTheme(bb::system::SystemUiResult::Type result) {
+
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Customization");
+    if (!QFile::exists(directory)) {
+        QDir dir;
+        dir.mkpath(directory);
+    }
+
+
+    if(result == bb::system::SystemUiResult::ConfirmButtonSelection) {
+        QFile file(directory + "/default.xml");
+
+        if(file.exists()) {
+            bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+           toast->setBody(tr("A default theme already exists. Please edit this one or delete it."));
+           toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+           toast->show();
+           return;
+        }
+
+        if (file.open(QIODevice::WriteOnly)) {
+            QTextStream stream(&file);
+            stream << "<root>";
+            stream << QString("<wallpaper url=\"") + "" + "\" />";
+            stream << "</root>";
+            file.close();
+        }
+
+        updateView();
+
+    }
+
+}
+
+
 void CustomizationController::deleteCustom(const QString &id) {
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Customization");
     if (!QFile::exists(directory)) {
@@ -126,3 +186,9 @@ void CustomizationController::deleteCustom(const QString &id) {
 
 
 }
+
+
+
+
+
+

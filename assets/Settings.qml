@@ -224,7 +224,7 @@ NavigationPane {
                 
                 Button {
                     id: wallpaperButton
-                    text: qsTr("Wallpapers & themes")
+                    text: qsTr("Themes")
                     horizontalAlignment: HorizontalAlignment.Fill
                     onClicked: {
                         if(!wallpaperPage)

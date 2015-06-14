@@ -1,0 +1,124 @@
+
+/* ===================================
+== Bubble left
+** =================================== */
+
+.bubble-left {
+  position: relative;
+  margin-left: 71px;
+  min-height: 120px;
+  padding: 0px;
+  background: #ffffff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.bubble-left:before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: -18px;
+  border-style: solid;
+  border-width: 0px 20px 20px 0;
+  border-color: transparent #ffffff;
+  display: block;
+  width: 0;
+  z-index: 1;
+}
+
+.bubble-left-avatar img {
+  position: absolute;
+  left: -71px;
+  top: 5px;
+  width: 64px;
+  height: auto;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.author-left p {
+  font-weight: bold;
+  position: absolute;
+  left: 7px;
+  top: 5px;
+}
+
+.time-left p {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #616161;
+}
+
+
+/* ===================================
+== Bubble right
+** =================================== */
+
+.bubble-right {
+  position: relative;
+  margin-right: 71px;
+  min-height: 120px;
+  padding: 0px;
+  background: #ffffff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.bubble-right:after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  right: -18px;
+  border-style: solid;
+  border-width: 20px 0px 0px 20px;
+  border-color: transparent #ffffff;
+  display: block;
+  width: 0;
+  z-index: 1;
+}
+
+.bubble-right-avatar img {
+  position: absolute;
+  right: -71px;
+  bottom: 5px;
+  width: 64px;
+  height: auto;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.bubble-right p {
+
+}
+
+.author-right p {
+  font-weight: bold;
+  position: absolute;
+  right: 7px;
+  top: 5px;
+}
+
+.time-right p {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: #616161;
+}
+
+p {
+  color: black;
+}
+
+li {
+  color: black;
+}
+

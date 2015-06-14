@@ -157,6 +157,7 @@ Q_SIGNALS:
 
     void roomChanged                    ();
     void wallpaperChanged               (const QString &url);
+    void colorSet                       (const QString &value);
 
 };
 

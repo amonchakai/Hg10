@@ -658,6 +658,10 @@ Page {
                 messageView.settings.background = Color.Transparent;
                 back.imageSource = url;
             }
+            
+            onColorSet: {
+                wallpaperContainer.background = Color.create(value);
+            }
         },
         ImagePaintDefinition {
             id: back

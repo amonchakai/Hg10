@@ -27,6 +27,7 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
     m_Theme = m_Settings->value("theme").value<int>();
     m_FontSize = m_Settings->value("fontSize").value<int>();
     m_ConversTheme = m_Settings->value("ConversationTheme", 0).value<int>();
+    m_Space = m_Settings->value("Space", 0).value<int>();
 
     if(m_FontSize == 0)
         m_FontSize = 28;
@@ -69,6 +70,7 @@ void SettingsController::save() {
     m_Settings->setValue("logsEnabled", m_LogEnabled);
     m_Settings->setValue("DropBoxEnabled", m_DropBoxEnabled);
     m_Settings->setValue("ConversationTheme", m_ConversTheme);
+    m_Settings->setValue("Space", m_Space);
 
     XMPP::get()->notifySettingChange();
 }

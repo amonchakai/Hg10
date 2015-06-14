@@ -11,8 +11,11 @@
 #include <bb/cascades/ColorTheme>
 #include <bb/cascades/Theme>
 #include <bb/cascades/WebView>
+#include <bb/system/SystemDialog>
+#include <bb/system/SystemListDialog>
 
-ThemeEditorController::ThemeEditorController(QObject *parent) : QObject(parent), m_WebView(NULL), m_TextEditor(NULL) {
+
+ThemeEditorController::ThemeEditorController(QObject *parent) : QObject(parent), m_WebView(NULL), m_TextEditor(NULL), m_listdialog(NULL) {
 
 }
 
@@ -46,35 +49,6 @@ void ThemeEditorController::updateView() {
             htmlTemplate.replace("</style><link rel=\"stylesheet\" href=\"bubble" + suffix + ".css\">", m_TextEditor->text() + "\n\r</style>");
         }
 
-       // -----------------------------------------------------------------------------------------------
-       // choose background image
-       /* {
-            QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Customization");
-            QString filename;
-            if(QFile::exists(directory + "/" + ConversationManager::get()->getAdressee() + ".xml")) {
-                filename = directory + "/" + ConversationManager::get()->getAdressee() + ".xml";
-            } else {
-                if(QFile::exists(directory +"/default.xml")) {
-                    filename = directory + "/default.xml";
-                }
-            }
-
-            if(!filename.isEmpty()) {
-                QFile file(filename);
-                if (file.open(QIODevice::ReadOnly)) {
-                    QTextStream stream(&file);
-                    QString themeSettings = stream.readAll();
-
-                    QRegExp wallpaper("<wallpaper url=\"([^\"]+)\"");
-                    if(wallpaper.indexIn(themeSettings) != -1) {
-                        emit wallpaperChanged("file://" + wallpaper.cap(1));
-
-                    }
-
-                    file.close();
-                }
-            }
-        }*/
 
         // -----------------------------------------------------------------------------------------------
         // preload history
@@ -97,8 +71,32 @@ void ThemeEditorController::loadEditor() {
         return;
 
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Customization");
-        QFile file(directory + "/" + m_UserId + ".css" );
 
+    {
+        QFile file(directory + "/" +  m_UserId + ".xml");
+        if (file.open(QIODevice::ReadOnly)) {
+            QTextStream stream(&file);
+            QString themeSettings = stream.readAll();
+
+            QRegExp color("<color value=\"([^\"]+)\"");
+
+            if(color.indexIn(themeSettings) != -1) {
+                emit colorSet(color.cap(1));
+            } else {
+                if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
+                    emit colorSet("#000000");
+                } else {
+                    emit colorSet("#c7dfe4");
+                }
+            }
+
+            file.close();
+        }
+
+    }
+
+
+    QFile file(directory + "/" + m_UserId + ".css" );
 
     QString suffix;
     if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
@@ -121,7 +119,6 @@ void ThemeEditorController::saveTheme() {
     QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Customization");
     QFile file(directory + "/" + m_UserId + ".css" );
 
-    qDebug() << directory + "/" + m_UserId + ".css";
 
     QString settings;
     if (file.open(QIODevice::WriteOnly)) {
@@ -131,5 +128,137 @@ void ThemeEditorController::saveTheme() {
 
         file.close();
     }
+
+
+
+    {
+        QString backgroundImage;
+
+        QFile file(directory + "/" +  m_UserId + ".xml");
+        if (file.open(QIODevice::ReadOnly)) {
+            QTextStream stream(&file);
+            QString themeSettings = stream.readAll();
+
+            QRegExp wallpaper("<wallpaper url=\"([^\"]+)\"");
+
+            if(wallpaper.indexIn(themeSettings) != -1) {
+                backgroundImage = wallpaper.cap(1);
+            }
+
+
+            file.close();
+
+            if (file.open(QIODevice::WriteOnly)) {
+                QTextStream stream(&file);
+
+                stream << "<root>";
+                stream << "<wallpaper url=\"" + backgroundImage + "\" />";
+                stream << "<color value=\"" + m_BackgroundColor + "\" />";
+                stream << "</root>";
+
+            }
+            file.close();
+
+        }
+
+    }
+
 }
+
+
+
+
+
+void ThemeEditorController::selectPreset() {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    // Create a SystemListDialog with these characteristics:
+    // The "confirmLabel" (OK button) is set to "My favorite"
+    // The "cancelLabel" (CANCEL button) is set to "Cancel"
+    // This dialog box doesn't have a custom button
+
+
+    if(m_listdialog == NULL) {
+        m_listdialog = new SystemListDialog(tr("OK"), tr("Cancel"));
+
+        m_listdialog->setTitle("Choose a theme");
+        m_listdialog->appendItem("BBM");
+        m_listdialog->appendItem("Hangouts");
+        m_listdialog->appendItem("Simple");
+
+        bool success = connect(m_listdialog,
+             SIGNAL(finished(bb::system::SystemUiResult::Type)),
+             this,
+             SLOT(onDialogThemeFinished(bb::system::SystemUiResult::Type)));
+
+        if (success) {
+            // Signal was successfully connected
+            // Now show the dialog box in your UI
+
+            m_listdialog->show();
+        } else {
+            // Failed to connect to signal
+
+            m_listdialog->deleteLater();
+        }
+    } else {
+        m_listdialog->show();
+    }
+
+}
+
+
+void ThemeEditorController::onDialogThemeFinished(bb::system::SystemUiResult::Type result) {
+
+    if(result == bb::system::SystemUiResult::ConfirmButtonSelection) {
+
+        const QList<int> &indices = m_listdialog->selectedIndices();
+
+        if(indices.isEmpty()) {
+            return;
+        }
+
+        QString filename;
+        QString color;
+        switch(indices[0]) {
+            case 0:
+                filename = "bubble";
+                color = "#c7dfe4";
+                break;
+
+            case 1:
+                filename = "bubble_hangouts";
+                color = "#e4e4e4";
+                break;
+
+            case 2:
+                filename = "bubble_simple";
+                color = "#e5ded4";
+                break;
+        }
+
+        if(m_TextEditor == NULL) return;
+
+        QString suffix;
+        if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
+            suffix = "_black";
+        }
+
+        QFile cssTemplateFile;
+        cssTemplateFile.setFileName(QDir::currentPath() + "/app/native/assets/" + filename + suffix + ".css");
+
+
+        if(cssTemplateFile.open(QIODevice::ReadOnly)) {
+            m_TextEditor->setText(cssTemplateFile.readAll());
+        }
+
+        emit colorSet(color);
+
+        updateView();
+
+    }
+
+}
+
 
