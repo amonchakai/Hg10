@@ -20,7 +20,7 @@ Page {
             title: qsTr("Set")
             onTriggered: {
                 
-                listContactsController.editContact(id, setFullName.text);
+                listContactsController.editContact(id, setFullName.text, setFirstname.text, setLastname.text, setNickname.text);
                 
                 nav.pop();            
             }

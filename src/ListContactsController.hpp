@@ -108,7 +108,7 @@ public Q_SLOTS:
     void updateConnectionStatus         (bool status);
     void selectFirst                    ();
 
-    void editContact                    (const QString &id, const QString &fullname);
+    void editContact                    (const QString &id, const QString &fullname, const QString &firstname, const QString &lastname, const QString &nickname);
 
     void clear                          ();
     void deleteHistory                  (const QString &with);

@@ -655,7 +655,7 @@ void ListContactsController::loadContactDetails(const QString &id) {
     setNickname(vCard.nickName());
 }
 
-void ListContactsController::editContact(const QString &id, const QString &fullname) {
+void ListContactsController::editContact(const QString &id, const QString &fullname, const QString &firstname, const QString &lastname, const QString &nickname) {
     for(int i = 0 ; i < m_Contacts.size() ; ++i) {
         if(m_Contacts.at(i)->getID().toLower() == id.toLower()) {
             m_Contacts.at(i)->setName(fullname);
@@ -691,6 +691,9 @@ void ListContactsController::editContact(const QString &id, const QString &fulln
     QXmppVCardIq vCard;
     vCard.parse(doc.documentElement());
     vCard.setFullName(fullname);
+    vCard.setFirstName(firstname);
+    vCard.setLastName(lastname);
+    vCard.setNickName(nickname);
 
     {
         QFile file(vCardsDir + "/" + id + ".xml");
