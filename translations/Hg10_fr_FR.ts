@@ -494,7 +494,7 @@
     </message>
     <message>
         <source>Synchronize</source>
-        <translation type="unfinished">Synchroniser</translation>
+        <translation type="obsolete">Synchroniser</translation>
     </message>
     <message>
         <source>Sorting key</source>
@@ -753,7 +753,7 @@
     <name>GoogleConnectController</name>
     <message>
         <source>last edit: </source>
-        <translation type="unfinished">Dernière modification :</translation>
+        <translation type="obsolete">Dernière modification :</translation>
     </message>
 </context>
 <context>

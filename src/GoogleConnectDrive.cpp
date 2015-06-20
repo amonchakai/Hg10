@@ -437,13 +437,7 @@ void GoogleConnectController::parseFileEntry(const QString &entry) {
 
 
     QDateTime date = QDateTime::fromString(lastEdit.cap(1).mid(0,lastEdit.cap(1).length()-1), "yyyy-MM-ddThh:mm:ss.zzz");
-    if(QDateTime::currentDateTime().date() == date.date()) {
-        d->setTimestamp(tr("last edit: ") + date.time().toString("hh:mm:ss"));
-    } else {
-        d->setTimestamp(tr("last edit: ") + date.date().toString());
-    }
-
-
+    d->setTimestamp(date.toMSecsSinceEpoch());
 
     emit driveItemLoaded(d);
 
@@ -669,7 +663,7 @@ void GoogleConnectController::parseTreeEntry(const QString &parent, const QStrin
 
 
     QDateTime date = QDateTime::fromString(lastEdit.cap(1).mid(0,lastEdit.cap(1).length()-1), "yyyy-MM-ddThh:mm:ss.zzz");
-    d->setTimestamp(date.toString());
+    d->setTimestamp(date.toMSecsSinceEpoch());
 
 
     QString humanUrl;

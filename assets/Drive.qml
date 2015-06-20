@@ -180,7 +180,7 @@ NavigationPane {
                                         }
                                         
                                         Label {
-                                            text: ListItemData.timestamp
+                                            text: overallContactContainer.ListItem.view.msToString(ListItemData.timestamp)
                                             horizontalAlignment: HorizontalAlignment.Left
                                             verticalAlignment: VerticalAlignment.Bottom
                                             textStyle {
@@ -224,23 +224,16 @@ NavigationPane {
                                             onTriggered: {
                                                 overallContactContainer.ListItem.view.download(ListItemData.downloadLink, ListItemData.title);
                                             }
-                                        }
-                                        /*
-                                        ActionItem {
-                                            title: qsTr("Synchronize")
-                                            imageSource: "asset:///images/icon_synchronize.png"
-                                            onTriggered: {
-                                                overallContactContainer.ListItem.view.synchronize(ListItemData.id, ListItemData.title);
-                                            }
-                                        }
-                                        */
-                                        
+                                        }                                        
                                     }
                                 ]
                             }
                         }
                     ]
                     
+                    function msToString(ms) {
+                        return driveController.convertMStoStr(ms);
+                    }
                     
                     function setHome(id) {
                         driveController.setHomeFolder(id);
@@ -335,16 +328,17 @@ NavigationPane {
                 onTriggered: {
                     driveController.askName();
                 }   
-            },
+            }, /*
             ActionItem {
                 title: qsTr("Synchronize")
                 imageSource: "asset:///images/icon_synchronize.png"
                 onTriggered: {
                     driveController.updateSynch();
                 }
-            },
+            }, */
             ActionItem {
                 title: qsTr("Sorting key")
+                imageSource: "asset:///images/icon_sort.png"
                 onTriggered: {
                     driveController.sortKey();
                 }

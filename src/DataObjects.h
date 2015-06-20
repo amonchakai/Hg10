@@ -49,7 +49,7 @@ class DriveItem : public QObject {
     Q_PROPERTY( QString iconLink    READ getIconLink    WRITE setIconLink    NOTIFY iconLinkChanged)
     Q_PROPERTY( QString title       READ getTitle       WRITE setTitle       NOTIFY titleChanged)
     Q_PROPERTY( QString type        READ getType        WRITE setType        NOTIFY typeChanged)
-    Q_PROPERTY( QString timestamp   READ getTimestamp   WRITE setTimestamp   NOTIFY timestampChanged)
+    Q_PROPERTY( qint64  timestamp   READ getTimestamp   WRITE setTimestamp   NOTIFY timestampChanged)
     Q_PROPERTY( QString openLink    READ getOpenLink    WRITE setOpenLink    NOTIFY openLinkChanged)
     Q_PROPERTY( QString downloadLink READ getDownloadLink WRITE setDownloadLink    NOTIFY downloadLinkChanged)
 
@@ -58,13 +58,13 @@ private:
     QString         m_IconLink;
     QString         m_Title;
     QString         m_Type;
-    QString         m_Timestamp;
+    qint64          m_Timestamp;
     QString         m_OpenLink;
     QString         m_DownloadLink;
     QString         m_MD5;
 
 public:
-    DriveItem(QObject *parent)  : QObject(parent) {};
+    DriveItem(QObject *parent)  : QObject(parent), m_Timestamp(0) {};
 
     inline const QString &getID() const                     { return m_Id; }
     inline void           setID(const QString &c)           { m_Id = c; emit idChanged();}
@@ -78,8 +78,8 @@ public:
     inline const QString &getType() const                   { return m_Type; }
     inline void           setType(const QString &c)         { m_Type = c; emit typeChanged();}
 
-    inline const QString &getTimestamp() const              { return m_Timestamp; }
-    inline void           setTimestamp(const QString &c)    { m_Timestamp = c; emit timestampChanged();}
+    inline qint64         getTimestamp() const              { return m_Timestamp; }
+    inline void           setTimestamp(qint64 c)            { m_Timestamp = c; emit timestampChanged();}
 
     inline const QString &getOpenLink() const               { return m_OpenLink; }
     inline void           setOpenLink(const QString &c)     { m_OpenLink = c; emit openLinkChanged();}

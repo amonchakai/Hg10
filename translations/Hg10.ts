@@ -481,10 +481,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Synchronize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sorting key</source>
         <translation type="unfinished"></translation>
     </message>
@@ -727,13 +723,6 @@
     </message>
     <message>
         <source>Gmail: Retrieve history, enabling synchronization between devices</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GoogleConnectController</name>
-    <message>
-        <source>last edit: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

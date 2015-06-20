@@ -76,6 +76,10 @@ void DriveController::notifyEmptyFolder() {
     emit complete();
 }
 
+QString DriveController::convertMStoStr(qint64 ms) {
+    return QDateTime::fromMSecsSinceEpoch(ms).toString(Qt::SystemLocaleShortDate);
+}
+
 void DriveController::sortKey() {
     using namespace bb::cascades;
     using namespace bb::system;
@@ -146,6 +150,12 @@ void DriveController::onDialogSortingKeyFinished(bb::system::SystemUiResult::Typ
                 break;
         }
 
+        if(!keys.isEmpty()) {
+            QSettings settings("Amonchakai", "Hg10");
+            settings.setValue("DriveSortKey", keys.last());
+        }
+
+
         dataModel->setSortingKeys(keys);
 
     }
@@ -198,6 +208,14 @@ void DriveController::onImageReady(const QString &url, const QString &diskPath) 
                               << "timestamp"
                 );
         m_ListView->setDataModel(dataModel);
+    }
+
+    QSettings settings("Amonchakai", "Hg10");
+    QStringList keys = dataModel->sortingKeys();
+    if(!keys.isEmpty() && keys.last() != settings.value("DriveSortKey", "type").toString()) {
+        keys.clear();
+        keys.push_back(settings.value("DriveSortKey", "type").toString());
+        dataModel->setSortingKeys(keys);
     }
 
     m_Mutex.lockForWrite();
@@ -760,7 +778,7 @@ void DriveController::diveSynchPushLeaf(QString url, DriveItem *item) {
             delete[] temp;
         }
 
-        if(QDateTime::fromString(item->getTimestamp()) > info.lastModified()) {
+        if(item->getTimestamp() > info.lastModified().toMSecsSinceEpoch()) {
             m_Mutex.lockForWrite();
             m_Downloads.push_back(QPair<QString, QString>(item->getDownloadLink(), localFile));
             if(m_Downloads.size() == 1) {

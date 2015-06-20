@@ -180,7 +180,7 @@ NavigationPane {
                                         }
                                         
                                         Label {
-                                            text: ListItemData.timestamp
+                                            text: overallContactContainer.ListItem.view.msToString(ListItemData.timestamp)
                                             horizontalAlignment: HorizontalAlignment.Left
                                             verticalAlignment: VerticalAlignment.Bottom
                                             textStyle {
@@ -232,6 +232,9 @@ NavigationPane {
                         }
                     ]
                     
+                    function msToString(ms) {
+                        return driveController.convertMStoStr(ms);
+                    }
                     
                     function setHome(id) {
                         driveController.setHomeFolder(id);
@@ -322,6 +325,13 @@ NavigationPane {
                 onTriggered: {
                     driveController.askName();
                 }   
+            },
+            ActionItem {
+                title: qsTr("Sorting key")
+                imageSource: "asset:///images/icon_sort.png"
+                onTriggered: {
+                    driveController.sortKey();
+                }
             }
         ]
         

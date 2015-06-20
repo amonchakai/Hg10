@@ -180,6 +180,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_smile.svg) \
         $$quote($$BASEDIR/assets/images/icon_smile_white.png) \
         $$quote($$BASEDIR/assets/images/icon_smile_white.svg) \
+        $$quote($$BASEDIR/assets/images/icon_sort.png) \
         $$quote($$BASEDIR/assets/images/icon_synchronize.png) \
         $$quote($$BASEDIR/assets/images/icon_theme.png) \
         $$quote($$BASEDIR/assets/images/icon_top.png) \

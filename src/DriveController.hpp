@@ -83,6 +83,7 @@ public Q_SLOTS:
     void authentifiedDownload           (const QString &url);
     void askName                        ();
 
+    QString convertMStoStr              (qint64 ms);
 
     void fowardUploading                (int);
     void checkDownload                  ();
