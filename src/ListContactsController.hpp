@@ -29,12 +29,19 @@ class ListContactsController : public QObject {
 
     Q_PROPERTY( int     conversTheme READ getConversTheme                    NOTIFY  conversThemeChanged)
 
+    Q_PROPERTY( QString firstName    READ getFirstName    WRITE setFirstName    NOTIFY firstNameChanged)
+    Q_PROPERTY( QString lastName     READ getLastName     WRITE setLastName     NOTIFY lastNameChanged)
+    Q_PROPERTY( QString nickname     READ getNickname     WRITE setNickname     NOTIFY nicknameChanged)
+
 private:
     bb::cascades::ListView          *m_ListView;
     bb::cascades::ActivityIndicator *m_Activity;
     QString                          m_User;
     QString                          m_Avatar;
     QString                          m_Presence;
+    QString                          m_FirstName;
+    QString                          m_LastName;
+    QString                          m_Nickname;
     int                              m_Available;
     QList<Contact *>                 m_Contacts;
     bool                             m_OnlyFavorite;
@@ -60,6 +67,15 @@ public:
     inline const QString &getPresence   () const               { return m_Presence; }
     inline void           setPresence   (const QString &c)     { m_Presence = c; emit presenceChanged(); }
 
+    inline const QString &getFirstName   () const               { return m_FirstName; }
+    inline void           setFirstName   (const QString &c)     { m_FirstName = c; emit firstNameChanged(); }
+
+    inline const QString &getLastName   () const               { return m_LastName; }
+    inline void           setLastName   (const QString &c)     { m_LastName = c; emit lastNameChanged(); }
+
+    inline const QString &getNickname   () const               { return m_Nickname; }
+    inline void           setNickname   (const QString &c)     { m_Nickname = c; emit nicknameChanged(); }
+
     inline bool           isAvailable   () const               { return m_Available; }
     inline void           setAvailable  (bool c)               { m_Available = c; emit availableChanged(); }
 
@@ -75,6 +91,8 @@ public Q_SLOTS:
     void updateView                     ();
     void pushContact                    (const Contact*);
     void refresh                        ();
+
+    void loadContactDetails             (const QString &id);
 
 
     void updatePresence                 (const QString &who, int status);
@@ -109,6 +127,10 @@ Q_SIGNALS:
     void userNameChanged                ();
     void avatarChanged                  ();
     void conversThemeChanged            ();
+
+    void firstNameChanged               ();
+    void lastNameChanged                ();
+    void nicknameChanged                ();
 
     void presenceChanged                ();
     void availableChanged               ();

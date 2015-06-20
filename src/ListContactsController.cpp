@@ -624,6 +624,37 @@ QString ListContactsController::formatTime(qint64 msecs) {
 }
 
 
+void ListContactsController::loadContactDetails(const QString &id) {
+    // -------------------------------------------------------------
+    // edit the vcard...
+
+    qDebug() << "load contact details";
+
+    QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
+
+    QDomDocument doc("vCard");
+
+    {
+        QFile file(vCardsDir + "/" + id + ".xml");
+        if (!file.open(QIODevice::ReadOnly))
+            return;
+        if (!doc.setContent(&file)) {
+            //file.close();
+            //return;
+            qWarning() << "Problem while reading vcard: " << id << " file not complete, some data may be missing.";
+
+        }
+        file.close();
+    }
+
+    QXmppVCardIq vCard;
+    vCard.parse(doc.documentElement());
+
+    setFirstName(vCard.firstName());
+    setLastName(vCard.lastName());
+    setNickname(vCard.nickName());
+}
+
 void ListContactsController::editContact(const QString &id, const QString &fullname) {
     for(int i = 0 ; i < m_Contacts.size() ; ++i) {
         if(m_Contacts.at(i)->getID().toLower() == id.toLower()) {

@@ -17,6 +17,13 @@
 class GoogleConnectController;
 class DriveItem;
 
+namespace bb
+{
+    namespace system {
+        class SystemListDialog;
+    }
+}
+
 class DriveController : public QObject {
     Q_OBJECT;
 
@@ -25,6 +32,7 @@ class DriveController : public QObject {
 private:
     bb::cascades::ListView          *m_ListView;
     GoogleConnectController         *m_Google;
+    bb::system::SystemListDialog    *m_listdialog;
     QList<DriveItem *>               m_DriveItems;
     QReadWriteLock                   m_Mutex;
     QString                          m_SelectedItemForSharing;
@@ -52,6 +60,9 @@ public Q_SLOTS:
     inline void setListView             (QObject *listView)    {m_ListView = dynamic_cast<bb::cascades::ListView*>(listView); }
 
     inline const QString &getAudioName  ()                     { return m_AudioName; }
+
+    void sortKey                        ();
+    void onDialogSortingKeyFinished     (bb::system::SystemUiResult::Type);
 
     void getFileList                    ();
     void pop                            ();

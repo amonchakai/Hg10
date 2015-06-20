@@ -513,8 +513,15 @@ void XMPP::loadvCard(const QString &bareJid, bool push, int status) {
     else {
         if(!vCard.nickName().isEmpty())
             contact->setName(vCard.nickName());
-        else
-            contact->setName(bareJid);
+        else {
+            if(!vCard.firstName().isEmpty())
+                contact->setName(vCard.firstName() + " ");
+            if(!vCard.lastName().isEmpty())
+                contact->setName(contact->getName() + vCard.lastName());
+
+            if(contact->getName().isEmpty())
+                contact->setName(bareJid);
+        }
     }
     contact->setTimestamp(0);
     contact->setPresence(status);

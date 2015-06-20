@@ -413,8 +413,13 @@ NavigationPane {
                             ecPage = editContact.createObject();
                         }
                         
+                        listContactsController.loadContactDetails(id);
+                        
                         ecPage.id       = id;
                         ecPage.fullname = fullname;
+                        ecPage.nickname = listContactsController.nickname;
+                        ecPage.firstname = listContactsController.firstName;
+                        ecPage.lastname = listContactsController.lastName;
                         
                         nav.push(ecPage);
                     }
@@ -588,7 +593,7 @@ NavigationPane {
                     
                     nav.push(tpage);
                 }
-                
+                                
             },
             ComponentDefinition {
                 id: conversation

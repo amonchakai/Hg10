@@ -484,6 +484,10 @@
         <source>Synchronize</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sorting key</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DriveController</name>
@@ -517,6 +521,14 @@
     </message>
     <message>
         <source>Download completed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -566,6 +578,30 @@
     </message>
     <message>
         <source>Full name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nickname:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set nickname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set first name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set last name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

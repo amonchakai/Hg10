@@ -83,7 +83,7 @@ NavigationPane {
                     dataModel: GroupDataModel {
                         id: theModel
                         sortingKeys: ["type"]
-                        sortedAscending: false
+                        sortedAscending: true
                         grouping: ItemGrouping.None
                         
                         property bool empty: true
@@ -341,6 +341,12 @@ NavigationPane {
                 imageSource: "asset:///images/icon_synchronize.png"
                 onTriggered: {
                     driveController.updateSynch();
+                }
+            },
+            ActionItem {
+                title: qsTr("Sorting key")
+                onTriggered: {
+                    driveController.sortKey();
                 }
             }
         ]

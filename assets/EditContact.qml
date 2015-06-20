@@ -3,6 +3,9 @@ import bb.cascades 1.3
 Page {
     property string id
     property string fullname
+    property string nickname
+    property string firstname
+    property string lastname
     
     
     titleBar: TitleBar {
@@ -47,5 +50,49 @@ Page {
         Divider { }
         
         
+        Label {
+            text: qsTr("Nickname:")
+        }
+        TextField {
+            id: setNickname
+            hintText: qsTr("Set nickname")
+            text: nickname
+        }
+        
+        Divider { }
+        
+        Label {
+            text: qsTr("First name:")
+        }
+        TextField {
+            id: setFirstname
+            hintText: qsTr("Set first name")
+            text: firstname
+        }
+        
+        Divider { }
+        
+        
+        Label {
+            text: qsTr("Last name:")
+        }
+        TextField {
+            id: setLastname
+            hintText: qsTr("Set last name")
+            text: lastname
+        }
+        
+        Divider { }
+        
+    }
+    
+    onFirstnameChanged: {
+        setFirstname.text = firstname;
+    }
+    onLastnameChanged: {
+        setLastname.text = lastname;
+    }
+    onNicknameChanged: {
+        setNickname.text = nickname;
     }
 }

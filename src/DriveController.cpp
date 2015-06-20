@@ -18,14 +18,16 @@
 #include <bb/system/SystemToast>
 #include <bb/system/SystemPrompt>
 #include <bb/system/SystemDialog>
+#include <bb/system/SystemListDialog>
 #include <bb/system/Clipboard>
 #include <QCryptographicHash>
+
 
 #include <QFile>
 
 #include "ConversationManager.hpp"
 
-DriveController::DriveController(QObject *parent) : QObject(parent), m_ListView(NULL) {
+DriveController::DriveController(QObject *parent) : QObject(parent), m_ListView(NULL), m_listdialog(NULL) {
     //m_Google = new GoogleConnectController(this);
     m_Google = ConversationManager::get()->getFileTransfert();
     if(m_Google == NULL)
@@ -72,6 +74,81 @@ void DriveController::getFileList() {
 
 void DriveController::notifyEmptyFolder() {
     emit complete();
+}
+
+void DriveController::sortKey() {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    // Create a SystemListDialog with these characteristics:
+    // The "confirmLabel" (OK button) is set to "My favorite"
+    // The "cancelLabel" (CANCEL button) is set to "Cancel"
+    // This dialog box doesn't have a custom button
+
+
+    if(m_listdialog == NULL) {
+        m_listdialog = new SystemListDialog(tr("OK"), tr("Cancel"));
+
+        m_listdialog->setTitle("Sort files by");
+        m_listdialog->appendItem("name");
+        m_listdialog->appendItem("type");
+        m_listdialog->appendItem("date");
+
+        bool success = connect(m_listdialog,
+             SIGNAL(finished(bb::system::SystemUiResult::Type)),
+             this,
+             SLOT(onDialogSortingKeyFinished(bb::system::SystemUiResult::Type)));
+
+        if (success) {
+            // Signal was successfully connected
+            // Now show the dialog box in your UI
+
+            m_listdialog->show();
+        } else {
+            // Failed to connect to signal
+
+            m_listdialog->deleteLater();
+        }
+    } else {
+        m_listdialog->show();
+    }
+
+}
+
+void DriveController::onDialogSortingKeyFinished(bb::system::SystemUiResult::Type result) {
+
+    // ----------------------------------------------------------------------------------------------
+    // get the dataModel of the listview if not already available
+    using namespace bb::cascades;
+
+    if(m_ListView == NULL) {
+        qWarning() << "did not received the listview. quit.";
+        return;
+    }
+
+    GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
+
+
+    if(result == bb::system::SystemUiResult::ConfirmButtonSelection) {
+
+        const QList<int> &indices = m_listdialog->selectedIndices();
+        QStringList keys;
+
+        switch(indices[0]) {
+            case 0:
+                keys.push_back("title");
+                break;
+            case 1:
+                keys.push_back("type");
+                break;
+            case 2:
+                keys.push_back("timestamp");
+                break;
+        }
+
+        dataModel->setSortingKeys(keys);
+
+    }
 }
 
 void DriveController::pushDriveItem(DriveItem *item) {
