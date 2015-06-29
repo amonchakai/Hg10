@@ -35,6 +35,12 @@ struct XMPPServiceMessages {
         SET_STATUS_TEXT,
         SET_PRESENCE                = 20,
         ADD_CONTACT,
+        OTR_REQUEST_START,
+        OTR_REQUEST_STOP,
+        OTR_SETUP_KEYS,
+        OTR_FINGERPRINT_RECEIVED,
+        OTR_GONE_SECURE,
+        OTR_GONE_UNSECURE,
         UPDATE_HUB,
         REMOVE_HUB
     };

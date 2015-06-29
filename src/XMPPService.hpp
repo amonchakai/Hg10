@@ -35,6 +35,8 @@ public:
     void                           disconnectFromServer();
     void                           askConnectionStatus();
     void                           closeCard();
+    void                           setupKeys           ();
+
 
 private:
     static XMPP              *m_This;
@@ -58,6 +60,7 @@ public Q_SLOTS:
     void getContactList     ();
     void requestPresence    ();
     void sendMessageTo      (const QString &to, const QString &message);
+    void requestOTRSession  (const QString& to);
 
     void loadvCard          (const QString& bareJid, bool push = false, int status = -1);
 
@@ -133,6 +136,10 @@ Q_SIGNALS:
     void contactReceived    ();
     void pushContact        (const Contact*);
     void presenceUpdated    (const QString &who, int status);
+
+    void goneSecure          (const QString &with);
+    void goneUnsecure        (const QString &with);
+    void fingerprintReceived (const QString &from, const QString& fingerprint);
 
     void connectedXMPP       ();
     void connectionFailed    ();

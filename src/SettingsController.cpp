@@ -63,6 +63,9 @@ void SettingsController::updateAvatar() {
 
 }
 
+void SettingsController::setupKeys() {
+    XMPP::get()->setupKeys();
+}
 
 void SettingsController::save() {
     m_Settings->setValue("theme", m_Theme);

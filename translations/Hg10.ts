@@ -986,6 +986,14 @@
         <source>Themes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Setup encryption keys</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SettingsController</name>

@@ -253,6 +253,31 @@ NavigationPane {
                 
                 } 
                 
+                Container {
+                    preferredHeight: ui.du(4)
+                }
+                
+                Container {
+                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                    
+                    Label {
+                        text: qsTr("Encryption")
+                        textStyle.fontSize: FontSize.Large
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Bottom
+                    }
+                
+                }
+                Divider { }
+                
+                Button {
+                    text: qsTr("Setup encryption keys")
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    onClicked: {
+                        settingsController.setupKeys();
+                    }
+                }
+                
     	        
                 Container {
                     preferredHeight: ui.du(4)

@@ -88,6 +88,10 @@ public Q_SLOTS:
     void load                           (const QString &id, const QString &avatar, const QString &name);
     void refreshHistory                 (const QString &id, const QString &avatar, const QString &name);
 
+    void startOTR                       (const QString &id);
+    void goneSecure                     (const QString &with);
+    void goneUnsecure                   (const QString &with);
+
     void loadActionMenu                 (int id);
 
     void linkEstablished                ();
@@ -158,6 +162,9 @@ Q_SIGNALS:
     void roomChanged                    ();
     void wallpaperChanged               (const QString &url);
     void colorSet                       (const QString &value);
+
+    void updateGoneSecure               (const QString &contact);
+    void updateGoneUnsecure             (const QString &contact);
 
 };
 

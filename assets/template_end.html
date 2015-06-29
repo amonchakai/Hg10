@@ -135,6 +135,17 @@
         }
 
 
+        var prevHeight;
+        function checkWindowHeight() {
+        	if(prevHeight != window.innerHeight) {
+        		prevHeight = window.innerHeight;
+        		scrollToEnd();
+        	}
+
+        }
+        var handle = setInterval(checkWindowHeight, 400);
+
+
 
         </script>
 

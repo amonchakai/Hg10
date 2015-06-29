@@ -69,6 +69,12 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     check = connect(XMPP::get(), SIGNAL(connectionFailed()), this, SLOT(waitingLink()));
     Q_ASSERT(check);
 
+    check = connect(XMPP::get(), SIGNAL(goneSecure(const QString&)), this, SLOT(goneSecure(const QString&)));
+    Q_ASSERT(check);
+
+    check = connect(XMPP::get(), SIGNAL(goneUnsecure(const QString&)), this, SLOT(goneUnsecure(const QString&)));
+    Q_ASSERT(check);
+
 
 }
 
@@ -427,6 +433,19 @@ void ConversationController::pushHistory(const QString &from, const QString &mes
 }
 
 
+void ConversationController::startOTR(const QString &id) {
+    XMPP::get()->requestOTRSession(id);
+}
+
+
+void ConversationController::goneSecure(const QString &with) {
+    emit updateGoneSecure(with);
+}
+
+
+void ConversationController::goneUnsecure(const QString &with) {
+    emit updateGoneUnsecure(with);
+}
 
 void ConversationController::send(const QString& message) {
     qDebug() << "CALL!";

@@ -79,6 +79,8 @@ public Q_SLOTS:
     void updateAvatar();
     void save();
 
+    void setupKeys();
+
     void requestHubRemoval();
     void onPromptFinishedPassword(bb::system::SystemUiResult::Type result);
 

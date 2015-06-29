@@ -24,26 +24,43 @@ Page {
                 rightPadding: 10
                 background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#282828") : Color.create("#f0f0f0");
                 
-                ImageView {
-                    verticalAlignment: VerticalAlignment.Center
+                Container {
                     horizontalAlignment: HorizontalAlignment.Right
-                    id: avatarOwnImg
-                    scalingMethod: ScalingMethod.AspectFit
-                    minHeight: ui.du(9)
-                    maxHeight: ui.du(9)
-                    minWidth: ui.du(9)
-                    maxWidth: ui.du(9)
-                    image: trackerOwn.image
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
                     
-                    attachedObjects: [
-                        NetImageTracker {
-                            id: trackerOwn
-                            
-                            source: avatar                                    
-                        } 
-                    ]
+                    ImageButton {
+                        id: otrLockButton
+                        defaultImageSource: "asset:///images/icon_lock_open.png"
+                        verticalAlignment: VerticalAlignment.Center
+                        onClicked: {
+                            conversationController.startOTR(id);
+                        }
+                    }
+                    
+                    ImageView {
+                        verticalAlignment: VerticalAlignment.Center
+                        
+                        id: avatarOwnImg
+                        scalingMethod: ScalingMethod.AspectFit
+                        minHeight: ui.du(9)
+                        maxHeight: ui.du(9)
+                        minWidth: ui.du(9)
+                        maxWidth: ui.du(9)
+                        image: trackerOwn.image
+                        
+                        attachedObjects: [
+                            NetImageTracker {
+                                id: trackerOwn
+                                
+                                source: avatar                                    
+                            } 
+                        ]
+                    }
+
                 }
-                
+                                
                 Label {
                     text: name
                     textStyle {
@@ -537,7 +554,7 @@ Page {
             
             onComplete: {
                 txtField.requestFocus();
-            
+                otrLockButton.defaultImageSource = "asset:///images/icon_lock_open.png";
             }
             
             onWallpaperChanged: {
@@ -547,6 +564,18 @@ Page {
             
             onColorSet: {
                 wallpaperContainer.background = Color.create(value);
+            }
+            
+            onUpdateGoneSecure: {
+                if(id == contact) {
+                    otrLockButton.defaultImageSource = "asset:///images/icon_lock_locked.png";
+                }
+            }
+            
+            onUpdateGoneUnsecure: {
+                if(id == contact) {
+                    otrLockButton.defaultImageSource = "asset:///images/icon_lock_open.png";
+                }
             }
         },
         ImagePaintDefinition {
