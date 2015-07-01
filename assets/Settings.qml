@@ -278,9 +278,44 @@ NavigationPane {
                     }
                 }
                 
+                Button {
+                    text: qsTr("Show your fingerprint")
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    onClicked: {
+                        settingsController.showKeys();
+                    }
+                }
+                
+                Container {
+                    layout: DockLayout {
+                    
+                    }
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    
+                    Label {
+                        text: qsTr("Display warning about encryption")
+                        verticalAlignment: VerticalAlignment.Center
+                        horizontalAlignment: HorizontalAlignment.Left
+                        margin.leftOffset: ui.du(1)
+                    }
+                    
+                    ToggleButton {
+                        id: otrWarning
+                        checked: settingsController.otrWarning
+                        verticalAlignment: VerticalAlignment.Center
+                        horizontalAlignment: HorizontalAlignment.Right
+                        
+                        onCheckedChanged: {
+                            settingsController.otrWarning = checked;
+                        }
+                        margin.rightOffset: ui.du(1);
+                    }
+                
+                }
+                
     	        
                 Container {
-                    preferredHeight: ui.du(4)
+                    preferredHeight: ui.du(5)
                 }
                 
                 Container {

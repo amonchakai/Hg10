@@ -26,6 +26,7 @@ class SettingsController : public QObject {
     Q_PROPERTY( bool    googleLogged READ getGoogleLogged)
     Q_PROPERTY( bool    enableLogs   READ getLogEnabled      WRITE setLogEnabled     NOTIFY  logEnabledChanged)
     Q_PROPERTY( bool    useDropbox   READ getDropboxEnabled  WRITE setDropboxEnabled NOTIFY  dropboxEnabledChanged)
+    Q_PROPERTY( bool    otrWarning   READ getOTRWarning      WRITE setOTRWarning     NOTIFY  otrWarningChanged)
 
 private:
 
@@ -38,6 +39,7 @@ private:
      bool               m_IsGoogleEnabled;
      static bool        m_LogEnabled;
      bool               m_DropBoxEnabled;
+     bool               m_OTRWarning;
 
      QSettings          *m_Settings;
 
@@ -73,6 +75,9 @@ public:
     inline bool           getDropboxEnabled() const         { return m_DropBoxEnabled; }
     inline void           setDropboxEnabled(bool c)         { m_DropBoxEnabled = c;  }
 
+    inline bool           getOTRWarning() const             { return m_OTRWarning; }
+    inline void           setOTRWarning(bool c)             { m_OTRWarning = c;  }
+
     bool                  getGoogleLogged();
 
 public Q_SLOTS:
@@ -80,9 +85,12 @@ public Q_SLOTS:
     void save();
 
     void setupKeys();
+    void showKeys();
 
     void requestHubRemoval();
     void onPromptFinishedPassword(bb::system::SystemUiResult::Type result);
+
+    void fingerprintReceived(const QString& fingerprint);
 
 Q_SIGNALS:
 
@@ -95,6 +103,7 @@ Q_SIGNALS:
     void enableGoogleChanged();
     void logEnabledChanged();
     void dropboxEnabledChanged();
+    void otrWarningChanged();
 
 };
 

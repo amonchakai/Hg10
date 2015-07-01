@@ -461,6 +461,15 @@ NavigationPane {
                 }
             },
             ActionItem {
+                id: otrLockButton
+                title: qsTr("Encryption")
+                imageSource: "asset:///images/icon_lock_open.png"
+                ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    conversationController.startOTR(id);
+                }
+            }, 
+            ActionItem {
                 title: qsTr("Stickers")
                 ActionBar.placement: ActionBarPlacement.InOverflow
                 imageSource: "asset:///images/document.png"
@@ -552,6 +561,18 @@ NavigationPane {
                 
                 onColorSet: {
                     wallpaperContainer.background = Color.create(value);
+                }
+                
+                onUpdateGoneSecure: {
+                    if(id == contact) {
+                        otrLockButton.imageSource = "asset:///images/icon_lock_closed.png";
+                    }
+                }
+                
+                onUpdateGoneUnsecure: {
+                    if(id == contact) {
+                        otrLockButton.imageSource = "asset:///images/icon_lock_open.png";
+                    }
                 }
             },
             ImagePaintDefinition {

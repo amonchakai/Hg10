@@ -33,11 +33,11 @@
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Cryptage</translation>
     </message>
     <message>
         <source>Internal Server (Workspace)</source>
-        <translation type="unfinished"></translation>
+        <translation>Serveur BES</translation>
     </message>
 </context>
 <context>
@@ -298,6 +298,10 @@
         <source>To last message</source>
         <translation type="unfinished">Aller au dernier message</translation>
     </message>
+    <message>
+        <source>Encryption</source>
+        <translation>Cryptage</translation>
+    </message>
 </context>
 <context>
     <name>ConversationCard</name>
@@ -368,6 +372,10 @@
         <source>To last message</source>
         <translation type="unfinished">Aller au dernier message</translation>
     </message>
+    <message>
+        <source>Encryption</source>
+        <translation type="unfinished">Cryptage</translation>
+    </message>
 </context>
 <context>
     <name>ConversationController</name>
@@ -381,11 +389,11 @@
     </message>
     <message>
         <source>Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Moi</translation>
     </message>
     <message>
         <source>Select File</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un fichier</translation>
     </message>
     <message>
         <source>/app/native/assets/data/action_list.xml</source>
@@ -394,6 +402,14 @@
     <message>
         <source>/app/native/assets/data/emojies_list.xml</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Off-the-record session requested. Please note Google Hangouts official client does NOT support end-to-end encryption!</source>
+        <translation>Une session cryptée a été demandée. Soyez conscient que le client officiel Google Hangouts ne spporte pas l&apos;encryption point à point!</translation>
+    </message>
+    <message>
+        <source>To use Off-the-record, you need to generate a Key. Please go to the Settings!</source>
+        <translation>Pour utiliser l&apos;encryption, vous devez générer une clé. Veuillez aller dans les paramètres!</translation>
     </message>
 </context>
 <context>
@@ -439,11 +455,11 @@
     </message>
     <message>
         <source>This will create a new default theme. A per-user theme can be defined using the wallpaper option in the chat view.</source>
-        <translation type="unfinished"></translation>
+        <translation>Celà va créer un thème par défaut.</translation>
     </message>
     <message>
         <source>A default theme already exists. Please edit this one or delete it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un thème par défaut existe déjà. Editez-le, ou supprimez-le.</translation>
     </message>
 </context>
 <context>
@@ -1021,27 +1037,35 @@
     </message>
     <message>
         <source>Chat interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Interface du chat</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Alternatif</translation>
     </message>
     <message>
         <source>Native</source>
-        <translation type="unfinished"></translation>
+        <translation>Natif</translation>
     </message>
     <message>
         <source>Themes</source>
-        <translation type="unfinished"></translation>
+        <translation>Thème</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Cryptage</translation>
     </message>
     <message>
         <source>Setup encryption keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer les clés de cryptage</translation>
+    </message>
+    <message>
+        <source>Display warning about encryption</source>
+        <translation>Afficher les messages sur l&apos;encryption</translation>
+    </message>
+    <message>
+        <source>Show your fingerprint</source>
+        <translation>Afficher son emprunte</translation>
     </message>
 </context>
 <context>
@@ -1061,6 +1085,14 @@
     <message>
         <source>Wrong password.</source>
         <translation type="unfinished">Mot de passe incorrect</translation>
+    </message>
+    <message>
+        <source>First, you need to generate the Keys!</source>
+        <translation>Vous devez d&apos;abord générer une clé</translation>
+    </message>
+    <message>
+        <source>Your fingerprint</source>
+        <translation>Votre enprunte</translation>
     </message>
 </context>
 <context>
@@ -1139,7 +1171,7 @@
     <name>ThemeEditorController</name>
     <message>
         <source>Me</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Moi</translation>
     </message>
     <message>
         <source>Contact</source>

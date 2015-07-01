@@ -24,42 +24,29 @@ Page {
                 rightPadding: 10
                 background: Application.themeSupport.theme.colorTheme.style == VisualStyle.Dark ? Color.create("#282828") : Color.create("#f0f0f0");
                 
-                Container {
-                    horizontalAlignment: HorizontalAlignment.Right
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
                     
-                    ImageButton {
-                        id: otrLockButton
-                        defaultImageSource: "asset:///images/icon_lock_open.png"
-                        verticalAlignment: VerticalAlignment.Center
-                        onClicked: {
-                            conversationController.startOTR(id);
-                        }
-                    }
-                    
-                    ImageView {
-                        verticalAlignment: VerticalAlignment.Center
-                        
-                        id: avatarOwnImg
-                        scalingMethod: ScalingMethod.AspectFit
-                        minHeight: ui.du(9)
-                        maxHeight: ui.du(9)
-                        minWidth: ui.du(9)
-                        maxWidth: ui.du(9)
-                        image: trackerOwn.image
-                        
-                        attachedObjects: [
-                            NetImageTracker {
-                                id: trackerOwn
-                                
-                                source: avatar                                    
-                            } 
-                        ]
-                    }
-
+                ImageView {
+                     verticalAlignment: VerticalAlignment.Center
+                     horizontalAlignment: HorizontalAlignment.Right
+                     
+                     id: avatarOwnImg
+                     scalingMethod: ScalingMethod.AspectFit
+                     minHeight: ui.du(9)
+                     maxHeight: ui.du(9)
+                     minWidth: ui.du(9)
+                     maxWidth: ui.du(9)
+                     image: trackerOwn.image
+                     
+                     attachedObjects: [
+                         NetImageTracker {
+                             id: trackerOwn
+                             
+                             source: avatar                                    
+                         } 
+                     ]
                 }
+
+    
                                 
                 Label {
                     text: name
@@ -473,6 +460,15 @@ Page {
             }
         },
         ActionItem {
+            id: otrLockButton
+            title: qsTr("Encryption")
+            imageSource: "asset:///images/icon_lock_open.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                conversationController.startOTR(id);
+            }
+        }, 
+        ActionItem {
             title: qsTr("Stickers")
             ActionBar.placement: ActionBarPlacement.InOverflow
             imageSource: "asset:///images/document.png"
@@ -568,13 +564,13 @@ Page {
             
             onUpdateGoneSecure: {
                 if(id == contact) {
-                    otrLockButton.defaultImageSource = "asset:///images/icon_lock_locked.png";
+                    otrLockButton.imageSource = "asset:///images/icon_lock_closed.png";
                 }
             }
             
             onUpdateGoneUnsecure: {
                 if(id == contact) {
-                    otrLockButton.defaultImageSource = "asset:///images/icon_lock_open.png";
+                    otrLockButton.imageSource = "asset:///images/icon_lock_open.png";
                 }
             }
         },

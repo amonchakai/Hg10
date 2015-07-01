@@ -25,6 +25,7 @@
 #include <bb/cascades/Theme>
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/system/SystemDialog>
+#include <bb/system/SystemToast>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/GroupDataModel>
 #include <bb/multimedia/AudioRecorder>
@@ -45,7 +46,8 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
             m_IsRoom(false),
             m_UploadingAudio(false),
             m_FileTransfert(NULL),
-            m_CurrentActionTab(-1) {
+            m_CurrentActionTab(-1),
+            m_Crypted(false) {
 
     bool check = connect(ConversationManager::get(), SIGNAL(historyLoaded()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -109,12 +111,14 @@ void ConversationController::linkEstablished() {
 }
 
 void ConversationController::load(const QString &id, const QString &avatar, const QString &name) {
+    m_DstId = id;
     if(avatar.mid(0,9).toLower() == "asset:///")
         m_DstAvatar = QDir::currentPath() + "/app/native/assets/" +  avatar.mid(9);
     else
         m_DstAvatar = avatar;
 
     XMPP::get()->askConnectionStatus();
+    XMPP::get()->requestOTRStatus(id);
 
     m_HistoryCleared = false;
     m_DstName = name;
@@ -434,16 +438,42 @@ void ConversationController::pushHistory(const QString &from, const QString &mes
 
 
 void ConversationController::startOTR(const QString &id) {
-    XMPP::get()->requestOTRSession(id);
+    if(m_Crypted) {
+        XMPP::get()->closeOTRSession(id);
+        goneUnsecure(id);
+    } else {
+        if(!QFile::exists(QDir::homePath() + QLatin1String("/keys/keys.txt"))) {
+            bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+            toast->setBody(tr("To use Off-the-record, you need to generate a Key. Please go to the Settings!"));
+            toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+            toast->show();
+            return;
+
+        }
+
+        QSettings settings("Amonchakai", "Hg10");
+        if(settings.value("OTRWarning", true).toBool()) {
+            bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+            toast->setBody(tr("Off-the-record session requested. Please note Google Hangouts official client does NOT support end-to-end encryption!"));
+            toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+            toast->show();
+        }
+
+        XMPP::get()->requestOTRSession(id);
+    }
 }
 
 
 void ConversationController::goneSecure(const QString &with) {
+    if(with == m_DstId) m_Crypted = true;
     emit updateGoneSecure(with);
 }
 
 
 void ConversationController::goneUnsecure(const QString &with) {
+    if(with == m_DstId) m_Crypted = false;
     emit updateGoneUnsecure(with);
 }
 

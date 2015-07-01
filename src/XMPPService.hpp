@@ -35,7 +35,9 @@ public:
     void                           disconnectFromServer();
     void                           askConnectionStatus();
     void                           closeCard();
-    void                           setupKeys           ();
+    void                           setupKeys();
+    void                           showKeys();
+    void                           requestOTRStatus(const QString& to);
 
 
 private:
@@ -61,6 +63,7 @@ public Q_SLOTS:
     void requestPresence    ();
     void sendMessageTo      (const QString &to, const QString &message);
     void requestOTRSession  (const QString& to);
+    void closeOTRSession    (const QString& to);
 
     void loadvCard          (const QString& bareJid, bool push = false, int status = -1);
 
@@ -140,6 +143,8 @@ Q_SIGNALS:
     void goneSecure          (const QString &with);
     void goneUnsecure        (const QString &with);
     void fingerprintReceived (const QString &from, const QString& fingerprint);
+    void ownFingerprint      (const QString &fingerprint);
+    void wasNotSecure        (const QString &from, const QString& body);
 
     void connectedXMPP       ();
     void connectionFailed    ();

@@ -50,6 +50,7 @@ private:
 
     QString                   m_DstAvatar;
     QString                   m_DstName;
+    QString                   m_DstId;
     bool                      m_HistoryCleared;
     bool                      m_IsRoom;
     bool                      m_UploadingAudio;
@@ -59,6 +60,7 @@ private:
 
     QString                   m_NewWallpaper;
     int                       m_CurrentActionTab;
+    bool                      m_Crypted;
 
 
 

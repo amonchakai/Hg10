@@ -283,6 +283,27 @@ void XMPP::readyRead() {
             }
                 break;
 
+            case XMPPServiceMessages::OTR_OWN_FINGERPRINT: {
+                code_str = m_ClientSocket->read(sizeof(int));
+                int length = *reinterpret_cast<int*>(code_str.data());
+                QString fingerprint(m_ClientSocket->read(length));
+
+                emit ownFingerprint(fingerprint);
+            }
+                break;
+
+            case XMPPServiceMessages::OTR_WAS_NOT_SECURE: {
+                code_str = m_ClientSocket->read(sizeof(int));
+                int length = *reinterpret_cast<int*>(code_str.data());
+                QString from(m_ClientSocket->read(length));
+
+                code_str = m_ClientSocket->read(sizeof(int));
+                length = *reinterpret_cast<int*>(code_str.data());
+                QString body(QTextCodec::codecForName("UTF-8")->toUnicode(m_ClientSocket->read(length)));
+
+                emit wasNotSecure(from, body);
+            }
+                break;
         }
 
         code_str = m_ClientSocket->read(sizeof(int));
@@ -602,11 +623,58 @@ void XMPP::setupKeys() {
     mutex.unlock();
 }
 
+void XMPP::showKeys() {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::OTR_GET_OWN_FINGERPRINT;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
+void XMPP::requestOTRStatus(const QString& to) {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::OTR_REQUEST_STATUS;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        int length = to.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(to.toAscii(), length);
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
 void XMPP::requestOTRSession(const QString& to) {
     mutex.lockForWrite();
 
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
         int code = XMPPServiceMessages::OTR_REQUEST_START;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        int length = to.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(to.toAscii(), length);
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
+void XMPP::closeOTRSession(const QString& to) {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::OTR_REQUEST_STOP;
         m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
 
         int length = to.length();

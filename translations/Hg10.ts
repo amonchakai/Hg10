@@ -286,6 +286,10 @@
         <source>Smileys</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConversationCard</name>
@@ -356,6 +360,10 @@
         <source>To last message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConversationController</name>
@@ -381,6 +389,14 @@
     </message>
     <message>
         <source>/app/native/assets/data/emojies_list.xml</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Off-the-record session requested. Please note Google Hangouts official client does NOT support end-to-end encryption!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To use Off-the-record, you need to generate a Key. Please go to the Settings!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -994,6 +1010,14 @@
         <source>Setup encryption keys</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Display warning about encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show your fingerprint</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SettingsController</name>
@@ -1011,6 +1035,14 @@
     </message>
     <message>
         <source>Wrong password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First, you need to generate the Keys!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your fingerprint</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

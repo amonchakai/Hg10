@@ -38,9 +38,13 @@ struct XMPPServiceMessages {
         OTR_REQUEST_START,
         OTR_REQUEST_STOP,
         OTR_SETUP_KEYS,
+        OTR_GET_OWN_FINGERPRINT,
+        OTR_OWN_FINGERPRINT,
         OTR_FINGERPRINT_RECEIVED,
         OTR_GONE_SECURE,
         OTR_GONE_UNSECURE,
+        OTR_WAS_NOT_SECURE,
+        OTR_REQUEST_STATUS,
         UPDATE_HUB,
         REMOVE_HUB
     };

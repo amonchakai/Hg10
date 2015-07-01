@@ -12,6 +12,7 @@
 #include "XMPPService.hpp"
 #include <bb/platform/Notification>
 #include <bb/system/SystemPrompt>
+#include <bb/system/SystemDialog>
 #include <bb/system/SystemToast>
 #include "PrivateAPIKeys.h"
 
@@ -28,6 +29,7 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
     m_FontSize = m_Settings->value("fontSize").value<int>();
     m_ConversTheme = m_Settings->value("ConversationTheme", 0).value<int>();
     m_Space = m_Settings->value("Space", 0).value<int>();
+    m_OTRWarning = m_Settings->value("OTRWarning", true).toBool();
 
     if(m_FontSize == 0)
         m_FontSize = 28;
@@ -46,6 +48,12 @@ SettingsController::SettingsController(QObject *parent) : QObject(parent), m_Fon
     Q_ASSERT(check);
     Q_UNUSED(check);
 
+
+    check = connect(XMPP::get(), SIGNAL(ownFingerprint(const QString&)), this, SLOT(fingerprintReceived(const QString&)));
+
+    Q_ASSERT(check);
+    Q_UNUSED(check);
+
 }
 
 bool SettingsController::getGoogleLogged() {
@@ -56,15 +64,35 @@ bool SettingsController::getGoogleLogged() {
 void SettingsController::updateAvatar() {
     setAvatar(ConversationManager::get()->getAvatar());
     setUserName(ConversationManager::get()->getUser());
-
-    QRegExp isFacebook("(.*)@chat.facebook.com");
-    if(isFacebook.indexIn(ConversationManager::get()->getUser()) != -1)
-        setEnableGoogle(false);
-
 }
 
 void SettingsController::setupKeys() {
     XMPP::get()->setupKeys();
+}
+
+void SettingsController::showKeys() {
+    if(!QFile::exists(QDir::homePath() + QLatin1String("/keys/keys.txt"))) {
+        bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+        toast->setBody(tr("First, you need to generate the Keys!"));
+        toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+        toast->show();
+        return;
+
+    }
+
+    XMPP::get()->showKeys();
+}
+
+void SettingsController::fingerprintReceived(const QString& fingerprint) {
+    using namespace bb::system;
+
+    SystemDialog *dialog = new SystemDialog("Ok");
+
+    dialog->setTitle(tr("Your fingerprint"));
+    dialog->setBody(fingerprint);
+
+    dialog->show();
 }
 
 void SettingsController::save() {
@@ -74,6 +102,7 @@ void SettingsController::save() {
     m_Settings->setValue("DropBoxEnabled", m_DropBoxEnabled);
     m_Settings->setValue("ConversationTheme", m_ConversTheme);
     m_Settings->setValue("Space", m_Space);
+    m_Settings->setValue("OTRWarning", m_OTRWarning);
 
     XMPP::get()->notifySettingChange();
 }
