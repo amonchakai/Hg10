@@ -1,5 +1,5 @@
 1
-178
+179
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -116,6 +116,7 @@ images/icon_right.png
 images/icon_right_black.png
 images/icon_search.png
 images/icon_search.svg
+images/icon_search2.png
 images/icon_settings.png
 images/icon_settings_black.png
 images/icon_share.png

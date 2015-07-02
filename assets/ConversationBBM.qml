@@ -550,7 +550,6 @@ Page {
             
             onComplete: {
                 txtField.requestFocus();
-                otrLockButton.defaultImageSource = "asset:///images/icon_lock_open.png";
             }
             
             onWallpaperChanged: {

@@ -386,6 +386,24 @@ void DriveController::updateView() {
     m_Google->refresh();
 }
 
+void DriveController::search(const QString &key) {
+    using namespace bb::cascades;
+
+    if(m_ListView == NULL) {
+        qWarning() << "did not received the listview. quit.";
+        return;
+    }
+
+    GroupDataModel* dataModel = dynamic_cast<GroupDataModel*>(m_ListView->dataModel());
+
+    if(dataModel != NULL) {
+        m_DriveItems.clear();
+        dataModel->clear();
+    }
+
+    m_Google->search(key);
+}
+
 void DriveController::createNewFolder() {
     using namespace bb::cascades;
     using namespace bb::system;

@@ -50,7 +50,7 @@
                 list.innerHTML = list.innerHTML + "<li><p>" + what + "</p></li>";
             }
 
-            scrollToEnd();
+            window.scrollTo(0,document.body.scrollHeight);
         }
 
         function pushHistory(where, who, what, avatar, name, time) {

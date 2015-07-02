@@ -68,6 +68,7 @@ public Q_SLOTS:
     void pop                            ();
     void pushDriveItem                  (DriveItem *item);
     void updateView                     ();
+    void search                         (const QString &key);
     void open                           (const QString &id, const QString &type);
     void onImageReady                   (const QString &url, const QString &diskPath);
     void notifyEmptyFolder              ();

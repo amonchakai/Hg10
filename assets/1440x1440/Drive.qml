@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 import Network.DriveController 1.0
 import com.netimage 1.0
 import bb.cascades.pickers 1.0
@@ -75,6 +75,39 @@ NavigationPane {
                     preferredHeight: 60
                     horizontalAlignment: HorizontalAlignment.Center
                     verticalAlignment: VerticalAlignment.Top
+                }
+                
+                Container {
+                    id: searchField
+                    visible: false
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    
+                    TextField {
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        id: searchKey
+                        
+                        input {
+                            submitKey: SubmitKey.Send
+                            onSubmitted: {
+                                if(searchKey.text != "")
+                                    driveController.search(searchKey.text);
+                                else {
+                                    searchField.visible = false;
+                                }
+                            }
+                        }
+                    }
+                    
+                    Button {
+                        text: qsTr("Ok")
+                        preferredWidth: ui.du(3)
+                        
+                        onClicked: {
+                            driveController.search(searchKey.text);
+                        }
+                    }
                 }
                 
                 ListView {
@@ -294,6 +327,15 @@ NavigationPane {
         }
         
         actions: [
+            ActionItem {
+                id: search
+                title: qsTr("Search")
+                imageSource: "asset:///images/icon_search2.png"
+                ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    searchField.visible = !searchField.visible;
+                }
+            },
             ActionItem {
                 id: refresh
                 title: qsTr("Refresh")

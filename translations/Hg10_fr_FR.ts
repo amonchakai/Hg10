@@ -516,6 +516,14 @@
         <source>Sorting key</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DriveController</name>
@@ -1066,6 +1074,10 @@
     <message>
         <source>Show your fingerprint</source>
         <translation>Afficher son emprunte</translation>
+    </message>
+    <message>
+        <source>End-to-end encryption requires your contact have a client which support encryption. Desktop clients include Adium, Pindgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
+        <translation>Le cryptage point à point nécessite que votre contact dispose d&apos;un client qui le supporte. Potentiels clients sur PC sont Adium, Pidgin, Kepete... ChatSecure sur téléphone. Le client officiel de Google ne le supporte PAS.</translation>
     </message>
 </context>
 <context>

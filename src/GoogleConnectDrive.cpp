@@ -304,6 +304,23 @@ void GoogleConnectController::getFileList(const QString &directory) {
     Q_UNUSED(ok);
 }
 
+void GoogleConnectController::search(const QString& key) {
+    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/drive/v2/files?")
+                                    + "q=title contains \'" + key + "\'"
+                                    + "&key=" + GOOGLE_API_KEY
+                                    + "&trashed=false"
+                               )
+                            );
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getFileListReply()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+}
+
 void GoogleConnectController::popFolder() {
     getFileList(m_ParentID);
 }

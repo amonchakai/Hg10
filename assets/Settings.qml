@@ -270,6 +270,15 @@ NavigationPane {
                 }
                 Divider { }
                 
+                Label {
+                    multiline: true
+                    textStyle.textAlign: TextAlign.Justify
+                    textStyle.fontSize: FontSize.Small
+                    margin.leftOffset: ui.du(1)
+                    margin.rightOffset: ui.du(1)
+                    text: qsTr("End-to-end encryption requires your contact have a client which support encryption. Desktop clients include Adium, Pindgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.")
+                }
+                
                 Button {
                     text: qsTr("Setup encryption keys")
                     horizontalAlignment: HorizontalAlignment.Fill

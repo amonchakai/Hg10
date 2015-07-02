@@ -77,6 +77,39 @@ NavigationPane {
                     verticalAlignment: VerticalAlignment.Top
                 }
                 
+                Container {
+                    id: searchField
+                    visible: false
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    
+                    TextField {
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        id: searchKey
+                        
+                        input {
+                            submitKey: SubmitKey.Send
+                            onSubmitted: {
+                                if(searchKey.text != "")
+                                    driveController.search(searchKey.text);
+                                else {
+                                    searchField.visible = false;
+                                }
+                            }
+                        }
+                    }
+                    
+                    Button {
+                        text: qsTr("Ok")
+                        preferredWidth: ui.du(3)
+                        
+                        onClicked: {
+                            driveController.search(searchKey.text);
+                        }
+                    }
+                }
+                
                 ListView {
                     scrollRole: ScrollRole.Main
                     id: fileListView
@@ -297,6 +330,15 @@ NavigationPane {
         }
         
         actions: [
+            ActionItem {
+                id: search
+                title: qsTr("Search")
+                imageSource: "asset:///images/icon_search2.png"
+                ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    searchField.visible = !searchField.visible;
+                }
+            },
             ActionItem {
                 id: refresh
                 title: qsTr("Refresh")

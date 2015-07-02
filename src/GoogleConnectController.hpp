@@ -144,6 +144,7 @@ public Q_SLOTS:
     void checkReplyRename       ();
 
     void getFileList            (const QString &directory = "");
+    void search                 (const QString& key);
     void getFileListReply       ();
     void getBranchFileListReply ();
     void setFileName            (const QString &id, const QString &name);

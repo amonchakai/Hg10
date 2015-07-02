@@ -500,6 +500,14 @@
         <source>Sorting key</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DriveController</name>
@@ -1016,6 +1024,10 @@
     </message>
     <message>
         <source>Show your fingerprint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End-to-end encryption requires your contact have a client which support encryption. Desktop clients include Adium, Pindgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

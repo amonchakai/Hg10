@@ -175,6 +175,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_right_black.png) \
         $$quote($$BASEDIR/assets/images/icon_search.png) \
         $$quote($$BASEDIR/assets/images/icon_search.svg) \
+        $$quote($$BASEDIR/assets/images/icon_search2.png) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/icon_settings_black.png) \
         $$quote($$BASEDIR/assets/images/icon_share.png) \
