@@ -41,7 +41,7 @@ void LoginController::setNotif(bool value) {
 
 
 void LoginController::login(const QString& login, const QString &password) {
-    m_User = login;
+    m_User = login.toLower();
     m_Password = password;
 
     m_User.replace(" ", ""); // remove eventual padding spaces...
@@ -57,7 +57,7 @@ void LoginController::login(const QString& login, const QString &password) {
 }
 
 void LoginController::advancedLogin(const QString& host, const QString &domain, int port, const QString &login, const QString &password, int encryption, int proxy) {
-    m_User = login;
+    m_User = login.toLower();
     m_Password = password;
 
     m_User.replace(" ", ""); // remove eventual padding spaces...

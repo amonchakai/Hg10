@@ -341,7 +341,7 @@ void GoogleConnectController::replyGetUserInfo() {
 
                     if (file.open(QIODevice::WriteOnly)) {
                         QDataStream stream(&file);
-                        stream << email.cap(1);
+                        stream << email.cap(1).toLower();
 
                         qDebug() << "USER DATA OBTAINED: " << email.cap(1);
 
