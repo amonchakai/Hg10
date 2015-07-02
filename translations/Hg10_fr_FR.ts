@@ -451,11 +451,11 @@
     </message>
     <message>
         <source>Create new theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau thème</translation>
     </message>
     <message>
         <source>This will create a new default theme. A per-user theme can be defined using the wallpaper option in the chat view.</source>
-        <translation>Celà va créer un thème par défaut.</translation>
+        <translation>Cela va créer un thème par défaut.</translation>
     </message>
     <message>
         <source>A default theme already exists. Please edit this one or delete it.</source>
@@ -522,7 +522,7 @@
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher</translation>
     </message>
 </context>
 <context>
@@ -857,6 +857,10 @@
         <source>Done!</source>
         <translation>Fermer!</translation>
     </message>
+    <message>
+        <source>Welcome to Hg10!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Payment</name>
@@ -1176,7 +1180,7 @@
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Thèmes prédéfini</translation>
     </message>
 </context>
 <context>

@@ -53,21 +53,22 @@ Page {
                             preferredHeight: 720
                             preferredWidth: 720
                         }
-                        ImageView {
-                            imageSource: "asset:///images/Tutorial/listContacts.jpg"
+                        
+                        Container {
                             preferredHeight: 720
                             preferredWidth: 720
+                            
+                            layout: DockLayout {
+                            
+                            }
+                            
+                            Label {
+                                horizontalAlignment: HorizontalAlignment.Center
+                                verticalAlignment: VerticalAlignment.Center
+                                text: qsTr("Welcome to Hg10!")
+                            }
                         }
-                        ImageView {
-                            imageSource: "asset:///images/Tutorial/chat.jpg"
-                            preferredHeight: 720
-                            preferredWidth: 720
-                        }
-                        ImageView {
-                            imageSource: "asset:///images/Tutorial/listContactsFiltered.jpg"
-                            preferredHeight: 720
-                            preferredWidth: 720
-                        }
+                        
                         Container {
                             preferredHeight: 720
                             preferredWidth: 720
@@ -116,7 +117,7 @@ Page {
         
         onCreationCompleted: {
             index = 0;
-            nbDots = 5;
+            nbDots = 3;
         }
         
         

@@ -827,6 +827,10 @@
         <source>Done!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Welcome to Hg10!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Payment</name>

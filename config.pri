@@ -95,28 +95,18 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/EnhancementRequest_white.png) \
         $$quote($$BASEDIR/assets/images/HelpRequest.png) \
         $$quote($$BASEDIR/assets/images/HelpRequest_white.png) \
-        $$quote($$BASEDIR/assets/images/Tutorial/accept.jpg) \
-        $$quote($$BASEDIR/assets/images/Tutorial/chat.jpg) \
         $$quote($$BASEDIR/assets/images/Tutorial/closeIcon.png) \
-        $$quote($$BASEDIR/assets/images/Tutorial/listContacts.jpg) \
-        $$quote($$BASEDIR/assets/images/Tutorial/listContactsFiltered.jpg) \
-        $$quote($$BASEDIR/assets/images/Tutorial/logIn.jpg) \
-        $$quote($$BASEDIR/assets/images/Tutorial/settings.jpg) \
         $$quote($$BASEDIR/assets/images/Tutorial/splash_720x720.jpg) \
         $$quote($$BASEDIR/assets/images/absent.png) \
         $$quote($$BASEDIR/assets/images/available.png) \
-        $$quote($$BASEDIR/assets/images/available.svg) \
         $$quote($$BASEDIR/assets/images/avatar.png) \
         $$quote($$BASEDIR/assets/images/avatar.png.square.png) \
-        $$quote($$BASEDIR/assets/images/avatar.square.svg) \
-        $$quote($$BASEDIR/assets/images/avatar.svg) \
         $$quote($$BASEDIR/assets/images/avatar_black.png) \
         $$quote($$BASEDIR/assets/images/avatar_white.png) \
         $$quote($$BASEDIR/assets/images/blackFace.png) \
         $$quote($$BASEDIR/assets/images/bug.png) \
         $$quote($$BASEDIR/assets/images/busy.png) \
         $$quote($$BASEDIR/assets/images/chat_room.png) \
-        $$quote($$BASEDIR/assets/images/chat_room.svg) \
         $$quote($$BASEDIR/assets/images/color/Attach.png) \
         $$quote($$BASEDIR/assets/images/color/Clean.png) \
         $$quote($$BASEDIR/assets/images/color/Emoticon.png) \
@@ -132,19 +122,15 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/color/to_Bottom.png) \
         $$quote($$BASEDIR/assets/images/color/to_Top.png) \
         $$quote($$BASEDIR/assets/images/contact.png) \
-        $$quote($$BASEDIR/assets/images/contact.svg) \
         $$quote($$BASEDIR/assets/images/document.png) \
         $$quote($$BASEDIR/assets/images/icon_about.png) \
         $$quote($$BASEDIR/assets/images/icon_add.png) \
-        $$quote($$BASEDIR/assets/images/icon_add.svg) \
         $$quote($$BASEDIR/assets/images/icon_add_contact.png) \
-        $$quote($$BASEDIR/assets/images/icon_add_contact.svg) \
         $$quote($$BASEDIR/assets/images/icon_attach.png) \
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
         $$quote($$BASEDIR/assets/images/icon_chat.png) \
         $$quote($$BASEDIR/assets/images/icon_check.png) \
         $$quote($$BASEDIR/assets/images/icon_clip.png) \
-        $$quote($$BASEDIR/assets/images/icon_clip.svg) \
         $$quote($$BASEDIR/assets/images/icon_clip_white.png) \
         $$quote($$BASEDIR/assets/images/icon_credit.png) \
         $$quote($$BASEDIR/assets/images/icon_download.png) \
@@ -166,23 +152,18 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_quoted.png) \
         $$quote($$BASEDIR/assets/images/icon_quoted_white.png) \
         $$quote($$BASEDIR/assets/images/icon_redface_rounded.png) \
-        $$quote($$BASEDIR/assets/images/icon_redface_rounded.svg) \
         $$quote($$BASEDIR/assets/images/icon_redface_rounded_black.png) \
-        $$quote($$BASEDIR/assets/images/icon_redface_rounded_black.svg) \
         $$quote($$BASEDIR/assets/images/icon_refresh.png) \
         $$quote($$BASEDIR/assets/images/icon_rename.png) \
         $$quote($$BASEDIR/assets/images/icon_right.png) \
         $$quote($$BASEDIR/assets/images/icon_right_black.png) \
         $$quote($$BASEDIR/assets/images/icon_search.png) \
-        $$quote($$BASEDIR/assets/images/icon_search.svg) \
         $$quote($$BASEDIR/assets/images/icon_search2.png) \
         $$quote($$BASEDIR/assets/images/icon_settings.png) \
         $$quote($$BASEDIR/assets/images/icon_settings_black.png) \
         $$quote($$BASEDIR/assets/images/icon_share.png) \
         $$quote($$BASEDIR/assets/images/icon_smile.png) \
-        $$quote($$BASEDIR/assets/images/icon_smile.svg) \
         $$quote($$BASEDIR/assets/images/icon_smile_white.png) \
-        $$quote($$BASEDIR/assets/images/icon_smile_white.svg) \
         $$quote($$BASEDIR/assets/images/icon_sort.png) \
         $$quote($$BASEDIR/assets/images/icon_synchronize.png) \
         $$quote($$BASEDIR/assets/images/icon_theme.png) \
@@ -191,7 +172,6 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_upload.png) \
         $$quote($$BASEDIR/assets/images/icon_walkie.png) \
         $$quote($$BASEDIR/assets/images/icon_wallpaper.png) \
-        $$quote($$BASEDIR/assets/images/icon_wallpaper.svg) \
         $$quote($$BASEDIR/assets/images/icon_write_context.png) \
         $$quote($$BASEDIR/assets/images/icon_write_rounded.png) \
         $$quote($$BASEDIR/assets/images/icon_write_rounded_black.png) \
@@ -199,7 +179,6 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/pinch_out_black.png) \
         $$quote($$BASEDIR/assets/images/pull-to-refresh.png) \
         $$quote($$BASEDIR/assets/images/send.png) \
-        $$quote($$BASEDIR/assets/images/send.svg) \
         $$quote($$BASEDIR/assets/images/sound.png) \
         $$quote($$BASEDIR/assets/images/sound_white.png) \
         $$quote($$BASEDIR/assets/images/walkie.png) \
@@ -209,7 +188,6 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/whiteFace.png) \
         $$quote($$BASEDIR/assets/images/whiteFace2.png) \
         $$quote($$BASEDIR/assets/images/write.png) \
-        $$quote($$BASEDIR/assets/images/write.svg) \
         $$quote($$BASEDIR/assets/images/write_white.png) \
         $$quote($$BASEDIR/assets/main.qml) \
         $$quote($$BASEDIR/assets/template.html) \
