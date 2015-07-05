@@ -847,11 +847,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>http://amonchakai.github.io/Hg10/donate_en.html</source>
+        <source>Thank you for your support!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Thank you for your support!</source>
+        <source>Donate ~2$</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Donate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are currently visiting the donation page to the developer of Hg10. There is no obligation to do so, only if you want to. This do not unlock features in the application. All supported features are already included in the application whether you have donated or not.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1031,7 +1039,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>End-to-end encryption requires your contact have a client which support encryption. Desktop clients include Adium, Pindgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
+        <source>End-to-end encryption requires your contact to have a client which support encryption. Desktop clients include Adium, Pindgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

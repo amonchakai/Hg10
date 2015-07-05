@@ -325,7 +325,7 @@ void ListContactsController::updateView() {
     QList<QObject*> datas;
     for(int i = contacts->length()-1 ; i >= 0 ; --i) {
         // remove yourself from the list of contact, and store the info for display
-        if(contacts->at(i)->getID().toLower() != ConversationManager::get()->getUser().toLower()) {
+        if(contacts->at(i)->getID().toLower() != ConversationManager::get()->getUser().toLower() && !contacts->at(i)->getID().isEmpty()) {
 
             TimeEvent e = ConversationManager::get()->getPreview(contacts->at(i)->getID());
             if(m_OnlyFavorite && e.m_What.isEmpty())
@@ -380,8 +380,12 @@ void ListContactsController::updateView() {
             e.m_When = 0;
 
         } else {
-            setUserName(contacts->at(i)->getName());
-
+            if(contacts->at(i)->getID().isEmpty())
+                setUserName(contacts->at(i)->getName());
+            else {
+                if(m_User.isEmpty())
+                    setUserName(contacts->at(i)->getName());
+            }
         }
     }
 
@@ -424,9 +428,7 @@ void ListContactsController::pushContact(const Contact* c) {
             return;
     }
 
-    if(c->getID().toLower() != ConversationManager::get()->getUser().toLower()) {
-        qDebug() << "Pushing: " << c->getName() << ConversationManager::get()->getUser().toLower();
-
+    if(c->getID().toLower() != ConversationManager::get()->getUser().toLower()  && !c->getID().isEmpty()) {
         TimeEvent e = ConversationManager::get()->getPreview(c->getID());
 
         if(m_OnlyFavorite && e.m_What.isEmpty())
@@ -465,9 +467,12 @@ void ListContactsController::pushContact(const Contact* c) {
         dataModel->insert(nc);
 
     } else {
-        qDebug() << "nope Pushing: " << c->getName();
-
-        setUserName(c->getName());
+        if(c->getID().isEmpty())
+            setUserName(c->getName());
+        else {
+            if(m_User.isEmpty())
+                setUserName(c->getName());
+        }
     }
 
     QString vCardsDir = QDir::homePath() + QLatin1String("/vCards");
