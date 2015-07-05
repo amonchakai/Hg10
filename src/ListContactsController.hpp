@@ -13,6 +13,7 @@
 #include <bb/platform/Notification>
 #include <bb/cascades/ActivityIndicator>
 #include <bb/system/SystemUiResult>
+#include <QSet>
 
 class Contact;
 
@@ -35,6 +36,7 @@ class ListContactsController : public QObject {
 
 private:
     bb::cascades::ListView          *m_ListView;
+    bb::cascades::ListView          *m_BlackListView;
     bb::cascades::ActivityIndicator *m_Activity;
     QString                          m_User;
     QString                          m_Avatar;
@@ -51,6 +53,8 @@ private:
 
     bb::platform::Notification      *m_Notification;
 
+    QSet<QString>                    m_BlackList;
+    QString                          m_tmp_blacklist;
 
 
 public:
@@ -84,15 +88,24 @@ public:
 
     inline int            getConversTheme() const           { return m_ConversTheme; }
 
+    void                  saveBlackList();
+    void                  loadBlackList();
+
 
 public Q_SLOTS:
     inline void setListView             (QObject *listView)    {m_ListView = dynamic_cast<bb::cascades::ListView*>(listView); }
+    inline void setBlackListView        (QObject *listView)    {m_BlackListView = dynamic_cast<bb::cascades::ListView*>(listView); }
     inline void setActivityIndicator    (QObject *activity)    {m_Activity = dynamic_cast<bb::cascades::ActivityIndicator*>(activity); m_Activity->start();}
     void updateView                     ();
     void pushContact                    (const Contact*);
     void refresh                        ();
 
+    void updateBlackList                ();
+
     void loadContactDetails             (const QString &id);
+    void blacklistContact               (const QString &id);
+    void removeFromBlackList            (const QString &id);
+    void onPromptFinishedBlacklist      (bb::system::SystemUiResult::Type);
 
 
     void updatePresence                 (const QString &who, int status);

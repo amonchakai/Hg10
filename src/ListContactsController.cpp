@@ -10,8 +10,10 @@
 
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/GroupDataModel>
+#include <bb/cascades/ArrayDataModel>
 #include <bb/platform/Notification>
 #include <bb/system/SystemPrompt>
+#include <bb/system/SystemDialog>
 
 #include <QDir>
 #include <QFile>
@@ -26,7 +28,7 @@
 
 
 ListContactsController::ListContactsController(QObject *parent) : QObject(parent),
-    m_ListView(NULL), m_Activity(NULL), m_OnlyFavorite(false), m_PushStated(false), m_Notification(NULL) {
+    m_ListView(NULL), m_BlackListView(NULL), m_Activity(NULL), m_OnlyFavorite(false), m_PushStated(false), m_Notification(NULL) {
 
     bool check = connect(XMPP::get(), SIGNAL(contactReceived()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -57,6 +59,8 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
     m_AvailabilityFilter = settings.value("AvailabilityFilter", -1).toInt();
     m_ConversTheme = settings.value("ConversationTheme", 0).toInt();
 
+    loadBlackList();
+
 }
 
 void ListContactsController::clear() {
@@ -84,6 +88,47 @@ void ListContactsController::deleteHistory(const QString &with) {
         }
     }
 }
+
+void ListContactsController::saveBlackList() {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/");
+    if (!QFile::exists(directory)) {
+        QDir dir;
+        dir.mkpath(directory);
+    }
+
+    QFile file(directory + "/blacklist.txt");
+
+    if (file.open(QIODevice::WriteOnly)) {
+        QTextStream stream(&file);
+        for(QSet<QString>::iterator it = m_BlackList.begin() ; it != m_BlackList.end() ; ++it)
+            stream << *it << "\n";
+        file.close();
+    }
+
+}
+
+void ListContactsController::loadBlackList() {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/");
+    if (!QFile::exists(directory)) {
+        return;
+    }
+
+    QFile file(directory + "/blacklist.txt");
+
+    if (file.open(QIODevice::ReadOnly)) {
+        QTextStream stream(&file);
+        QString id;
+        m_BlackList.clear();
+
+        stream >> id;
+        while(!id.isEmpty()) {
+            m_BlackList.insert(id);
+            stream >> id;
+        }
+        file.close();
+    }
+}
+
 
 void ListContactsController::updateConnectionStatus(bool status) {
     if(m_Activity != NULL) {
@@ -324,6 +369,8 @@ void ListContactsController::updateView() {
 
     QList<QObject*> datas;
     for(int i = contacts->length()-1 ; i >= 0 ; --i) {
+        if(m_BlackList.find(contacts->at(i)->getID()) != m_BlackList.end()) continue;
+
         // remove yourself from the list of contact, and store the info for display
         if(contacts->at(i)->getID().toLower() != ConversationManager::get()->getUser().toLower() && !contacts->at(i)->getID().isEmpty()) {
 
@@ -412,6 +459,9 @@ void ListContactsController::updateView() {
 }
 
 void ListContactsController::pushContact(const Contact* c) {
+    if(m_BlackList.find(c->getID()) != m_BlackList.end()) {
+        return;
+    }
 
     if(m_Activity != NULL)
         m_Activity->stop();
@@ -529,6 +579,8 @@ void ListContactsController::filter(const QString &contact) {
 
     QList<QObject *> datas;
     for(int i = contacts->length()-1 ; i >= 0 ; --i) {
+        if(m_BlackList.find(contacts->at(i)->getID()) != m_BlackList.end()) continue;
+
         // remove yourself from the list of contact, and store the info for display
         if(contacts->at(i)->getID().toLower() != ConversationManager::get()->getUser().toLower() &&
            contacts->at(i)->getName().mid(0, contact.length()).toLower() == contact.toLower()) {
@@ -659,6 +711,67 @@ void ListContactsController::loadContactDetails(const QString &id) {
     setLastName(vCard.lastName());
     setNickname(vCard.nickName());
 }
+
+void ListContactsController::removeFromBlackList(const QString &id) {
+    m_BlackList.remove(id);
+    saveBlackList();
+    updateBlackList();
+}
+
+void ListContactsController::blacklistContact(const QString &id) {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    m_tmp_blacklist = id;
+
+    SystemDialog *dialog = new SystemDialog("Yes", "No");
+
+    dialog->setTitle(tr("Blacklist"));
+    dialog->setBody(tr("Are you sure to blacklist this contact?"));
+
+    bool success = connect(dialog,
+         SIGNAL(finished(bb::system::SystemUiResult::Type)),
+         this,
+         SLOT(onPromptFinishedBlacklist(bb::system::SystemUiResult::Type)));
+
+    if (success) {
+        dialog->show();
+    } else {
+        dialog->deleteLater();
+    }
+}
+
+void ListContactsController::onPromptFinishedBlacklist(bb::system::SystemUiResult::Type result) {
+    if(result == bb::system::SystemUiResult::ConfirmButtonSelection) {
+        m_BlackList.insert(m_tmp_blacklist);
+        saveBlackList();
+        updateView();
+    }
+}
+
+void ListContactsController::updateBlackList() {
+    // ----------------------------------------------------------------------------------------------
+    // get the dataModel of the listview if not already available
+    using namespace bb::cascades;
+
+
+    if(m_BlackListView == NULL) {
+        qWarning() << "did not received the listview. quit.";
+        return;
+    }
+
+    ArrayDataModel* dataModel = dynamic_cast<ArrayDataModel*>(m_BlackListView->dataModel());
+    if (dataModel) {
+        dataModel->clear();
+    }
+
+    // ----------------------------------------------------------------------------------------------
+    // push data to the view
+    for(QSet<QString>::iterator it = m_BlackList.begin() ; it != m_BlackList.end() ; ++it) {
+        dataModel->append(*it);
+    }
+}
+
 
 void ListContactsController::editContact(const QString &id, const QString &fullname, const QString &firstname, const QString &lastname, const QString &nickname) {
     for(int i = 0 ; i < m_Contacts.size() ; ++i) {

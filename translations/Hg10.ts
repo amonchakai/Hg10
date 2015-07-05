@@ -59,6 +59,21 @@
     </message>
 </context>
 <context>
+    <name>BlackList</name>
+    <message>
+        <source>Blacklist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your blacklist is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from blacklist</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>BugReport</name>
     <message>
         <source>Bug report center</source>
@@ -214,6 +229,14 @@
     </message>
     <message>
         <source>Edit contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blacklist contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage blacklist</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -765,6 +788,14 @@
     </message>
     <message>
         <source>email address...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blacklist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure to blacklist this contact?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

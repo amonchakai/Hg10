@@ -494,7 +494,6 @@ void XMPP::loadvCard(const QString &bareJid, bool push, int status) {
 
     Contact *contact = new Contact;
     contact->setID(vCard.from());
-    bool delayPush = false;
 
     QString photoName = bareJid;
 

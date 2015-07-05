@@ -10,6 +10,7 @@ NavigationPane {
     property variant spage
     property variant fpage
     property variant ecPage
+    property variant blPage
     property int depth
         
     
@@ -386,6 +387,14 @@ NavigationPane {
                                             }
                                         }
                                         
+                                        ActionItem {
+                                            title: qsTr("Blacklist contact")
+                                            imageSource: "asset:///images/icon_blacklist.png"
+                                            onTriggered: {
+                                                overallContactContainer.ListItem.view.blacklistContact(ListItemData.id);
+                                            }
+                                        }
+                                        
                                         DeleteActionItem {
                                             title: qsTr("Clear history")
                                             onTriggered: {
@@ -405,6 +414,10 @@ NavigationPane {
                         deleteToast.dismissed = false;
                         deleteToast.show();
                         timerDelete.start();
+                    }
+                    
+                    function blacklistContact(id) {
+                        listContactsController.blacklistContact(id);
                     }
                     
                     function showEditContact(id, fullname) {
@@ -560,6 +573,15 @@ NavigationPane {
                         fpage = filterSetter.createObject();
                     nav.push(fpage);
                 }
+            },
+            ActionItem {
+                title: qsTr("Manage blacklist")
+                imageSource: "asset:///images/icon_blacklist.png"
+                onTriggered: {
+                    if(!blPage)
+                        blPage = blackListContact.createObject();
+                    nav.push(blPage);
+                }
             }
             
         ]
@@ -614,6 +636,10 @@ NavigationPane {
             ComponentDefinition {
                 id: editContact
                 source: "EditContact.qml"
+            },
+            ComponentDefinition {
+                id: blackListContact
+                source: "BlackList.qml"
             },
             SystemToast {
                 id: deleteToast

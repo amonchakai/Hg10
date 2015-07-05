@@ -275,8 +275,6 @@ void ApplicationUI::onInvoked(const bb::system::InvokeRequest& request) {
     }
 
     if(request.action().compare("bb.action.COMPOSE") == 0) {
-        QmlDocument *qml = QmlDocument::create("asset:///StartupCardCompose.qml")
-                                                                  .parent(this);
 
     }
 

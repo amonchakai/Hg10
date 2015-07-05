@@ -42,6 +42,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/720x720/Contacts.qml) \
         $$quote($$BASEDIR/assets/AdvancedConection.qml) \
         $$quote($$BASEDIR/assets/ApplicationLog.qml) \
+        $$quote($$BASEDIR/assets/BlackList.qml) \
         $$quote($$BASEDIR/assets/BugReport.qml) \
         $$quote($$BASEDIR/assets/ComposeComment.qml) \
         $$quote($$BASEDIR/assets/ComposeIssue.qml) \
@@ -127,6 +128,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_add.png) \
         $$quote($$BASEDIR/assets/images/icon_add_contact.png) \
         $$quote($$BASEDIR/assets/images/icon_attach.png) \
+        $$quote($$BASEDIR/assets/images/icon_blacklist.png) \
         $$quote($$BASEDIR/assets/images/icon_bottom.png) \
         $$quote($$BASEDIR/assets/images/icon_chat.png) \
         $$quote($$BASEDIR/assets/images/icon_check.png) \

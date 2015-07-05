@@ -63,6 +63,21 @@
     </message>
 </context>
 <context>
+    <name>BlackList</name>
+    <message>
+        <source>Blacklist</source>
+        <translation>Liste noire</translation>
+    </message>
+    <message>
+        <source>Your blacklist is empty.</source>
+        <translation>Votre liste noire est vide.</translation>
+    </message>
+    <message>
+        <source>Remove from blacklist</source>
+        <translation>Retirer de la liste noire</translation>
+    </message>
+</context>
+<context>
     <name>BugReport</name>
     <message>
         <source>Bug report center</source>
@@ -219,6 +234,14 @@
     <message>
         <source>Edit contact</source>
         <translation>Modifier un contact</translation>
+    </message>
+    <message>
+        <source>Blacklist contact</source>
+        <translation>Bloquer un contact</translation>
+    </message>
+    <message>
+        <source>Manage blacklist</source>
+        <translation>Gérer les contacts bloqués</translation>
     </message>
 </context>
 <context>
@@ -796,6 +819,14 @@
     <message>
         <source>email address...</source>
         <translation>Adresse email...</translation>
+    </message>
+    <message>
+        <source>Blacklist</source>
+        <translation>Liste noire</translation>
+    </message>
+    <message>
+        <source>Are you sure to blacklist this contact?</source>
+        <translation></translation>
     </message>
 </context>
 <context>
