@@ -71,7 +71,7 @@ public Q_SLOTS:
     // -------------------------------------------------------------
     // User status
 
-    void setStatusText      (const QString &text, int presence);
+    void setStatusText      (const QString &text, int presence, int priority);
     void setPresence        (int presence);
 
     // -------------------------------------------------------------

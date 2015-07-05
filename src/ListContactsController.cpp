@@ -56,6 +56,9 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
     m_OnlyFavorite = settings.value("FilterContacts", false).toBool();
     m_Presence  = settings.value("Presence", "").toString();
     m_Available = settings.value("Available", 0).toInt();
+    m_ChoosePriority = settings.value("SetPriority", false).toBool();
+    m_Priority = settings.value("Priority", 20).toInt();
+
     m_AvailabilityFilter = settings.value("AvailabilityFilter", -1).toInt();
     m_ConversTheme = settings.value("ConversationTheme", 0).toInt();
 
@@ -141,12 +144,18 @@ void ListContactsController::updateConnectionStatus(bool status) {
     }
 }
 
-void ListContactsController::setPresence(const QString &text, int presence) {
-    XMPP::get()->setStatusText(text, presence);
+void ListContactsController::setPresence(const QString &text, int presence, bool setPriority, int priority) {
+    if(setPriority)
+        XMPP::get()->setStatusText(text, presence, priority);
+    else
+        XMPP::get()->setStatusText(text, presence, 20);
 
     QSettings settings("Amonchakai", "Hg10");
     settings.setValue("Presence", text);
     settings.setValue("Available", presence);
+    settings.setValue("SetPriority", presence);
+    if(setPriority)
+        settings.setValue("Priority", priority);
 }
 
 void ListContactsController::updatePresence(const QString &who, int status) {

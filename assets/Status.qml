@@ -1,4 +1,4 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 
 Page {
     titleBar: TitleBar {
@@ -12,7 +12,7 @@ Page {
         acceptAction: ActionItem {
             title: qsTr("Set")
             onTriggered: {
-                listContactsController.setPresence(statusText.text, statusDropdown.selectedValue);
+                listContactsController.setPresence(statusText.text, statusDropdown.selectedValue, setPriority.checked, priority.text);
                 nav.pop();
             }
         }
@@ -22,6 +22,24 @@ Page {
         layout: StackLayout {
             orientation: LayoutOrientation.TopToBottom
         }
+        
+        // --------------------------------------------------------------------------
+        Container {
+            preferredHeight: ui.du(4)
+        }
+        
+        Container {
+            layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+            
+            Label {
+                text: qsTr("Status")
+                textStyle.fontSize: FontSize.Large
+                horizontalAlignment: HorizontalAlignment.Left
+                verticalAlignment: VerticalAlignment.Bottom
+            }
+        
+        }
+        Divider { }
         
         DropDown {
             id: statusDropdown
@@ -47,5 +65,55 @@ Page {
             text: listContactsController.presence
         }
         
+        
+        
+        
+        // --------------------------------------------------------------------------
+        Container {
+            preferredHeight: ui.du(4)
+        }
+        
+        Container {
+            layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+            
+            Label {
+                text: qsTr("Advanced settings")
+                textStyle.fontSize: FontSize.Large
+                horizontalAlignment: HorizontalAlignment.Left
+                verticalAlignment: VerticalAlignment.Bottom
+            }
+        
+        }
+        Divider { }
+        
+        
+        Container {
+            layout: DockLayout { }
+            horizontalAlignment: HorizontalAlignment.Fill
+            Label {
+                horizontalAlignment: HorizontalAlignment.Left
+                verticalAlignment: VerticalAlignment.Center
+                text: qsTr("Set XMPP Priority:")
+            }
+            
+            ToggleButton {
+                id: setPriority
+                checked: listContactsController.choosePriority
+                verticalAlignment: VerticalAlignment.Center
+                horizontalAlignment: HorizontalAlignment.Right
+            }
+
+        }
+        TextField {
+            id: priority
+            hintText: qsTr("(default 20)")
+            text: listContactsController.priority
+            verticalAlignment: VerticalAlignment.Center
+            horizontalAlignment: HorizontalAlignment.Fill
+        }
+    }
+    
+    onCreationCompleted: {
+        console.log('priority: ' + listContactsController.priority)
     }
 }

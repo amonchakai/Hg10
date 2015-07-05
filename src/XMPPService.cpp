@@ -700,7 +700,7 @@ void XMPP::notifySettingChange() {
 }
 
 
-void XMPP::setStatusText(const QString &text, int presence) {
+void XMPP::setStatusText(const QString &text, int presence, int priority) {
     mutex.lockForWrite();
 
     if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
@@ -712,6 +712,7 @@ void XMPP::setStatusText(const QString &text, int presence) {
         m_ClientSocket->write(text.toAscii(), length);
 
         m_ClientSocket->write(reinterpret_cast<char*>(&presence), sizeof(int));
+        m_ClientSocket->write(reinterpret_cast<char*>(&priority), sizeof(int));
 
         m_ClientSocket->flush();
     }

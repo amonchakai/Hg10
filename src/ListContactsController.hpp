@@ -25,6 +25,9 @@ class ListContactsController : public QObject {
     Q_PROPERTY( QString avatar      READ getAvatar      WRITE setAvatar      NOTIFY avatarChanged)
     Q_PROPERTY( QString presence    READ getPresence    WRITE setPresence    NOTIFY presenceChanged)
     Q_PROPERTY( int     available   READ isAvailable    WRITE setAvailable   NOTIFY availableChanged)
+    Q_PROPERTY( int     priority    READ getPriority    WRITE setPriority    NOTIFY priorityChanged)
+    Q_PROPERTY( bool choosePriority READ isChoosePriority WRITE setChoosePriority NOTIFY choosePriorityChanged)
+
     Q_PROPERTY( bool    showOnlyFav READ isOnlyFav                           NOTIFY showOnlyFavChanged)
     Q_PROPERTY( int     availabilityFilter READ getAvailabilityFilter        NOTIFY availabilityFilterChanged)
 
@@ -45,6 +48,8 @@ private:
     QString                          m_LastName;
     QString                          m_Nickname;
     int                              m_Available;
+    int                              m_Priority;
+    bool                             m_ChoosePriority;
     QList<Contact *>                 m_Contacts;
     bool                             m_OnlyFavorite;
     int                              m_AvailabilityFilter;
@@ -88,6 +93,12 @@ public:
 
     inline int            getConversTheme() const           { return m_ConversTheme; }
 
+    inline bool           isChoosePriority() const             { return m_ChoosePriority; }
+    inline void           setChoosePriority(bool c)            {if(c != m_ChoosePriority) {  m_ChoosePriority = c; emit choosePriorityChanged(); } }
+
+    inline int            getPriority   () const               { return m_Priority; }
+    inline void           setPriority  (bool c)                {if(c != m_Priority) {  m_Priority = c; emit priorityChanged(); } }
+
     void                  saveBlackList();
     void                  loadBlackList();
 
@@ -126,7 +137,7 @@ public Q_SLOTS:
     void clear                          ();
     void deleteHistory                  (const QString &with);
 
-    void setPresence                    (const QString &text, int presence);
+    void setPresence                    (const QString &text, int presence, bool setPriority, int priority);
 
 
     void addContact                     ();
@@ -140,6 +151,8 @@ Q_SIGNALS:
     void userNameChanged                ();
     void avatarChanged                  ();
     void conversThemeChanged            ();
+    void priorityChanged                ();
+    void choosePriorityChanged          ();
 
     void firstNameChanged               ();
     void lastNameChanged                ();

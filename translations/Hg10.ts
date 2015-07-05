@@ -1145,6 +1145,18 @@
         <source>Set</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Advanced settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(default 20)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set XMPP Priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ThemeEditor</name>
