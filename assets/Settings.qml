@@ -276,7 +276,7 @@ NavigationPane {
                     textStyle.fontSize: FontSize.Small
                     margin.leftOffset: ui.du(1)
                     margin.rightOffset: ui.du(1)
-                    text: qsTr("End-to-end encryption requires your contact to have a client which support encryption. Desktop clients include Adium, Pindgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.")
+                    text: qsTr("End-to-end encryption requires your contact to have a client which support encryption. Desktop clients include Adium, Pidgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.")
                 }
                 
                 Button {

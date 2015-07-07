@@ -129,6 +129,11 @@ public Q_SLOTS:
 
 
     // -----------------------------------------------------
+    // picasa
+
+    void picasaImageFound               (const QString&id, const QString&url);
+
+    // -----------------------------------------------------
     // messages with dropbox
 
 

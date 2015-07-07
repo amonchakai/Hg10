@@ -21,10 +21,12 @@ class GoogleConnectController : public OnlineHistory, public FileTransfert {
 
     Q_PROPERTY( bool    gmailAccess       READ getGmailAccess       WRITE setGmailAccess)
     Q_PROPERTY( int     driveAccess       READ getDriveAccess       WRITE setDriveAccess)
+    Q_PROPERTY( bool    picasa            READ getPicasaAccess      WRITE setPicasaAccess)
 
 private:
 
     bool                                 m_GmailAccess;
+    bool                                 m_PicasaAccess;
     int                                  m_DriveAccess;
 
 
@@ -54,7 +56,7 @@ private:
     QMap<QString, QPair<QString, QString> >  m_OnlineTree;
     qint64                                   m_LastSynch;
 
-
+    QList<QString>                      m_PictureIds;
     QReadWriteLock                      mutexGoogleConnect;
 
 public:
@@ -73,6 +75,9 @@ public:
 
      inline bool getGmailAccess() const         { return m_GmailAccess; };
      inline void setGmailAccess(bool c)         { m_GmailAccess = c;    };
+
+     inline bool getPicasaAccess() const         { return m_PicasaAccess; };
+     inline void setPicasaAccess(bool c)         { m_PicasaAccess = c;    };
 
      inline int  getDriveAccess() const         { return m_DriveAccess; };
      inline void setDriveAccess(int c)          { m_DriveAccess = c;    };
@@ -101,6 +106,20 @@ public:
 
 
      inline QString getAuthorizationCode  () const                { return  QString("Bearer ") + m_Settings->value("access_token").value<QString>(); } ;
+
+
+
+
+     // -------------------------------------------------------------------------
+     // picasa WEB API
+     void getPictureFromLink    (const QString& user_id, const QString &picture_id);
+
+
+
+     QString getAlbumId         (const QString& user_id);
+
+
+
 
 private:
      void cleanupMessage        (QString &message);
@@ -149,6 +168,21 @@ public Q_SLOTS:
     void getBranchFileListReply ();
     void setFileName            (const QString &id, const QString &name);
 
+
+
+
+
+    // -------------------------------------------------------------------------
+    // picasa
+
+
+    void checkReplyAlbumsList   ();
+    void checkReplyAlbumsContent();
+
+
+
+
+
     // -------------------------------------------------------------------------
     // interface
 
@@ -168,6 +202,8 @@ Q_SIGNALS:
     void onlineTreeLeaf         (QString, DriveItem *);
     void folderEmpty            ();
     void folderCreated          ();
+
+    void picasaImageFound       (const QString &imageId, const QString &url);
 
 };
 

@@ -795,6 +795,10 @@
         <source>Gmail: Retrieve history, enabling synchronization between devices</source>
         <translation>Gmail: Récupérer l&apos;historique des précédentes conversations</translation>
     </message>
+    <message>
+        <source>Picasa: Enable having pictures embded into posts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GoogleConnectController</name>
@@ -1120,7 +1124,11 @@
     </message>
     <message>
         <source>End-to-end encryption requires your contact to have a client which support encryption. Desktop clients include Adium, Pindgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
-        <translation>Le cryptage point à point nécessite que votre contact dispose d&apos;un client qui le supporte. Potentiels clients sur PC sont Adium, Pidgin, Kepete... ChatSecure sur téléphone. Le client officiel de Google ne le supporte PAS.</translation>
+        <translation type="obsolete">Le cryptage point à point nécessite que votre contact dispose d&apos;un client qui le supporte. Potentiels clients sur PC sont Adium, Pidgin, Kepete... ChatSecure sur téléphone. Le client officiel de Google ne le supporte PAS.</translation>
+    </message>
+    <message>
+        <source>End-to-end encryption requires your contact to have a client which support encryption. Desktop clients include Adium, Pidgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1196,15 +1204,15 @@
     </message>
     <message>
         <source>Advanced settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres avancés</translation>
     </message>
     <message>
         <source>(default 20)</source>
-        <translation type="unfinished"></translation>
+        <translation>(défault 20)</translation>
     </message>
     <message>
         <source>Set XMPP Priority:</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir la priorité du client XMPP:</translation>
     </message>
 </context>
 <context>

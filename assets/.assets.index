@@ -1,5 +1,5 @@
 1
-159
+160
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -37,6 +37,7 @@ FurtherInformation.qml
 GoogleConnect.qml
 ImagePreview.qml
 images/absent.png
+images/anim_loading.gif
 images/available.png
 images/avatar.png
 images/avatar.png.square.png

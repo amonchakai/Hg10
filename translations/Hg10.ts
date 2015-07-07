@@ -772,6 +772,10 @@
         <source>Gmail: Retrieve history, enabling synchronization between devices</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Picasa: Enable having pictures embded into posts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IssueViewer</name>
@@ -1070,7 +1074,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>End-to-end encryption requires your contact to have a client which support encryption. Desktop clients include Adium, Pindgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
+        <source>End-to-end encryption requires your contact to have a client which support encryption. Desktop clients include Adium, Pidgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

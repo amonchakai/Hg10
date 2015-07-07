@@ -61,6 +61,9 @@ public:
     inline GoogleConnectController  *getFileTransfert()         { return m_FileTransfert; }
 
 
+    void                    getPictureFromLink(const QString& user_id, const QString &picture_id);
+
+
 
 
     void onlineMessage                  (const QString &from, const QString &message, const QString &messageId);
@@ -77,6 +80,7 @@ private:
     QString                         m_CurrentDst;
     QString                         m_BareID;
     History                         m_History;
+    QList<QString>                  m_GImageStack;
 
     // History from Google
     OnlineHistory                  *m_OnlineHistory;
@@ -85,9 +89,11 @@ private:
 
 
 
-
     ConversationManager                 (QObject *parent = 0);
 
+
+public Q_SLOTS:
+    void fowardImageReceived            (const QString& id, const QString& url);
 
 Q_SIGNALS:
     void cleared                        ();
@@ -99,6 +105,8 @@ Q_SIGNALS:
     void avatarUpdated                  ();
     void chatStateNotify                (int status);
 
+
+    void imageURLFetched                (const QString& id, const QString& url);
 };
 
 

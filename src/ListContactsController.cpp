@@ -153,7 +153,7 @@ void ListContactsController::setPresence(const QString &text, int presence, bool
     QSettings settings("Amonchakai", "Hg10");
     settings.setValue("Presence", text);
     settings.setValue("Available", presence);
-    settings.setValue("SetPriority", presence);
+    settings.setValue("SetPriority", setPriority);
     if(setPriority)
         settings.setValue("Priority", priority);
 }

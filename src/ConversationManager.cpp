@@ -61,6 +61,11 @@ void ConversationManager::initOnlineHistory() {
         GoogleConnectController *google = new GoogleConnectController();
         m_OnlineHistory = google;
         m_FileTransfert = google;
+
+        bool check = connect(m_FileTransfert, SIGNAL(picasaImageFound(const QString &, const QString &)), this, SLOT(fowardImageReceived(const QString &, const QString &)));
+        Q_ASSERT(check);
+        Q_UNUSED(check);
+
     }
 }
 
@@ -125,6 +130,16 @@ void ConversationManager::load(const QString &from, const QString &name) {
 
     } else {
         //qDebug() << "No history";
+    }
+
+    // make a local stack of images --> avoid to lose pictures while loading the history from gmail
+    // the first one is the stickers, the second one are images hosted in picasa aka G+
+    m_GImageStack.clear();
+    for(int i = 0 ; i < m_History.m_History.size() ; ++i) {
+        qDebug() << m_History.m_History.at(i).m_What.mid(0, 33) << m_History.m_History.at(i).m_What.mid(0, 37);
+        if(m_History.m_History.at(i).m_What.mid(0, 33) == "https://lh3.googleusercontent.com" || m_History.m_History.at(i).m_What.mid(0, 37) == "https://plus.google.com/photos/albums" ) {
+            m_GImageStack.push_back(m_History.m_History.at(i).m_What);
+        }
     }
 
     qDebug() << "history length: " << m_History.m_History.size();
@@ -268,7 +283,7 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
 
     mutexConversation.lockForWrite();
     if(m_History.m_History.size() > 0) {
-        if(m_History.m_History.last().m_What == message && !message.isEmpty()) {
+        if(m_History.m_History.last().m_What == message) {
             mutexConversation.unlock();
             qDebug() << "History up to date!";
             return;
@@ -276,17 +291,27 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
     }
 
 
-        TimeEvent e;
-        e.m_Read = 1;
-        e.m_What = message;
-        e.m_Who = from;
-        e.m_When = QDateTime::currentDateTime().toMSecsSinceEpoch();
-        e.m_MessageID = messageId;
+    TimeEvent e;
+    e.m_Read = 1;
+    e.m_What = message;
+    e.m_Who = from;
+    e.m_When = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    e.m_MessageID = messageId;
+
+    if(e.m_What.isEmpty()) {
+        if(!m_GImageStack.isEmpty()) {
+            e.m_What = m_GImageStack.last();
+            m_GImageStack.pop_back();
+        }
+    }
+
+    if(!e.m_What.isEmpty())
         m_History.m_History.insert(m_SynchPushLoc, e);
 
     mutexConversation.unlock();
 
-    emit historyMessage(from, message);
+    if(!e.m_What.isEmpty())
+        emit historyMessage(from, e.m_What);
 }
 
 
@@ -485,6 +510,16 @@ void ConversationManager::updateState(const QString &who, int state) {
 
 // ===================================================================================
 // User events
+
+void ConversationManager::getPictureFromLink(const QString& user_id, const QString &picture_id) {
+    if(m_FileTransfert != NULL)
+        m_FileTransfert->getPictureFromLink(user_id, picture_id);
+}
+
+void ConversationManager::fowardImageReceived(const QString& id, const QString& url) {
+    emit imageURLFetched(id, url);
+}
+
 
 void ConversationManager::markRead() {
     markRead(m_CurrentDst);

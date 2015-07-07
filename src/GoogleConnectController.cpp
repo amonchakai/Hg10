@@ -37,6 +37,7 @@
 
 GoogleConnectController::GoogleConnectController(QObject *parent) : OnlineHistory(parent),
         m_GmailAccess(true),
+        m_PicasaAccess(true),
         m_DriveAccess(1),
         m_WebView(NULL),
         m_Settings(NULL),
@@ -80,6 +81,9 @@ void GoogleConnectController::logInRequest() {
         default:
             break;
     }
+
+    if(m_PicasaAccess)
+        scope += " https://picasaweb.google.com/data ";
 
     m_WebView->setUrl(QString("https://accounts.google.com/o/oauth2/auth?")
                             + "scope=" + scope
@@ -506,7 +510,7 @@ void GoogleConnectController::getMessageReply() {
                  const QByteArray buffer(reply->readAll());
                  response = QString::fromUtf8(buffer);
 
-                 QRegExp snippet("\"snippet\"[: ]+\"([^\"]+)\"");
+                 QRegExp snippet("\"snippet\"[: ]+\"([^\"]*)\"");
                  QRegExp content("\"data\"[: ]+\"([^\"]+)\"");
                  QRegExp histID("\"historyId\"[: ]+\"([0-9]+)\"");
                  QRegExp from("\"value\".+\\u003c(.*)\\u003e\"");

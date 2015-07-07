@@ -61,6 +61,7 @@ Page {
                     Label {
                         visible: checkPermissions
                         text: qsTr("Instant messaging service: Connect to Google Hangout")
+                        verticalAlignment: VerticalAlignment.Center
                         multiline: true
                     }
                 }
@@ -151,6 +152,28 @@ Page {
                 
                 Divider { visible: checkPermissions }
                 
+                Container {
+                    visible: checkPermissions
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    
+                    CheckBox {
+                        id: picasa
+                        visible: checkPermissions
+                        checked: true
+                        verticalAlignment: VerticalAlignment.Center
+                    }
+                    Label {
+                        visible: checkPermissions
+                        verticalAlignment: VerticalAlignment.Center
+                        text: qsTr("Picasa: Enable having pictures embded into posts")
+                        multiline: true
+                    }
+                }
+                
+                Divider { visible: checkPermissions }
+                
                 Button {
                     visible: checkPermissions
                     text: qsTr("Request permissions")
@@ -159,6 +182,7 @@ Page {
                     onClicked: {
                         googleConnect.gmailAccess = gmailAccess.checked;
                         googleConnect.driveAccess = driveAccess.selectedValue;
+                        googleConnect.picasa    = picasa.checked;
                         checkPermissions = false;
                         googleConnect.logInRequest();
                     }

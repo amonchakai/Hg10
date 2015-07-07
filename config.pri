@@ -99,6 +99,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/Tutorial/closeIcon.png) \
         $$quote($$BASEDIR/assets/images/Tutorial/splash_720x720.jpg) \
         $$quote($$BASEDIR/assets/images/absent.png) \
+        $$quote($$BASEDIR/assets/images/anim_loading.gif) \
         $$quote($$BASEDIR/assets/images/available.png) \
         $$quote($$BASEDIR/assets/images/avatar.png) \
         $$quote($$BASEDIR/assets/images/avatar.png.square.png) \
@@ -208,6 +209,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/DropBoxConnectController.cpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.cpp) \
         $$quote($$BASEDIR/src/GoogleConnectDrive.cpp) \
+        $$quote($$BASEDIR/src/GoogleConnectPicasa.cpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.cpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.cpp) \
         $$quote($$BASEDIR/src/Image/NetImageTracker.cpp) \

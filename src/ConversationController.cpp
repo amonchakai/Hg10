@@ -77,6 +77,9 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     check = connect(XMPP::get(), SIGNAL(goneUnsecure(const QString&)), this, SLOT(goneUnsecure(const QString&)));
     Q_ASSERT(check);
 
+    check = connect(ConversationManager::get(), SIGNAL(imageURLFetched(const QString&, const QString&)), this, SLOT(picasaImageFound(const QString&, const QString&)));
+    Q_ASSERT(check);
+
 
 }
 
@@ -332,14 +335,31 @@ void ConversationController::checkReplyGetContent() {
     }
 }
 
+void ConversationController::picasaImageFound(const QString&id, const QString&url) {
+    if(m_WebView == NULL) return;
+
+    qDebug() << "replace: " << id << url;
+    m_WebView->evaluateJavaScript("replaceImage(\"" + id + "\", \"" + url + "\");");
+}
+
 QString ConversationController::renderMessage(const QString &message, bool showImg) {
     QRegExp url("(http[s]*://[^ ]+)");
     url.setCaseSensitivity(Qt::CaseInsensitive);
 
-
     int pos = 0;
     int lastPos = 0;
     QString nMessage;
+
+    QRegExp gImage("https://plus.google.com/photos/albums/[0-9a-z]+.pid=([0-9]+)&oid=([0-9]+)");
+    if(gImage.indexIn(message) != -1) {
+
+        nMessage = "<img id=\"image" + gImage.cap(1) + "\" src=\"" +  QDir::currentPath() + "/app/native/assets/images/anim_loading.gif" + "\" />";
+
+        ConversationManager::get()->getPictureFromLink(gImage.cap(2), gImage.cap(1));
+
+        return nMessage;
+    }
+
 
     while((pos = url.indexIn(message, lastPos)) != -1) {
         nMessage += message.mid(lastPos, pos-lastPos);
