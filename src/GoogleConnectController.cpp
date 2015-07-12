@@ -378,7 +378,7 @@ void GoogleConnectController::getMessages(const QString &with, int nbMessages) {
     user.replace("&", "%40");
     QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
                                 + "me"
-                                + "/threads"
+                                + "/messages"
                                 + "?access_token=" + m_Settings->value("access_token").value<QString>()
                                 + "&q=is:chat " + with
                            )
