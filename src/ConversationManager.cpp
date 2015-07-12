@@ -136,13 +136,10 @@ void ConversationManager::load(const QString &from, const QString &name) {
     // the first one is the stickers, the second one are images hosted in picasa aka G+
     m_GImageStack.clear();
     for(int i = 0 ; i < m_History.m_History.size() ; ++i) {
-        qDebug() << m_History.m_History.at(i).m_What.mid(0, 33) << m_History.m_History.at(i).m_What.mid(0, 37);
         if(m_History.m_History.at(i).m_What.mid(0, 33) == "https://lh3.googleusercontent.com" || m_History.m_History.at(i).m_What.mid(0, 37) == "https://plus.google.com/photos/albums" ) {
             m_GImageStack.push_back(m_History.m_History.at(i).m_What);
         }
     }
-
-    qDebug() << "history length: " << m_History.m_History.size();
 
     mutexConversation.unlock();
 

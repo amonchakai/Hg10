@@ -469,6 +469,15 @@ Page {
             }
         }, 
         ActionItem {
+            id: otrSMPButton
+            title: qsTr("Authentification")
+            imageSource: "asset:///images/icon_lock_open.png"
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            onTriggered: {
+                conversationController.startSMP(id);
+            }
+        }, 
+        ActionItem {
             title: qsTr("Stickers")
             ActionBar.placement: ActionBarPlacement.InOverflow
             imageSource: "asset:///images/document.png"

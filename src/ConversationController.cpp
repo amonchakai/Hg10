@@ -25,6 +25,7 @@
 #include <bb/cascades/Theme>
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/system/SystemDialog>
+#include <bb/system/SystemPrompt>
 #include <bb/system/SystemToast>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/GroupDataModel>
@@ -34,6 +35,8 @@
 #include <bb/system/InvokeRequest>
 #include <bb/system/InvokeTargetReply>
 
+
+#include "DialogSMP.hpp"
 
 ConversationController::ConversationController(QObject *parent) : QObject(parent),
             m_WebView(NULL),
@@ -47,7 +50,8 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
             m_UploadingAudio(false),
             m_FileTransfert(NULL),
             m_CurrentActionTab(-1),
-            m_Crypted(false) {
+            m_Crypted(false),
+            m_DialogSMP(NULL) {
 
     bool check = connect(ConversationManager::get(), SIGNAL(historyLoaded()), this, SLOT(updateView()));
     Q_ASSERT(check);
@@ -77,9 +81,17 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     check = connect(XMPP::get(), SIGNAL(goneUnsecure(const QString&)), this, SLOT(goneUnsecure(const QString&)));
     Q_ASSERT(check);
 
+    check = connect(XMPP::get(), SIGNAL(fingerprintReceived(const QString&, const QString&)), this, SLOT(fingerprintReceived(const QString&, const QString&)));
+    Q_ASSERT(check);
+
     check = connect(ConversationManager::get(), SIGNAL(imageURLFetched(const QString&, const QString&)), this, SLOT(picasaImageFound(const QString&, const QString&)));
     Q_ASSERT(check);
 
+    check = connect(XMPP::get(), SIGNAL(otrSmpQuestion(const QString&)), this, SLOT(otrSmpQuestion(const QString&)));
+    Q_ASSERT(check);
+
+    check = connect(XMPP::get(), SIGNAL(otrSmpReply(int)), this, SLOT(otrSmpReply(int)));
+    Q_ASSERT(check);
 
 }
 
@@ -350,6 +362,7 @@ QString ConversationController::renderMessage(const QString &message, bool showI
     int lastPos = 0;
     QString nMessage;
 
+    // if the image is hosted on picasa, then we need some processing to get the picture behind the link...
     QRegExp gImage("https://plus.google.com/photos/albums/[0-9a-z]+.pid=([0-9]+)&oid=([0-9]+)");
     if(gImage.indexIn(message) != -1) {
 
@@ -359,7 +372,6 @@ QString ConversationController::renderMessage(const QString &message, bool showI
 
         return nMessage;
     }
-
 
     while((pos = url.indexIn(message, lastPos)) != -1) {
         nMessage += message.mid(lastPos, pos-lastPos);
@@ -485,6 +497,67 @@ void ConversationController::startOTR(const QString &id) {
     }
 }
 
+void ConversationController::startSMP(const QString &id) {
+    if(!QFile::exists(QDir::homePath() + QLatin1String("/keys/keys.txt"))) {
+        bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+        toast->setBody(tr("This is a Off-the-record feature, you need to generate a Key. Please go to the Settings!"));
+        toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+        toast->show();
+        return;
+    }
+
+
+    if(!m_DialogSMP) {
+        m_DialogSMP = new DialogSMP();
+        bool check = QObject::connect(m_DialogSMP, SIGNAL(validated(const QString&, const QString&)), this, SLOT(onPromptFinishedQuestion(const QString&, const QString&)));
+        Q_ASSERT(check);
+    }
+
+    m_DialogSMP->setVisible(true);
+}
+
+
+void ConversationController::onPromptFinishedQuestion(const QString& question, const QString& secret) {
+    if(secret.isEmpty()) {
+        bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+        toast->setBody(tr("You need to fill the secret field!"));
+        toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+        toast->show();
+    }
+
+    XMPP::get()->otrSmpAskQuestion(m_DstId, question, secret);
+}
+
+void ConversationController::fingerprintReceived(const QString& from, const QString& fingerprint) {
+    if(from != m_DstId) return;
+
+
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    SystemDialog *dialog = new SystemDialog(tr("OK"));
+
+    dialog->setTitle(tr("Verify fingerprint"));
+    dialog->setBody(tr("Your contact fingerprint: ") + fingerprint);
+
+    bool success = connect(dialog,
+         SIGNAL(finished(bb::system::SystemUiResult::Type)),
+         this,
+         SLOT(onPromptFinishedVerifyFingerprint(bb::system::SystemUiResult::Type)));
+
+    if (success) {
+        m_NewWallpaper = fingerprint;
+        dialog->show();
+    } else {
+        dialog->deleteLater();
+    }
+}
+
+void ConversationController::onPromptFinishedVerifyFingerprint(bb::system::SystemUiResult::Type result) {
+    sender()->deleteLater();
+}
 
 void ConversationController::goneSecure(const QString &with) {
     if(with == m_DstId) m_Crypted = true;
@@ -495,6 +568,64 @@ void ConversationController::goneSecure(const QString &with) {
 void ConversationController::goneUnsecure(const QString &with) {
     if(with == m_DstId) m_Crypted = false;
     emit updateGoneUnsecure(with);
+}
+
+void ConversationController::otrSmpQuestion(const QString& question) {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    SystemPrompt *prompt = new SystemPrompt();
+    prompt->setTitle(tr("Your identity need to be verified"));
+    if(!question.isEmpty())
+        prompt->setBody(question);
+    else
+        prompt->setBody(tr("Enter the secret you agree on:"));
+
+    prompt->setDismissAutomatically(true);
+    prompt->inputField()->setEmptyText(tr("the secret..."));
+
+
+    bool success = QObject::connect(prompt,
+        SIGNAL(finished(bb::system::SystemUiResult::Type)),
+        this,
+        SLOT(onPromptFinishedSendSecret(bb::system::SystemUiResult::Type)));
+
+    if (success) {
+        prompt->show();
+     } else {
+        prompt->deleteLater();
+    }
+}
+
+void ConversationController::onPromptFinishedSendSecret(bb::system::SystemUiResult::Type result) {
+    using namespace bb::cascades;
+    using namespace bb::system;
+
+    if(result == bb::system::SystemUiResult::ConfirmButtonSelection) {
+
+        SystemPrompt* prompt = qobject_cast<SystemPrompt*>(sender());
+        if(prompt != NULL) {
+            //qDebug() << "Prompt Accepted:" << prompt->inputFieldTextEntry();
+            XMPP::get()->otrSmpReplyQuestion(m_DstId, prompt->inputFieldTextEntry());
+
+        }
+    } else {
+        XMPP::get()->otrSmpReplyQuestion(m_DstId, "");
+    }
+
+    sender()->deleteLater();
+}
+
+void ConversationController::otrSmpReply(int code) {
+    bb::system::SystemToast *toast = new bb::system::SystemToast(this);
+
+    if(code != 0)
+        toast->setBody(tr("Identity was verified!"));
+    else
+        toast->setBody(tr("Identity verification failed!"));
+
+    toast->setPosition(bb::system::SystemUiPosition::MiddleCenter);
+    toast->show();
 }
 
 void ConversationController::send(const QString& message) {
@@ -773,7 +904,7 @@ void ConversationController::onWallpaperSelected(const QStringList& list) {
     using namespace bb::cascades;
     using namespace bb::system;
 
-    SystemDialog *dialog = new SystemDialog("All of them", "This one");
+    SystemDialog *dialog = new SystemDialog(tr("All of them"), tr("This one"));
 
     dialog->setTitle(tr("Wallpaper"));
     dialog->setBody(tr("Set the wallpaper for which contact?"));
@@ -875,16 +1006,6 @@ void ConversationController::loadActionMenu(int id) {
         m_ListView->setDataModel(dataModel);
     }
 
-    /*
-    ActionComposerItem *action = new ActionComposerItem(this); action->setCaption("Wallpaper");     action->setCategory("General"); action->setImage("asset:///images/color/Wallpaper.png"); action->setAction(7); dataModel->insert(action);
-    action = new ActionComposerItem(this); action->setCaption("To Bottom");     action->setCategory("General"); action->setImage("asset:///images/color/to_Bottom.png"); action->setAction(1); dataModel->insert(action);
-    action = new ActionComposerItem(this); action->setCaption("Stickers");      action->setCategory("Actions"); action->setImage("asset:///images/document.png"); action->setAction(6); dataModel->insert(action);
-    action = new ActionComposerItem(this); action->setCaption("Reply");         action->setCategory("Actions"); action->setImage("asset:///images/color/Reply.png"); action->setAction(4); dataModel->insert(action);
-    action = new ActionComposerItem(this); action->setCaption("Attach");        action->setCategory("Actions"); action->setImage("asset:///images/color/Attach.png"); action->setAction(3); dataModel->insert(action);
-    action = new ActionComposerItem(this); action->setCaption("Refresh");       action->setCategory("Actions"); action->setImage("asset:///images/color/Refresh.png"); action->setAction(2); dataModel->insert(action);
-    action = new ActionComposerItem(this); action->setCaption("Emoticons");     action->setCategory("Actions"); action->setImage("asset:///images/color/Emoticon.png"); action->setAction(5); dataModel->insert(action);
-    action = new ActionComposerItem(this); action->setCaption("Voice message"); action->setCategory("Actions"); action->setImage("asset:///images/color/Voice.png"); action->setAction(8); dataModel->insert(action);
-*/
 
     // ----------------------------------------------------------------------------------------------
     // push data to the view

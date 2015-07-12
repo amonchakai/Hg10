@@ -378,7 +378,7 @@ void GoogleConnectController::getMessages(const QString &with, int nbMessages) {
     user.replace("&", "%40");
     QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
                                 + "me"
-                                + "/messages"
+                                + "/threads"
                                 + "?access_token=" + m_Settings->value("access_token").value<QString>()
                                 + "&q=is:chat " + with
                            )
@@ -591,6 +591,10 @@ void GoogleConnectController::getMessageReply() {
                 }
             }
         }
+
+        // if the two participants are not the current user, then there was 3...
+        if(participant1 != ConversationManager::get()->getUser() && participant2 != ConversationManager::get()->getUser())
+            stop = true;
 
         if(stop) {
             qDebug() << "Check another thread";

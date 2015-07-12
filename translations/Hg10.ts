@@ -313,6 +313,10 @@
         <source>Encryption</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Authentification</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConversationCard</name>
@@ -422,6 +426,54 @@
         <source>To use Off-the-record, you need to generate a Key. Please go to the Settings!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Verify fingerprint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your contact fingerprint: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All of them</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your identity need to be verified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the secret...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Identity was verified!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Identity verification failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter the secret you agree on:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is a Off-the-record feature, you need to generate a Key. Please go to the Settings!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You need to fill the secret field!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateRoom</name>
@@ -470,6 +522,29 @@
     </message>
     <message>
         <source>A default theme already exists. Please edit this one or delete it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DialogSMP</name>
+    <message>
+        <source>Check the identity of your contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is the secret?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please specify the question you want him to reply. This field can be empty.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

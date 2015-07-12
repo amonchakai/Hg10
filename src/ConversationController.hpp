@@ -33,6 +33,10 @@ namespace bb
 
 }
 
+
+class DialogSMP;
+
+
 class ConversationController : public QObject {
     Q_OBJECT;
 
@@ -61,7 +65,7 @@ private:
     QString                   m_NewWallpaper;
     int                       m_CurrentActionTab;
     bool                      m_Crypted;
-
+    DialogSMP                *m_DialogSMP;
 
 
 
@@ -91,8 +95,15 @@ public Q_SLOTS:
     void refreshHistory                 (const QString &id, const QString &avatar, const QString &name);
 
     void startOTR                       (const QString &id);
+    void startSMP                       (const QString &id);
     void goneSecure                     (const QString &with);
     void goneUnsecure                   (const QString &with);
+    void fingerprintReceived            (const QString&, const QString&);
+    void onPromptFinishedVerifyFingerprint(bb::system::SystemUiResult::Type result);
+    void otrSmpQuestion                  (const QString&);
+    void onPromptFinishedSendSecret     (bb::system::SystemUiResult::Type result);
+    void otrSmpReply                    (int code);
+    void onPromptFinishedQuestion       (const QString& question, const QString& secret);
 
     void loadActionMenu                 (int id);
 

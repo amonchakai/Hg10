@@ -45,6 +45,8 @@ struct XMPPServiceMessages {
         OTR_GONE_UNSECURE,
         OTR_WAS_NOT_SECURE,
         OTR_REQUEST_STATUS,
+        OTR_SMP_QUESTION,
+        OTR_SMP_REPLY,
         UPDATE_HUB,
         REMOVE_HUB
     };

@@ -304,6 +304,27 @@ void XMPP::readyRead() {
                 emit wasNotSecure(from, body);
             }
                 break;
+
+            case XMPPServiceMessages::OTR_SMP_QUESTION: {
+                code_str = m_ClientSocket->read(sizeof(int));
+                int length = *reinterpret_cast<int*>(code_str.data());
+                length = *reinterpret_cast<int*>(code_str.data());
+                QString body(QTextCodec::codecForName("UTF-8")->toUnicode(m_ClientSocket->read(length)));
+
+                emit otrSmpQuestion(body);
+            }
+                break;
+
+
+            case XMPPServiceMessages::OTR_SMP_REPLY: {
+                code_str = m_ClientSocket->read(sizeof(int));
+                int code = *reinterpret_cast<int*>(code_str.data());
+
+                emit otrSmpReply(code);
+            }
+                break;
+
+
         }
 
         code_str = m_ClientSocket->read(sizeof(int));
@@ -685,6 +706,56 @@ void XMPP::closeOTRSession(const QString& to) {
 
     mutex.unlock();
 }
+
+void XMPP::otrSmpReplyQuestion(const QString& to, const QString &message) {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::OTR_SMP_REPLY;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        int length = to.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(to.toAscii(), length);
+
+        QByteArray sentMess = message.toUtf8();
+        length = sentMess.size();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(sentMess.data(), length);
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
+void XMPP::otrSmpAskQuestion(const QString &to, const QString& question, const QString& secret) {
+    mutex.lockForWrite();
+
+    if (m_ClientSocket && m_ClientSocket->state() == QTcpSocket::ConnectedState) {
+        int code = XMPPServiceMessages::OTR_SMP_QUESTION;
+        m_ClientSocket->write(reinterpret_cast<char*>(&code), sizeof(int));
+
+        int length = to.length();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(to.toAscii(), length);
+
+        QByteArray sentMess = question.toUtf8();
+        length = sentMess.size();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(sentMess.data(), length);
+
+        sentMess = secret.toUtf8();
+        length = sentMess.size();
+        m_ClientSocket->write(reinterpret_cast<char*>(&length), sizeof(int));
+        m_ClientSocket->write(sentMess.data(), length);
+
+        m_ClientSocket->flush();
+    }
+
+    mutex.unlock();
+}
+
 
 void XMPP::notifySettingChange() {
     mutex.lockForWrite();

@@ -38,6 +38,8 @@ public:
     void                           setupKeys();
     void                           showKeys();
     void                           requestOTRStatus(const QString& to);
+    void                           otrSmpReplyQuestion(const QString& to, const QString &message);
+    void                           otrSmpAskQuestion(const QString &to, const QString& question, const QString& secret);
 
 
 private:
@@ -145,6 +147,8 @@ Q_SIGNALS:
     void fingerprintReceived (const QString &from, const QString& fingerprint);
     void ownFingerprint      (const QString &fingerprint);
     void wasNotSecure        (const QString &from, const QString& body);
+    void otrSmpQuestion      (const QString &question);
+    void otrSmpReply         (int code);
 
     void connectedXMPP       ();
     void connectionFailed    ();

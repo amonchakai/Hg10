@@ -33,7 +33,6 @@ void GoogleConnectController::getPictureFromLink(const QString& user_id, const Q
                 )
             );
 
-    // request.setRawHeader("Authorization", ("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii()));
     request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
     request.setRawHeader("GData-Version", "2");
 
@@ -124,8 +123,7 @@ void GoogleConnectController::checkReplyAlbumsList() {
                             )
                         );
 
-                // request.setRawHeader("Authorization", ("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii()));
-                request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
+                 request.setRawHeader("Authorization", ("Bearer " + m_Settings->value("access_token").value<QString>()).toAscii());
                 request.setRawHeader("GData-Version", "2");
 
                 request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");

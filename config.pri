@@ -205,6 +205,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ConversationController.cpp) \
         $$quote($$BASEDIR/src/ConversationManager.cpp) \
         $$quote($$BASEDIR/src/CustomizationController.cpp) \
+        $$quote($$BASEDIR/src/DialogSMP.cpp) \
         $$quote($$BASEDIR/src/DriveController.cpp) \
         $$quote($$BASEDIR/src/DropBoxConnectController.cpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.cpp) \
@@ -241,6 +242,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/ConversationManager.hpp) \
         $$quote($$BASEDIR/src/CustomizationController.hpp) \
         $$quote($$BASEDIR/src/DataObjects.h) \
+        $$quote($$BASEDIR/src/DialogSMP.hpp) \
         $$quote($$BASEDIR/src/DriveController.hpp) \
         $$quote($$BASEDIR/src/DropBoxConnectController.hpp) \
         $$quote($$BASEDIR/src/FileTransfert.hpp) \

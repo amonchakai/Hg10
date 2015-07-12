@@ -325,6 +325,10 @@
         <source>Encryption</source>
         <translation>Cryptage</translation>
     </message>
+    <message>
+        <source>Authentification</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConversationCard</name>
@@ -434,6 +438,62 @@
         <source>To use Off-the-record, you need to generate a Key. Please go to the Settings!</source>
         <translation>Pour utiliser l&apos;encryption, vous devez générer une clé. Veuillez aller dans les paramètres!</translation>
     </message>
+    <message>
+        <source>Yes</source>
+        <translation type="obsolete">Oui</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="obsolete">Non</translation>
+    </message>
+    <message>
+        <source>Verify fingerprint</source>
+        <translation>Vérifier l&apos;emprunte</translation>
+    </message>
+    <message>
+        <source>Your contact fingerprint: </source>
+        <translation>L&apos;emprunte de votre contact:</translation>
+    </message>
+    <message>
+        <source>All of them</source>
+        <translation>Tous</translation>
+    </message>
+    <message>
+        <source>This one</source>
+        <translation>Celui-ci</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">Ok</translation>
+    </message>
+    <message>
+        <source>Your identity need to be verified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the secret...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Identity was verified!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Identity verification failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter the secret you agree on:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is a Off-the-record feature, you need to generate a Key. Please go to the Settings!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You need to fill the secret field!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateRoom</name>
@@ -483,6 +543,29 @@
     <message>
         <source>A default theme already exists. Please edit this one or delete it.</source>
         <translation>Un thème par défaut existe déjà. Editez-le, ou supprimez-le.</translation>
+    </message>
+</context>
+<context>
+    <name>DialogSMP</name>
+    <message>
+        <source>Check the identity of your contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is the secret?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Please specify the question you want him to reply. This field can be empty.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -797,7 +880,7 @@
     </message>
     <message>
         <source>Picasa: Enable having pictures embded into posts</source>
-        <translation type="unfinished"></translation>
+        <translation>Picasa: Permets d&apos;avoir les images hébergée par Google au sein des posts</translation>
     </message>
 </context>
 <context>
@@ -1123,12 +1206,8 @@
         <translation>Afficher son emprunte</translation>
     </message>
     <message>
-        <source>End-to-end encryption requires your contact to have a client which support encryption. Desktop clients include Adium, Pindgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
-        <translation type="obsolete">Le cryptage point à point nécessite que votre contact dispose d&apos;un client qui le supporte. Potentiels clients sur PC sont Adium, Pidgin, Kepete... ChatSecure sur téléphone. Le client officiel de Google ne le supporte PAS.</translation>
-    </message>
-    <message>
         <source>End-to-end encryption requires your contact to have a client which support encryption. Desktop clients include Adium, Pidgin, Kopete... ChatSecure on mobile. The official Google Hangouts client do NOT support it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le cryptage point à point nécessite que votre contact dispose d&apos;un client qui le supporte. Potentiels clients sur PC sont Adium, Pidgin, Kepete... ChatSecure sur téléphone. Le client officiel de Google ne le supporte PAS.</translation>
     </message>
 </context>
 <context>
