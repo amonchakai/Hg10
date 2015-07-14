@@ -21,6 +21,12 @@
 #include <bb/cascades/TextField>
 #include <bb/cascades/Button>
 
+#include <bb/cascades/Application>
+#include <bb/cascades/ThemeSupport>
+#include <bb/cascades/ColorTheme>
+#include <bb/cascades/Theme>
+
+
 
 DialogSMP::DialogSMP(QObject * parent) : QObject(parent) {
     bool connectResult;
@@ -51,7 +57,12 @@ DialogSMP::DialogSMP(QObject * parent) : QObject(parent) {
     dialogContainer->setMaxHeight(ui->du(59.7));
     dialogContainer->setLeftPadding(ui->du(3));
     dialogContainer->setRightPadding(ui->du(3));
-    dialogContainer->setBackground(Color::fromARGB(0xffffffff));
+
+    if(bb::cascades::Application::instance()->themeSupport()->theme()->colorTheme()->style() == bb::cascades::VisualStyle::Dark) {
+        dialogContainer->setBackground(Color::fromARGB(0xff282828));
+    } else {
+        dialogContainer->setBackground(Color::fromARGB(0xffffffff));
+    }
 
     // Dialog content Container
     Container *dialogContent = Container::create()

@@ -471,7 +471,7 @@ Page {
         ActionItem {
             id: otrSMPButton
             title: qsTr("Authentification")
-            imageSource: "asset:///images/icon_lock_open.png"
+            imageSource: "asset:///images/icon_identification.png"
             ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: {
                 conversationController.startSMP(id);

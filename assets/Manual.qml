@@ -28,14 +28,10 @@ Page {
             layout: StackLayout {
                 orientation: LayoutOrientation.TopToBottom
             }
-
+            
             Container {
                 layout: StackLayout {
                     orientation: LayoutOrientation.LeftToRight
-                }
-                Container {
-                    id: offset
-                    preferredWidth: (widthFrame-720)/2
                 }
                 
                 ScrollView {
@@ -50,13 +46,13 @@ Page {
                         
                         ImageView {
                             imageSource: "asset:///images/Tutorial/splash_720x720.jpg"
-                            preferredHeight: 720
-                            preferredWidth: 720
+                            preferredHeight: widthFrame
+                            preferredWidth: widthFrame
                         }
                         
                         Container {
-                            preferredHeight: 720
-                            preferredWidth: 720
+                            preferredHeight: widthFrame
+                            preferredWidth: widthFrame
                             
                             layout: DockLayout {
                             
@@ -70,11 +66,11 @@ Page {
                         }
                         
                         Container {
-                            preferredHeight: 720
-                            preferredWidth: 720
+                            preferredHeight: widthFrame
+                            preferredWidth: widthFrame
                             
                             layout: DockLayout {
-                                
+                            
                             }
                             
                             Button {
@@ -85,19 +81,14 @@ Page {
                                     done();
                                 }
                             }
-                            
-                        }
                         
-                        Container {
-                            preferredWidth: (widthFrame-720)/2
                         }
-                        
+                    
                     }
                     
                     onViewableAreaChanged: {
-                        console.log(viewableArea.x)
-                        scrollView.scrollToPoint(Math.floor((viewableArea.x+360)/720)*720, 0)
-                        index = Math.floor((viewableArea.x+360)/720);
+                        scrollView.scrollToPoint(Math.floor((viewableArea.x+widthFrame/2)/widthFrame)*widthFrame, 0)
+                        index = Math.floor((viewableArea.x+widthFrame/2)/widthFrame);
                     }
                 
                 }
@@ -111,7 +102,7 @@ Page {
                 textStyle {
                     color: Color.White
                 }
-                
+            
             }
         }
         
@@ -121,7 +112,7 @@ Page {
         }
         
         
-     
+        
         attachedObjects: [
             ImagePaintDefinition {
                 id: back

@@ -144,6 +144,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_filter.png) \
         $$quote($$BASEDIR/assets/images/icon_folder.png) \
         $$quote($$BASEDIR/assets/images/icon_home.png) \
+        $$quote($$BASEDIR/assets/images/icon_identification.png) \
         $$quote($$BASEDIR/assets/images/icon_left.png) \
         $$quote($$BASEDIR/assets/images/icon_left_black.png) \
         $$quote($$BASEDIR/assets/images/icon_left_blue.png) \

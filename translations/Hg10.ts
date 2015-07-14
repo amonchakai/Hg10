@@ -391,6 +391,10 @@
         <source>Encryption</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Authentification</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConversationController</name>
