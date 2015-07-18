@@ -101,8 +101,10 @@
         function replaceImage(id, url) {
         	document.getElementById("image"+id).src = url;
         }
-        
 
+        function imageDenided (id, message) {
+        	document.getElementById("imageContainer"+id).innerHTML = "<p style=\"color: #b99309; \" >" + message + "</p>";
+        }
 
 
         // --------------------------

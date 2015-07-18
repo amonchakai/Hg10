@@ -97,6 +97,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/HelpRequest.png) \
         $$quote($$BASEDIR/assets/images/HelpRequest_white.png) \
         $$quote($$BASEDIR/assets/images/Tutorial/closeIcon.png) \
+        $$quote($$BASEDIR/assets/images/Tutorial/icon_play.png) \
         $$quote($$BASEDIR/assets/images/Tutorial/splash_720x720.jpg) \
         $$quote($$BASEDIR/assets/images/absent.png) \
         $$quote($$BASEDIR/assets/images/anim_loading.gif) \
@@ -179,6 +180,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_write_context.png) \
         $$quote($$BASEDIR/assets/images/icon_write_rounded.png) \
         $$quote($$BASEDIR/assets/images/icon_write_rounded_black.png) \
+        $$quote($$BASEDIR/assets/images/picasa_info.png) \
         $$quote($$BASEDIR/assets/images/pinch_out.png) \
         $$quote($$BASEDIR/assets/images/pinch_out_black.png) \
         $$quote($$BASEDIR/assets/images/pull-to-refresh.png) \

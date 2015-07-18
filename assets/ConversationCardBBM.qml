@@ -468,7 +468,7 @@ NavigationPane {
                 onTriggered: {
                     conversationController.startOTR(id);
                 }
-            }, 
+            }, /*
             ActionItem {
                 id: otrSMPButton
                 title: qsTr("Authentification")
@@ -477,7 +477,7 @@ NavigationPane {
                 onTriggered: {
                     conversationController.startSMP(id);
                 }
-            }, 
+            }, */
             ActionItem {
                 title: qsTr("Stickers")
                 ActionBar.placement: ActionBarPlacement.InOverflow

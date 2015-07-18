@@ -391,10 +391,6 @@
         <source>Encryption</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Authentification</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ConversationController</name>
@@ -476,6 +472,10 @@
     </message>
     <message>
         <source>You need to fill the secret field!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An image was sent. However, the support for images hosted by Google requires a new permission. Please log out, close the application, open it, and log back in to access to this feature.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -938,11 +938,25 @@
 <context>
     <name>Manual</name>
     <message>
-        <source>Done!</source>
+        <source>Welcome to Hg10!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Welcome to Hg10!</source>
+        <source> You are now connected to the messaging service. 
+
+ Any issues can be reported in the bug report center. Please check existing issues before posting a new one.
+
+ Encryption can be enabled from the settings in the application menu. 
+
+ I hope you will enjoy Hg10!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -81,6 +81,7 @@ private:
     QString                         m_BareID;
     History                         m_History;
     QList<QString>                  m_GImageStack;
+    int                             m_GStackIndex;
 
     // History from Google
     OnlineHistory                  *m_OnlineHistory;

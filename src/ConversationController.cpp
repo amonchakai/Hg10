@@ -350,6 +350,12 @@ void ConversationController::checkReplyGetContent() {
 void ConversationController::picasaImageFound(const QString&id, const QString&url) {
     if(m_WebView == NULL) return;
 
+    if(url == "DENIED") {
+        qDebug() << "DENIED";
+        m_WebView->evaluateJavaScript("imageDenided(\"" + id + "\", \"" + tr("An image was sent. However, the support for images hosted by Google requires a new permission. Please log out, close the application, open it, and log back in to access to this feature.") + "\");");
+        return;
+    }
+
     qDebug() << "replace: " << id << url;
     m_WebView->evaluateJavaScript("replaceImage(\"" + id + "\", \"" + url + "\");");
 }
@@ -366,7 +372,7 @@ QString ConversationController::renderMessage(const QString &message, bool showI
     QRegExp gImage("https://plus.google.com/photos/albums/[0-9a-z]+.pid=([0-9]+)&oid=([0-9]+)");
     if(gImage.indexIn(message) != -1) {
 
-        nMessage = "<img id=\"image" + gImage.cap(1) + "\" src=\"" +  QDir::currentPath() + "/app/native/assets/images/anim_loading.gif" + "\" />";
+        nMessage = "<div id=\"imageContainer" + gImage.cap(1) + "\" ><img id=\"image" + gImage.cap(1) + "\" src=\"" +  QDir::currentPath() + "/app/native/assets/images/anim_loading.gif" + "\" /></div>";
 
         ConversationManager::get()->getPictureFromLink(gImage.cap(2), gImage.cap(1));
 
@@ -533,6 +539,28 @@ void ConversationController::onPromptFinishedQuestion(const QString& question, c
 void ConversationController::fingerprintReceived(const QString& from, const QString& fingerprint) {
     if(from != m_DstId) return;
 
+    bool checkFingerprint = true;
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Keys");
+    if (QFile::exists(directory)) {
+        QFile file(directory + "/fingerprint_list.xml");
+
+        if (file.open(QIODevice::ReadOnly)) {
+            QTextStream stream(&file);
+
+            QString line;
+            line  = stream.readLine();
+            while(!line.isEmpty() && checkFingerprint) {
+                if(line == fingerprint)
+                    checkFingerprint = false;
+            }
+
+            file.close();
+        }
+    }
+
+
+    if(!checkFingerprint) return;
+
 
     using namespace bb::cascades;
     using namespace bb::system;
@@ -556,6 +584,23 @@ void ConversationController::fingerprintReceived(const QString& from, const QStr
 }
 
 void ConversationController::onPromptFinishedVerifyFingerprint(bb::system::SystemUiResult::Type result) {
+    QString directory = QDir::homePath() + QLatin1String("/ApplicationData/Keys");
+    if (!QFile::exists(directory)) {
+        QDir dir;
+        dir.mkpath(directory);
+    }
+
+    QFile file(directory + "/fingerprint_list.xml");
+
+    if (file.open(QIODevice::Append)) {
+        QTextStream stream(&file);
+
+        stream << m_NewWallpaper << "\n";
+
+        file.close();
+    }
+
+
     sender()->deleteLater();
 }
 

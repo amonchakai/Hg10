@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>AdvancedConection</name>
     <message>
@@ -405,7 +405,7 @@
     </message>
     <message>
         <source>Authentification</source>
-        <translation>Authentification</translation>
+        <translation type="obsolete">Authentification</translation>
     </message>
 </context>
 <context>
@@ -497,6 +497,10 @@
     <message>
         <source>You need to fill the secret field!</source>
         <translation>Vous devez choisir un secret!</translation>
+    </message>
+    <message>
+        <source>An image was sent. However, the support for images hosted by Google requires a new permission. Please log out, close the application, open it, and log back in to access to this feature.</source>
+        <translation>Une image a été envoyée. Cependant, le support d&apos;image hébergée par Google demande une nouvelle permission. Veuillez vous déconnecter, fermer l&apos;application, la réouvrir et vous reconnecter afin de pouvoir accéder a cette fonctionalitée.</translation>
     </message>
 </context>
 <context>
@@ -977,11 +981,35 @@
     <name>Manual</name>
     <message>
         <source>Done!</source>
-        <translation>Fermer!</translation>
+        <translation type="obsolete">Fermer!</translation>
     </message>
     <message>
         <source>Welcome to Hg10!</source>
         <translation>Bienvenu sur Hg10!</translation>
+    </message>
+    <message>
+        <source> You are now connected to the messaging service. 
+
+ Any issues can be reported in the bug report center. Please check existing issues before posting a new one.
+
+ Encryption can be enabled from the settings in the application menu. 
+
+ I hope you will enjoy Hg10!</source>
+        <translation>Vous êtes maintenant connecté au service de messagerie.
+
+Tout problème peut être signalé dans le gestionaire de bugs. Veuillez vérifier vérifier les problèmes déjà signalés avant d&apos;en créer un nouveau.
+
+L&apos;encryption peut être activé depuis les paramètres de l&apos;application.
+
+J&apos;espère que vous apprécierez Hg10!</translation>
+    </message>
+    <message>
+        <source>Next</source>
+        <translation>Suivant</translation>
+    </message>
+    <message>
+        <source>Start!</source>
+        <translation>Commencer!</translation>
     </message>
 </context>
 <context>

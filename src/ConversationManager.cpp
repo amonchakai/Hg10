@@ -28,7 +28,7 @@ ConversationManager* ConversationManager::m_This = NULL;
 
 
 ConversationManager::ConversationManager(QObject *parent) : QObject(parent), m_OnlineHistory(NULL), m_FileTransfert(NULL), m_SynchPushLoc(0) {
-
+    m_GStackIndex = 0;
 
     loadUserName();
 }
@@ -140,6 +140,7 @@ void ConversationManager::load(const QString &from, const QString &name) {
             m_GImageStack.push_back(m_History.m_History.at(i).m_What);
         }
     }
+    m_GStackIndex = m_GImageStack.size()-1;
 
     mutexConversation.unlock();
 
@@ -296,9 +297,9 @@ void ConversationManager::onlineMessage(const QString &from, const QString &mess
     e.m_MessageID = messageId;
 
     if(e.m_What.isEmpty()) {
-        if(!m_GImageStack.isEmpty()) {
-            e.m_What = m_GImageStack.last();
-            m_GImageStack.pop_back();
+        if(!m_GImageStack.isEmpty() && m_GStackIndex >= 0) {
+            e.m_What = m_GImageStack.at(m_GStackIndex);
+            --m_GStackIndex;
         }
     }
 

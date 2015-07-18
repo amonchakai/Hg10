@@ -12,7 +12,6 @@
 #include <QNetworkRequest>
 #include <QRegExp>
 
-
 void GoogleConnectController::getPictureFromLink(const QString& user_id, const QString &picture_id) {
 
     mutexGoogleConnect.lockForWrite();
@@ -136,6 +135,12 @@ void GoogleConnectController::checkReplyAlbumsList() {
             }
         } else {
             qDebug() << "reply... " << reply->errorString();
+
+            mutexGoogleConnect.lockForWrite();
+            if(!m_PictureIds.isEmpty())
+                emit picasaImageFound(m_PictureIds.last(), "DENIED");
+            mutexGoogleConnect.unlock();
+
         }
 
         reply->deleteLater();
@@ -178,6 +183,11 @@ void GoogleConnectController::checkReplyAlbumsContent() {
             }
         } else {
             qDebug() << "reply... " << reply->errorString();
+
+            mutexGoogleConnect.lockForWrite();
+            if(!m_PictureIds.isEmpty())
+                emit picasaImageFound(m_PictureIds.last(), "DENIED");
+            mutexGoogleConnect.unlock();
         }
 
         reply->deleteLater();
