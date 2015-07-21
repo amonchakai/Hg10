@@ -12,6 +12,7 @@ public:
 
 
     virtual void getMessages            (const QString &from, int nbMessages = 12) = 0;
+    virtual void getMoreMessages        () {};
 
 };
 

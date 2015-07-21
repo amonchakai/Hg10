@@ -679,6 +679,173 @@ void GoogleConnectController::getMessageReply() {
 
 }
 
+void GoogleConnectController::getMoreMessages() {
+    m_KeepPushing = true;
+
+    m_HistoryIndex++;
+    while(m_ThreadsID.size() > m_HistoryIndex && m_ThreadsID[m_HistoryIndex] == m_ThreadsID[m_HistoryIndex-1]) m_HistoryIndex++;
+
+    if(m_ThreadsID.size() > m_HistoryIndex) {
+
+        QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
+                                        + "me"
+                                        + "/threads/" + m_ThreadsID[m_HistoryIndex]
+                                        + "?access_token=" + m_Settings->value("access_token").value<QString>()
+                                   )
+                                );
+
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+        QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
+        bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageReplyAdd()));
+        Q_ASSERT(ok);
+        Q_UNUSED(ok);
+
+    }
+}
+
+
+
+void GoogleConnectController::getMessageReplyAdd() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    mutexGoogleConnect.lockForRead();
+    if(m_StopListing) {
+        mutexGoogleConnect.unlock();
+        reply->deleteLater();
+        return;
+    }
+    mutexGoogleConnect.unlock();
+
+    QRegExp andAmp("&amp;");
+    QRegExp quote("&#034;");
+    QRegExp euro("&euro;");
+    QRegExp inf("&lt;");
+    QRegExp sup("&gt;");
+    QRegExp quote2("&quot;");
+
+    QList<QString> local_messages, local_froms, local_histId;
+
+    QString response;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+             const int available = reply->bytesAvailable();
+             if (available > 0) {
+
+
+                 const QByteArray buffer(reply->readAll());
+                 response = QString::fromUtf8(buffer);
+
+                 QRegExp snippet("\"snippet\"[: ]+\"([^\"]*)\"");
+                 QRegExp content("\"data\"[: ]+\"([^\"]+)\"");
+                 QRegExp histID("\"historyId\"[: ]+\"([0-9]+)\"");
+                 QRegExp from("\"value\".+\\u003c(.*)\\u003e\"");
+                 from.setMinimal(true);
+
+                 int pos = 0;
+
+                 while(pos != -1) {
+                     pos = snippet.indexIn(response, pos);
+                     if(pos != -1) {
+                         pos += snippet.matchedLength();
+                         pos = histID.indexIn(response, pos);
+                         pos += histID.matchedLength();
+
+                         pos =from.indexIn(response, pos);
+                         pos += from.matchedLength();
+
+                         pos =content.indexIn(response, pos);
+                         pos += content.matchedLength();
+
+                         if(snippet.cap(1).length() < 200)
+                             local_messages.push_back(snippet.cap(1));
+                          else
+                              local_messages.push_back(base64_decode(content.cap(1)));
+
+                         local_messages.last().replace(andAmp,"&");
+                         local_messages.last().replace(quote,"\"");
+                         local_messages.last().replace(quote2,"\"");
+                         local_messages.last().replace(euro, "e");
+                         local_messages.last().replace(inf, "<");
+                         local_messages.last().replace(sup, ">");
+
+                         local_histId.push_back(histID.cap(1));
+                         local_froms.push_back(from.cap(1).mid(0, from.cap(1).size()-1));
+
+                     }
+                 }
+
+             }
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+       }
+
+       reply->deleteLater();
+    }
+
+
+    // --------------------------------------------
+    // count the number of participants in the chat
+
+    {
+        bool stop = false;
+        QString participant1, participant2;
+        for(int i = 0 ; i < local_froms.size() && !stop ; ++i) {
+            if(participant1.isEmpty()) {
+                participant1 = local_froms[i];
+                continue;
+            } else {
+                if(participant1 != local_froms[i]) {
+                    if(participant2.isEmpty()) {
+                        participant2 = local_froms[i];
+                    } else {
+                        if(participant2 != local_froms[i]) {
+                            stop = true;
+                            qDebug() << "At least 3 participants: " << participant1 << participant2 << local_froms[i];
+                        }
+                    }
+                }
+            }
+        }
+
+        // if the two participants are not the current user, then there was 3...
+        if(participant1 != ConversationManager::get()->getUser() && participant2 != ConversationManager::get()->getUser())
+            stop = true;
+
+        if(stop) {
+            qDebug() << "Check another thread";
+
+            m_HistoryIndex++;
+            while(m_ThreadsID.size() > m_HistoryIndex && m_ThreadsID[m_HistoryIndex] == m_ThreadsID[m_HistoryIndex-1]) m_HistoryIndex++;
+
+            if(m_ThreadsID.size() <= m_HistoryIndex) return;
+
+            QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
+                                            + "me"
+                                            + "/threads/" + m_ThreadsID[m_HistoryIndex]
+                                            + "?access_token=" + m_Settings->value("access_token").value<QString>()
+                                       )
+                                    );
+
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+            reply = HFRNetworkAccessManager::get()->get(request);
+            bool ok = connect(reply, SIGNAL(finished()), this, SLOT(getMessageReplyAdd()));
+            Q_ASSERT(ok);
+            Q_UNUSED(ok);
+
+            return;
+        }
+    }
+
+    for(int i = local_messages.size()-1 ; i >= 0  ; --i) {
+        cleanupMessage(local_messages[i]);
+        ConversationManager::get()->onlineMessage(local_froms[i], local_messages[i], local_histId[i]);
+    }
+
+    ConversationManager::get()->saveHistory();
+
+}
 
 
 // remove some HTML extra-stuff. <a></a>

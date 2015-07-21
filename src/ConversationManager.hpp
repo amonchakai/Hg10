@@ -29,6 +29,8 @@ public:
 
     void clear                          ();
     void load                           (const QString &from, const QString &name);
+    void loadMore                       ();
+
     void reload                         ();
     void sendMessage                    (const QString &message);
     void sendMessage                    (const QString &to,   const QString &message);
@@ -82,6 +84,7 @@ private:
     History                         m_History;
     QList<QString>                  m_GImageStack;
     int                             m_GStackIndex;
+    int                             m_HistoryIndex;
 
     // History from Google
     OnlineHistory                  *m_OnlineHistory;
@@ -101,6 +104,7 @@ Q_SIGNALS:
     void synchDone                      ();
     void historyLoaded                  ();
     void historyMessage                 (const QString &from, const QString &message);
+    void historyMessageNoFlush          (const QString &from, const QString &message);
     void messageReceived                (const QString &from, const QString &message);
     void messageSent                    (const QString &to,   const QString &message);
     void avatarUpdated                  ();

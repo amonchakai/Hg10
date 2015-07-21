@@ -97,6 +97,18 @@ NavigationPane {
                     horizontalAlignment: HorizontalAlignment.Fill
                     id: scrollView
                     
+                    property bool pullTriggered
+                    onViewableAreaChanging: {
+                        if(viewableArea.y < -100) {
+                            if(!pullTriggered) {
+                                conversationController.loadMore();
+                                pullTriggered = true;
+                            }
+                        } else {
+                            pullTriggered = false;
+                        }
+                    }
+                    
                     focusRetentionPolicyFlags: FocusRetentionPolicy.LoseToFocusable
                     
                     WebView {
@@ -130,8 +142,6 @@ NavigationPane {
                             if(match) {
                                 conversationController.playAudio("file:///" + match[1]);
                             }
-                            
-                            
                             
                             console.log(message.data)
                         }

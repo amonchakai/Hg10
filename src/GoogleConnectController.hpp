@@ -144,9 +144,11 @@ public Q_SLOTS:
 
 
     virtual void getMessages            (const QString &with, int nbMessages);
+    virtual void getMoreMessages        ();
 
     void getMessageList         ();
     void getMessageReply        ();
+    void getMessageReplyAdd     ();
     void replyGetUserInfo       ();
 
 

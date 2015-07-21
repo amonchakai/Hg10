@@ -66,6 +66,9 @@ ConversationController::ConversationController(QObject *parent) : QObject(parent
     check = connect(ConversationManager::get(), SIGNAL(historyMessage(QString, QString)), this, SLOT(pushHistory(QString, QString)));
     Q_ASSERT(check);
 
+    check = connect(ConversationManager::get(), SIGNAL(historyMessageNoFlush(QString, QString)), this, SLOT(pushHistoryNoFlush(QString, QString)));
+    Q_ASSERT(check);
+
     check = connect(ConversationManager::get(), SIGNAL(synchDone()), this, SLOT(scrollToBottom()));
     Q_ASSERT(check);
 
@@ -138,6 +141,10 @@ void ConversationController::load(const QString &id, const QString &avatar, cons
     m_HistoryCleared = false;
     m_DstName = name;
     ConversationManager::get()->load(id, name);
+}
+
+void ConversationController::loadMore() {
+    ConversationManager::get()->loadMore();
 }
 
 void ConversationController::updateView() {
@@ -446,18 +453,25 @@ void ConversationController::pushMessage(const QString &from, const QString &mes
     }
 }
 
-
-
 void ConversationController::pushHistory(const QString &from, const QString &message) {
     if(m_WebView == NULL) {
         qWarning() << "did not received the webview. quit.";
         return;
     }
 
-
     if(!m_HistoryCleared) {
         m_HistoryCleared = true;
         m_WebView->evaluateJavaScript("clearHistory();");
+    }
+
+    pushHistoryNoFlush(from, message);
+}
+
+void ConversationController::pushHistoryNoFlush(const QString &from, const QString &message) {
+
+    if(m_WebView == NULL) {
+        qWarning() << "did not received the webview. quit.";
+        return;
     }
 
     QString ownAvatar = ConversationManager::get()->getAvatar();
@@ -472,6 +486,9 @@ void ConversationController::pushHistory(const QString &from, const QString &mes
         m_WebView->evaluateJavaScript("pushHistory(0, 1, \"" + lmessage +"\", \"file:///" + ownAvatar + ".square.png\", \"" + tr("Me") + "\", \"\");");
     else
         m_WebView->evaluateJavaScript("pushHistory(0, 0, \"" + lmessage +"\", \"file:///" + m_DstAvatar + ".square.png\", \"" + m_DstName + "\", \"\");");
+
+    m_WebView->evaluateJavaScript("enableAutoScroll();");
+
 }
 
 

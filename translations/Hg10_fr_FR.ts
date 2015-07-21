@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr_FR">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>AdvancedConection</name>
     <message>
@@ -1009,7 +1009,7 @@ J&apos;espère que vous apprécierez Hg10!</translation>
     </message>
     <message>
         <source>Start!</source>
-        <translation>Commencer!</translation>
+        <translation type="obsolete">Commencer!</translation>
     </message>
 </context>
 <context>

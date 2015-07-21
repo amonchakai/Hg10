@@ -38,9 +38,10 @@ Page {
                         
                         ImageView {
                             imageSource: "asset:///images/Tutorial/splash_720x720.jpg"
-                            preferredHeight: widthFrame
+                            preferredHeight: heightFrame
                             preferredWidth: widthFrame
                             verticalAlignment: VerticalAlignment.Center
+                            scalingMethod: ScalingMethod.AspectFit
                         }
                         
                         Container {
@@ -78,26 +79,6 @@ Page {
                                 verticalAlignment: VerticalAlignment.Top
                                 visible: false
                                 multiline: true
-                            }
-                        
-                        }
-                        
-                        Container {
-                            preferredHeight: heightFrame
-                            preferredWidth: widthFrame
-                            
-                            layout: DockLayout {
-                            
-                            }
-                            verticalAlignment: VerticalAlignment.Center
-                            
-                            Button {
-                                horizontalAlignment: HorizontalAlignment.Center
-                                verticalAlignment: VerticalAlignment.Center
-                                text: qsTr("Start!")
-                                onClicked: {
-                                    done();
-                                }
                             }
                         
                         }
@@ -143,12 +124,6 @@ Page {
         
         
         attachedObjects: [
-            ImagePaintDefinition {
-                id: back
-                repeatPattern: RepeatPattern.Fill
-
-                imageSource: "asset:///images/wallpaper/wallpaper.jpg"
-            },
             LayoutUpdateHandler {
                 id: layoutUpdate
                 onLayoutFrameChanged: {
@@ -160,7 +135,7 @@ Page {
         
         function goNext() {
             if(index == 1) {
-                overallContainer.background = back.imagePaint
+                done();
             } 
             
             scrollView.scrollToPoint((index+1)*widthFrame, 0)

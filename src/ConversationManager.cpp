@@ -162,7 +162,30 @@ void ConversationManager::load(const QString &from, const QString &name) {
     }
 
     emit historyLoaded();
+    m_HistoryIndex = 10;
 
+}
+
+void ConversationManager::loadMore() {
+
+    if(m_HistoryIndex <= m_History.m_History.size()) {
+        for(int i = 1 ; i < 10 ; ++i) {
+            if((m_History.m_History.size()-m_HistoryIndex-i) >= 0) {
+                m_HistoryIndex++;
+                emit historyMessageNoFlush(m_History.m_History.at(m_History.m_History.size()-m_HistoryIndex).m_Who, m_History.m_History.at(m_History.m_History.size()-m_HistoryIndex).m_What);
+                qDebug() << "local";
+            } else {
+                m_HistoryIndex++;
+                return;
+            }
+        }
+    } else {
+
+        if(m_OnlineHistory != NULL) {
+            qDebug() << "online";
+            m_OnlineHistory->getMoreMessages();
+        }
+    }
 }
 
 
@@ -272,6 +295,8 @@ void ConversationManager::saveHistory() {
     mutexConversation.unlock();
 
     emit synchDone();
+
+    m_HistoryIndex = m_History.m_History.size()+1 ;
 }
 
 

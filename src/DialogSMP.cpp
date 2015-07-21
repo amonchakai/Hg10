@@ -104,6 +104,7 @@ DialogSMP::DialogSMP(QObject * parent) : QObject(parent) {
     StackLayout *layoutButtons = new StackLayout();
     layoutButtons->setOrientation(LayoutOrientation::LeftToRight);
     buttonContainer->setLayout(layoutButtons);
+    buttonContainer->setHorizontalAlignment(HorizontalAlignment::Center);
 
     Button *acceptButton = new Button();
     acceptButton->setText(tr("Send request"));

@@ -93,6 +93,7 @@ public Q_SLOTS:
     void updateView                     ();
     void load                           (const QString &id, const QString &avatar, const QString &name);
     void refreshHistory                 (const QString &id, const QString &avatar, const QString &name);
+    void loadMore                       ();
 
     void startOTR                       (const QString &id);
     void startSMP                       (const QString &id);
@@ -115,6 +116,7 @@ public Q_SLOTS:
     void sendData                       (const QString &message);
     void pushMessage                    (const QString &from, const QString &message);
     void pushHistory                    (const QString &from, const QString &message);
+    void pushHistoryNoFlush             (const QString &from, const QString &message);
 
 
     QString renderMessage               (const QString &message, bool showImg = true);
