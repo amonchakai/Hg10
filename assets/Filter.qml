@@ -24,6 +24,9 @@ Page {
                     listContactsController.setAvailabilityFilter(-1);
                  else 
                      listContactsController.setAvailabilityFilter(code);
+                     
+                listContactsController.setContactSortingKey(orderContacts.selectedIndex);
+                
                 nav.pop();
                 
             }
@@ -125,5 +128,40 @@ Page {
         
         Divider {  }
         
+        Container {
+            layout: StackLayout {
+                orientation: LayoutOrientation.TopToBottom
+            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            
+                            
+            Label {
+                 text: qsTr("Order contacts by:")
+                 textStyle.fontSize: FontSize.Large
+                 
+                 horizontalAlignment: HorizontalAlignment.Left
+            }
+
+            RadioGroup {
+                id: orderContacts
+                verticalAlignment: VerticalAlignment.Bottom
+                options: [
+                    Option {
+                        text: qsTr("Last message timestamp")
+                        
+                    },
+                    Option {
+                        text: qsTr("By name")
+                    }
+                ]
+                
+                selectedIndex: listContactsController.contactSortingKey
+            }
+            
+            leftMargin: ui.du(1)
+            rightMargin: ui.du(1)
+        }
+        
+        Divider {  }
     }
 }

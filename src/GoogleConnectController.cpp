@@ -593,8 +593,8 @@ void GoogleConnectController::getMessageReply() {
         }
 
         // if the two participants are not the current user, then there was 3...
-        if(participant1 != ConversationManager::get()->getUser() && participant2 != ConversationManager::get()->getUser())
-            stop = true;
+        //if(participant1 != ConversationManager::get()->getUser() && participant2 != ConversationManager::get()->getUser())
+        //    stop = true;
 
         if(stop) {
             qDebug() << "Check another thread";

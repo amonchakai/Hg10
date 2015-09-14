@@ -788,6 +788,18 @@
         <source>Show only connected contacts</source>
         <translation>Ne montrer que les contacts connectés</translation>
     </message>
+    <message>
+        <source>Order contacts by:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last message timestamp</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FurtherInformation</name>

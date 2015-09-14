@@ -180,7 +180,6 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/icon_write_context.png) \
         $$quote($$BASEDIR/assets/images/icon_write_rounded.png) \
         $$quote($$BASEDIR/assets/images/icon_write_rounded_black.png) \
-        $$quote($$BASEDIR/assets/images/picasa_info.png) \
         $$quote($$BASEDIR/assets/images/pinch_out.png) \
         $$quote($$BASEDIR/assets/images/pinch_out_black.png) \
         $$quote($$BASEDIR/assets/images/pull-to-refresh.png) \

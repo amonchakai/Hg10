@@ -30,6 +30,8 @@ class ListContactsController : public QObject {
 
     Q_PROPERTY( bool    showOnlyFav READ isOnlyFav                           NOTIFY showOnlyFavChanged)
     Q_PROPERTY( int     availabilityFilter READ getAvailabilityFilter        NOTIFY availabilityFilterChanged)
+    Q_PROPERTY( int     contactSortingKey  READ getContactSortingKey         NOTIFY contactSortingKeyChanged)
+
 
     Q_PROPERTY( int     conversTheme READ getConversTheme                    NOTIFY  conversThemeChanged)
 
@@ -53,8 +55,10 @@ private:
     QList<Contact *>                 m_Contacts;
     bool                             m_OnlyFavorite;
     int                              m_AvailabilityFilter;
+    int                              m_ContactSortingKey;
     bool                             m_PushStated;
     int                              m_ConversTheme;
+
 
     bb::platform::Notification      *m_Notification;
 
@@ -90,6 +94,7 @@ public:
 
     inline bool           isOnlyFav     () const               { return m_OnlyFavorite; }
     inline int            getAvailabilityFilter() const        { return m_AvailabilityFilter; }
+    inline int            getContactSortingKey() const         { return m_ContactSortingKey; }
 
     inline int            getConversTheme() const           { return m_ConversTheme; }
 
@@ -129,6 +134,7 @@ public Q_SLOTS:
     void filter                         (const QString &contacts);
     void setFilter                      (bool onlyFav);
     void setAvailabilityFilter          (int level);
+    void setContactSortingKey           (int index);
     void updateConnectionStatus         (bool status);
     void selectFirst                    ();
 
@@ -162,6 +168,7 @@ Q_SIGNALS:
     void availableChanged               ();
     void showOnlyFavChanged             ();
     void availabilityFilterChanged      ();
+    void contactSortingKeyChanged       ();
 
     void userSelected                   (const QString &id, const QString &name, const QString &avatar);
 

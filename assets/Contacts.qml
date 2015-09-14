@@ -163,9 +163,6 @@ NavigationPane {
                     id: listContactView
                     dataModel: GroupDataModel {
                         id: theModel
-                        sortingKeys: ["timestamp", "name"]
-                        sortedAscending: false
-                        grouping: ItemGrouping.None
                         
                         property bool empty: true
                         

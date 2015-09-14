@@ -61,6 +61,7 @@ ListContactsController::ListContactsController(QObject *parent) : QObject(parent
 
     m_AvailabilityFilter = settings.value("AvailabilityFilter", -1).toInt();
     m_ConversTheme = settings.value("ConversationTheme", 0).toInt();
+    m_ContactSortingKey = settings.value("ContactSortingKey", 0).toInt();
 
     loadBlackList();
 
@@ -364,6 +365,26 @@ void ListContactsController::updateView() {
     }
     //dataModel->setGrouping(ItemGrouping::ByFullValue);
 
+    QStringList keys;
+    switch(m_ContactSortingKey) {
+        case 0: {
+            keys.push_back("timestamp");
+            keys.push_back("name");
+            dataModel->setGrouping(ItemGrouping::None);
+            dataModel->setSortingKeys(keys);
+            dataModel->setSortedAscending(false);
+            break;
+        }
+
+        case 1: {
+            keys.push_back("name");
+            dataModel->setGrouping(ItemGrouping::ByFirstChar);
+            dataModel->setSortingKeys(keys);
+            dataModel->setSortedAscending(true);
+            break;
+        }
+    }
+
     // ----------------------------------------------------------------------------------------------
     // Read login info
 
@@ -576,6 +597,26 @@ void ListContactsController::filter(const QString &contact) {
     }
     //dataModel->setGrouping(ItemGrouping::ByFullValue);
 
+    QStringList keys;
+    switch(m_ContactSortingKey) {
+        case 0: {
+            keys.push_back("timestamp");
+            keys.push_back("name");
+            dataModel->setGrouping(ItemGrouping::None);
+            dataModel->setSortingKeys(keys);
+            dataModel->setSortedAscending(false);
+            break;
+        }
+
+        case 1: {
+            keys.push_back("name");
+            dataModel->setGrouping(ItemGrouping::ByFirstChar);
+            dataModel->setSortingKeys(keys);
+            dataModel->setSortedAscending(true);
+            break;
+        }
+    }
+
     // ----------------------------------------------------------------------------------------------
     // Read login info
 
@@ -672,6 +713,19 @@ void ListContactsController::setAvailabilityFilter(int level) {
 
     updateView();
     emit availabilityFilterChanged();
+}
+
+void ListContactsController::setContactSortingKey(int index) {
+    if(m_ContactSortingKey == index)
+        return;
+
+    m_ContactSortingKey = index;
+
+    QSettings settings("Amonchakai", "Hg10");
+    settings.setValue("ContactSortingKey", m_ContactSortingKey);
+
+    updateView();
+    emit contactSortingKeyChanged();
 }
 
 QString ListContactsController::formatTime(qint64 msecs) {

@@ -37,7 +37,7 @@
         can also be 1-part or 2-part. It is not necessary to have a 3-part value.
         An updated version of application must have a versionNumber value higher
         than the previous version. Required. -->
-    <versionNumber>1.4.1</versionNumber>
+    <versionNumber>1.4.2</versionNumber>
     <splashScreens>
        <image>splash_1440x1440.jpg</image>
        <image>splash_720x720.jpg</image>
@@ -48,7 +48,7 @@
 
     <!-- Fourth digit segment of the package version. First three segments are
         taken from the <versionNumber> element. Must be an integer from 0 to 2^16-1 -->
-    <buildId>186</buildId>
+    <buildId>187</buildId>
     <packageLocale>fr-FR</packageLocale>
 
     <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents
@@ -177,9 +177,23 @@
         <invoke-target-name>Hg10</invoke-target-name>
         <icon>
             <image>icon.png</image>
-        </icon>
-        <entry-point-id>Hg10</entry-point-id>
+       </icon>
     </invoke-target>
+    
+    <invoke-target id="com.amonchakai.Hg10.view">
+    <invoke-target-type>application</invoke-target-type>
+    <invoke-target-name>Hg10</invoke-target-name>
+    <icon>
+        <image public="true"> icon_small.png</image>
+        <image public="true"> icon_big.png</image>
+    </icon>
+    <filter>
+        <action>bb.action.SHARE</action>
+        <mime-type>*</mime-type>
+        <property var="uris" value="file://,list://"/>
+        <property var="exts" value="jpg,png,jpeg,bmp"/>
+    </filter>
+	</invoke-target>
     
     <invoke-target id="com.amonchakai.Hg10.card">
 	<entry-point-id>Hg10</entry-point-id>
@@ -219,6 +233,8 @@
     <asset path="splash_1440x1440.jpg">splash_1440x1440.jpg</asset>
     <asset path="splash_720x720.jpg">splash_720x720.jpg</asset>
     <asset path="splash_768x1280.jpg">splash_768x1280.jpg</asset>
+    <asset path="icon_big.png">icon_big.png</asset>
+    <asset path="icon_small.png">icon_small.png</asset>
 
     <!-- Request permission to post notification. -->
     <permission>post_notification</permission>
