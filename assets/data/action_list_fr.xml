@@ -1,12 +1,11 @@
 <root>
-	<item title="Bas" category="Navigation" url="asset:///images/color/to_Bottom.png" action="2" />
-	<item title="Haut" category="Navigation" url="asset:///images/color/to_Top.png" action="1" />	
-	<item title="Page suiv." category="Navigation" url="asset:///images/color/Next.png" action="3" />	
-	<item title="Page prec." category="Navigation" url="asset:///images/color/Prev.png" action="4" />	
-	<item title="Dern. page" category="Navigation" url="asset:///images/color/Last.png" action="5" />	
-	<item title="Prem. page" category="Navigation" url="asset:///images/color/First.png" action="6" />	
-	<item title="Vider cache" category="Action" url="asset:///images/color/Clean.png" action="10" />
-	<item title="Sondage" category="Action" url="asset:///images/color/Survey.png" action="9" />	
-	<item title="Rafraichir" category="Action" url="asset:///images/color/Refresh.png" action="7" />	
-	<item title="Repondre" category="Action" url="asset:///images/color/Reply.png" action="8" />	
+	<item title="Historique" category="General" url="asset:///images/color/Clock.png" action="9" />	
+	<item title="Papier peint" category="General" url="asset:///images/color/Wallpaper.png" action="7" />	
+	<item title="Bas" category="General" url="asset:///images/color/to_Bottom.png" action="1" />
+	<item title="Autocollant" category="Actions" url="asset:///images/document.png" action="6" />		
+	<item title="Repondre" category="Actions" url="asset:///images/color/Reply.png" action="4" />
+	<item title="Attacher" category="Actions" url="asset:///images/color/Attach.png" action="3" />	
+	<item title="Rafraichir" category="Actions" url="asset:///images/color/Refresh.png" action="2" />	
+	<item title="Souriards" category="Actions" url="asset:///images/color/Emoticon.png" action="5" />	
+	<item title="Message audio" category="Actions" url="asset:///images/color/Voice.png" action="8" />	
 </root>

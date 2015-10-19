@@ -152,6 +152,11 @@ public Q_SLOTS:
     void replyGetUserInfo       ();
 
 
+    void getRawMessageList      (const QString& with);
+    void rawMessageListReceived ();
+
+    void getRawMessage          (const QString& with);
+    void rawMessageReceived     ();
 
 
 
@@ -204,6 +209,8 @@ Q_SIGNALS:
     void onlineTreeLeaf         (QString, DriveItem *);
     void folderEmpty            ();
     void folderCreated          ();
+    void rawMessageList         (const QByteArray& );
+    void rawMessage             (const QByteArray& );
 
     void picasaImageFound       (const QString &imageId, const QString &url);
 

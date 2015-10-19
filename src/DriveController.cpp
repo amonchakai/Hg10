@@ -29,7 +29,7 @@
 
 DriveController::DriveController(QObject *parent) : QObject(parent), m_ListView(NULL), m_listdialog(NULL) {
     //m_Google = new GoogleConnectController(this);
-    m_Google = ConversationManager::get()->getFileTransfert();
+    m_Google = ConversationManager::get()->getGoogleConnectController();
     if(m_Google == NULL)
         m_Google = new GoogleConnectController(this);
 

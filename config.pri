@@ -52,12 +52,14 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/ConversationCard.qml) \
         $$quote($$BASEDIR/assets/ConversationCardBBM.qml) \
         $$quote($$BASEDIR/assets/CreateRoom.qml) \
+        $$quote($$BASEDIR/assets/DetailedHistory.qml) \
         $$quote($$BASEDIR/assets/Drive.qml) \
         $$quote($$BASEDIR/assets/DropboxConnect.qml) \
         $$quote($$BASEDIR/assets/EditContact.qml) \
         $$quote($$BASEDIR/assets/Filter.qml) \
         $$quote($$BASEDIR/assets/FurtherInformation.qml) \
         $$quote($$BASEDIR/assets/GoogleConnect.qml) \
+        $$quote($$BASEDIR/assets/HistoryBrowser.qml) \
         $$quote($$BASEDIR/assets/ImagePreview.qml) \
         $$quote($$BASEDIR/assets/IssueViewer.qml) \
         $$quote($$BASEDIR/assets/ListIssues.qml) \
@@ -110,8 +112,10 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/bug.png) \
         $$quote($$BASEDIR/assets/images/busy.png) \
         $$quote($$BASEDIR/assets/images/chat_room.png) \
+        $$quote($$BASEDIR/assets/images/clock_white.png) \
         $$quote($$BASEDIR/assets/images/color/Attach.png) \
         $$quote($$BASEDIR/assets/images/color/Clean.png) \
+        $$quote($$BASEDIR/assets/images/color/Clock.png) \
         $$quote($$BASEDIR/assets/images/color/Emoticon.png) \
         $$quote($$BASEDIR/assets/images/color/First.png) \
         $$quote($$BASEDIR/assets/images/color/Last.png) \
@@ -213,6 +217,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/GoogleConnectController.cpp) \
         $$quote($$BASEDIR/src/GoogleConnectDrive.cpp) \
         $$quote($$BASEDIR/src/GoogleConnectPicasa.cpp) \
+        $$quote($$BASEDIR/src/HistoryBrowserController.cpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.cpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.cpp) \
         $$quote($$BASEDIR/src/Image/NetImageTracker.cpp) \
@@ -249,6 +254,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/DropBoxConnectController.hpp) \
         $$quote($$BASEDIR/src/FileTransfert.hpp) \
         $$quote($$BASEDIR/src/GoogleConnectController.hpp) \
+        $$quote($$BASEDIR/src/HistoryBrowserController.hpp) \
         $$quote($$BASEDIR/src/Image/CookieJar.hpp) \
         $$quote($$BASEDIR/src/Image/HFRNetworkAccessManager.hpp) \
         $$quote($$BASEDIR/src/Image/NetImageTracker.h) \

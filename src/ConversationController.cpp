@@ -789,7 +789,6 @@ void ConversationController::invokeBrowser(const QString& url) {
     }
 
     bb::system::InvokeRequest request;
-    request.setTarget("sys.browser");
     request.setAction("bb.action.OPEN");
     request.setUri(url);
 
@@ -868,7 +867,7 @@ void ConversationController::initDropbox() {
 
 void ConversationController::initGoogleDrive() {
 
-    GoogleConnectController *transfert= ConversationManager::get()->getFileTransfert();
+    GoogleConnectController *transfert= ConversationManager::get()->getGoogleConnectController();
 
     if(transfert == NULL) {
         return;

@@ -329,6 +329,10 @@
         <source>Authentification</source>
         <translation>Authentification</translation>
     </message>
+    <message>
+        <source>History</source>
+        <translation>Historique</translation>
+    </message>
 </context>
 <context>
     <name>ConversationCard</name>
@@ -407,6 +411,10 @@
         <source>Authentification</source>
         <translation type="obsolete">Authentification</translation>
     </message>
+    <message>
+        <source>History</source>
+        <translation>Historique</translation>
+    </message>
 </context>
 <context>
     <name>ConversationController</name>
@@ -428,11 +436,11 @@
     </message>
     <message>
         <source>/app/native/assets/data/action_list.xml</source>
-        <translation type="unfinished"></translation>
+        <translation>/app/native/assets/data/action_list_fr.xml</translation>
     </message>
     <message>
         <source>/app/native/assets/data/emojies_list.xml</source>
-        <translation type="unfinished"></translation>
+        <translation>/app/native/assets/data/emojies_list.xml</translation>
     </message>
     <message>
         <source>Off-the-record session requested. Please note Google Hangouts official client does NOT support end-to-end encryption!</source>
@@ -551,6 +559,17 @@
     <message>
         <source>A default theme already exists. Please edit this one or delete it.</source>
         <translation>Un thème par défaut existe déjà. Editez-le, ou supprimez-le.</translation>
+    </message>
+</context>
+<context>
+    <name>DetailedHistory</name>
+    <message>
+        <source>Previous conversation</source>
+        <translation>Conversation précédentes</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -790,15 +809,15 @@
     </message>
     <message>
         <source>Order contacts by:</source>
-        <translation type="unfinished"></translation>
+        <translation>Trier les contacts par:</translation>
     </message>
     <message>
         <source>By name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Last message timestamp</source>
-        <translation type="unfinished"></translation>
+        <translation>Dernier message</translation>
     </message>
 </context>
 <context>
@@ -908,6 +927,40 @@
     <message>
         <source>last edit: </source>
         <translation type="obsolete">Dernière modification :</translation>
+    </message>
+</context>
+<context>
+    <name>HistoryBrowser</name>
+    <message>
+        <source>No history available.</source>
+        <translation>Aucun historique disponible.</translation>
+    </message>
+    <message>
+        <source>Previous conversation</source>
+        <translation>Conversations précédente</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Fermer</translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation>Rafraîchir</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Rechercher</translation>
+    </message>
+    <message>
+        <source>Keywords</source>
+        <translation>Mot clé</translation>
+    </message>
+</context>
+<context>
+    <name>HistoryBrowserController</name>
+    <message>
+        <source>Me</source>
+        <translation>Moi</translation>
     </message>
 </context>
 <context>

@@ -1,5 +1,5 @@
 1
-162
+166
 1440x1440/Contacts.qml
 1440x1440/Drive.qml
 1440x1440/SmileyPicker.qml
@@ -29,12 +29,14 @@ data/action_list.xml
 data/action_list_fr.xml
 data/emojies.xml
 data/emojies_list.xml
+DetailedHistory.qml
 Drive.qml
 DropboxConnect.qml
 EditContact.qml
 Filter.qml
 FurtherInformation.qml
 GoogleConnect.qml
+HistoryBrowser.qml
 ImagePreview.qml
 images/absent.png
 images/anim_loading.gif
@@ -52,8 +54,10 @@ images/BugReport_white.png
 images/BugReport_white_large.png
 images/busy.png
 images/chat_room.png
+images/clock_white.png
 images/color/Attach.png
 images/color/Clean.png
+images/color/Clock.png
 images/color/Emoticon.png
 images/color/First.png
 images/color/Last.png

@@ -1,4 +1,5 @@
 <root>
+	<item title="History" category="General" url="asset:///images/color/Clock.png" action="9" />	
 	<item title="Wallpaper" category="General" url="asset:///images/color/Wallpaper.png" action="7" />	
 	<item title="To Bottom" category="General" url="asset:///images/color/to_Bottom.png" action="1" />
 	<item title="Stickers" category="Actions" url="asset:///images/document.png" action="6" />		

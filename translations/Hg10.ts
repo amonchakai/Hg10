@@ -317,6 +317,10 @@
         <source>Authentification</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>History</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConversationCard</name>
@@ -389,6 +393,10 @@
     </message>
     <message>
         <source>Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>History</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -526,6 +534,17 @@
     </message>
     <message>
         <source>A default theme already exists. Please edit this one or delete it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DetailedHistory</name>
+    <message>
+        <source>Previous conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -865,6 +884,40 @@
     </message>
     <message>
         <source>Picasa: Enable having pictures embded into posts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryBrowser</name>
+    <message>
+        <source>No history available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keywords</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryBrowserController</name>
+    <message>
+        <source>Me</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

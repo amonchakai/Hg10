@@ -293,12 +293,14 @@ void GoogleConnectController::parseRefresh(const QString &message) {
         else {
             if(query == "DIRECTORY_REQUEST")
                 getFileList(data);
-            else
-                getOnlineTree(data);
+            else {
+                if(query == "MESSAGE_LIST_REQUEST")
+                    getRawMessageList(data);
+                else
+                    getOnlineTree(data);
+            }
         }
-
     }
-
 }
 
 void GoogleConnectController::getUserInfo() {
@@ -396,6 +398,88 @@ void GoogleConnectController::getMessages(const QString &with, int nbMessages) {
     Q_UNUSED(ok);
 }
 
+
+void GoogleConnectController::getRawMessageList(const QString& with) {
+    m_WithButNoKey = "MESSAGE_LIST_REQUEST:" + with;
+
+    QString user = ConversationManager::get()->getUser().mid(4);
+    user.replace("&", "%40");
+    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
+                                + "me"
+                                + "/threads"
+                                + "?access_token=" + m_Settings->value("access_token").value<QString>()
+                                + "&q=is:chat " + with
+                           )
+                        );
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+    mutexGoogleConnect.lockForWrite();
+    m_StopListing = true;
+    mutexGoogleConnect.unlock();
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(rawMessageListReceived()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+}
+
+void GoogleConnectController::rawMessageListReceived () {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+             const int available = reply->bytesAvailable();
+             if (available > 0) {
+                 emit rawMessageList(reply->readAll());
+             }
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+            qDebug() << "try to renew the key";
+            renewToken();
+       }
+
+       reply->deleteLater();
+    }
+}
+
+void GoogleConnectController::getRawMessage(const QString& id) {
+
+    QNetworkRequest request(QUrl(QString("https://www.googleapis.com/gmail/v1/users/")
+                                + "me"
+                                + "/threads/" + id
+                                + "?access_token=" + m_Settings->value("access_token").value<QString>()
+                           )
+                        );
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+    mutexGoogleConnect.lockForWrite();
+    m_StopListing = true;
+    mutexGoogleConnect.unlock();
+
+    QNetworkReply* reply = HFRNetworkAccessManager::get()->get(request);
+    bool ok = connect(reply, SIGNAL(finished()), this, SLOT(rawMessageReceived()));
+    Q_ASSERT(ok);
+    Q_UNUSED(ok);
+}
+
+void GoogleConnectController::rawMessageReceived() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+             const int available = reply->bytesAvailable();
+             if (available > 0) {
+                 emit rawMessage(reply->readAll());
+             }
+        } else {
+            qDebug() << "reply... " << reply->errorString();
+       }
+
+       reply->deleteLater();
+    }
+}
 
 void GoogleConnectController::getMessageList() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());

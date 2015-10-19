@@ -60,7 +60,7 @@ public:
     void                   sendData     (const QString &file);
     void                   loadUserName ();
 
-    inline GoogleConnectController  *getFileTransfert()         { return m_FileTransfert; }
+    inline GoogleConnectController  *getGoogleConnectController()         { return m_FileTransfert; }
 
 
     void                    getPictureFromLink(const QString& user_id, const QString &picture_id);

@@ -16,6 +16,7 @@ NavigationPane {
         property bool   room
         property variant previewPage
         property variant smileyPage
+        property variant historyPage
         property string smileyToAdd
         property string filenameChat
         
@@ -385,6 +386,14 @@ NavigationPane {
                                         voiceRecording.visible = true;
                                         conversationController.startRecordAudio();
                                         break;
+                                    
+                                    case 9:
+                                        if(!conversationCard.historyPage)
+                                            conversationCard.historyPage = historyBrowser.createObject();
+                                        conversationCard.historyPage.name = conversationCard.name;
+                                        conversationCard.historyPage.id = conversationCard.id;
+                                        nav.push(conversationCard.historyPage);
+                                        break;
                                 }
                             
                             }
@@ -504,6 +513,23 @@ NavigationPane {
                 ]
             },
             ActionItem {
+                title: qsTr("History")
+                ActionBar.placement: ActionBarPlacement.InOverflow
+                imageSource: "asset:///images/clock_white.png"
+                onTriggered: {
+                    if(!conversationCard.historyPage)
+                        conversationCard.historyPage = historyBrowser.createObject();
+                    conversationCard.historyPage.name = conversationCard.name;
+                    conversationCard.historyPage.id = conversationCard.id;
+                    nav.push(conversationCard.historyPage);
+                }
+                shortcuts: [
+                    Shortcut {
+                        key: "h"
+                    }
+                ]
+            },
+            ActionItem {
                 title: qsTr("To last message")
                 imageSource: "asset:///images/icon_bottom.png"
                 ActionBar.placement: ActionBarPlacement.InOverflow
@@ -612,6 +638,10 @@ NavigationPane {
             ComponentDefinition {
                 id: smileyPicker
                 source: "SmileyPicker.qml"
+            },
+            ComponentDefinition {
+                id: historyBrowser
+                source: "HistoryBrowser.qml"
             }
         ]
         

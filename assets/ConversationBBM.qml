@@ -10,6 +10,7 @@ Page {
     property bool   room
     property variant previewPage
     property variant smileyPage
+    property variant historyPage
     property string smileyToAdd
     property string filenameChat
     
@@ -384,6 +385,15 @@ Page {
                                     voiceRecording.visible = true;
                                     conversationController.startRecordAudio();
                                     break;
+                                
+                                case 9:
+                                    if(!historyPage)
+                                        historyPage = historyBrowser.createObject();
+                                    historyPage.name = name;
+                                    historyPage.id = id;
+                                    nav.push(historyPage);
+                                    break;
+                                    
                             }
                         
                         }
@@ -503,6 +513,23 @@ Page {
             ]
         },
         ActionItem {
+            title: qsTr("History")
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            imageSource: "asset:///images/clock_white.png"
+            onTriggered: {
+                if(!historyPage)
+                    historyPage = historyBrowser.createObject();
+                historyPage.name = name;
+                historyPage.id = id;
+                nav.push(historyPage);
+            }
+            shortcuts: [
+                Shortcut {
+                    key: "h"
+                }
+            ]
+        },
+        ActionItem {
             title: qsTr("To last message")
             imageSource: "asset:///images/icon_bottom.png"
             ActionBar.placement: ActionBarPlacement.InOverflow
@@ -610,6 +637,10 @@ Page {
         ComponentDefinition {
             id: smileyPicker
             source: "SmileyPicker.qml"
+        },
+        ComponentDefinition {
+            id: historyBrowser
+            source: "HistoryBrowser.qml"
         }
     ]
 }

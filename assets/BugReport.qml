@@ -45,7 +45,7 @@ NavigationPane {
                     id: closeButton
                     defaultImageSource: "asset:///images/Tutorial/closeIcon.png"
                     verticalAlignment: VerticalAlignment.Top
-                    horizontalAlignment: HorizontalAlignment.Right
+                    horizontalAlignment: HorizontalAlignment.Left
                     onClicked: {
                         done();
                     }

@@ -150,6 +150,14 @@
         	disable_auto_scroll = true;
         }
 
+        function getPageHeight() {
+        	//document.getElementById(messageID).scrollIntoView();
+            if(window.innerWidth > 1000)
+                sendURL("PAGE_HEIGHT:"+GetScreenCordinates(document.getElementById("end")).y*1.395);
+            else
+                sendURL("PAGE_HEIGHT:"+GetScreenCordinates(document.getElementById("end")).y);
+        }
+
         var prevHeight;
         function checkWindowHeight() {
         	if(prevHeight != window.innerHeight) {
